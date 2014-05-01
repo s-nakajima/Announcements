@@ -1,0 +1,113 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2014-04-28 04:49+0000\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: /View/Announcements/block.ctp:24
+msgid "Edit Announcement block"
+msgstr ""
+
+#: /View/Announcements/block.ctp:29
+msgid "Announcement Title"
+msgstr ""
+
+#: /View/Announcements/block.ctp:37
+msgid "Authority to post articles"
+msgstr ""
+
+#: /View/Announcements/block.ctp:40;83
+msgid "Room manager"
+msgstr ""
+
+#: /View/Announcements/block.ctp:41;84
+msgid "Managing editor"
+msgstr ""
+
+#: /View/Announcements/block.ctp:42;85
+msgid "Editor"
+msgstr ""
+
+#: /View/Announcements/block.ctp:43;86
+msgid "General"
+msgstr ""
+
+#: /View/Announcements/block.ctp:48
+msgid "Post approval setting"
+msgstr ""
+
+#: /View/Announcements/block.ctp:54
+msgid "Need room manager approval"
+msgstr ""
+
+#: /View/Announcements/block.ctp:54
+msgid "Automatic approval"
+msgstr ""
+
+#: /View/Announcements/block.ctp:67
+msgid "Deliver e-mail when submitted?"
+msgstr ""
+
+#: /View/Announcements/block.ctp:73
+msgid "Yes"
+msgstr ""
+
+#: /View/Announcements/block.ctp:73
+msgid "No"
+msgstr ""
+
+#: /View/Announcements/block.ctp:80
+msgid "Notify whom? :"
+msgstr ""
+
+#: /View/Announcements/block.ctp:89
+msgid "E-mail Subject:"
+msgstr ""
+
+#: /View/Announcements/block.ctp:93
+msgid "Message："
+msgstr ""
+
+#: /View/Announcements/block.ctp:97
+msgid "You may use the following keywords in the title and content of the message, {X-SITE_NAME}, {X-ROOM}, {X-ANNOUNCEMENT_NAME}, {X-USER}, {X-TO_DATE}, {X-BODY}, {X-URL}<br><br>Each keyword will be translated to site name, room name, announcement title, creator, timestamp, article and url"
+msgstr ""
+
+#: /View/Announcements/content_not_found.ctp:5
+#: /View/Announcements/index.ctp:9
+msgid "Edit"
+msgstr ""
+
+#: /View/Announcements/edit.ctp:13
+msgid "Content"
+msgstr ""
+
+#: /View/Announcements/edit.ctp:30
+msgid "Cancel"
+msgstr ""
+
+#: /View/Announcements/edit.ctp:33
+msgid "Draft"
+msgstr ""
+
+#: /View/Announcements/edit.ctp:36
+msgid "Ok"
+msgstr ""
+
+#: /View/Announcements/index.ctp:3
+msgid "Block edit"
+msgstr ""
+
+#: /View/Elements/draft_label.ctp:3
+msgid "Draft in"
+msgstr ""
+
