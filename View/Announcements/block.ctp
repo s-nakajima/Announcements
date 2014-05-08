@@ -73,27 +73,30 @@
 						'div' => 'radio',
 						'separator' => '</div><div class="radio">',
 						'legend' => false,
+						'ng-click' => 'toggleSendMail()',
 					));
 				?>
-				<?php
-					echo $this->Form->label('AnnouncementBlocksPart.0.can_send_mail', __d('announcements', 'Notify whom? :'));
-				?>
-				<div>
-					<?php echo $this->Form->input('AnnouncementBlocksPart.0.can_send_mail' , array('type' => 'checkbox', 'label' => __d('announcements', 'Room manager'))); ?>
-					<?php echo $this->Form->input('AnnouncementBlocksPart.1.can_send_mail' , array('type' => 'checkbox', 'label' => __d('announcements', 'Managing editor'))); ?>
-					<?php echo $this->Form->input('AnnouncementBlocksPart.2.can_send_mail' , array('type' => 'checkbox', 'label' => __d('announcements', 'Editor'))); ?>
-					<?php echo $this->Form->input('AnnouncementBlocksPart.3.can_send_mail' , array('type' => 'checkbox', 'label' => __d('announcements', 'General'))); ?>
-				</div>
-				<?php
-					echo $this->Form->label('AnnouncementBlock.mail_subject', __d('announcements', 'E-mail Subject:'));
-					echo $this->Form->input('AnnouncementBlock.mail_subject', array('label' => false, 'div' => false));
-				?>
-				<div>
-					<?php echo $this->Form->label('AnnouncementBlock.mail_body', __d('announcements', 'Message：'));?>
-				</div>
-				<?php echo $this->Form->input('AnnouncementBlock.mail_body', array('type' => 'textarea', 'label' => false));?>
-				<div>
-					<?php echo __d('announcements', 'You may use the following keywords in the title and content of the message, {X-SITE_NAME}, {X-ROOM}, {X-ANNOUNCEMENT_NAME}, {X-USER}, {X-TO_DATE}, {X-BODY}, {X-URL}<br><br>Each keyword will be translated to site name, room name, announcement title, creator, timestamp, article and url');?>
+				<div ng-hide="toggleSendMailDetail">
+					<?php
+						echo $this->Form->label('AnnouncementBlocksPart.0.can_send_mail', __d('announcements', 'Notify whom? :'));
+					?>
+					<div>
+						<?php echo $this->Form->input('AnnouncementBlocksPart.0.can_send_mail' , array('type' => 'checkbox', 'label' => __d('announcements', 'Room manager'))); ?>
+						<?php echo $this->Form->input('AnnouncementBlocksPart.1.can_send_mail' , array('type' => 'checkbox', 'label' => __d('announcements', 'Managing editor'))); ?>
+						<?php echo $this->Form->input('AnnouncementBlocksPart.2.can_send_mail' , array('type' => 'checkbox', 'label' => __d('announcements', 'Editor'))); ?>
+						<?php echo $this->Form->input('AnnouncementBlocksPart.3.can_send_mail' , array('type' => 'checkbox', 'label' => __d('announcements', 'General'))); ?>
+					</div>
+					<?php
+						echo $this->Form->label('AnnouncementBlock.mail_subject', __d('announcements', 'E-mail Subject:'));
+						echo $this->Form->input('AnnouncementBlock.mail_subject', array('label' => false, 'div' => false));
+					?>
+					<div>
+						<?php echo $this->Form->label('AnnouncementBlock.mail_body', __d('announcements', 'Message：'));?>
+					</div>
+					<?php echo $this->Form->input('AnnouncementBlock.mail_body', array('type' => 'textarea', 'label' => false));?>
+					<div>
+						<?php echo __d('announcements', 'You may use the following keywords in the title and content of the message, {X-SITE_NAME}, {X-ROOM}, {X-ANNOUNCEMENT_NAME}, {X-USER}, {X-TO_DATE}, {X-BODY}, {X-URL}<br><br>Each keyword will be translated to site name, room name, announcement title, creator, timestamp, article and url');?>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -33,4 +33,9 @@ nc.controller('announcementBlockController', ['$scope', '$modalInstance', '$moda
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
+
+    $scope.toggleSendMailDetail = true;
+    $scope.toggleSendMail = function() {
+        $scope.toggleSendMailDetail = $scope.toggleSendMailDetail === false ? true: false;
+    };
 }]);
