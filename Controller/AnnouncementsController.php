@@ -45,6 +45,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @param integer $blockId
  * @return void
  * @access public
+ * @throws InternalErrorException saveに失敗したとき。
  */
 	public function edit($blockId = 0) {
 		// TODO: 投稿権限のチェックが必要。
@@ -71,13 +72,14 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @param integer $blockId
  * @return void
  * @access public
+ * @throws InternalErrorException saveに失敗したとき。
  */
 	public function block($blockId = 0) {
 		// TODO: 編集権限のチェックが必要。
 		// TODO: Block.titleのカラムがないため、お知らせ名称を変更できない。
 		// TODO: Block.titleのデフォルト値の設定箇所も作成していない。
 		if ($this->request->is(array('put', 'post')) && !empty($this->request->data)) {
-			if ($this->Block->saveAll($this->request->data)) {
+			if ($this->AnnouncementBlock->saveAll($this->request->data)) {
 				// return $this->redirect(array('action' => 'index', $blockId));
 				$this->autoRender = false;
 				// $this->Session->setFlash(__('Has been successfully registered.'));
