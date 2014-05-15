@@ -20,6 +20,8 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @var array
  */
 	public $fixtures = array(
+		'site_setting',
+		'site_setting_value',
 		'plugin.announcements.announcement',
 		'plugin.announcements.announcement_revision',
 		'plugin.announcements.announcement_block',

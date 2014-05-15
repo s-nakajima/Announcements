@@ -16,7 +16,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  *
  * @var array
  */
-	public $helpers = array('TinyMCE.TinyMCE');
+	public $helpers = array('TinyMce.TinyMCE');
 
 /**
  * 使用するコンポーネント

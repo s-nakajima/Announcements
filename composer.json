@@ -10,6 +10,8 @@
         "components/jquery":      "~2.1.0"
     },
     "require-dev": {
+        "ryu818/tiny-mce":        "dev-master",
+        "ryu818/html-purifier":   "dev-master",
         "netcommons/revision":    "dev-master",
         "satooshi/php-coveralls": "dev-master"
     },
@@ -20,7 +22,6 @@
             "homepage": "https://github.com/NetCommons3/Announcements/graphs/contributors"
         }
     ],
-    "minimum-stability": "dev",
     "type":        "cakephp-plugin",
     "keywords":    ["cakephp", "announcement"],
     "config": {
