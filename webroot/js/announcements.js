@@ -1,6 +1,6 @@
 
-var nc = angular.module('nc', ['ui.bootstrap']);
-nc.controller('blockEditController', ['$scope', '$modal', '$http', function($scope, $modal, $http) {
+var announcements = angular.module('announcements', ['ui.bootstrap']);
+announcements.controller('blockEditController', ['$scope', '$modal', '$http', function($scope, $modal, $http) {
     $http.defaults.headers.common = { 'X-Requested-With' : 'XMLHttpRequest' }
     $scope.show = function(event) {
         /*$http.get(event.target.href).success(function(data) {
@@ -14,7 +14,7 @@ nc.controller('blockEditController', ['$scope', '$modal', '$http', function($sco
         event.preventDefault();
     }
 }]);
-nc.controller('announcementBlockController', ['$scope', '$modalInstance', '$modalInstance', function($scope, $modalInstance) {
+announcements.controller('announcementBlockController', ['$scope', '$modalInstance', '$modalInstance', function($scope, $modalInstance) {
     $scope.submit = function(event){
         var form = $(event.target);
         $.post(

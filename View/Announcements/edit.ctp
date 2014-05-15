@@ -3,8 +3,8 @@
 // TODO:言語ファイルへの切り出しを行っていない。
 // $id = 'announcements-'.$frame_id;
 ?>
-<?php echo $this->element('edit_block_link'); ?>
-<div class="block plugin-announcements block-id-<?php echo $block_id; ?>">
+<div ng-app="announcements" class="block plugin-announcements block-id-<?php echo $block_id; ?>">
+	<?php echo $this->element('edit_block_link'); ?>
 	<?php
 		echo $this->Form->create('Announcement', array('style' => 'padding:15px;width:530px;'));
 		$this->Form->unlockField('is_published');
