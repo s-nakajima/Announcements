@@ -1,4 +1,11 @@
 <?php
+/**
+ * All Announcements Test Case
+ *
+ * @author   Ryuji Masukawa <masukawa@nii.ac.jp>
+ * @link     http://www.netcommons.org NetCommons Project
+ * @license  http://www.netcommons.org/license.txt NetCommons License
+ */
 class AllAnnouncementsTest extends CakeTestSuite {
 
 	public static function suite() {

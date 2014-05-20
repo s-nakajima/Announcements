@@ -1,6 +1,10 @@
 <?php
 /**
  * AnnouncementBlocksPart Model
+ *
+ * @author   Ryuji Masukawa <masukawa@nii.ac.jp>
+ * @link     http://www.netcommons.org NetCommons Project
+ * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 
 App::uses('AnnouncementsAppModel', 'Announcements.Model');
@@ -11,47 +15,7 @@ App::uses('AnnouncementsAppModel', 'Announcements.Model');
 class AnnouncementBlocksPart extends AnnouncementsAppModel {
 
 /**
- * Validation rules
- *
- * @var array
- */
-	/*public $validate = array(
-		'block_id' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				'required' => true,
-				'allowEmpty' => false,
-				// 'message' => 'The input must be a number.'
-			)
-		),
-		'part_id' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				'required' => true,
-				'allowEmpty' => false,
-				// 'message' => 'The input must be a number.'
-			)
-		),
-		'can_create_content' => array(
-			'boolean' => array(
-				'rule' => array('boolean'),
-				'last' => true,
-				'required' => true,
-				// 'message' => 'The input must be a boolean.'
-			)
-		),
-		'can_publish_content' => array(
-			'boolean' => array(
-				'rule' => array('boolean'),
-				'last' => true,
-				'required' => true,
-				// 'message' => 'The input must be a boolean.'
-			)
-		),
-	);*/
-
-/**
- * Records
+ * 初期値
  *
  * @var array
  */

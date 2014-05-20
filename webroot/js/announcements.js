@@ -3,10 +3,6 @@ var announcements = angular.module('announcements', ['ui.bootstrap']);
 announcements.controller('blockEditController', ['$scope', '$modal', '$http', function($scope, $modal, $http) {
     $http.defaults.headers.common = { 'X-Requested-With' : 'XMLHttpRequest' }
     $scope.show = function(event) {
-        /*$http.get(event.target.href).success(function(data) {
-         console.log(data);
-
-         });*/
         var modalInstance = $modal.open({
             templateUrl: event.target.href,
             controller: 'announcementBlockController'

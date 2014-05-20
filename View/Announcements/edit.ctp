@@ -6,14 +6,14 @@
 <div ng-app="announcements" class="block plugin-announcements block-id-<?php echo $block_id; ?>">
 	<?php echo $this->element('edit_block_link'); ?>
 	<?php
-		echo $this->Form->create('Announcement', array('style' => 'padding:15px;width:530px;'));
+		echo $this->Form->create('Announcement', array('class' => 'announcements-edit-outer'));
 		$this->Form->unlockField('is_published');
 	?>
 	<div class="form-group">
 		<?php
 			echo $this->Form->label('AnnouncementRevision.content', __d('announcements', 'Content'));
 			echo $this->element('draft_label');
-			$this->TinyMCE->editor(array('elements' => 'AnnouncementRevisionContent'));
+			$this->RichTextEditor->editor(array('elements' => 'AnnouncementRevisionContent'));
 			$settings = array(
 				'class' => 'hidden',
 				'type' => 'textarea',

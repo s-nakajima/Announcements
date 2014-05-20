@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * Announcements Controller
+ *
+ * @author   Ryuji Masukawa <masukawa@nii.ac.jp>
+ * @link     http://www.netcommons.org NetCommons Project
+ * @license  http://www.netcommons.org/license.txt NetCommons License
+ */
 App::uses('AnnouncementsAppController', 'Announcements.Controller');
 
 class AnnouncementsController extends AnnouncementsAppController {
@@ -16,7 +22,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  *
  * @var array
  */
-	public $helpers = array('TinyMce.TinyMCE');
+	public $helpers = array('RichTextEditor.RichTextEditor');
 
 /**
  * 使用するコンポーネント
@@ -40,7 +46,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 	}
 
 /**
- * Edit
+ * お知らせ編集画面
  *
  * @param integer $blockId
  * @return void
@@ -67,14 +73,14 @@ class AnnouncementsController extends AnnouncementsAppController {
 	}
 
 /**
- * Block
+ * お知らせBlock設定画面
  *
  * @param integer $blockId
  * @return void
  * @access public
  * @throws InternalErrorException saveに失敗したとき。
  */
-	public function block($blockId = 0) {
+	public function block_setting($blockId = 0) {
 		// TODO: 編集権限のチェックが必要。
 		// TODO: Block.titleのカラムがないため、お知らせ名称を変更できない。
 		// TODO: Block.titleのデフォルト値の設定箇所も作成していない。

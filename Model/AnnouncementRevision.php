@@ -1,6 +1,10 @@
 <?php
 /**
  * AnnouncementRevision Model
+ *
+ * @author   Ryuji Masukawa <masukawa@nii.ac.jp>
+ * @link     http://www.netcommons.org NetCommons Project
+ * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 
 App::uses('AnnouncementsAppModel', 'Announcements.Model');
@@ -17,7 +21,7 @@ class AnnouncementRevision extends AnnouncementsAppModel {
  */
 	public $actsAs = array(
 		'HtmlPurifier.HtmlPurifier' => array(
-			'config' => 'Auto',
+			'config' => 'RichTextEditor',
 			'fields' => array(
 				'content'
 			),
@@ -34,6 +38,9 @@ class AnnouncementRevision extends AnnouncementsAppModel {
  */
 	public function __construct($id = false, $table = null, $ds = null) {
 		parent::__construct($id, $table, $ds);
+
+		Configure::load('Revision.config');
+		$statusId = Configure::read('Revision.status_id');
 
 		$this->validate = array(
 			'announcement_id' => array(
@@ -53,18 +60,18 @@ class AnnouncementRevision extends AnnouncementsAppModel {
 				),
 				'inList' => array(
 					'rule' => array('inList', array(
-						REVISION_STATUS_DRAFT,
-						REVISION_STATUS_PUBLISHED,
-						REVISION_STATUS_PENDING,
-						REVISION_STATUS_REMAND,
-						REVISION_STATUS_AUTO_DRAFT,
+						$statusId['draft'],
+						$statusId['published'],
+						$statusId['pending'],
+						$statusId['rejected'],
+						$statusId['auto_draft']
 					), false),
 					'allowEmpty' => false,
 					'message' => __('It contains an invalid string.')
 				)
 			),
 			'content' => array(
-				'notEmpty'  => array(
+				'notEmpty' => array(
 					'rule' => array('notEmpty'),
 					'last' => true,
 					'message' => __('Please be sure to input.')

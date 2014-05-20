@@ -10,10 +10,10 @@
         "components/jquery":      "~2.1"
     },
     "require-dev": {
-        "ryu818/tiny-mce":        "dev-master",
-        "ryu818/html-purifier":   "dev-master",
-        "netcommons/revision":    "dev-master",
-        "satooshi/php-coveralls": "dev-master"
+        "ryu818/html-purifier":         "dev-master",
+        "netcommons/rich-text-editor":  "dev-master",
+        "netcommons/revision":          "dev-master",
+        "satooshi/php-coveralls":       "dev-master"
     },
     "license": "NetCommons License",
     "authors": [

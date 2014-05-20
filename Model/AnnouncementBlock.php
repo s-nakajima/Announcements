@@ -1,6 +1,10 @@
 <?php
 /**
  * AnnouncementBlock Model
+ *
+ * @author   Ryuji Masukawa <masukawa@nii.ac.jp>
+ * @link     http://www.netcommons.org NetCommons Project
+ * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 
 App::uses('AnnouncementsAppModel', 'Announcements.Model');
@@ -22,30 +26,6 @@ class AnnouncementBlock extends AnnouncementsAppModel {
 			'dependent' => true,
 		)
 	);
-
-/**
- * Validation rules
- *
- * @var array
- */
-	/*public $validate = array(
-		'announcement_block_id' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				'required' => true,
-				'allowEmpty' => false,
-				// 'message' => 'The input must be a number.'
-			)
-		),
-		'need_approval_mail' => array(
-			'boolean' => array(
-				'rule' => array('boolean'),
-				'last' => true,
-				'required' => true,
-				// 'message' => 'The input must be a boolean.'
-			)
-		),
-	);*/
 
 /**
  * construct

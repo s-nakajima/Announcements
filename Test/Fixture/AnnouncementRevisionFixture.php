@@ -36,7 +36,7 @@ class AnnouncementRevisionFixture extends CakeTestFixture {
 			'id' => 1,
 			'announcement_id' => 10,
 			'status_id' => 1,
-			'content' => 'NetCommonsはCMS（Contents Management System)とLMS（Learning Management System)とグループウェアを統合したコミュニティウェアです。',
+			'content' => 'Test1',
 			'created' => '2014-05-06 01:16:23',
 			'modified' => '2014-05-06 01:18:31'
 		),

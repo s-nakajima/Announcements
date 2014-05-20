@@ -1,7 +1,7 @@
 <div id="announcements-block-<?php echo $frame_id; ?>"<?php /* TODO: class="modal fade"*/ ?>>
 	<?php
 	// TODO: 記事投稿権限、通知する権限の動作、disableにするかどうか。「投稿をメールで通知する」かどうかによる表示・非表示に切り替え未実装。
-		echo $this->Form->create('AnnouncementBlock', array('ng-submit' => 'submit($event)', 'class' => 'form-horizontal', 'role' => 'form', 'style' => 'padding:15px;'));
+		echo $this->Form->create('AnnouncementBlock', array('ng-submit' => 'submit($event)', 'class' => 'form-horizontal announcements-block-setting-outer', 'role' => 'form'));
 		echo $this->Form->hidden('AnnouncementBlock.id');
 		echo $this->Form->hidden('AnnouncementBlock.block_id', array('value' => $block_id));
 	// TODO: AnnouncementBlocksPartテーブル block_id毎に4レコード固定
