@@ -55,7 +55,14 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public function edit($blockId = 0) {
 		// TODO: 投稿権限のチェックが必要。
-		if ($this->request->is(array('put', 'post')) && !empty($this->request->data)) {
+		$announcement = $this->Announcement->findByBlockId($blockId);
+		if (!$announcement) {
+			$announcement = $this->Announcement->create();
+			$announcement[$this->Announcement->alias]['block_id'] = $blockId;
+		}
+
+		if ($this->request->is(array('post', 'put'))) {
+			$this->request->data = $this->Announcement->mergeRequestId($this->request->data, $announcement);
 			if ($this->Announcement->save($this->request->data)) {
 				return $this->redirect(array('action' => 'index', $blockId));
 			} else {
@@ -64,10 +71,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		}
 
 		if (!$this->request->data && $blockId > 0) {
-			$this->request->data = $this->Announcement->findByBlockId($blockId);
-			if (!$this->request->data) {
-				$this->request->data = $this->Announcement->create();
-			}
+			$this->request->data = $announcement;
 		}
 		$this->__afterAction();
 	}
@@ -84,7 +88,10 @@ class AnnouncementsController extends AnnouncementsAppController {
 		// TODO: 編集権限のチェックが必要。
 		// TODO: Block.titleのカラムがないため、お知らせ名称を変更できない。
 		// TODO: Block.titleのデフォルト値の設定箇所も作成していない。
-		if ($this->request->is(array('put', 'post')) && !empty($this->request->data)) {
+		$announcementBlock = $this->AnnouncementBlock->findByBlockIdOrDefault($blockId);
+
+		if ($this->request->is(array('post', 'put'))) {
+			$this->request->data = $this->AnnouncementBlock->mergeRequestId($this->request->data, $announcementBlock);
 			if ($this->AnnouncementBlock->saveAll($this->request->data)) {
 				// return $this->redirect(array('action' => 'index', $blockId));
 				$this->autoRender = false;
@@ -96,8 +103,9 @@ class AnnouncementsController extends AnnouncementsAppController {
 		}
 
 		if (!$this->request->data && $blockId > 0) {
-			$this->request->data = $this->AnnouncementBlock->findByBlockIdOrDefault($blockId);
+			$this->request->data = $announcementBlock;
 		}
+
 		$this->__afterAction();
 	}
 

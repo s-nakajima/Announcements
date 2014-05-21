@@ -1,10 +1,6 @@
 <?php
 /**
  * AnnouncementBlocksPart Model
- *
- * @author   Ryuji Masukawa <masukawa@nii.ac.jp>
- * @link     http://www.netcommons.org NetCommons Project
- * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 
 App::uses('AnnouncementsAppModel', 'Announcements.Model');
@@ -21,6 +17,7 @@ class AnnouncementBlocksPart extends AnnouncementsAppModel {
  */
 	public $records = array(
 		array(
+			'id' => 0,
 			'announcement_block_id' => 0,
 			'part_id' => 1,			// TODO: 1固定にしている
 			'can_create_content' => true,
@@ -28,6 +25,7 @@ class AnnouncementBlocksPart extends AnnouncementsAppModel {
 			'can_send_mail' => true,
 		),
 		array(
+			'id' => 0,
 			'announcement_block_id' => 0,
 			'part_id' => 2,			// TODO: 2固定にしている
 			'can_create_content' => false,
@@ -35,6 +33,7 @@ class AnnouncementBlocksPart extends AnnouncementsAppModel {
 			'can_send_mail' => true,
 		),
 		array(
+			'id' => 0,
 			'announcement_block_id' => 0,
 			'part_id' => 3,			// TODO: 3固定にしている
 			'can_create_content' => false,
@@ -42,6 +41,7 @@ class AnnouncementBlocksPart extends AnnouncementsAppModel {
 			'can_send_mail' => false,
 		),
 		array(
+			'id' => 0,
 			'announcement_block_id' => 0,
 			'part_id' => 4,			// TODO: 4固定にしている
 			'can_create_content' => false,

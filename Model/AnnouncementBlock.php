@@ -71,10 +71,36 @@ class AnnouncementBlock extends AnnouncementsAppModel {
 		$data = $this->findByBlockId($blockId);
 		if (empty($data[$this->alias])) {
 			$data = $this->create();
+			$data[$this->alias]['id'] = 0;
 			$data[$this->alias]['block_id'] = $blockId;
 			$AnnouncementBlocksPart = ClassRegistry::init('Announcements.AnnouncementBlocksPart');
 			$data = array_merge($data, $AnnouncementBlocksPart->findByAnnouncementBlockIdOrDefault(0));
 		}
 		return $data;
 	}
+
+/**
+ * リクエストデータに既存IDマージ処理
+ *
+ * @param  array $requestData
+ * @param  array $announcementBlock
+ * @return array
+ * @access public
+ */
+	public function mergeRequestId($requestData, $announcementBlock) {
+		$requestData[$this->alias]['id'] = $announcementBlock[$this->alias]['id'];
+		$requestData[$this->alias]['block_id'] = $announcementBlock[$this->alias]['block_id'];
+
+		$AnnouncementBlocksPart = ClassRegistry::init('Announcements.AnnouncementBlocksPart');
+		if (!empty($requestData[$AnnouncementBlocksPart->alias])) {
+			foreach ($requestData[$AnnouncementBlocksPart->alias] as $key => $value) {
+				$requestData[$AnnouncementBlocksPart->alias][$key]['id'] = $announcementBlock[$AnnouncementBlocksPart->alias][$key]['id'];
+				$requestData[$AnnouncementBlocksPart->alias][$key]['announcement_block_id'] = $announcementBlock[$AnnouncementBlocksPart->alias][$key]['announcement_block_id'];
+				$requestData[$AnnouncementBlocksPart->alias][$key]['part_id'] = $announcementBlock[$AnnouncementBlocksPart->alias][$key]['part_id'];
+			}
+		}
+
+		return $requestData;
+	}
+
 }

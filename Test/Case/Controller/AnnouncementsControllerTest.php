@@ -57,15 +57,15 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  */
 	public function testIndex() {
 		// block_id指定なし
-		$result = $this->testAction('/announcements/announcements/index');
+		$result = $this->testAction('/announcements/announcements/index', array('method' => 'get'));
 		$this->assertTextContains(__('Content not found.'), $result);
 
 		// 存在しないblock_idを指定
-		$result = $this->testAction('/announcements/announcements/index/2');
+		$result = $this->testAction('/announcements/announcements/index/2', array('method' => 'get'));
 		$this->assertTextContains(__('Content not found.'), $result);
 
 		// 存在するblock_idを指定
-		$result = $this->testAction('/announcements/announcements/index/1');
+		$result = $this->testAction('/announcements/announcements/index/1', array('method' => 'get'));
 		$this->assertTextContains('Test1', $result);
 	}
 
@@ -75,16 +75,16 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return void
  */
 	public function testEditGet() {
-		$result = $this->testAction('/announcements/announcements/edit');
+		$result = $this->testAction('/announcements/announcements/edit', array('method' => 'get'));
 		$this->assertTextContains(__('Content not found.'), $result);
 
 		// 存在しないblock_idを指定
-		$result = $this->testAction('/announcements/announcements/edit/2');
+		$result = $this->testAction('/announcements/announcements/edit/2', array('method' => 'get'));
 		$this->assertRegExp('/<form/', $result);
 		$this->assertRegExp('/><\/textarea>/', $result);
 
 		// 存在するblock_idを指定
-		$result = $this->testAction('/announcements/announcements/edit/1');
+		$result = $this->testAction('/announcements/announcements/edit/1', array('method' => 'get'));
 		$this->assertTextContains('Test1', $result);
 		$this->assertRegExp('/<form/', $result);
 	}
@@ -166,16 +166,16 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return void
  */
 	public function testBlockSettingGet() {
-		$result = $this->testAction('/announcements/announcements/block_setting');
+		$result = $this->testAction('/announcements/announcements/block_setting', array('method' => 'get'));
 		$this->assertTextContains(__('Content not found.'), $result);
 
 		// 存在しないblock_idを指定
-		$result = $this->testAction('/announcements/announcements/block_setting/2');
+		$result = $this->testAction('/announcements/announcements/block_setting/2', array('method' => 'get'));
 		$this->assertRegExp('/<form/', $result);
 		$this->assertTextNotContains('Mail Subject', $result);
 
 		// 存在するblock_idを指定
-		$result = $this->testAction('/announcements/announcements/block_setting/1');
+		$result = $this->testAction('/announcements/announcements/block_setting/1', array('method' => 'get'));
 		$this->assertRegExp('/<form/', $result);
 		$this->assertTextContains('Mail Subject', $result);
 	}

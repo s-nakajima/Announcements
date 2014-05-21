@@ -5,13 +5,6 @@ App::uses('AppController', 'Controller');
 class AnnouncementsAppController extends AppController {
 
 /**
- * レイアウト
- *
- * @var string
- */
-	public $layout = 'NetCommons.default';	// TODO: test
-
-/**
  * beforeFilter
  * @param   void
  * @return  void

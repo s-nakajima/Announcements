@@ -20,9 +20,6 @@
 				'label' => false
 			);
 			echo $this->Form->input('AnnouncementRevision.content', $settings);
-			echo $this->Form->hidden('AnnouncementRevision.id');
-			echo $this->Form->hidden('id');
-			echo $this->Form->hidden('block_id', array('value' => $block_id));
 			echo $this->Form->hidden('is_published');
 		?>
 	</div>
