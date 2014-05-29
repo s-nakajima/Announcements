@@ -9,6 +9,7 @@
 
 App::uses('AnnouncementsController', 'Announcements.Controller');
 App::uses('AuthComponent', 'Controller/Component');
+App::uses('Frame', 'Frames.Model');
 
 /**
  * Summary for AnnouncementsController Test Case
