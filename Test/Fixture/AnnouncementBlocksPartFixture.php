@@ -2,6 +2,9 @@
 /**
  * AnnouncementBlocksPartFixture
  *
+ * @author   Ryuji Masukawa <masukawa@nii.ac.jp>
+ * @link     http://www.netcommons.org NetCommons Project
+ * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 class AnnouncementBlocksPartFixture extends CakeTestFixture {
 
@@ -14,7 +17,7 @@ class AnnouncementBlocksPartFixture extends CakeTestFixture {
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 		'announcement_block_id' => array('type' => 'integer', 'null' => false, 'default' => '0', 'key' => 'index'),
 		'part_id' => array('type' => 'integer', 'null' => false, 'default' => null),
-		'can_create_content' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
+		'can_edit_content' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
 		'can_publish_content' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
 		'can_send_mail' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
@@ -38,7 +41,7 @@ class AnnouncementBlocksPartFixture extends CakeTestFixture {
 			'id' => 10,
 			'announcement_block_id' => 10,
 			'part_id' => 1,
-			'can_create_content' => true,
+			'can_edit_content' => true,
 			'can_publish_content' => true,
 			'can_send_mail' => false,
 			'created' => '2014-05-06 01:16:23',
@@ -48,7 +51,7 @@ class AnnouncementBlocksPartFixture extends CakeTestFixture {
 			'id' => 11,
 			'announcement_block_id' => 10,
 			'part_id' => 2,
-			'can_create_content' => true,
+			'can_edit_content' => true,
 			'can_publish_content' => true,
 			'can_send_mail' => false,
 			'created' => '2014-05-06 01:16:23',
@@ -58,7 +61,7 @@ class AnnouncementBlocksPartFixture extends CakeTestFixture {
 			'id' => 12,
 			'announcement_block_id' => 10,
 			'part_id' => 3,
-			'can_create_content' => false,
+			'can_edit_content' => false,
 			'can_publish_content' => false,
 			'can_send_mail' => false,
 			'created' => '2014-05-06 01:16:23',
@@ -68,7 +71,17 @@ class AnnouncementBlocksPartFixture extends CakeTestFixture {
 			'id' => 13,
 			'announcement_block_id' => 10,
 			'part_id' => 4,
-			'can_create_content' => false,
+			'can_edit_content' => false,
+			'can_publish_content' => false,
+			'can_send_mail' => false,
+			'created' => '2014-05-06 01:16:23',
+			'modified' => '2014-05-06 01:18:31'
+		),
+		array(
+			'id' => 14,
+			'announcement_block_id' => 10,
+			'part_id' => 5,
+			'can_edit_content' => false,
 			'can_publish_content' => false,
 			'can_send_mail' => false,
 			'created' => '2014-05-06 01:16:23',

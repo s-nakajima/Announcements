@@ -19,7 +19,11 @@ class Announcement extends AnnouncementsAppModel {
  *
  * @var array
  */
-	public $hasOne = 'AnnouncementRevision';
+	public $hasOne = array(
+		'AnnouncementRevision' => array(
+			'className' => 'Announcements.AnnouncementRevision'
+		)
+	);
 
 /**
  * Behavior
@@ -29,6 +33,7 @@ class Announcement extends AnnouncementsAppModel {
 	public $actsAs = array(
 		'Revision.Revision' => array(
 			'modelName' => 'Announcements.AnnouncementRevision',
+			'fields' => array('content')
 		),
 	);
 
@@ -62,7 +67,6 @@ class Announcement extends AnnouncementsAppModel {
 			),
 		);
 	}
-
 
 /**
  * リクエストデータに既存IDマージ処理

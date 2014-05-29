@@ -1,4 +1,4 @@
-<?php
+schema.php<?php
 class Initial extends CakeMigration {
 
 /**
@@ -36,7 +36,7 @@ class Initial extends CakeMigration {
 					'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 					'announcement_block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'index'),
 					'part_id' => array('type' => 'integer', 'null' => false, 'default' => null),
-					'can_create_content' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
+					'can_edit_content' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
 					'can_publish_content' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
 					'can_send_mail' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
 					'created' => array('type' => 'datetime', 'null' => false, 'default' => null),

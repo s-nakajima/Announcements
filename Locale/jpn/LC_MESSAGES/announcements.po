@@ -1,11 +1,11 @@
 # LANGUAGE translation of CakePHP Application
-# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Ryuji Masukawa <masukawa@nii.ac.jp>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2014-04-22 02:36+0000\n"
-"PO-Revision-Date: 2014-04-28 13:59+0900\n"
+"POT-Creation-Date: 2014-05-27 06:21+0000\n"
+"PO-Revision-Date: 2014-05-28 20:40+0900\n"
 "Last-Translator: Ryuji Masukawa <masukawa@nii.ac.jp>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -14,71 +14,75 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: /View/Announcements/block.ctp:24
-msgid "Edit Announcement block"
-msgstr "お知らせブロック編集"
+#: /View/Announcements/block_setting.ctp:8
+msgid "Announcement block setting"
+msgstr "お知らせブロック設定"
 
-#: /View/Announcements/block.ctp:29
+#: /View/Announcements/block_setting.ctp:13
 msgid "Announcement Title"
 msgstr "お知らせタイトル"
 
-#: /View/Announcements/block.ctp:37
+#: /View/Announcements/block_setting.ctp:21
 msgid "Authority to post articles"
 msgstr "記事投稿権限"
 
-#: /View/Announcements/block.ctp:40;83
+#: /View/Announcements/block_setting.ctp:24;69
 msgid "Room manager"
 msgstr "ルーム管理者"
 
-#: /View/Announcements/block.ctp:41;84
+#: /View/Announcements/block_setting.ctp:25;70
 msgid "Managing editor"
 msgstr "編集長"
 
-#: /View/Announcements/block.ctp:42;85
+#: /View/Announcements/block_setting.ctp:26;71
 msgid "Editor"
 msgstr "編集者"
 
-#: /View/Announcements/block.ctp:43;86
+#: /View/Announcements/block_setting.ctp:27;72
 msgid "General"
 msgstr "一般"
 
-#: /View/Announcements/block.ctp:48
+#: /View/Announcements/block_setting.ctp:32
 msgid "Post approval setting"
 msgstr "投稿の承認設定"
 
-#: /View/Announcements/block.ctp:54
+#: /View/Announcements/block_setting.ctp:38
 msgid "Need room manager approval"
 msgstr "ルーム管理者の承認が必要"
 
-#: /View/Announcements/block.ctp:54
+#: /View/Announcements/block_setting.ctp:38
 msgid "Automatic approval"
 msgstr "自動的に承認する"
 
-#: /View/Announcements/block.ctp:67
+#: /View/Announcements/block_setting.ctp:51
 msgid "Deliver e-mail when submitted?"
 msgstr "メール配信設定"
 
-#: /View/Announcements/block.ctp:73
+#: /View/Announcements/block_setting.ctp:57
 msgid "Yes"
 msgstr "投稿をメールで通知する"
 
-#: /View/Announcements/block.ctp:73
+#: /View/Announcements/block_setting.ctp:57
 msgid "No"
 msgstr "投稿をメールで通知しない"
 
-#: /View/Announcements/block.ctp:80
+#: /View/Announcements/block_setting.ctp:66
 msgid "Notify whom? :"
 msgstr "通知する権限:"
 
-#: /View/Announcements/block.ctp:89
+#: /View/Announcements/block_setting.ctp:73
+msgid "Visitor"
+msgstr "参観者"
+
+#: /View/Announcements/block_setting.ctp:76
 msgid "E-mail Subject:"
 msgstr "件名:"
 
-#: /View/Announcements/block.ctp:93
+#: /View/Announcements/block_setting.ctp:80
 msgid "Message："
 msgstr "内容:"
 
-#: /View/Announcements/block.ctp:97
+#: /View/Announcements/block_setting.ctp:84
 msgid ""
 "You may use the following keywords in the title and content of the message, "
 "{X-SITE_NAME}, {X-ROOM}, {X-ANNOUNCEMENT_NAME}, {X-USER}, {X-TO_DATE}, {X-"
@@ -90,29 +94,25 @@ msgstr ""
 "ワードは、サイト名称、ルーム名称、お知らせタイトル、投稿者ハンドル名称、投稿"
 "日時、記事本文、投稿内容のURLに変換されて送信されます。 "
 
-#: /View/Announcements/content_not_found.ctp:5 /View/Announcements/index.ctp:9
+#: /View/Announcements/content_not_found.ctp:8 /View/Announcements/index.ctp:7
 msgid "Edit"
 msgstr "編集"
 
-#: /View/Announcements/edit.ctp:13
+#: /View/Announcements/edit.ctp:15
 msgid "Content"
 msgstr "内容"
 
-#: /View/Announcements/edit.ctp:30
+#: /View/Announcements/edit.ctp:33
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: /View/Announcements/edit.ctp:33
+#: /View/Announcements/edit.ctp:36
 msgid "Draft"
 msgstr "下書き"
 
-#: /View/Announcements/edit.ctp:36
+#: /View/Announcements/edit.ctp:39
 msgid "Ok"
 msgstr "決定"
-
-#: /View/Announcements/index.ctp:3
-msgid "Block edit"
-msgstr "ブロック編集"
 
 #: /View/Elements/draft_label.ctp:3
 msgid "Draft in"

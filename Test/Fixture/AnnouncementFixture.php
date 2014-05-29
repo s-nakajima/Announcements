@@ -2,6 +2,9 @@
 /**
  * AnnouncementFixture
  *
+ * @author   Ryuji Masukawa <masukawa@nii.ac.jp>
+ * @link     http://www.netcommons.org NetCommons Project
+ * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 class AnnouncementFixture extends CakeTestFixture {
 
@@ -36,7 +39,7 @@ class AnnouncementFixture extends CakeTestFixture {
 		array(
 			'id' => 10,
 			'block_id' => 1,
-			'is_published' => true,
+			'is_published' => false,
 			'created' => '2014-05-06 01:16:23',
 			'modified' => '2014-05-06 01:18:31'
 		),

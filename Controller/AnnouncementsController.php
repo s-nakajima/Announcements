@@ -15,7 +15,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  *
  * @var array
  */
-	public $uses = array('Announcements.Announcement', 'Announcements.AnnouncementBlock');
+	public $uses = array('Announcements.Announcement', 'Announcements.AnnouncementBlock', 'Announcements.AnnouncementRevision');
 
 /**
  * 使用するヘルパー
@@ -36,11 +36,12 @@ class AnnouncementsController extends AnnouncementsAppController {
 /**
  * Index
  *
+ * @param integer $frameId
  * @param integer $blockId
  * @return void
  * @access public
  */
-	public function index($blockId = 0) {
+	public function index($frameId = 0, $blockId = 0) {
 		$this->request->data = $this->Announcement->findByBlockId($blockId);
 		$this->__afterAction();
 	}
@@ -48,13 +49,13 @@ class AnnouncementsController extends AnnouncementsAppController {
 /**
  * お知らせ編集画面
  *
+ * @param integer $frameId
  * @param integer $blockId
  * @return void
  * @access public
  * @throws InternalErrorException saveに失敗したとき。
  */
-	public function edit($blockId = 0) {
-		// TODO: 投稿権限のチェックが必要。
+	public function edit($frameId = 0, $blockId = 0) {
 		$announcement = $this->Announcement->findByBlockId($blockId);
 		if (!$announcement) {
 			$announcement = $this->Announcement->create();
@@ -65,7 +66,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 			$this->request->data = $this->Announcement->mergeRequestId($this->request->data, $announcement);
 			if ($this->Announcement->save($this->request->data)) {
 				return $this->redirect(array('action' => 'index', $blockId));
-			} else {
+			} elseif (!$this->Announcement->validationErrors && !$this->AnnouncementRevision->validationErrors) {
 				throw new InternalErrorException(__('Failed to update the database, (%s).', 'announcements'));
 			}
 		}
@@ -85,9 +86,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @throws InternalErrorException saveに失敗したとき。
  */
 	public function block_setting($blockId = 0) {
-		// TODO: 編集権限のチェックが必要。
-		// TODO: Block.titleのカラムがないため、お知らせ名称を変更できない。
-		// TODO: Block.titleのデフォルト値の設定箇所も作成していない。
+		// TODO: Block.titleのお知らせ名称を変更できない。
 		$announcementBlock = $this->AnnouncementBlock->findByBlockIdOrDefault($blockId);
 
 		if ($this->request->is(array('post', 'put'))) {
@@ -97,7 +96,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 				$this->autoRender = false;
 				// $this->Session->setFlash(__('Has been successfully registered.'));
 				return true;
-			} else {
+			} elseif (!$this->AnnouncementBlock->validationErrors) {
 				throw new InternalErrorException(__('Failed to update the database, (%s).', 'announcement_blocks'));
 			}
 		}

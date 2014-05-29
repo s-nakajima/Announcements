@@ -1,11 +1,11 @@
 # LANGUAGE translation of CakePHP Application
-# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Copyright Ryuji Masukawa <masukawa@nii.ac.jp>
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2014-04-28 04:49+0000\n"
+"POT-Creation-Date: 2014-05-27 06:21+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,100 +14,100 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: /View/Announcements/block.ctp:24
-msgid "Edit Announcement block"
-msgstr ""
-
-#: /View/Announcements/block.ctp:29
+#: /View/Announcements/block_setting.ctp:13
 msgid "Announcement Title"
 msgstr ""
 
-#: /View/Announcements/block.ctp:37
+#: /View/Announcements/block_setting.ctp:21
 msgid "Authority to post articles"
 msgstr ""
 
-#: /View/Announcements/block.ctp:40;83
+#: /View/Announcements/block_setting.ctp:24;69
 msgid "Room manager"
 msgstr ""
 
-#: /View/Announcements/block.ctp:41;84
+#: /View/Announcements/block_setting.ctp:25;70
 msgid "Managing editor"
 msgstr ""
 
-#: /View/Announcements/block.ctp:42;85
+#: /View/Announcements/block_setting.ctp:26;71
 msgid "Editor"
 msgstr ""
 
-#: /View/Announcements/block.ctp:43;86
+#: /View/Announcements/block_setting.ctp:27;72
 msgid "General"
 msgstr ""
 
-#: /View/Announcements/block.ctp:48
+#: /View/Announcements/block_setting.ctp:32
 msgid "Post approval setting"
 msgstr ""
 
-#: /View/Announcements/block.ctp:54
+#: /View/Announcements/block_setting.ctp:38
 msgid "Need room manager approval"
 msgstr ""
 
-#: /View/Announcements/block.ctp:54
+#: /View/Announcements/block_setting.ctp:38
 msgid "Automatic approval"
 msgstr ""
 
-#: /View/Announcements/block.ctp:67
+#: /View/Announcements/block_setting.ctp:51
 msgid "Deliver e-mail when submitted?"
 msgstr ""
 
-#: /View/Announcements/block.ctp:73
+#: /View/Announcements/block_setting.ctp:57
 msgid "Yes"
 msgstr ""
 
-#: /View/Announcements/block.ctp:73
+#: /View/Announcements/block_setting.ctp:57
 msgid "No"
 msgstr ""
 
-#: /View/Announcements/block.ctp:80
+#: /View/Announcements/block_setting.ctp:66
 msgid "Notify whom? :"
 msgstr ""
 
-#: /View/Announcements/block.ctp:89
+#: /View/Announcements/block_setting.ctp:73
+msgid "Visitor"
+msgstr ""
+
+#: /View/Announcements/block_setting.ctp:76
 msgid "E-mail Subject:"
 msgstr ""
 
-#: /View/Announcements/block.ctp:93
+#: /View/Announcements/block_setting.ctp:80
 msgid "Message："
 msgstr ""
 
-#: /View/Announcements/block.ctp:97
+#: /View/Announcements/block_setting.ctp:84
 msgid "You may use the following keywords in the title and content of the message, {X-SITE_NAME}, {X-ROOM}, {X-ANNOUNCEMENT_NAME}, {X-USER}, {X-TO_DATE}, {X-BODY}, {X-URL}<br><br>Each keyword will be translated to site name, room name, announcement title, creator, timestamp, article and url"
 msgstr ""
 
-#: /View/Announcements/content_not_found.ctp:5
-#: /View/Announcements/index.ctp:9
+#: /View/Announcements/content_not_found.ctp:8
+#: /View/Announcements/index.ctp:7
 msgid "Edit"
 msgstr ""
 
-#: /View/Announcements/edit.ctp:13
+#: /View/Announcements/edit.ctp:15
 msgid "Content"
 msgstr ""
 
-#: /View/Announcements/edit.ctp:30
+#: /View/Announcements/edit.ctp:33
 msgid "Cancel"
 msgstr ""
 
-#: /View/Announcements/edit.ctp:33
+#: /View/Announcements/edit.ctp:36
 msgid "Draft"
 msgstr ""
 
-#: /View/Announcements/edit.ctp:36
+#: /View/Announcements/edit.ctp:39
 msgid "Ok"
-msgstr ""
-
-#: /View/Announcements/index.ctp:3
-msgid "Block edit"
 msgstr ""
 
 #: /View/Elements/draft_label.ctp:3
 msgid "Draft in"
+msgstr ""
+
+#: /View/Elements/edit_block_link.ctp:4
+msgid "Block setting"
 msgstr ""
 

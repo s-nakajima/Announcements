@@ -1,11 +1,11 @@
-<div id="announcements-block-<?php echo $frame_id; ?>"<?php /* TODO: class="modal fade"*/ ?>>
+<div>
 	<?php
 	// TODO: 記事投稿権限、通知する権限の動作、disableにするかどうか。「投稿をメールで通知する」かどうかによる表示・非表示に切り替え未実装。
 		echo $this->Form->create('AnnouncementBlock', array('ng-submit' => 'submit($event)', 'class' => 'form-horizontal announcements-block-setting-outer', 'role' => 'form'));
 	?>
 	<div class="modal-header">
 		<button type="button" class="close" aria-hidden="true" ng-click="cancel()">&times;</button>
-		<h4 class="modal-title"><?php echo __d('announcements', 'Edit Announcement block'); ?></h4>
+		<h4 class="modal-title"><?php echo __d('announcements', 'Announcement block setting'); ?></h4>
 	</div>
 	<div class="modal-body">
 		<div class="form-group">
@@ -18,37 +18,35 @@
 		</div>
 		<div class="form-group">
 			<?php
-				echo $this->Form->label('AnnouncementBlocksPart.0.can_create_content', __d('announcements', 'Authority to post articles'), array('class' => 'col-sm-3 control-label'));
+				echo $this->Form->label('AnnouncementBlocksPart.0.can_edit_content', __d('announcements', 'Authority to post articles'), array('class' => 'col-sm-3 control-label'));
 			?>
 			<div class="col-sm-9">
-				<?php echo $this->Form->input('AnnouncementBlocksPart.0.can_create_content' , array('type' => 'checkbox', 'label' => __d('announcements', 'Room manager'))); ?>
-				<?php echo $this->Form->input('AnnouncementBlocksPart.1.can_create_content' , array('type' => 'checkbox', 'label' => __d('announcements', 'Managing editor'))); ?>
-				<?php echo $this->Form->input('AnnouncementBlocksPart.2.can_create_content' , array('type' => 'checkbox', 'label' => __d('announcements', 'Editor'))); ?>
-				<?php echo $this->Form->input('AnnouncementBlocksPart.3.can_create_content' , array('type' => 'checkbox', 'label' => __d('announcements', 'General'))); ?>
+				<?php echo $this->Form->input('AnnouncementBlocksPart.0.can_edit_content' , array('type' => 'checkbox', 'label' => __d('announcements', 'Room manager'))); ?>
+				<?php echo $this->Form->input('AnnouncementBlocksPart.1.can_edit_content' , array('type' => 'checkbox', 'label' => __d('announcements', 'Managing editor'))); ?>
+				<?php echo $this->Form->input('AnnouncementBlocksPart.2.can_edit_content' , array('type' => 'checkbox', 'label' => __d('announcements', 'Editor'))); ?>
+				<?php echo $this->Form->input('AnnouncementBlocksPart.3.can_edit_content' , array('type' => 'checkbox', 'label' => __d('announcements', 'General'))); ?>
 			</div>
 		</div>
 		<div class="form-group">
 			<?php
-				echo $this->Form->label('AnnouncementBlocksPart.0.can_publish_content', __d('announcements', 'Post approval setting'), array('class' => 'col-sm-3 control-label'));
+				echo $this->Form->label('AnnouncementBlocksPart.0.can_publish_content.1', __d('announcements', 'Post approval setting'), array('class' => 'col-sm-3 control-label'));
 			?>
 			<div class="col-sm-9">
 				<?php
 					echo $this->Form->input('AnnouncementBlocksPart.0.can_publish_content',array(
+						'id' => 'AnnouncementBlocksPart0CanPublishContent',
 						'type' => 'radio',
 						'options' => array(1 => __d('announcements', 'Need room manager approval'), 0 => __d('announcements', 'Automatic approval')),
 						'div' => 'radio',
 						'separator' => '</div><div class="radio">',
 						'legend' => false,
 					));
-					echo $this->Form->hidden('AnnouncementBlocksPart.1.can_publish_content', array('value' => '0'));
-					echo $this->Form->hidden('AnnouncementBlocksPart.2.can_publish_content', array('value' => '0'));
-					echo $this->Form->hidden('AnnouncementBlocksPart.3.can_publish_content', array('value' => '0'));
 				?>
 			</div>
 		</div>
 		<div class="form-group">
 			<?php
-				echo $this->Form->label('AnnouncementBlock.send_mail', __d('announcements', 'Deliver e-mail when submitted?'), array('class' => 'col-sm-3 control-label'));
+				echo $this->Form->label('AnnouncementBlock.send_mail.1', __d('announcements', 'Deliver e-mail when submitted?'), array('class' => 'col-sm-3 control-label'));
 			?>
 			<div class="col-sm-9">
 				<?php
@@ -63,13 +61,14 @@
 				?>
 				<div ng-hide="toggleSendMailDetail">
 					<?php
-						echo $this->Form->label('AnnouncementBlocksPart.0.can_send_mail', __d('announcements', 'Notify whom? :'));
+						echo $this->Form->label('AnnouncementBlocksPart.0.can_send_mail.1', __d('announcements', 'Notify whom? :'));
 					?>
 					<div>
 						<?php echo $this->Form->input('AnnouncementBlocksPart.0.can_send_mail' , array('type' => 'checkbox', 'label' => __d('announcements', 'Room manager'))); ?>
 						<?php echo $this->Form->input('AnnouncementBlocksPart.1.can_send_mail' , array('type' => 'checkbox', 'label' => __d('announcements', 'Managing editor'))); ?>
 						<?php echo $this->Form->input('AnnouncementBlocksPart.2.can_send_mail' , array('type' => 'checkbox', 'label' => __d('announcements', 'Editor'))); ?>
 						<?php echo $this->Form->input('AnnouncementBlocksPart.3.can_send_mail' , array('type' => 'checkbox', 'label' => __d('announcements', 'General'))); ?>
+						<?php echo $this->Form->input('AnnouncementBlocksPart.4.can_send_mail' , array('type' => 'checkbox', 'label' => __d('announcements', 'Visitor'))); ?>
 					</div>
 					<?php
 						echo $this->Form->label('AnnouncementBlock.mail_subject', __d('announcements', 'E-mail Subject:'));
@@ -89,7 +88,7 @@
 	<div class="modal-footer">
 		<div class="text-center" >
 			<?php echo $this->Form->button(__('Cancel'), array('class' => 'btn btn-default', 'type' => 'button', 'ng-click' => 'cancel()')); ?>
-			<?php echo $this->Form->button(__('Ok'), array('class' => 'btn btn-primary', 'type' => 'submit', 'ng-click' => 'ok()')); ?>
+			<?php echo $this->Form->button(__('Ok'), array('class' => 'btn btn-primary', 'type' => 'submit')); ?>
 		</div>
 	</div>
 	<?php
