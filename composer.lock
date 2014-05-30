@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "d269756df676b2fa86fecfec9c81c41c",
+    "hash": "0e63935cc89b95007d9636fa09cac4ac",
     "packages": [
         {
             "name": "burzum/cakephp-html-purifier",
@@ -783,6 +783,50 @@
             "time": "2014-05-07 17:04:22"
         },
         {
+            "name": "netcommons/frames",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/NetCommons3/Frames.git",
+                "reference": "ac23ab6d151fea990bbfc6048f3209eff9a366cc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/NetCommons3/Frames/zipball/ac23ab6d151fea990bbfc6048f3209eff9a366cc",
+                "reference": "ac23ab6d151fea990bbfc6048f3209eff9a366cc",
+                "shasum": ""
+            },
+            "require": {
+                "cakedc/migrations": "~2.2",
+                "cakephp/cakephp": "~2.4",
+                "cakephp/debug_kit": "~2.2",
+                "components/jquery": "~2.1",
+                "twbs/bootstrap": "~3.1"
+            },
+            "require-dev": {
+                "netcommons/boxes": "dev-master",
+                "satooshi/php-coveralls": "dev-master"
+            },
+            "type": "cakephp-plugin",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "NetCommons License"
+            ],
+            "authors": [
+                {
+                    "name": "NetCommons Community",
+                    "homepage": "https://github.com/NetCommons3/Frames/graphs/contributors"
+                }
+            ],
+            "description": "Frames Plugin for CakePHP",
+            "homepage": "http://www.netcommons.org/",
+            "keywords": [
+                "cakephp",
+                "frames"
+            ],
+            "time": "2014-05-29 11:16:51"
+        },
+        {
             "name": "psr/log",
             "version": "1.0.0",
             "source": {
@@ -1209,7 +1253,8 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "satooshi/php-coveralls": 20
+        "satooshi/php-coveralls": 20,
+        "netcommons/frames": 20
     },
     "platform": [
 
