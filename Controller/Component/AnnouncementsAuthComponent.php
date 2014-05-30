@@ -103,7 +103,22 @@ class AnnouncementsAuthComponent extends Component {
 		}
 
 		$roomPart = $this->_controller->Block->find('first', array(
-			'fields' => array('RoomPart.*'),
+			'fields' => array(
+				'RoomPart.id',
+				'RoomPart.part_id',
+				'RoomPart.can_read_page',
+				'RoomPart.can_edit_page',
+				'RoomPart.can_create_page',
+				'RoomPart.can_publish_page',
+				'RoomPart.can_read_block',
+				'RoomPart.can_edit_block',
+				'RoomPart.can_create_block',
+				'RoomPart.can_publish_block',
+				'RoomPart.can_read_content',
+				'RoomPart.can_edit_content',
+				'RoomPart.can_create_content',
+				'RoomPart.can_publish_content',
+			),
 			'recursive' => -1,
 			'conditions' => array('Block.id' => $blockId),
 			'joins' => array(
