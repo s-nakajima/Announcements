@@ -9,7 +9,6 @@
 
 App::uses('AnnouncementsController', 'Announcements.Controller');
 App::uses('AuthComponent', 'Controller/Component');
-App::uses('Frame', 'Frames.Model');
 
 /**
  * Summary for AnnouncementsController Test Case
@@ -39,133 +38,17 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  *
  * @var array
  */
-	private $__editInputNoneExistData = array(
-		'Announcement' => array(
-			'id' => 0,
-			'block_id' => 2,
-			'is_published' => true,
-		),
-		'AnnouncementRevision' => array(
-			'id' => 0,
-			'content' => 'Update!',
-		),
-	);
+	private $__true = 1;
 
-	private $__editInputData = array(
-		'Announcement' => array(
-			'id' => 10,
-			'block_id' => 1,
-			'is_published' => false,
-		),
-		'AnnouncementRevision' => array(
-			'id' => 1,
-			'content' => 'Update!',
-		),
-	);
+	private $__false = 0;
 
-	private $__blockSettingInputNoneExistData = array(
-		'AnnouncementBlock' => array(
-			'id' => 0,
-			'block_id' => 2,
-			'send_mail' => 0,
-			'mail_subject' => 'Mail Subject',
-			'mail_body' => 'Mail Body'
-		),
-		'AnnouncementBlocksPart' => array(
-			array(
-				'id' => 0,
-				'announcement_block_id' => 0,
-				'part_id' => 1,
-				'can_edit_content' => true,
-				'can_publish_content' => true,
-				'can_send_mail' => false,
-			),
-			array(
-				'id' => 0,
-				'announcement_block_id' => 0,
-				'part_id' => 2,
-				'can_edit_content' => true,
-				'can_publish_content' => true,
-				'can_send_mail' => false,
-			),
-			array(
-				'id' => 0,
-				'announcement_block_id' => 0,
-				'part_id' => 3,
-				'can_edit_content' => false,
-				'can_publish_content' => false,
-				'can_send_mail' => false,
-			),
-			array(
-				'id' => '0',
-				'announcement_block_id' => 0,
-				'part_id' => 4,
-				'can_edit_content' => false,
-				'can_publish_content' => false,
-				'can_send_mail' => false,
-			),
-			array(
-				'id' => '0',
-				'announcement_block_id' => 0,
-				'part_id' => 5,
-				'can_edit_content' => false,
-				'can_publish_content' => false,
-				'can_send_mail' => false,
-			)
-		),
-	);
+	private $__editInputNoneExistData = array();
 
-	private $__blockSettingInputData = array(
-		'AnnouncementBlock' => array(
-			'id' => 10,
-			'block_id' => 1,
-			'send_mail' => false,
-			'mail_subject' => 'Mail Subject2',
-			'mail_body' => 'Mail Body2'
-		),
-		'AnnouncementBlocksPart' => array(
-			array(
-				'id' => 10,
-				'announcement_block_id' => 10,
-				'part_id' => 1,
-				'can_edit_content' => true,
-				'can_publish_content' => true,
-				'can_send_mail' => false,
-			),
-			array(
-				'id' => 11,
-				'announcement_block_id' => 10,
-				'part_id' => 2,
-				'can_edit_content' => true,
-				'can_publish_content' => true,
-				'can_send_mail' => false,
-			),
-			array(
-				'id' => 12,
-				'announcement_block_id' => 10,
-				'part_id' => 3,
-				'can_edit_content' => false,
-				'can_publish_content' => false,
-				'can_send_mail' => false,
-			),
-			array(
-				'id' => 13,
-				'announcement_block_id' => 10,
-				'part_id' => 4,
-				'can_edit_content' => false,
-				'can_publish_content' => false,
-				'can_send_mail' => false,
-			),
-			array(
-				'id' => 14,
-				'announcement_block_id' => 10,
-				'part_id' => 5,
-				'can_edit_content' => false,
-				'can_publish_content' => false,
-				'can_send_mail' => false,
-			)
-		),
-	);
+	private $__editInputData = array();
+
+	private $__blockSettingInputNoneExistData = array();
+
+	private $__blockSettingInputData = array();
 
 /**
  * setUp method
@@ -177,6 +60,134 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		$this->Announcement = ClassRegistry::init('Announcements.Announcement');
 		$this->AnnouncementBlock = ClassRegistry::init('Announcements.AnnouncementBlock');
 		$this->AnnouncementBlocksPart = ClassRegistry::init('Announcements.AnnouncementBlocksPart');
+
+		$this->__editInputNoneExistData = array(
+			'Announcement' => array(
+				'id' => 0,
+				'block_id' => 2,
+				'is_published' => $this->__true,
+			),
+			'AnnouncementRevision' => array(
+				'id' => 0,
+				'content' => 'Update!',
+			),
+		);
+
+		$this->__editInputData = array(
+			'Announcement' => array(
+				'id' => 10,
+				'block_id' => 1,
+				'is_published' => $this->__false,
+			),
+			'AnnouncementRevision' => array(
+				'id' => 1,
+				'content' => 'Update!',
+			),
+		);
+
+		$this->__blockSettingInputNoneExistData = array(
+			'AnnouncementBlock' => array(
+				'id' => 0,
+				'block_id' => 2,
+				'send_mail' => 0,
+				'mail_subject' => 'Mail Subject',
+				'mail_body' => 'Mail Body'
+			),
+			'AnnouncementBlocksPart' => array(
+				array(
+					'id' => 0,
+					'announcement_block_id' => 0,
+					'part_id' => 1,
+					'can_edit_content' => $this->__true,
+					'can_publish_content' => $this->__true,
+					'can_send_mail' => $this->__false,
+				),
+				array(
+					'id' => 0,
+					'announcement_block_id' => 0,
+					'part_id' => 2,
+					'can_edit_content' => $this->__true,
+					'can_publish_content' => $this->__true,
+					'can_send_mail' => $this->__false,
+				),
+				array(
+					'id' => 0,
+					'announcement_block_id' => 0,
+					'part_id' => 3,
+					'can_edit_content' => $this->__false,
+					'can_publish_content' => $this->__false,
+					'can_send_mail' => $this->__false,
+				),
+				array(
+					'id' => '0',
+					'announcement_block_id' => 0,
+					'part_id' => 4,
+					'can_edit_content' => $this->__false,
+					'can_publish_content' => $this->__false,
+					'can_send_mail' => $this->__false,
+				),
+				array(
+					'id' => '0',
+					'announcement_block_id' => 0,
+					'part_id' => 5,
+					'can_edit_content' => $this->__false,
+					'can_publish_content' => $this->__false,
+					'can_send_mail' => $this->__false,
+				)
+			),
+		);
+
+		$this->__blockSettingInputData = array(
+			'AnnouncementBlock' => array(
+				'id' => 10,
+				'block_id' => 1,
+				'send_mail' => $this->__false,
+				'mail_subject' => 'Mail Subject2',
+				'mail_body' => 'Mail Body2'
+			),
+			'AnnouncementBlocksPart' => array(
+				array(
+					'id' => 10,
+					'announcement_block_id' => 10,
+					'part_id' => 1,
+					'can_edit_content' => $this->__true,
+					'can_publish_content' => $this->__true,
+					'can_send_mail' => $this->__false,
+				),
+				array(
+					'id' => 11,
+					'announcement_block_id' => 10,
+					'part_id' => 2,
+					'can_edit_content' => $this->__true,
+					'can_publish_content' => $this->__true,
+					'can_send_mail' => $this->__false,
+				),
+				array(
+					'id' => 12,
+					'announcement_block_id' => 10,
+					'part_id' => 3,
+					'can_edit_content' => $this->__false,
+					'can_publish_content' => $this->__false,
+					'can_send_mail' => $this->__false,
+				),
+				array(
+					'id' => 13,
+					'announcement_block_id' => 10,
+					'part_id' => 4,
+					'can_edit_content' => $this->__false,
+					'can_publish_content' => $this->__false,
+					'can_send_mail' => $this->__false,
+				),
+				array(
+					'id' => 14,
+					'announcement_block_id' => 10,
+					'part_id' => 5,
+					'can_edit_content' => $this->__false,
+					'can_publish_content' => $this->__false,
+					'can_send_mail' => $this->__false,
+				)
+			),
+		);
 	}
 
 /**
@@ -389,17 +400,17 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 	}
 
 /**
- * testEdit method 登録
+ * testEditPostNotExists method 登録
+ * 存在しないAnnouncement.frame_idを指定
  *
  * @return void
  */
-	public function testEditPost() {
+	public function testEditPostNotExists() {
 		$this->mockAuthUser(1);
 		Configure::load('Revision.config');
 		$statusId = Configure::read('Revision.status_id');
-		// 登録
 		$content = 'Update!';
-		// 存在しないAnnouncement.frame_idを指定
+		// 登録
 		$this->testAction(
 			'/announcements/announcements/edit/2',
 			array('data' => $this->__editInputNoneExistData, 'method' => 'post')
@@ -409,9 +420,20 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		$results = $this->Announcement->findByBlockId(2);
 		$this->assertEquals($results['AnnouncementRevision']['content'], $content);
 		$this->assertEquals($results['AnnouncementRevision']['status_id'], $statusId['published']);
+	}
 
-		// 存在するAnnouncement.frame_idを指定
+/**
+ * testEditPostExists method 登録
+ * 存在するAnnouncement.frame_idを指定
+ *
+ * @return void
+ */
+	public function testEditPostExists() {
 		$this->mockAuthUser(1);
+		Configure::load('Revision.config');
+		$statusId = Configure::read('Revision.status_id');
+		$content = 'Update!';
+		// 登録
 		$this->testAction(
 			'/announcements/announcements/edit/1',
 			array('data' => $this->__editInputData, 'method' => 'put')
@@ -569,7 +591,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 			'AnnouncementBlock' => array(
 				'id' => 10,
 				'block_id' => 1,
-				'send_mail' => false,
+				'send_mail' => $this->__false,
 				'mail_subject' => 'Mail Subject2',
 				'mail_body' => 'Mail Body2'
 			),
@@ -578,33 +600,33 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 					'id' => 10,
 					'announcement_block_id' => 10,
 					'part_id' => 1,
-					'can_edit_content' => true,
-					'can_publish_content' => true,
-					'can_send_mail' => false,
+					'can_edit_content' => $this->__true,
+					'can_publish_content' => $this->__true,
+					'can_send_mail' => $this->__false,
 				),
 				array(
 					'id' => 11,
 					'announcement_block_id' => 10,
 					'part_id' => 2,
-					'can_edit_content' => true,
-					'can_publish_content' => true,
-					'can_send_mail' => false,
+					'can_edit_content' => $this->__true,
+					'can_publish_content' => $this->__true,
+					'can_send_mail' => $this->__false,
 				),
 				array(
 					'id' => 12,
 					'announcement_block_id' => 10,
 					'part_id' => 3,
-					'can_edit_content' => false,
-					'can_publish_content' => false,
-					'can_send_mail' => false,
+					'can_edit_content' => $this->__false,
+					'can_publish_content' => $this->__false,
+					'can_send_mail' => $this->__false,
 				),
 				array(
 					'id' => 13,
 					'announcement_block_id' => 10,
 					'part_id' => 4,
-					'can_edit_content' => false,
-					'can_publish_content' => false,
-					'can_send_mail' => false,
+					'can_edit_content' => $this->__false,
+					'can_publish_content' => $this->__false,
+					'can_send_mail' => $this->__false,
 				),
 				array(
 					'id' => 14,
@@ -615,9 +637,9 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 					'id' => 15,
 					'announcement_block_id' => 10,
 					'part_id' => 6,
-					'can_edit_content' => false,
-					'can_publish_content' => false,
-					'can_send_mail' => false,
+					'can_edit_content' => $this->__false,
+					'can_publish_content' => $this->__false,
+					'can_send_mail' => $this->__false,
 				)
 			),
 		);
@@ -628,9 +650,9 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		);
 
 		$results = $this->AnnouncementBlock->findByBlockId(1);
-		$this->assertEquals($results[$this->AnnouncementBlocksPart->alias][4]['can_edit_content'], false);
-		$this->assertEquals($results[$this->AnnouncementBlocksPart->alias][4]['can_publish_content'], false);
-		$this->assertEquals($results[$this->AnnouncementBlocksPart->alias][4]['can_send_mail'], false);
+		$this->assertFalse($results[$this->AnnouncementBlocksPart->alias][4]['can_edit_content']);
+		$this->assertFalse($results[$this->AnnouncementBlocksPart->alias][4]['can_publish_content']);
+		$this->assertFalse($results[$this->AnnouncementBlocksPart->alias][4]['can_send_mail']);
 		$this->assertEquals(count($results[$this->AnnouncementBlocksPart->alias]), 5);
 	}
 

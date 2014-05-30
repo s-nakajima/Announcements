@@ -15,7 +15,7 @@ class AnnouncementsAppController extends AppController {
  *
  * @var array
  */
-	public $uses = array('Block', 'Frames.Frame', 'Announcements.AnnouncementBlock');
+	public $uses = array('Block', 'Frames.Frame');
 
 /**
  * Components used
