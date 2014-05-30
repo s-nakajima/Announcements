@@ -1,4 +1,4 @@
-<div id="announcements-<?php echo $frame_id; ?>" ng-controller="announcementsController">
+<div id="announcements-<?php echo $frameId; ?>" ng-controller="announcementsController">
 	<div>
 		<?php
 		echo $this->element('edit_link');

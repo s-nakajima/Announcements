@@ -81,9 +81,9 @@ class AnnouncementsAppController extends AppController {
 
 		$this->request->params['pass'][1] = $blockId;
 
-		$this->set('block_id', $blockId);
-		$this->set('frame_id', $frameId);
-		$this->set('can_edit', $canEdit);
+		$this->set('blockId', $blockId);
+		$this->set('frameId', $frameId);
+		$this->set('canEdit', $canEdit);
 	}
 
 /**

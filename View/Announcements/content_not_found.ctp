@@ -1,5 +1,5 @@
-<div id="announcements-<?php echo $frame_id; ?>" ng-controller="announcementsController">
-	<?php if ($this->action == 'index' && $block_id > 0): ?>
+<div id="announcements-<?php echo $frameId; ?>" ng-controller="announcementsController">
+	<?php if ($this->action == 'index' && $blockId > 0): ?>
 	<div>
 		<?php
 			echo $this->element('edit_link');

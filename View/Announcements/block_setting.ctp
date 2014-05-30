@@ -21,10 +21,10 @@
 				echo $this->Form->label('AnnouncementBlocksPart.0.can_edit_content', __d('announcements', 'Authority to post articles'), array('class' => 'col-sm-3 control-label'));
 			?>
 			<div class="col-sm-9">
-				<?php echo $this->Form->input('AnnouncementBlocksPart.0.can_edit_content' , array('type' => 'checkbox', 'label' => __d('announcements', 'Room manager'))); ?>
-				<?php echo $this->Form->input('AnnouncementBlocksPart.1.can_edit_content' , array('type' => 'checkbox', 'label' => __d('announcements', 'Managing editor'))); ?>
-				<?php echo $this->Form->input('AnnouncementBlocksPart.2.can_edit_content' , array('type' => 'checkbox', 'label' => __d('announcements', 'Editor'))); ?>
-				<?php echo $this->Form->input('AnnouncementBlocksPart.3.can_edit_content' , array('type' => 'checkbox', 'label' => __d('announcements', 'General'))); ?>
+				<?php echo $this->Form->input('AnnouncementBlocksPart.0.can_edit_content', array('type' => 'checkbox', 'label' => __d('announcements', 'Room manager'))); ?>
+				<?php echo $this->Form->input('AnnouncementBlocksPart.1.can_edit_content', array('type' => 'checkbox', 'label' => __d('announcements', 'Managing editor'))); ?>
+				<?php echo $this->Form->input('AnnouncementBlocksPart.2.can_edit_content', array('type' => 'checkbox', 'label' => __d('announcements', 'Editor'))); ?>
+				<?php echo $this->Form->input('AnnouncementBlocksPart.3.can_edit_content', array('type' => 'checkbox', 'label' => __d('announcements', 'General'))); ?>
 			</div>
 		</div>
 		<div class="form-group">
@@ -33,7 +33,7 @@
 			?>
 			<div class="col-sm-9">
 				<?php
-					echo $this->Form->input('AnnouncementBlocksPart.0.can_publish_content',array(
+					echo $this->Form->input('AnnouncementBlocksPart.0.can_publish_content', array(
 						'id' => 'AnnouncementBlocksPart0CanPublishContent',
 						'type' => 'radio',
 						'options' => array(1 => __d('announcements', 'Need room manager approval'), 0 => __d('announcements', 'Automatic approval')),
@@ -50,7 +50,7 @@
 			?>
 			<div class="col-sm-9">
 				<?php
-					echo $this->Form->input('AnnouncementBlock.send_mail',array(
+					echo $this->Form->input('AnnouncementBlock.send_mail', array(
 						'type' => 'radio',
 						'options' => array(1 => __d('announcements', 'Yes'), 0 => __d('announcements', 'No')),
 						'div' => 'radio',
@@ -64,11 +64,11 @@
 						echo $this->Form->label('AnnouncementBlocksPart.0.can_send_mail.1', __d('announcements', 'Notify whom? :'));
 					?>
 					<div>
-						<?php echo $this->Form->input('AnnouncementBlocksPart.0.can_send_mail' , array('type' => 'checkbox', 'label' => __d('announcements', 'Room manager'))); ?>
-						<?php echo $this->Form->input('AnnouncementBlocksPart.1.can_send_mail' , array('type' => 'checkbox', 'label' => __d('announcements', 'Managing editor'))); ?>
-						<?php echo $this->Form->input('AnnouncementBlocksPart.2.can_send_mail' , array('type' => 'checkbox', 'label' => __d('announcements', 'Editor'))); ?>
-						<?php echo $this->Form->input('AnnouncementBlocksPart.3.can_send_mail' , array('type' => 'checkbox', 'label' => __d('announcements', 'General'))); ?>
-						<?php echo $this->Form->input('AnnouncementBlocksPart.4.can_send_mail' , array('type' => 'checkbox', 'label' => __d('announcements', 'Visitor'))); ?>
+						<?php echo $this->Form->input('AnnouncementBlocksPart.0.can_send_mail', array('type' => 'checkbox', 'label' => __d('announcements', 'Room manager'))); ?>
+						<?php echo $this->Form->input('AnnouncementBlocksPart.1.can_send_mail', array('type' => 'checkbox', 'label' => __d('announcements', 'Managing editor'))); ?>
+						<?php echo $this->Form->input('AnnouncementBlocksPart.2.can_send_mail', array('type' => 'checkbox', 'label' => __d('announcements', 'Editor'))); ?>
+						<?php echo $this->Form->input('AnnouncementBlocksPart.3.can_send_mail', array('type' => 'checkbox', 'label' => __d('announcements', 'General'))); ?>
+						<?php echo $this->Form->input('AnnouncementBlocksPart.4.can_send_mail', array('type' => 'checkbox', 'label' => __d('announcements', 'Visitor'))); ?>
 					</div>
 					<?php
 						echo $this->Form->label('AnnouncementBlock.mail_subject', __d('announcements', 'E-mail Subject:'));
