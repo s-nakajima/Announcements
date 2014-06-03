@@ -2,6 +2,11 @@
     "name": "netcommons/announcements",
     "description": "AnnouncementsPlugin for Cakephp",
     "homepage": "http://www.netcommons.org/",
+    "extra": {
+        "installer-paths": {
+            "app/Plugin/{$name}": ["type:cakephp-plugin"]
+        }
+    },
     "require": {
         "cakephp/cakephp":              "~2.4",
         "cakephp/debug_kit":            "~2.2",
@@ -12,6 +17,7 @@
         "netcommons/revision":          "~0.0"
     },
     "require-dev": {
+        "mustangostang/spyc":           "dev-master",
         "satooshi/php-coveralls":       "dev-master",
         "netcommons/frames":            "dev-master"
     },
