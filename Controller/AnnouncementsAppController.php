@@ -33,9 +33,9 @@ class AnnouncementsAppController extends AppController {
 
 /**
  * beforeFilter
- * @param   void
- * @return  void
+ *
  * @throws NotFoundException block,frameが存在しない
+ * @return void
  */
 	public function beforeFilter() {
 		parent::beforeFilter();
@@ -54,9 +54,9 @@ class AnnouncementsAppController extends AppController {
 
 /**
  * _beforeFilterBlock
- * @param   void
- * @return  void
+ *
  * @throws ForbiddenException 権限チェックエラー
+ * @return void
  */
 	protected function _beforeFilterBlock() {
 		$blockId = empty($this->request->params['pass'][0]) ? 0 : intval($this->request->params['pass'][0]);
@@ -75,10 +75,10 @@ class AnnouncementsAppController extends AppController {
 
 /**
  * _beforeFilterFrame
- * @param   void
- * @return  void
+ *
  * @throws NotFoundException frameが存在しない
  * @throws ForbiddenException 権限チェックエラー
+ * @return void
  */
 	protected function _beforeFilterFrame() {
 		$frameId = empty($this->request->params['pass'][0]) ? 0 : intval($this->request->params['pass'][0]);
@@ -106,9 +106,10 @@ class AnnouncementsAppController extends AppController {
 
 /**
  * _addBlock
- * @param   void
- * @return  $blockId
+ *
+ * @param  integer $frameId frameID
  * @throws InternalErrorException 追加エラー
+ * @return integer $blockId
  */
 	protected function _addBlock($frameId) {
 		$blockId = $this->Block->addBlock($frameId);

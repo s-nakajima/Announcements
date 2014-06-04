@@ -30,6 +30,7 @@ class AnnouncementRevision extends AnnouncementsAppModel {
 
 /**
  * construct
+ *
  * @param boolean|integer|string|array $id Set this ID for this model on startup,
  * can also be an array of options, see above.
  * @param string $table Name of database table to use.

@@ -29,6 +29,7 @@ class AnnouncementBlock extends AnnouncementsAppModel {
 
 /**
  * construct
+ *
  * @param boolean|integer|string|array $id Set this ID for this model on startup,
  * can also be an array of options, see above.
  * @param string $table Name of database table to use.
@@ -63,7 +64,7 @@ class AnnouncementBlock extends AnnouncementsAppModel {
 /**
  * 初期データ取得
  *
- * @param integer $blockId
+ * @param integer $blockId blockID
  * @return array
  * @access public
  */
@@ -82,8 +83,8 @@ class AnnouncementBlock extends AnnouncementsAppModel {
 /**
  * 会員のblockID, partIDから編集権限等を含めて取得
  *
- * @param integer $blockId
- * @param integer $partId
+ * @param integer $blockId blockID
+ * @param integer $partId  partID
  * @return array
  * @access public
  */
@@ -118,8 +119,8 @@ class AnnouncementBlock extends AnnouncementsAppModel {
 /**
  * リクエストデータに既存IDマージ処理
  *
- * @param  array $requestData
- * @param  array $announcementBlock
+ * @param  array $requestData Controller->request->data
+ * @param  array $announcementBlock AnnouncementBlock Model Array
  * @return array
  * @access public
  */

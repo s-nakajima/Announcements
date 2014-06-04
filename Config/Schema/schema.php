@@ -1,10 +1,22 @@
 <?php 
 class AnnouncementSchema extends CakeSchema {
 
+/**
+ * Before callback to be implemented in subclasses
+ *
+ * @param array $event schema object properties
+ * @return boolean Should process continue
+ */
 	public function before($event = array()) {
 		return true;
 	}
 
+/**
+ * After callback to be implemented in subclasses
+ *
+ * @param array $event schema object properties
+ * @return void
+ */
 	public function after($event = array()) {
 	}
 

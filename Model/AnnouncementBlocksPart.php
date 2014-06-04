@@ -12,6 +12,7 @@ class AnnouncementBlocksPart extends AnnouncementsAppModel {
 
 /**
  * construct
+ *
  * @param boolean|integer|string|array $id Set this ID for this model on startup,
  * can also be an array of options, see above.
  * @param string $table Name of database table to use.
@@ -68,7 +69,7 @@ class AnnouncementBlocksPart extends AnnouncementsAppModel {
 /**
  * 初期データ作成
  *
- * @param integer $announcementBlockId
+ * @param integer $announcementBlockId announcement_block_id
  * @return array
  * @access public
  */
@@ -87,8 +88,8 @@ class AnnouncementBlocksPart extends AnnouncementsAppModel {
  * 初期データ作成
  * announcement_block_id,part_idより1件取得
  *
- * @param integer $announcementBlockId
- * @param integer $partId
+ * @param integer $announcementBlockId announcement_block_id
+ * @param integer $partId partId
  * @return array
  * @access public
  */
@@ -108,7 +109,7 @@ class AnnouncementBlocksPart extends AnnouncementsAppModel {
 /**
  * 初期データを取得する。
  *
- * @param integer $announcementBlockId
+ * @param integer $announcementBlockId announcement_block_id
  * @return array
  * @access private
  */
@@ -141,8 +142,8 @@ class AnnouncementBlocksPart extends AnnouncementsAppModel {
 /**
  * 初期データを取得する。
  *
- * @param integer $announcementBlockId
- * @param integer $partId
+ * @param integer $announcementBlockId announcement_block_id
+ * @param integer $partId partId
  * @return array
  * @access private
  */
@@ -172,7 +173,7 @@ class AnnouncementBlocksPart extends AnnouncementsAppModel {
 /**
  * 配列のキーと値を反転する。
  *
- * @param array $data
+ * @param array $data find取得配列
  * @return array
  * @access private
  */

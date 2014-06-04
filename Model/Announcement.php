@@ -39,6 +39,7 @@ class Announcement extends AnnouncementsAppModel {
 
 /**
  * construct
+ *
  * @param boolean|integer|string|array $id Set this ID for this model on startup,
  * can also be an array of options, see above.
  * @param string $table Name of database table to use.
@@ -71,8 +72,8 @@ class Announcement extends AnnouncementsAppModel {
 /**
  * リクエストデータに既存IDマージ処理
  *
- * @param  array $requestData
- * @param  array $announcement
+ * @param  array $requestData Controller->request->data
+ * @param  array $announcement Announcement Model Array
  * @return array
  * @access public
  */

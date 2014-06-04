@@ -36,8 +36,8 @@ class AnnouncementsController extends AnnouncementsAppController {
 /**
  * Index
  *
- * @param integer $frameId
- * @param integer $blockId
+ * @param integer $frameId frameID
+ * @param integer $blockId blockID
  * @return void
  * @access public
  */
@@ -49,11 +49,11 @@ class AnnouncementsController extends AnnouncementsAppController {
 /**
  * お知らせ編集画面
  *
- * @param integer $frameId
- * @param integer $blockId
- * @return void
+ * @param integer $frameId frameID
+ * @param integer $blockId blockID
  * @access public
  * @throws InternalErrorException saveに失敗したとき。
+ * @return void
  */
 	public function edit($frameId = 0, $blockId = 0) {
 		$announcement = $this->Announcement->findByBlockId($blockId);
@@ -80,10 +80,10 @@ class AnnouncementsController extends AnnouncementsAppController {
 /**
  * お知らせBlock設定画面
  *
- * @param integer $blockId
- * @return void
+ * @param integer $blockId blockID
  * @access public
  * @throws InternalErrorException saveに失敗したとき。
+ * @return void
  */
 	public function block_setting($blockId = 0) {
 		$announcementBlock = $this->AnnouncementBlock->findByBlockIdOrDefault($blockId);
@@ -127,8 +127,8 @@ class AnnouncementsController extends AnnouncementsAppController {
 
 /**
  * __afterAction
- * @param   void
- * @return  void
+ *
+ * @return void
  */
 	private function __afterAction() {
 		if (!$this->request->data) {

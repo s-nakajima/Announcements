@@ -249,8 +249,9 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 
 /**
  * mockAuthUser
- * @param integer $userId 1 ルーム管理者 2 編集長 3 編集者 4 一般 5 参観者
- * @param array $addParam
+ *
+ * @param integer $userId 1:ルーム管理者,2:編集長,3:編集者,4:一般,5:参観者
+ * @param array $addParam Mock parameters
  * @return void
  */
 	public function mockAuthUser($userId = 1, $addParam = array()) {
