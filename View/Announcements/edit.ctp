@@ -6,7 +6,7 @@
 	<div class="form-group">
 		<?php
 			$editorId = 'AnnouncementRevisionContent-' . $frameId;
-			echo $this->Form->label('AnnouncementRevision.content', __d('announcements', 'Content'), array('id' => $editorId));
+			echo $this->Form->label('AnnouncementRevision.content', __d('announcements', 'Content'), array('for' => $editorId));
 			echo $this->element('draft_label');
 			$this->RichTextEditor->editor(array('elements' => $editorId));
 			$settings = array(

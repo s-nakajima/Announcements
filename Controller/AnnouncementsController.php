@@ -86,23 +86,40 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @throws InternalErrorException saveに失敗したとき。
  */
 	public function block_setting($blockId = 0) {
-		// TODO: Block.titleのお知らせ名称を変更できない。
 		$announcementBlock = $this->AnnouncementBlock->findByBlockIdOrDefault($blockId);
-
 		if ($this->request->is(array('post', 'put'))) {
 			$this->request->data = $this->AnnouncementBlock->mergeRequestId($this->request->data, $announcementBlock);
-			if ($this->AnnouncementBlock->saveAll($this->request->data)) {
-				// return $this->redirect(array('action' => 'index', $blockId));
-				$this->autoRender = false;
-				// $this->Session->setFlash(__('Has been successfully registered.'));
-				return true;
-			} elseif (!$this->AnnouncementBlock->validationErrors) {
+
+			// バリデートエラー
+			$blocksLanguage['BlocksLanguage'] = array(
+				'id' => $this->block['Language'][0]['BlocksLanguage']['id'],
+				'name' => $this->request->data['BlocksLanguage']['name'],
+			);
+			$this->BlocksLanguage->set($blocksLanguage);
+			$this->AnnouncementBlock->set($this->request->data);
+			if (!$this->BlocksLanguage->validates(array('fieldList' => array('name'))) ||
+				!$this->AnnouncementBlock->validates()) {
+				$this->__afterAction();
+				return;
+			}
+
+			// お知らせタイトル
+			if (!$this->BlocksLanguage->save($blocksLanguage)) {
+				throw new InternalErrorException(__('Failed to update the database, (%s).', 'blocks_languages'));
+			}
+
+			// お知らせブロック設定
+			if (!$this->AnnouncementBlock->saveAll($this->request->data)) {
 				throw new InternalErrorException(__('Failed to update the database, (%s).', 'announcement_blocks'));
 			}
+			$this->autoRender = false;
+			// $this->Session->setFlash(__('Has been successfully registered.'));
+			return true;
 		}
 
 		if (!$this->request->data && $blockId > 0) {
 			$this->request->data = $announcementBlock;
+			$this->request->data['BlocksLanguage'] = $this->block['Language'][0]['BlocksLanguage'];
 		}
 
 		$this->__afterAction();

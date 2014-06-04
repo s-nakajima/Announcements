@@ -15,7 +15,7 @@ class AnnouncementsAppController extends AppController {
  *
  * @var array
  */
-	public $uses = array('Block', 'Frames.Frame');
+	public $uses = array('Block', 'BlocksLanguage', 'Frames.Frame');
 
 /**
  * Components used
@@ -23,6 +23,13 @@ class AnnouncementsAppController extends AppController {
  * @var array
  */
 	public $components = array('Announcements.AnnouncementsAuth');
+
+/**
+ * Block data
+ *
+ * @var array
+ */
+	public $block = array();
 
 /**
  * beforeFilter
@@ -53,9 +60,16 @@ class AnnouncementsAppController extends AppController {
  */
 	protected function _beforeFilterBlock() {
 		$blockId = empty($this->request->params['pass'][0]) ? 0 : intval($this->request->params['pass'][0]);
+
+		$this->Block->hasAndBelongsToMany['Language']['conditions'] = array('Language.code' => 'jpn');	// テスト 固定値
+		$block = $this->Block->findById($blockId);
+		if (!$block) {
+			throw new ForbiddenException(__('Invalid auth'));
+		}
 		if (!$this->AnnouncementsAuth->canEditBlock($blockId)) {
 			throw new ForbiddenException(__('Invalid auth'));
 		}
+		$this->block = $block;
 		$this->set('block_id', $blockId);
 	}
 
@@ -68,9 +82,13 @@ class AnnouncementsAppController extends AppController {
  */
 	protected function _beforeFilterFrame() {
 		$frameId = empty($this->request->params['pass'][0]) ? 0 : intval($this->request->params['pass'][0]);
-		$blockId = $this->_findBlockIdByFrameId($frameId);
-		if (!$blockId) {
+		$blockId = $this->Frame->findBlockIdByFrameId($frameId);
+		if ($blockId === false) {
 			throw new NotFoundException(__('Invalid frame'));
+		}
+		if (empty($blockId)) {
+			//取得できなければInsert
+			$this->_addBlock($frameId);
 		}
 
 		$canEdit = $this->AnnouncementsAuth->canEditContent($blockId);
@@ -87,21 +105,21 @@ class AnnouncementsAppController extends AppController {
 	}
 
 /**
- * _findBlockIdByFrameId
- * FrameModelへ移動するべき。
- * @param   integer $frameId
- * @return  mixed $blockId or false
+ * _addBlock
+ * @param   void
+ * @return  boolean
+ * @throws InternalErrorException 追加エラー
  */
-	protected function _findBlockIdByFrameId($frameId) {
-		$frame = $this->Frame->find('first', array(
-			'fields' => 'block_id',
-			'recursive' => -1,
-			'conditions' => array('id' => $frameId)
-		));
-		if (!isset($frame['Frame']['block_id'])) {
-			return false;
+	protected function _addBlock($frameId) {
+		$blockId = $this->Block->addBlock($frameId);
+		if (!$blockId) {
+			throw new InternalErrorException(__('Failed to register the database, (%s).', 'blocks'));
 		}
-		return $frame['Frame']['block_id'];
+		$this->Frame->id = $frameId;
+		if (!$this->Frame->saveField('block_id', $blockId)) {
+			throw new InternalErrorException(__('Failed to update the database, (%s).', 'frames'));
+		}
+		return true;
 	}
 
 }

@@ -45,7 +45,7 @@ class AnnouncementsAuthComponent extends Component {
  * @return  boolean
  */
 	public function canReadContent($blockId, $userId = 0) {
-		// TODO: 現状、パブリックスペースのみの対応のため未実装。
+		// TestCode 現状、パブリックスペースのみの対応のため未実装。
 		return true;
 	}
 
@@ -58,7 +58,8 @@ class AnnouncementsAuthComponent extends Component {
  * @return  boolean
  */
 	public function canEditContent($blockId, $userId = 0) {
-		$roomPart = $this->_findRoomPartByBlockId($blockId, $userId);
+		$userId = $this->_getUserId($userId);
+		$roomPart = $this->_controller->Block->findRoomPartByBlockId($blockId, $userId);
 		if (!$roomPart) {
 			return false;
 		}
@@ -75,7 +76,8 @@ class AnnouncementsAuthComponent extends Component {
  * @return  boolean
  */
 	public function canEditBlock($blockId, $userId = 0) {
-		$roomPart = $this->_findRoomPartByBlockId($blockId, $userId);
+		$userId = $this->_getUserId($userId);
+		$roomPart = $this->_controller->Block->findRoomPartByBlockId($blockId, $userId);
 		if (!$roomPart) {
 			return false;
 		}
@@ -83,17 +85,13 @@ class AnnouncementsAuthComponent extends Component {
 	}
 
 /**
- * _findRoomPartByBlockId
- * 共通のModelの処理へ移動するべき。
- * 現在のuser_idにおけるブロックのPartテーブルの編集権限を取得
- * block_idからroom_idを求め、user_id,room_idからpart_idを求め
- * room_parts.can_xxxx(can_edit_block等)を見て判断。
+ * _getUserId
+ * paramが空ならば、loginIDセット
  *
- * @param   integer $blockId
- * @param   integer $userId default ログインID
- * @return  mixed array $roomPart or boolean false
+ * @param   integer $userId
+ * @return  integer $userId
  */
-	protected function _findRoomPartByBlockId($blockId, $userId = 0) {
+	protected function _getUserId($userId = 0) {
 		if (!$userId) {
 			$user = $this->_controller->Auth->user();
 			if (!$user) {
@@ -101,51 +99,7 @@ class AnnouncementsAuthComponent extends Component {
 			}
 			$userId = $user['id'];
 		}
-
-		$roomPart = $this->_controller->Block->find('first', array(
-			'fields' => array(
-				'RoomPart.id',
-				'RoomPart.part_id',
-				'RoomPart.can_read_page',
-				'RoomPart.can_edit_page',
-				'RoomPart.can_create_page',
-				'RoomPart.can_publish_page',
-				'RoomPart.can_read_block',
-				'RoomPart.can_edit_block',
-				'RoomPart.can_create_block',
-				'RoomPart.can_publish_block',
-				'RoomPart.can_read_content',
-				'RoomPart.can_edit_content',
-				'RoomPart.can_create_content',
-				'RoomPart.can_publish_content',
-			),
-			'recursive' => -1,
-			'conditions' => array('Block.id' => $blockId),
-			'joins' => array(
-				array(
-					"type" => "INNER",
-					"table" => "parts_rooms_users",
-					"alias" => "PartsRoomsUser",
-					"conditions" => array(
-						'PartsRoomsUser.room_id = Block.room_id',
-						'PartsRoomsUser.user_id' => $userId
-					)
-				),
-				array(
-					"type" => "INNER",
-					"table" => "room_parts",
-					"alias" => "RoomPart",
-					"conditions" => array(
-						'RoomPart.part_id = PartsRoomsUser.part_id'
-					)
-				),
-			),
-		));
-
-		if (!isset($roomPart['RoomPart'])) {
-			return false;
-		}
-		return $roomPart;
+		return $userId;
 	}
 
 }

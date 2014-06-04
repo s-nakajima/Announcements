@@ -22,6 +22,7 @@ class AnnouncementBlocksPartTest extends CakeTestCase {
 	public $fixtures = array(
 		'plugin.announcements.announcement_block',
 		'plugin.announcements.announcement_blocks_part',
+		'plugin.announcements.part',
 		'plugin.announcements.room_part',
 	);
 

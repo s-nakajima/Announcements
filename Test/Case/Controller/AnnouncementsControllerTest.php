@@ -9,6 +9,7 @@
 
 App::uses('AnnouncementsController', 'Announcements.Controller');
 App::uses('AuthComponent', 'Controller/Component');
+App::uses('Block', 'Model');
 
 /**
  * Summary for AnnouncementsController Test Case
@@ -24,8 +25,11 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		'site_setting',
 		'site_setting_value',
 		'plugin.announcements.block',
+		'plugin.announcements.blocks_language',
+		'plugin.announcements.language',
 		'plugin.announcements.frame',
 		'plugin.announcements.parts_rooms_user',
+		'plugin.announcements.part',
 		'plugin.announcements.room_part',
 		'plugin.announcements.announcement',
 		'plugin.announcements.announcement_revision',
@@ -57,10 +61,23 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  */
 	public function setUp() {
 		parent::setUp();
+		$this->Block = ClassRegistry::init('Block');
 		$this->Announcement = ClassRegistry::init('Announcements.Announcement');
 		$this->AnnouncementBlock = ClassRegistry::init('Announcements.AnnouncementBlock');
 		$this->AnnouncementBlocksPart = ClassRegistry::init('Announcements.AnnouncementBlocksPart');
 
+		$this->__setInputNoneExistData();
+		$this->__setInputData();
+		$this->__setBlockSettingInputNoneExistData();
+		$this->__setBlockSettingInputData();
+	}
+
+/**
+ * Set input data
+ *
+ * @return void
+ */
+	private function __setInputNoneExistData() {
 		$this->__editInputNoneExistData = array(
 			'Announcement' => array(
 				'id' => 0,
@@ -72,7 +89,14 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 				'content' => 'Update!',
 			),
 		);
+	}
 
+/**
+ * Set input data
+ *
+ * @return void
+ */
+	private function __setInputData() {
 		$this->__editInputData = array(
 			'Announcement' => array(
 				'id' => 10,
@@ -84,7 +108,14 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 				'content' => 'Update!',
 			),
 		);
+	}
 
+/**
+ * Set input data
+ *
+ * @return void
+ */
+	private function __setBlockSettingInputNoneExistData() {
 		$this->__blockSettingInputNoneExistData = array(
 			'AnnouncementBlock' => array(
 				'id' => 0,
@@ -135,8 +166,18 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 					'can_send_mail' => $this->__false,
 				)
 			),
+			'BlocksLanguage' => array(
+				'name' => 'Test Block',
+			),
 		);
+	}
 
+/**
+ * Set input data
+ *
+ * @return void
+ */
+	private function __setBlockSettingInputData() {
 		$this->__blockSettingInputData = array(
 			'AnnouncementBlock' => array(
 				'id' => 10,
@@ -187,6 +228,9 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 					'can_send_mail' => $this->__false,
 				)
 			),
+			'BlocksLanguage' => array(
+				'name' => 'Test Block',
+			),
 		);
 	}
 
@@ -196,6 +240,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return void
  */
 	public function tearDown() {
+		unset($this->Block);
 		unset($this->Announcement);
 		unset($this->AnnouncementBlock);
 		unset($this->AnnouncementBlocksPart);
@@ -379,6 +424,58 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 	}
 
 /**
+ * testIndexAddBlock method
+ * Frameデータは存在するが、blockIDが取得できなければ、Blockデータを作成。
+ *
+ * @return void
+ */
+	public function testIndexAddBlock() {
+		$this->testAction('/announcements/announcements/index/5', array('method' => 'get'));
+		$result = $this->Block->findById(5);
+		$this->assertTrue(is_array($result));
+		$this->assertTrue(is_array($result['Block']));
+		$this->assertTrue(is_array($result['Language']));
+	}
+
+/**
+ * testIndexAddBlockSaveError method
+ * Blockデータを作成時のsaveエラー
+ *
+ * @return void
+ */
+	public function testIndexAddBlockSaveError() {
+		$params = array(
+			'models' => array(
+				'Block' => array('addBlock')
+			)
+		);
+		$this->Controller = $this->generate('Announcements.AnnouncementsApp', $params);
+		$this->Controller->Block->expects($this->once())->method('addBlock')->will($this->returnValue(false));
+
+		$this->setExpectedException('InternalErrorException');
+		$this->testAction('/announcements/announcements/index/5', array('method' => 'get'));
+	}
+
+/**
+ * testIndexAddBlockSaveFieldError method
+ * Blockデータを作成後のFrame.block_id更新時エラー
+ *
+ * @return void
+ */
+	public function testIndexFrameSaveFieldError() {
+		$params = array(
+			'models' => array(
+				'Frame' => array('saveField')
+			)
+		);
+		$this->Controller = $this->generate('Announcements.AnnouncementsApp', $params);
+		$this->Controller->Frame->expects($this->once())->method('saveField')->will($this->returnValue(false));
+
+		$this->setExpectedException('InternalErrorException');
+		$this->testAction('/announcements/announcements/index/5', array('method' => 'get'));
+	}
+
+/**
  * testEdit method 表示
  *
  * @return void
@@ -547,6 +644,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		$this->mockAuthUser(1);
 		// 登録
 		$data = $this->__blockSettingInputData;
+		unset($data['BlocksLanguage']['name']);
 		$data['AnnouncementBlock']['send_mail'] = 'AAA';
 
 		$this->testAction(
@@ -558,18 +656,37 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 	}
 
 /**
- * testBlockSettingPostExistsSaveError method
- * save Error
+ * testBlockSettingPostSaveError method
+ * AnnouncementBlock save Error
  *
  * @return void
  */
-	public function testBlockSettingPostExistsSaveError() {
+	public function testBlockSettingPostSaveError() {
 		$this->mockAuthUser(1, array(
 			'models' => array(
 				'AnnouncementBlock' => array('save')
 			)
 		));
 		$this->Controller->AnnouncementBlock->expects($this->once())->method('save')
+			->will($this->returnValue(false));
+
+		$this->setExpectedException('InternalErrorException');
+		$this->testAction(
+			'/announcements/announcements/block_setting/1',
+			array('data' => $this->__blockSettingInputData, 'method' => 'put')
+		);
+	}
+
+/**
+ * testBlockSettingPostBlocksLanguageSaveError method
+ * BlocksLanguage save Error
+ *
+ * @return void
+ */
+	public function testBlockSettingPostBlocksLanguageSaveError() {
+		$this->mockAuthUser(1);
+		$this->getMockForModel('BlocksLanguage', array('save'))
+			->expects($this->once())->method('save')
 			->will($this->returnValue(false));
 
 		$this->setExpectedException('InternalErrorException');
@@ -641,6 +758,9 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 					'can_publish_content' => $this->__false,
 					'can_send_mail' => $this->__false,
 				)
+			),
+			'BlocksLanguage' => array(
+				'name' => 'Test Block',
 			),
 		);
 

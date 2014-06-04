@@ -1,6 +1,6 @@
 <div>
 	<?php
-	// TODO: 記事投稿権限、通知する権限の動作、disableにするかどうか。「投稿をメールで通知する」かどうかによる表示・非表示に切り替え未実装。
+	// TestCode  記事投稿権限、通知する権限の動作、disableにするかどうか。「投稿をメールで通知する」かどうかによる表示・非表示に切り替え未実装。
 		echo $this->Form->create('AnnouncementBlock', array('ng-submit' => 'submit($event)', 'class' => 'form-horizontal announcements-block-setting-outer', 'role' => 'form'));
 	?>
 	<div class="modal-header">
@@ -10,10 +10,10 @@
 	<div class="modal-body">
 		<div class="form-group">
 			<?php
-				echo $this->Form->label('Block.title', __d('announcements', 'Announcement Title') . '<span class="text-primary">*</span>', array('class' => 'col-sm-3 control-label'));
+				echo $this->Form->label('BlocksLanguage.name', __d('announcements', 'Announcement Title') . '<span class="text-primary">*</span>', array('class' => 'col-sm-3 control-label'));
 			?>
 			<?php
-				echo $this->Form->input('Block.title', array('label' => false, 'div' => 'col-sm-9'));
+				echo $this->Form->input('BlocksLanguage.name', array('label' => false, 'div' => 'col-sm-9'));
 			?>
 		</div>
 		<div class="form-group">

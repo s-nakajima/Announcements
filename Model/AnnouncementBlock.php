@@ -126,10 +126,13 @@ class AnnouncementBlock extends AnnouncementsAppModel {
 	public function mergeRequestId($requestData, $announcementBlock) {
 		$requestData[$this->alias]['id'] = $announcementBlock[$this->alias]['id'];
 		$requestData[$this->alias]['block_id'] = $announcementBlock[$this->alias]['block_id'];
+		if (!isset($requestData['BlocksLanguage']['name'])) {
+			$requestData['BlocksLanguage']['name'] = '';
+		}
 
 		$AnnouncementBlocksPart = ClassRegistry::init('Announcements.AnnouncementBlocksPart');
 		if (!empty($requestData[$AnnouncementBlocksPart->alias])) {
-			foreach ($requestData[$AnnouncementBlocksPart->alias] as $key => $value) {
+			foreach (array_keys($requestData[$AnnouncementBlocksPart->alias]) as $key) {
 				if (!isset($announcementBlock[$AnnouncementBlocksPart->alias][$key])) {
 					unset($requestData[$AnnouncementBlocksPart->alias][$key]);
 					continue;
