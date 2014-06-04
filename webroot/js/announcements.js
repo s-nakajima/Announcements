@@ -5,8 +5,8 @@
  * @link     http://www.netcommons.org NetCommons Project
  * @license  http://www.netcommons.org/license.txt NetCommons License
  */
-var announcements = angular.module('announcements', []);
-var frames = angular.module('frames', ['ui.bootstrap']);
+var announcements = NetCommonsApp;
+var frames = NetCommonsApp;
 
 /**
  * ブロック設定リンク
