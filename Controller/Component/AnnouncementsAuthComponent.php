@@ -40,8 +40,8 @@ class AnnouncementsAuthComponent extends Component {
  * canReadContent
  * コンテンツを読めるかどうか
  *
- * @param   integer $blockId
- * @param   integer $userId default グインID
+ * @param   integer $blockId ブロックID
+ * @param   integer $userId  会員ID default ログインID
  * @return  boolean
  */
 	public function canReadContent($blockId, $userId = 0) {
@@ -53,12 +53,15 @@ class AnnouncementsAuthComponent extends Component {
  * canEditContent
  * コンテンツを編集できるかどうか
  *
- * @param   integer $blockId
- * @param   integer $userId default ログインID
+ * @param   integer $blockId ブロックID
+ * @param   integer $userId 会員ID default ログインID
  * @return  boolean
  */
 	public function canEditContent($blockId, $userId = 0) {
 		$userId = $this->_getUserId($userId);
+		if (!$userId) {
+			return false;
+		}
 		$roomPart = $this->_controller->Block->findRoomPartByBlockId($blockId, $userId);
 		if (!$roomPart) {
 			return false;
@@ -71,12 +74,15 @@ class AnnouncementsAuthComponent extends Component {
  * canEditBlock
  * コンテンツを編集できるかどうか
  *
- * @param   integer $blockId
- * @param   integer $userId default ログインID
+ * @param   integer $blockId ブロックID
+ * @param   integer $userId 会員ID default ログインID
  * @return  boolean
  */
 	public function canEditBlock($blockId, $userId = 0) {
 		$userId = $this->_getUserId($userId);
+		if (!$userId) {
+			return false;
+		}
 		$roomPart = $this->_controller->Block->findRoomPartByBlockId($blockId, $userId);
 		if (!$roomPart) {
 			return false;
@@ -88,7 +94,7 @@ class AnnouncementsAuthComponent extends Component {
  * _getUserId
  * paramが空ならば、loginIDセット
  *
- * @param   integer $userId
+ * @param   integer $userId 会員ID
  * @return  integer $userId
  */
 	protected function _getUserId($userId = 0) {
