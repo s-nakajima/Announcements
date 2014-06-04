@@ -1,3 +1,4 @@
+<?php echo $this->element('include'); ?>
 <div id="announcements-<?php echo $frameId; ?>" ng-controller="announcementsController">
 	<div>
 		<?php
@@ -6,5 +7,5 @@
 		?>
 	</div>
 	<?php echo $this->data['AnnouncementRevision']['content']; ?>
-	<?php echo $this->element('include'); ?>
+
 </div>
