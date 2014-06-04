@@ -88,7 +88,7 @@ class AnnouncementsAppController extends AppController {
 		}
 		if (empty($blockId)) {
 			//取得できなければInsert
-			$this->_addBlock($frameId);
+			$blockId = $this->_addBlock($frameId);
 		}
 
 		$canEdit = $this->AnnouncementsAuth->canEditContent($blockId);
@@ -107,7 +107,7 @@ class AnnouncementsAppController extends AppController {
 /**
  * _addBlock
  * @param   void
- * @return  boolean
+ * @return  $blockId
  * @throws InternalErrorException 追加エラー
  */
 	protected function _addBlock($frameId) {
@@ -119,7 +119,7 @@ class AnnouncementsAppController extends AppController {
 		if (!$this->Frame->saveField('block_id', $blockId)) {
 			throw new InternalErrorException(__('Failed to update the database, (%s).', 'frames'));
 		}
-		return true;
+		return $blockId;
 	}
 
 }
