@@ -8,7 +8,6 @@
 			$editorId = 'AnnouncementRevisionContent-' . $frameId;
 			echo $this->Form->label('AnnouncementRevision.content', __d('announcements', 'Content'), array('for' => $editorId));
 			echo $this->element('draft_label');
-			$this->RichTextEditor->editor(array('elements' => $editorId));
 			$settings = array(
 				'id' => $editorId,
 				'class' => 'hidden',
@@ -17,6 +16,7 @@
 				'required' => false,
 			);
 			echo $this->Form->input('AnnouncementRevision.content', $settings);
+			$this->RichTextEditor->editor(array('elements' => $editorId));
 			echo $this->Form->hidden('is_published', array('id' => 'AnnouncementIsPublished-' . $frameId));
 		?>
 	</div>
