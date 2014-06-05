@@ -1,18 +1,18 @@
 <?php
 /**
- * AnnouncementBlocksPart Test Case
+ * Announcement Test Case
  *
 * @author   Jun Nishikawa <topaz2@m0n0m0n0.com>
 * @link     http://www.netcommons.org NetCommons Project
 * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 
-App::uses('AnnouncementBlocksPart', 'Model');
+App::uses('Announcement', 'Model');
 
 /**
- * Summary for AnnouncementBlocksPart Test Case
+ * Summary for Announcement Test Case
  */
-class AnnouncementBlocksPartTest extends CakeTestCase {
+class AnnouncementTest extends CakeTestCase {
 
 /**
  * Fixtures
@@ -20,7 +20,7 @@ class AnnouncementBlocksPartTest extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'app.announcement_blocks_part'
+		'app.announcement'
 	);
 
 /**
@@ -30,7 +30,7 @@ class AnnouncementBlocksPartTest extends CakeTestCase {
  */
 	public function setUp() {
 		parent::setUp();
-		$this->AnnouncementBlocksPart = ClassRegistry::init('AnnouncementBlocksPart');
+		$this->Announcement = ClassRegistry::init('Announcement');
 	}
 
 /**
@@ -39,7 +39,7 @@ class AnnouncementBlocksPartTest extends CakeTestCase {
  * @return void
  */
 	public function tearDown() {
-		unset($this->AnnouncementBlocksPart);
+		unset($this->Announcement);
 
 		parent::tearDown();
 	}

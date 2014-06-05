@@ -13,8 +13,7 @@
         "cakedc/migrations":            "~2.2",
         "twbs/bootstrap":               "~3.1",
         "components/jquery":            "~2.1",
-        "netcommons/rich-text-editor":  "~0.0",
-        "netcommons/revision":          "~0.0"
+        "netcommons/rich-text-editor":  "~0.0"
     },
     "require-dev": {
         "mustangostang/spyc":           "dev-master",

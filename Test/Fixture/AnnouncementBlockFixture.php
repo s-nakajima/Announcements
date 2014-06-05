@@ -2,13 +2,15 @@
 /**
  * AnnouncementBlockFixture
  *
- * @author   Ryuji Masukawa <masukawa@nii.ac.jp>
- * @link     http://www.netcommons.org NetCommons Project
- * @license  http://www.netcommons.org/license.txt NetCommons License
+* @author   Jun Nishikawa <topaz2@m0n0m0n0.com>
+* @link     http://www.netcommons.org NetCommons Project
+* @license  http://www.netcommons.org/license.txt NetCommons License
+ */
+
+/**
+ * Summary for AnnouncementBlockFixture
  */
 class AnnouncementBlockFixture extends CakeTestFixture {
-
-	//public $table = 'announcement_blocks';
 
 /**
  * Fields
@@ -17,7 +19,7 @@ class AnnouncementBlockFixture extends CakeTestFixture {
  */
 	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
-		'block_id' => array('type' => 'integer', 'null' => false, 'default' => '0', 'key' => 'unique'),
+		'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'unique'),
 		'send_mail' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'mail_subject' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'mail_body' => array('type' => 'text', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
@@ -39,14 +41,16 @@ class AnnouncementBlockFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => 10,
+			'id' => 1,
 			'block_id' => 1,
-			'send_mail' => true,
-			'mail_subject' => 'Mail Subject',
-			'mail_body' => 'Mail Body',
-			'created' => '2014-05-06 01:16:23',
-			'modified' => '2014-05-06 01:18:31'
-		)
+			'send_mail' => 1,
+			'mail_subject' => 'Lorem ipsum dolor sit amet',
+			'mail_body' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+			'created' => '2014-06-05 13:19:46',
+			'create_user_id' => 1,
+			'modified' => '2014-06-05 13:19:46',
+			'modified_user_id' => 1
+		),
 	);
 
 }

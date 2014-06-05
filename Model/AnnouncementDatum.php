@@ -1,6 +1,6 @@
 <?php
 /**
- * AnnouncementBlock Model
+ * AnnouncementDatum Model
  *
  *
 * @author   Jun Nishikawa <topaz2@m0n0m0n0.com>
@@ -11,8 +11,8 @@
 App::uses('AppModel', 'Model');
 
 /**
- * Summary for AnnouncementBlock Model
+ * Summary for AnnouncementDatum Model
  */
-class AnnouncementBlock extends AppModel {
+class AnnouncementDatum extends AnnouncementsAppModel {
 
 }
