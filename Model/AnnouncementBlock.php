@@ -34,7 +34,7 @@ class AnnouncementBlock extends AnnouncementsAppModel {
  * can also be an array of options, see above.
  * @param string $table Name of database table to use.
  * @param string $ds DataSource connection name.
- * @return  void
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
 	public function __construct($id = false, $table = null, $ds = null) {
 		parent::__construct($id, $table, $ds);
@@ -67,6 +67,7 @@ class AnnouncementBlock extends AnnouncementsAppModel {
  * @param integer $blockId blockID
  * @return array
  * @access public
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 	public function findByBlockIdOrDefault($blockId) {
 		$data = $this->findByBlockId($blockId);
@@ -87,6 +88,7 @@ class AnnouncementBlock extends AnnouncementsAppModel {
  * @param integer $partId  partID
  * @return array
  * @access public
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 	public function findByAuthOrDefault($blockId, $partId) {
 		$data = $this->find('first', array(
@@ -123,6 +125,7 @@ class AnnouncementBlock extends AnnouncementsAppModel {
  * @param  array $announcementBlock AnnouncementBlock Model Array
  * @return array
  * @access public
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 	public function mergeRequestId($requestData, $announcementBlock) {
 		$requestData[$this->alias]['id'] = $announcementBlock[$this->alias]['id'];

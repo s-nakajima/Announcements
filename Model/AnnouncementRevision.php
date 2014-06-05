@@ -35,7 +35,7 @@ class AnnouncementRevision extends AnnouncementsAppModel {
  * can also be an array of options, see above.
  * @param string $table Name of database table to use.
  * @param string $ds DataSource connection name.
- * @return  void
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
 	public function __construct($id = false, $table = null, $ds = null) {
 		parent::__construct($id, $table, $ds);

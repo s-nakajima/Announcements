@@ -1,4 +1,4 @@
-schema.php<?php
+<?php
 class Initial extends CakeMigration {
 
 /**

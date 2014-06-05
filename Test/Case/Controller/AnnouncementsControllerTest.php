@@ -13,6 +13,7 @@ App::uses('Block', 'Model');
 
 /**
  * Summary for AnnouncementsController Test Case
+ * @SuppressWarnings(PHPMD.TooManyMethods)
  */
 class AnnouncementsControllerTest extends ControllerTestCase {
 

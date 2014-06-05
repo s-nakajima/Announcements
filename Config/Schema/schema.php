@@ -1,4 +1,9 @@
-<?php 
+<?php
+/**
+ * Announcement Schema
+ *
+ * @SuppressWarnings(PHPMD.LongVariable)
+ */
 class AnnouncementSchema extends CakeSchema {
 
 /**
