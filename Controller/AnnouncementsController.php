@@ -18,7 +18,10 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public $uses = array(
 		'Announcements.Announcement',
 		'Announcements.AnnouncementBlock',
-		'Announcements.AnnouncementDatum'
+		'Announcements.AnnouncementDatum',
+		'Block',
+		'BlocksLanguage',
+		'Frames.Frame',
 	);
 
 /**
@@ -46,8 +49,13 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @access public
  */
 	public function index($frameId = 0, $blockId = 0) {
-
+		$this->set('frameId' , $frameId);
+		$this->set('blockId' , $blockId);
 	}
+
+
+
+
 
 /**
  * お知らせ編集画面
@@ -59,7 +67,22 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	public function edit($frameId = 0, $blockId = 0) {
+		if(count($_POST))
+		{
+			return $this->_post();
 
+		}
+		$this->set('frameId' , $frameId);
+		$this->set('blockId' , $blockId);
+	}
+
+	public function post($frameId=0)
+	{
+		$this->layout = false;
+		$this->set('frameId' , $frameId);
+		//echo encodeURIComponent($_POST["data"]["AnnouncementDatum"]["content"]);
+		var_dump($_POST);
+		return $this->render();
 	}
 
 /**
@@ -71,6 +94,16 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	public function block_setting($blockId = 0) {
+		$this->set('blockId' , $blockId);
+	}
+
+	//フォームの取得
+	public function get_edit_form($frameId = null , $blockId = 0) {
+		//$frameId check
+		//if notice 404 error
+		$this->layout = false;
+		$this->set('frameId' , $frameId);
+		$this->set('blockId' , $blockId);
 	}
 
 
