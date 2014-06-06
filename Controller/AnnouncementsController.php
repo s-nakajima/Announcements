@@ -6,7 +6,7 @@
  * @link     http://www.netcommons.org NetCommons Project
  * @license  http://www.netcommons.org/license.txt NetCommons License
  */
-App::uses('AnnouncementsAppController', 'Announcements.Controller');
+App::uses('AnnouncementsAppController','Announcements.Controller');
 
 class AnnouncementsController extends AnnouncementsAppController {
 
@@ -25,13 +25,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 	);
 
 /**
- * 使用するヘルパー
- *
- * @var array
- */
-	public $helpers = array('RichTextEditor.RichTextEditor');
-
-/**
  * 使用するコンポーネント
  *
  * @var array
@@ -48,14 +41,9 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  * @access public
  */
-	public function index($frameId = 0, $blockId = 0) {
-		$this->set('frameId' , $frameId);
-		$this->set('blockId' , $blockId);
+	public function index($frameId = 0) {
+		$this->_setId($frameId);
 	}
-
-
-
-
 
 /**
  * お知らせ編集画面
@@ -67,22 +55,29 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	public function edit($frameId = 0, $blockId = 0) {
-		if(count($_POST))
-		{
-			return $this->_post();
-
-		}
-		$this->set('frameId' , $frameId);
-		$this->set('blockId' , $blockId);
+		$this->_setId($frameId , $blockId);
 	}
 
-	public function post($frameId=0)
+	public function post($frameId=0 , $blockId = 0)
 	{
 		$this->layout = false;
-		$this->set('frameId' , $frameId);
+		$this->_setId($frameId , $blockId);
+
 		//echo encodeURIComponent($_POST["data"]["AnnouncementDatum"]["content"]);
 		var_dump($_POST);
 		return $this->render();
+	}
+
+/**
+ * frameIdとblockIdをセット
+ *
+ * @param int $frameId
+ * @param int $blockId
+ * @return void
+ */
+	private function _setId($frameId=0 , $blockId = 0){
+		$this->set('frameId' , $frameId);
+		$this->set('blockId' , $blockId);
 	}
 
 /**
@@ -98,13 +93,20 @@ class AnnouncementsController extends AnnouncementsAppController {
 	}
 
 	//フォームの取得
-	public function get_edit_form($frameId = null , $blockId = 0) {
+	public function get_edit_form($frameId = 0 , $blockId = 0) {
 		//$frameId check
 		//if notice 404 error
 		$this->layout = false;
-		$this->set('frameId' , $frameId);
-		$this->set('blockId' , $blockId);
+		$this->set('frameId', $frameId);
+		$this->set('blockId', $blockId);
 	}
 
 
 }
+
+/*
+ * frame_idから表示されるべき情報を取得する。
+ * frame_idから、blockを新規作成する
+ * frame_idから、内容の変更を取得する。
+ * ブロックの削除についての考慮 6/16以降でOK
+ */

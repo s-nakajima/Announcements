@@ -1,4 +1,3 @@
-ajax edit form
 <div id="announcements_data_<?php echo $frameId?>">
 <?php echo $this->Form->create(null); ?>
 	<div style="display: none;">
@@ -17,7 +16,14 @@ ajax edit form
 				"type" => "text",
 				"value" =>h($blockId),
 			)
+		);
+		echo $this->Form->input("AnnouncementDatum.type" , array(
+				"type" => "text",
+				"value" =>"",
+			)
 		); ?>
+		?>
+
 
 	</div>
 <?php echo $this->Form->end(); ?>
