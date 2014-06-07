@@ -21,7 +21,14 @@
 				"type" => "text",
 				"value" =>"",
 			)
+		);
+		echo $this->Form->input("AnnouncementDatum.lang" , array(
+				"type" => "text",
+				"value" =>$lang,
+			)
 		); ?>
+		?>
+
 		?>
 
 

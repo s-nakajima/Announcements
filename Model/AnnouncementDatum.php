@@ -13,6 +13,37 @@ App::uses('AppModel', 'Model');
 /**
  * Summary for AnnouncementDatum Model
  */
-class AnnouncementDatum extends AnnouncementsAppModel {
+class AnnouncementDatum extends AppModel {
 
+	public $name = 'AnnouncementDatum';
+
+	public $useTable = 'announcement_data';
+
+	public $belongsTo = 'Announcement';
+
+	public $isPublish = 1;
+
+	public function getData($blockId , $lang,  $isSetting=null) {
+		if(! $isSetting) {
+			$this->getPublishData($blockId , $lang);
+		}
+		return $this->find('first' , array(
+			'conditions' => array(
+				'Announcement.block_id'=>$blockId,
+				'AnnouncementDatum.language_id'=>$lang,
+			),
+			'order'=>'AnnouncementDatum.id DESC',
+		));
+	}
+
+	public function getPublishData($blockId , $lang) {
+		return $this->find('first' , array(
+			'conditions' => array(
+				'Announcement.block_id'=>$blockId,
+				'AnnouncementDatum.language_id'=>$lang,
+				'AnnouncementDatum.status_id'=>$this->isPublish,
+			),
+			'order'=>'AnnouncementDatum.id DESC'
+		));
+	}
 }
