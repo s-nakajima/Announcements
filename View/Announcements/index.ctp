@@ -1,5 +1,4 @@
 <div ng-controller="Announcements.edit">
-{{debug}}
 
 <!-- 編集ボタン 状態表示-->
 
@@ -21,8 +20,8 @@
 </div>
 <div class="clear:both;"> </div>
 
+	<!-- メッセージ表示 -->
 
-<!-- メッセージ表示 -->
 
 <!-- 内容表示 -->
 <div class="item" id="announcement_content_view_<?php echo intval($frameId); ?>">
@@ -34,22 +33,36 @@
 }?>
 </div>
 
+<!-- 非表示 最新 -->
+
+	<div class="draft hidden" id="announcement_content_draft_<?php echo intval($frameId); ?>">
+		<?php if(isset($draftItem)
+			&& isset($draftItem['AnnouncementDatum'])
+			&& isset($draftItem['AnnouncementDatum']['content'])) {
+			$draftContent =  $draftItem['AnnouncementDatum']['content'];
+			echo $draftContent;
+		}?>
+	</div>
+
+
+
 <!-- 編集枠  -->
 <div class="announcements_editer" id="announcements_form_<?php echo intval($frameId);?>">
+	<!-- メッセージ -->
 	<div id="announcements_mss_<?php echo intval($frameId);?>">
 		<div class="alert alert-danger hidden">
 			<span class="pull-right" ng-click="postAlertClose()"><span class="glyphicon glyphicon-remove"></span></span></span>
-			<span class="errorMss">{{alertMss}}</span>
+			<span class="errorMss"></span>
 		</div>
 	</div>
-
+   <!-- エディタ -->
 	<p>
 		<textarea ui-tinymce
 				ng-model="tinymceModel"
 				class="form-control html"
 		></textarea>
-		</p>
-
+	</p>
+	<!-- ボタン類 -->
 	<p class="text-center">
 		<button class="btn btn-default" ng-click="post('Cancel', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)"><span class="glyphicon glyphicon-remove"></span> <span><?php echo __('キャンセル'); ?></span></button>
 		<button class="btn btn-default" ng-click="post('Draft', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)"><span class="glyphicon glyphicon-pencil"></span> <span><?php echo __('下書き'); ?></span></button>
@@ -58,9 +71,8 @@
 	</p>
 </div>
 
-	<div id="announcements_post_<?php echo $frameId;?>">---</div>
+	<div id="announcements_post_<?php echo $frameId;?>"></div>
 	debug : frameId:<?php echo $frameId;?><br>
 	debug : blockId:<?php echo $blockId;?>
-
 	<pre>{{debug}}</pre>
 </div>

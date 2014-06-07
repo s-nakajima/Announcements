@@ -22,11 +22,17 @@
 				"value" =>"",
 			)
 		);
-		echo $this->Form->input("AnnouncementDatum.lang" , array(
+		echo $this->Form->input("AnnouncementDatum.langId" , array(
 				"type" => "text",
 				"value" =>$lang,
 			)
-		); ?>
+		);
+		echo $this->Form->input("AnnouncementDatum.id" , array(
+				"type" => "text",
+				"value" =>"",
+			)
+		);
+		?>
 		?>
 
 		?>

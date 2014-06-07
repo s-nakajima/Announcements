@@ -1,13 +1,18 @@
-NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
+angular.module('NetCommonsApp',
+    [
+        'ui.bootstrap',
+        'ui.tinymce'
+    ]
+).controller('Announcements.edit', function($scope , $http) {
     $scope.pluginsUrl = '/announcements/announcements/';
     $scope.frameId = 0;
     $scope.blockId = 0;
-    $scope.type = null;
+    $scope.dataId = 0;
     $scope.geturl =  $scope.pluginsUrl + "get_edit_form/";
     $scope.posturl = $scope.pluginsUrl + "post/";
     $scope.debug = null;
     $scope.tinymceModel = null;
-    $scope.errorViewTag = "#announcements_mss_";
+    errorViewTag = "#announcements_mss_";
     $scope.alertMss = null;
 
     //フォームを閉じる
@@ -18,6 +23,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         $(viewerTag).removeClass('hidden');
         $(editerTag).addClass('hidden');
         $(editerOpenBtnTag).removeClass('hidden');
+        $scope.postAlertClose();
     }
 
     //フォームを開く
@@ -26,30 +32,32 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         var editerTag = '#announcements_form_' + frameId;
         var viewerTag = '#announcement_content_view_' + frameId;
         var editerOpenBtnTag = '#announcement_content_edit_btn_' +frameId;
+        var draftTag = '#announcement_content_draft_'+ frameId;;
         $(editerTag).removeClass('hidden');
         $(viewerTag).addClass('hidden');
         $(editerOpenBtnTag).addClass('hidden');
-        //表示内容をエディターに反映 TODO:下書きデータを取得するように変更する
-        $scope.tinymceModel = $('#announcement_content_view_'+ frameId).html();
-
+        //表示内容をエディターに反映 公開とは別に最新のドラフトが会った場合そちらが表示される。
+        $scope.tinymceModel = $(draftTag).html();
     }
 
     //メッセージ（エラー成功両方）を表示するタグを取得
     $scope.getErrorViewTag = function()
     {
-        return  $scope.errorViewTag + $scope.frameId + " .alert";
+        return  errorViewTag + $scope.frameId + " .alert";
     }
 
     //メッセージ（実行結果）を表示
-    $scope.postAlert = function(alertType){
+    $scope.postAlert = function(alertType , text){
         if(alertType == "error") {
             $($scope.getErrorViewTag()).addClass("alert-danger");
             $($scope.getErrorViewTag()).removeClass("alert-success");
             $($scope.getErrorViewTag()).removeClass("hidden");
+            $($scope.getErrorViewTag() + " .errorMss").html(text);
         } else if(alertType == "success") {
             $($scope.getErrorViewTag()).addClass("alert-success");
             $($scope.getErrorViewTag()).removeClass("alert-danger");
             $($scope.getErrorViewTag()).removeClass("hidden");
+            $($scope.getErrorViewTag() + " .errorMss").html(text);
         }
     }
 
@@ -57,13 +65,13 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
     $scope.postAlertClose = function(){
         $scope.alertMss = null;
         $($scope.getErrorViewTag()).addClass("hidden");
+        $($scope.getErrorViewTag() + ".errorMss").html("");
     }
 
     //idのセット
     $scope.setId = function(frameId , blockId){
         $scope.frameId = frameId;
         $scope.blockId = blockId;
-        $scope.type = null;
     }
 
 
@@ -72,9 +80,8 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
     $scope.post = function(type , frameId , blockId){
         //idセット
         $scope.setId(frameId , blockId);
-        $scope.type = type;
 
-        if($scope.type == "Cancel"){
+        if(type == "Cancel"){
             $scope.closeForm(frameId);
             return ;
         }
@@ -92,8 +99,9 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
                     'data[AnnouncementDatum][content]' : encodeURIComponent($scope.tinymceModel),
                     'data[AnnouncementDatum][frameId]' : $scope.frameId,
                     'data[AnnouncementDatum][blockId]' : $scope.blockId,
-                    'data[AnnouncementDatum][type]' : $scope.type,
-                    'data[AnnouncementDatum][langId]' : $(post_data_form + " input[name='data[AnnouncementDatum][langId]']").val()
+                    'data[AnnouncementDatum][type]'    : type,
+                    'data[AnnouncementDatum][langId]'  : $(post_data_form + " input[name='data[AnnouncementDatum][langId]']").val(),
+                    'data[AnnouncementDatum][id]'      : $scope.dataId
 
                 };
 
@@ -103,20 +111,19 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
                     url: $scope.posturl + $scope.frameId,
                     data: post_params,
                     success:function(data, status, headers, config){
-                        $scope.postAlert("success");
-                        $scope.alertMss = "成功";
+                        if(! data) { data = "success"; }
+                        $scope.postAlert("success" , data);
                     },
                     error:function(){
-                        $scope.postAlert("error");
-                        $scope.alertMss = "失敗";
+                        if(! data) { data = "ERROR!"; }
+                        $scope.postAlert("error" , data);
                     }
                 });
             })
             .error(function(data, status, headers, config) {
                 //keyの取得に失敗
-                $scope.debug = "error1";
-                $scope.alertMss = "formの取得に失敗";
-                $scope.postAlert("error");
+                if(! data) { data = "ERROR!"; }
+                $scope.postAlert("error" , data);
             });
 
 
@@ -126,12 +133,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
     $scope.PublishComfirm = function(){
         alert("公開処理前の確認");
     }
-
-    //編集画面終了
-    $scope.getViewer = function(frameId , blockId){
-        alert("表示画面に切り替え");
-    }
-
+    //全ての編集画面一旦非表示
     $(".announcements_editer").addClass('hidden');
 
 });

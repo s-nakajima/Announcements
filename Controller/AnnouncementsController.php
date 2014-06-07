@@ -5,6 +5,17 @@
  * @author   Takako Miyagawa <nekoget@gmail.com>
  * @link     http://www.netcommons.org NetCommons Project
  * @license  http://www.netcommons.org/license.txt NetCommons License
+ *
+ * type :
+ *  Draft : 下書き
+ *  PublishRequest : 公開申請
+ *  Publish : 公開
+ *
+ * API:
+ *  get : 取得
+ *  put : 新規作成
+ *  post :修正
+ *  delete : 削除
  */
 App::uses('AnnouncementsAppController','Announcements.Controller');
 
@@ -37,6 +48,8 @@ class AnnouncementsController extends AnnouncementsAppController {
 
 	//非同期通信判定
 	private $_isAjax = false;
+	//編集権源あり
+	private $_isEditer = false;
 
 	//model格納
 	public $AnnouncementDatum = null;
@@ -49,17 +62,17 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public $lang = 'ja';
 	public $langList = array();
 
-// 仕込み
+
+	// 仕込み
 	public function beforeFilter() {
 		//親処理
 		parent::beforeFilter();
 		//modelのセット
 		$this->AnnouncementDatum = Classregistry::init("Announcements.AnnouncementDatum");
-
 		//設定値の格納
 		$this->_isSetting = Configure::read('Pages.isSetting');
 		$this->Frame = Classregistry::init("Announcements.AnnouncementFrame");
-		//デェフォルト値
+		//blockId初期値設定 view用
 		$this->set('blockId', 0);
 		//編集権源のチェックと設定値の格納
 		$this->_checkEditer();
@@ -80,42 +93,62 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public function index($frameId = 0) {
 		//レイアウトきりかえ
 		$this->_setLayout();
-
-		$blockId = $this->Frame->getBlockId($frameId);
 		$this->set('Data' , array());
+		//blockIdの取得
+		$blockId = $this->Frame->getBlockId($frameId);
 
+		 //編集権限が無い人 (ログイン中も含む 公開情報しかみえない）
+		if(! $this->_isEditer ){
+			//blockから情報を取得 $LangId
+			return $this->_index_no_login($frameId);
+		}
+
+		//ログインしている場合
+		//編集権限が無い人
+		//編集権源があるひと
 
 		//ブロックが設定されておらず、セッティングモードでもない
-		if(! $blockId && ! $this->_isSetting
-			|| ( ! $frameId) || ! is_numeric($frameId) //frameIDがないもしくは数字じゃない場合
-		) {
+		if(! $blockId && ! $this->_isSetting) {
 			return $this->render('notice');
 		}
 
-		//ブロックIDが設定されておらず、セッティングモードの場合、editを表示する
+		//ブロックIDが設定されておらず、セッティングモードの場合
 		if(! $blockId && $this->_isSetting){
 			return $this->edit($frameId , 0);
 		}
 
 		//blockから情報を取得 $LangId
-		$data = $this->AnnouncementDatum->getData($blockId , $this->langId , $this->_isSetting);
+		$data = $this->AnnouncementDatum->getPublishData($blockId , $this->langId);
 		//データが存在しない場合
 		if(! $data){
 			//空を返す
 			return $this->render('notice');
 		}
+
 		//編集権源がある場合
-		if($this->_checkEditer()){
-			//最新情報（フォーム表示用）
-			$draftData = $this->AnnouncementDatum->getData($blockId , $this->langId);
-			$this->set('draftItem' , $draftData);
-		}
+		$this->set('draftItem' , array());
+		//最新情報（フォーム表示用）
+		$draftData = $this->AnnouncementDatum->getData($blockId , $this->langId , $this->_isSetting);
+		$this->set('draftItem' , $draftData);
+		//出力情報セット
 		$this->set('item' , $data);
 		$this->set('frameId' , $frameId);
 		$this->set('blockId', $blockId);
+		//出力
 		return $this->render();
 	}
 
+	//未ログイン中の人用
+	private function _index_no_login($frameId){
+		$blockId = $this->Frame->getBlockId($frameId);
+		$this->set('Data' , array());
+		//blockから情報を取得 $LangId
+		$data = $this->AnnouncementDatum->getPublishData($blockId , $this->langId);
+		$this->set('item' , $data);
+		$this->set('frameId' , $frameId);
+		$this->set('blockId', $blockId);
+		return $this->render("index_not_login");
+	}
 
 /**
  * お知らせの保存処理実行
@@ -124,37 +157,36 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @param int $blockId
  * @return CakeResponse
  */
-	public function post($frameId=0 , $blockId = 0)
+	public function post($frameId=0 , $blockId=0 , $dataId=0)
 	{
 		//TODO:非同期通信以外でaccessされた場合、画面遷移させる。
 		//MEMO:残念ながらputは用意できない。リクエストとして新規作成がないため。
 		$this->layout = false;
 		$this->set('frameId' , $frameId);
 		$this->set('blockId' , $blockId);
+		$this->set('dataId' , $dataId);
 		// urlデコード後に保存
 		// javascriptでurlencodeしているため、使用する関数は rawurlencode関数
 		// javascript側は encodeURIComponent()で暗号化している
 		// 公開実行の場合、AnnouncementDatum.idが欲しい。
 		// 言語情報もpostされてほしい langいる！
-		//
 		//DBヘ保存
 		return $this->render();
 	}
 
 	//お知らせの新規作成 (ブロックの作成も含む）
-	public function put($frameId){
+	public function put($type , $frameId=0 ,$blockId=0 , $dataId=0){
 		//成功した場合、結果をreturnする
 		//json
 		//blockIdを必ず返す必要がある。
 		//contentはurlエンコードを行う
-		//
 	}
 
 	//お知らせの削除
 	//ブロックごと削除 block
 	//記事だけ削除    data 物理削除
 	//
-	public function delete($type , $blockId, $dataId){
+	public function delete($type , $frameId=0 , $blockId=0, $dataId=0){
 
 	}
 	//get
@@ -185,7 +217,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 
 	//編集権源のチェック
 	private  function _checkEditer() {
-
+		$this->_isEditer = true;
 		$this->set('isEdit', true);
 		return true;
 	}
