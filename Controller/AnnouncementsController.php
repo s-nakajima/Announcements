@@ -146,6 +146,8 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->Frame = Classregistry::init("Announcements.AnnouncementFrame");
 		//blockId初期値設定 view用
 		$this->set('blockId', 0);
+		//ユーザIDの設定
+		$this->__setUserId();
 		//編集権源のチェックと設定値の格納
 		$this->__checkEditer();
 		//公開権限のチェックと設定値の格納
@@ -158,8 +160,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->__setLang();
 		//ルームIDの設定
 		$this->__setRoomtId();
-		//ユーザIDの設定
-		$this->__setUserId();
+
 	}
 
 /**
@@ -217,13 +218,13 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	private function __indexNologin($frameId) {
 		$blockId = $this->Frame->getBlockId($frameId);
-		$this->set('Data', array());
 		//blockから情報を取得 $LangId
 		$data = $this->AnnouncementDatum->getPublishData($blockId, $this->langId);
 		$this->set('item', $data);
 		$this->set('frameId', $frameId);
 		$this->set('blockId', $blockId);
-		return $this->render("index_not_login");
+		$this->view = 'index_not_login';
+		return $this->render();
 	}
 
 /**
@@ -344,8 +345,13 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return bool
  */
 	private function __checkEditer() {
-		$this->__isEditer = true;
-		$this->set('isEdit', true);
+		if($this->__userId) {
+			$this->__isEditer = true;
+			$this->set('isEdit', true);
+		}
+		//未ログイン
+		$this->__isEditer = false;
+		$this->set('isEdit', false);
 		return true;
 	}
 
@@ -433,7 +439,13 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	private function __setUserId() {
-		$this->__userId = 1;
+		$User = AuthComponent::user();
+		//UserId格納
+		if(isset($User['id'])) {
+			$this->__userId = $User['id'];
+		}
+		$this->__userId = 0;
+		return ;
 	}
 }
 /*

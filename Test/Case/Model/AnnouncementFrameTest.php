@@ -43,7 +43,6 @@ class AnnouncementFrameTest extends CakeTestCase {
  */
 	public function tearDown() {
 		unset($this->Frame);
-
 		parent::tearDown();
 	}
 
