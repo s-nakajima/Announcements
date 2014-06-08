@@ -29,6 +29,11 @@
 		</div>
 	</div>
 
+<!-- プレビュー-->
+<div class="preview" id="announcement_content_preview_<?php echo intval($frameId); ?>">
+</div>
+
+
 <!-- 内容表示 -->
 <div class="item" id="announcement_content_view_<?php echo intval($frameId); ?>">
 <?php if(isset($item)
@@ -64,10 +69,33 @@
 	</p>
 	<!-- ボタン類 -->
 	<p class="text-center">
-		<button class="btn btn-default" ng-click="post('Cancel', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)"><span class="glyphicon glyphicon-remove"></span> <span><?php echo __('キャンセル'); ?></span></button>
-		<button class="btn btn-default" ng-click="post('Draft', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)"><span class="glyphicon glyphicon-pencil"></span> <span><?php echo __('下書き'); ?></span></button>
-		<button class="btn btn-primary" ng-click="post('PublishRequest', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)"><span class="glyphicon glyphicon-share-alt"></span> <span><?php echo __('公開申請'); ?></span></button>
-		<button class="btn btn-primary" ng-click="post('Publish', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)"><span class="glyphicon glyphicon-share-alt"></span> <span><?php echo __('公開'); ?></span></button>
+		<button
+			class="btn btn-default"
+			ng-click="post('Cancel', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)">
+			<span class="glyphicon glyphicon-remove"></span>
+			<span><?php echo __('キャンセル'); ?></span></button>
+		<button
+			class="btn btn-default"
+			id="announcements_btn_preview_<?php echo intval($frameId);?>"
+			ng-click="post('Preview', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)">
+			<span class="glyphicon glyphicon-file"></span> <span><?php echo __('プレビュー'); ?></span></button>
+		<button
+			class="btn btn-default hidden"
+			id="announcements_btn_preview_close_<?php echo intval($frameId);?>"
+			ng-click="post('PreviewClose', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)">
+			<span class="glyphicon glyphicon-file"></span> <span><?php echo __('プレビューを閉じる'); ?></span></button>
+		<button
+			class="btn btn-default"
+			ng-click="post('Draft', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)">
+			<span class="glyphicon glyphicon-pencil"></span> <span><?php echo __('下書き'); ?></span></button>
+		<button
+			class="btn btn-primary"
+			ng-click="post('PublishRequest', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)">
+			<span class="glyphicon glyphicon-share-alt"></span> <span><?php echo __('公開申請'); ?></span></button>
+		<button
+			class="btn btn-primary"
+			ng-click="post('Publish', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)">
+			<span class="glyphicon glyphicon-share-alt"></span> <span><?php echo __('公開'); ?></span></button>
 	</p>
 </div>
 

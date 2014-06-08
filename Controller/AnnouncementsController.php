@@ -91,10 +91,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->_setRoomtId();
 		//ユーザIDの設定
 		$this->_setUserId();
-
-		//json
-		//
-
 	}
 
 
@@ -118,17 +114,22 @@ class AnnouncementsController extends AnnouncementsAppController {
 		//編集権源があるひと
 		//ブロックが設定されておらず、セッティングモードでもない
 		if(! $blockId && ! $this->_isSetting) {
-			//return $this->render('notice');
+			return $this->render('notice');
 		}
 
-		//blockから情報を取得 $LangId
+		//最新情報（フォーム表示用）
+		$draftData = $this->AnnouncementDatum->getData($blockId , $this->langId , $this->_isSetting);
+
+		//セッティングモードOFF データ無し(下書きもなし）
 		$data = $this->AnnouncementDatum->getPublishData($blockId , $this->langId);
+		if(! $data && ! $this->_isSetting && !$draftData) {
+			return $this->render('notice');
+		}
 
 
 		//編集権源がある場合
 		$this->set('draftItem' , array());
-		//最新情報（フォーム表示用）
-		$draftData = $this->AnnouncementDatum->getData($blockId , $this->langId , $this->_isSetting);
+
 		$this->set('draftItem' , $draftData);
 		//echo '<pre>'; var_dump( $draftData); echo '</pre>';
 		//echo '<pre>'; var_dump( $data); echo '</pre>';
@@ -195,10 +196,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 
 	//お知らせの新規作成 (ブロックの作成も含む）
 	public function put($type , $frameId=0 ,$blockId=0 , $dataId=0){
-		//成功した場合、結果をreturnする
-		//json
-		//blockIdを必ず返す必要がある。
-		//contentはurlエンコードを行う
+		$this->post($frameId, $blockId, $dataId);
 	}
 
 	//お知らせの削除
@@ -227,7 +225,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->layout = false;
 		//パート名 あとでDBから取得する。
 		$part = array(
-			1=>array("id"=>1 , "name"=>'ルーム管理者'),
+			1=>array("id"=>1 ,"name"=>'ルーム管理者'),
 			2=>array("id"=>2 ,"name"=>'編集長'),
 			3=>array("id"=>3 ,"name"=>'編集者'),
 			4=>array("id"=>4 ,"name"=>'一般')

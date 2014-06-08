@@ -83,7 +83,41 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         $scope.dataId = dataId;
     }
 
+    //プレビューの表示
+    $scope.showPreview = function(){
+        var previewTag = '#announcement_content_preview_' + $scope.frameId;
+        var previewCloseBtnTag = '#announcements_btn_preview_close_'+ $scope.frameId;;
+        var previewBtnTag = '#announcements_btn_preview_'+ $scope.frameId;
+        var statusLavelTag = '#announcement_status_label_' + $scope.frameId + " .announcement-preview";
+        $(previewTag).html($scope.tinymceModel);
+        $(previewTag).removeClass('hidden');
+        //プレビュー終了ボタンを消す
+        $(previewCloseBtnTag).removeClass('hidden');
+        //プレビューボタンを表示する
+        $(previewBtnTag).addClass('hidden');
+        //プレビュー中のラベル。
+        $(statusLavelTag).removeClass('hidden');
+    }
 
+    //プレビューを終了する
+    $scope.closePreview = function(){
+        var previewTag = '#announcement_content_preview_' + $scope.frameId;
+        var previewCloseBtnTag = '#announcements_btn_preview_close_'+ $scope.frameId;;
+        var previewBtnTag = '#announcements_btn_preview_'+ $scope.frameId;;
+        var statusLavelTag = '#announcement_status_label_' + $scope.frameId + " .announcement-preview";
+
+        $(previewTag).html('');
+        $(previewTag).addClass('hidden');
+        //プレビュー中のラベルを下げる。
+        $(statusLavelTag).addClass('hidden');
+        //プレビューを終了するボタンを非表示にする。
+        $(previewCloseBtnTag).addClass('hidden');
+        //プレビューボタンを表示する。
+        $(previewBtnTag ).removeClass('hidden');
+
+    }
+
+    //エディターの切り替え
 
     //post //todo:非同期通信中のボタン無効化
     $scope.post = function(type , frameId , blockId, dataId){
@@ -92,6 +126,16 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
 
         if(type == "Cancel"){
             $scope.closeForm(frameId);
+            return ;
+        }
+        //プレビュー
+        if(type == 'Preview'){
+            $scope.showPreview();
+            return  ;
+        }
+        //プレビューの終了
+        if(type == "PreviewClose"){
+            $scope.closePreview();
             return ;
         }
         //form

@@ -18,7 +18,7 @@
 					'',
 					array(
 						'type'=>'checkbox',
-						'name'=>' '.'part['.$i['id'].']',
+						'name'=>'part['.$i['id'].']',
 						'lavel'=>false,
 						'div' => false,
 						'id'=>false,
@@ -41,11 +41,11 @@
 				<?php
 				echo $this->Form->radio('',
 					array(
-						1=>" ".__("ルーム管理者の承認が必要"),
-						2=>" ".__("自動的に承認する"),),
+						1=>__("ルーム管理者の承認が必要"),
+						2=>__("自動的に承認する"),),
 					array(
 					'div'=>false,
-					'name'=>'name',
+					'name'=>'apply',
 					'legend'=>false,
 					'id'=>false,
 					'label'=>false,
@@ -63,11 +63,11 @@
 			<?php
 			echo $this->Form->radio('',
 				array(
-					1=>"  ".__("投稿をメールで通知する"),
-					2=>"  ".__("投稿をメールで通知しない"),),
+					1=>__("投稿をメールで通知する"),
+					2=>__("投稿をメールで通知しない"),),
 				array(
 					'div'=>false,
-					'name'=>'name',
+					'name'=>'mail',
 					'legend'=>false,
 					'id'=>false,
 					'label'=>false,
@@ -84,13 +84,14 @@
 	<div class="container">
 	<label class="pull-left" style="padding:0 5px;">
 	<?php
+	//DB由来に修正する
 	echo $this->Form->radio('',
 		array(
-			1=>" ".__("ルーム管理者"),
-			2=>" ".__("編集長"),
-			3=>" ".__("編集者"),
-			4=>" ".__("一般"),
-			5=>" ".__("参観者")),
+			1=>__("ルーム管理者"),
+			2=>__("編集長"),
+			3=>__("編集者"),
+			4=>__("一般"),
+			5=>__("参観者")),
 		array(
 			'div'=>false,
 			'name'=>'name',
