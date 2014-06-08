@@ -40,7 +40,8 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @var array
  */
 	public $components = array(
-		'Security'
+		'Security',
+		'RequestHandler'
 	);
 
 	//セッティングモード
@@ -61,6 +62,8 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public $langId = 2; //基本言語 日本語 あとで見直し。
 	public $lang = 'ja';
 	public $langList = array();
+	public $_roomId = 0;
+	private $_userId = 0;
 
 
 	// 仕込み
@@ -84,6 +87,14 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->_checkAjax();
 		//言語設定
 		$this->_setLang();
+		//ルームIDの設定
+		$this->_setRoomtId();
+		//ユーザIDの設定
+		$this->_setUserId();
+
+		//json
+		//
+
 	}
 
 
@@ -93,7 +104,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public function index($frameId = 0) {
 		//レイアウトきりかえ
 		$this->_setLayout();
-		$this->set('Data' , array());
+		$this->set('item' , array());
 		//blockIdの取得
 		$blockId = $this->Frame->getBlockId($frameId);
 
@@ -104,32 +115,23 @@ class AnnouncementsController extends AnnouncementsAppController {
 		}
 
 		//ログインしている場合
-		//編集権限が無い人
 		//編集権源があるひと
-
 		//ブロックが設定されておらず、セッティングモードでもない
 		if(! $blockId && ! $this->_isSetting) {
-			return $this->render('notice');
-		}
-
-		//ブロックIDが設定されておらず、セッティングモードの場合
-		if(! $blockId && $this->_isSetting){
-			return $this->edit($frameId , 0);
+			//return $this->render('notice');
 		}
 
 		//blockから情報を取得 $LangId
 		$data = $this->AnnouncementDatum->getPublishData($blockId , $this->langId);
-		//データが存在しない場合
-		if(! $data){
-			//空を返す
-			return $this->render('notice');
-		}
+
 
 		//編集権源がある場合
 		$this->set('draftItem' , array());
 		//最新情報（フォーム表示用）
 		$draftData = $this->AnnouncementDatum->getData($blockId , $this->langId , $this->_isSetting);
 		$this->set('draftItem' , $draftData);
+		//echo '<pre>'; var_dump( $draftData); echo '</pre>';
+		//echo '<pre>'; var_dump( $data); echo '</pre>';
 		//出力情報セット
 		$this->set('item' , $data);
 		$this->set('frameId' , $frameId);
@@ -159,19 +161,36 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public function post($frameId=0 , $blockId=0 , $dataId=0)
 	{
-		//TODO:非同期通信以外でaccessされた場合、画面遷移させる。
-		//MEMO:残念ながらputは用意できない。リクエストとして新規作成がないため。
-		$this->layout = false;
-		$this->set('frameId' , $frameId);
-		$this->set('blockId' , $blockId);
-		$this->set('dataId' , $dataId);
-		// urlデコード後に保存
-		// javascriptでurlencodeしているため、使用する関数は rawurlencode関数
-		// javascript側は encodeURIComponent()で暗号化している
-		// 公開実行の場合、AnnouncementDatum.idが欲しい。
-		// 言語情報もpostされてほしい langいる！
-		//DBヘ保存
+		$this->_setLayout();
+
+		$rtn = $this->AnnouncementDatum->saveData(
+			$this->data ,
+			$this->_userId,
+			$this->_roomId,
+			$this->_isAjax
+		);
+
+	   if($rtn) {
+		   $result = array(
+				'status'=>'OK',
+				'message'=>__('保存しました'),
+				'data'=>$rtn
+		   );
+		   $this->viewClass = 'Json';
+		   $this->set(compact('result'));
+		   $this->set('_serialize', 'result');
+		   return $this->render();
+	   }
+
+		$result = array(
+			'status'=>'NG',
+			'message'=>__('保存に失敗しました')
+		);
+		$this->viewClass = 'Json';
+		$this->set(compact('result'));
+		$this->set('_serialize', 'result');
 		return $this->render();
+
 	}
 
 	//お知らせの新規作成 (ブロックの作成も含む）
@@ -205,8 +224,20 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public function block_setting($frameId = 0) {
 		//レイアウトきりかえ
-		$this->_setLayout();
+		$this->layout = false;
+		//パート名 あとでDBから取得する。
+		$part = array(
+			1=>array("id"=>1 , "name"=>'ルーム管理者'),
+			2=>array("id"=>2 ,"name"=>'編集長'),
+			3=>array("id"=>3 ,"name"=>'編集者'),
+			4=>array("id"=>4 ,"name"=>'一般')
+		);
+
+		$this->set('partList' , $part);
+		$this->set('partListSelect');
 		$this->set('frameId' , $frameId);
+
+
 	}
 
 	//フォームの取得
@@ -264,6 +295,15 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->lang = 'ja';
 		$this->langId = 2;
 		$this->set('langId' , $this->langId);
+	}
+   //roomIdの設定
+	private function _setRoomtId(){
+		//pageから取得するべき情報
+		$this->_roomId = 1;
+	}
+	//userIdの設定
+	private function _setUserId(){
+		$this->_userId = 1;
 	}
 
 

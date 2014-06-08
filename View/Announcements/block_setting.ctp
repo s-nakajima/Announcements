@@ -1,97 +1,144 @@
-<div>
-	<?php
-	// TestCode  記事投稿権限、通知する権限の動作、disableにするかどうか。「投稿をメールで通知する」かどうかによる表示・非表示に切り替え未実装。
-		echo $this->Form->create('AnnouncementBlock', array('ng-submit' => 'submit($event)', 'class' => 'form-horizontal announcements-block-setting-outer', 'role' => 'form'));
-	?>
-	<div class="modal-header">
-		<button type="button" class="close" aria-hidden="true" ng-click="cancel()">&times;</button>
-		<h4 class="modal-title"><?php echo __d('announcements', 'Announcement block setting'); ?></h4>
-	</div>
-	<div class="modal-body">
-		<div class="form-group">
-			<?php
-				echo $this->Form->label('BlocksLanguage.name', __d('announcements', 'Announcement Title') . '<span class="text-primary">*</span>', array('class' => 'col-sm-3 control-label'));
-			?>
-			<?php
-				echo $this->Form->input('BlocksLanguage.name', array('label' => false, 'div' => 'col-sm-9'));
-			?>
-		</div>
-		<div class="form-group">
-			<?php
-				echo $this->Form->label('AnnouncementBlocksPart.0.can_edit_content', __d('announcements', 'Authority to post articles'), array('class' => 'col-sm-3 control-label'));
-			?>
-			<div class="col-sm-9">
-				<?php echo $this->Form->input('AnnouncementBlocksPart.0.can_edit_content', array('type' => 'checkbox', 'label' => __d('announcements', 'Room manager'))); ?>
-				<?php echo $this->Form->input('AnnouncementBlocksPart.1.can_edit_content', array('type' => 'checkbox', 'label' => __d('announcements', 'Managing editor'))); ?>
-				<?php echo $this->Form->input('AnnouncementBlocksPart.2.can_edit_content', array('type' => 'checkbox', 'label' => __d('announcements', 'Editor'))); ?>
-				<?php echo $this->Form->input('AnnouncementBlocksPart.3.can_edit_content', array('type' => 'checkbox', 'label' => __d('announcements', 'General'))); ?>
-			</div>
-		</div>
-		<div class="form-group">
-			<?php
-				echo $this->Form->label('AnnouncementBlocksPart.0.can_publish_content.1', __d('announcements', 'Post approval setting'), array('class' => 'col-sm-3 control-label'));
-			?>
-			<div class="col-sm-9">
-				<?php
-					echo $this->Form->input('AnnouncementBlocksPart.0.can_publish_content', array(
-						'id' => 'AnnouncementBlocksPart0CanPublishContent',
-						'type' => 'radio',
-						'options' => array(1 => __d('announcements', 'Need room manager approval'), 0 => __d('announcements', 'Automatic approval')),
-						'div' => 'radio',
-						'separator' => '</div><div class="radio">',
-						'legend' => false,
-					));
+<div ng-controller="Announcements.setting">
+	<?php echo $this->Form->create(); ?>
+	<h3><?php echo __('お知らせ');?></h3>
+
+	<h4><?php echo __('記事投稿権限'); ?></h4>
+	<div class="form-group container">
+		<?php
+		foreach($partList as $k=>$i){
+			?><label class="pull-left" style="padding:0 10px;"><?php
+			if($k < 3)
+			{
 				?>
-			</div>
-		</div>
-		<div class="form-group">
-			<?php
-				echo $this->Form->label('AnnouncementBlock.send_mail.1', __d('announcements', 'Deliver e-mail when submitted?'), array('class' => 'col-sm-3 control-label'));
-			?>
-			<div class="col-sm-9">
+				<span class="glyphicon glyphicon-ok"></span>
 				<?php
-					echo $this->Form->input('AnnouncementBlock.send_mail', array(
-						'type' => 'radio',
-						'options' => array(1 => __d('announcements', 'Yes'), 0 => __d('announcements', 'No')),
-						'div' => 'radio',
-						'separator' => '</div><div class="radio">',
-						'legend' => false,
-						'ng-click' => 'toggleSendMail()',
-					));
+				echo h($i['name']).'<br>';
+			}else{
+				echo $this->Form->input(
+					'',
+					array(
+						'type'=>'checkbox',
+						'name'=>' '.'part['.$i['id'].']',
+						'lavel'=>false,
+						'div' => false,
+						'id'=>false,
+						'value'=>$i['id'],
+						'separator'=>'<br>'
+					)
+				);
+				echo " ".h($i['name']);
+			}
+			?></label><?php
+		}
+		?>
+	</div>
+	<div style="clear: both;"></div>
+
+
+	<h4><?php echo __('投稿の承認設定'); ?></h4>
+	<div class="container">
+		<label class="pull-left" style="padding:0 5px;">
+				<?php
+				echo $this->Form->radio('',
+					array(
+						1=>" ".__("ルーム管理者の承認が必要"),
+						2=>" ".__("自動的に承認する"),),
+					array(
+					'div'=>false,
+					'name'=>'name',
+					'legend'=>false,
+					'id'=>false,
+					'label'=>false,
+					'separator'=>'</label><label class="pull-left" style="padding:0 10px;">',
+				));
 				?>
-				<div ng-hide="toggleSendMailDetail">
-					<?php
-						echo $this->Form->label('AnnouncementBlocksPart.0.can_send_mail.1', __d('announcements', 'Notify whom? :'));
-					?>
-					<div>
-						<?php echo $this->Form->input('AnnouncementBlocksPart.0.can_send_mail', array('type' => 'checkbox', 'label' => __d('announcements', 'Room manager'))); ?>
-						<?php echo $this->Form->input('AnnouncementBlocksPart.1.can_send_mail', array('type' => 'checkbox', 'label' => __d('announcements', 'Managing editor'))); ?>
-						<?php echo $this->Form->input('AnnouncementBlocksPart.2.can_send_mail', array('type' => 'checkbox', 'label' => __d('announcements', 'Editor'))); ?>
-						<?php echo $this->Form->input('AnnouncementBlocksPart.3.can_send_mail', array('type' => 'checkbox', 'label' => __d('announcements', 'General'))); ?>
-						<?php echo $this->Form->input('AnnouncementBlocksPart.4.can_send_mail', array('type' => 'checkbox', 'label' => __d('announcements', 'Visitor'))); ?>
-					</div>
-					<?php
-						echo $this->Form->label('AnnouncementBlock.mail_subject', __d('announcements', 'E-mail Subject:'));
-						echo $this->Form->input('AnnouncementBlock.mail_subject', array('label' => false, 'div' => false));
-					?>
-					<div>
-						<?php echo $this->Form->label('AnnouncementBlock.mail_body', __d('announcements', 'Message：'));?>
-					</div>
-					<?php echo $this->Form->input('AnnouncementBlock.mail_body', array('type' => 'textarea', 'label' => false));?>
-					<div>
-						<?php echo __d('announcements', 'You may use the following keywords in the title and content of the message, {X-SITE_NAME}, {X-ROOM}, {X-ANNOUNCEMENT_NAME}, {X-USER}, {X-TO_DATE}, {X-BODY}, {X-URL}<br><br>Each keyword will be translated to site name, room name, announcement title, creator, timestamp, article and url');?>
-					</div>
-				</div>
-			</div>
-		</div>
+			</label>
 	</div>
-	<div class="modal-footer">
-		<div class="text-center" >
-			<?php echo $this->Form->button(__('Cancel'), array('class' => 'btn btn-default', 'type' => 'button', 'ng-click' => 'cancel()')); ?>
-			<?php echo $this->Form->button(__('Ok'), array('class' => 'btn btn-primary', 'type' => 'submit')); ?>
-		</div>
+	<div style="clear: both;"></div>
+
+
+	<h4><?php echo __('メール配信設定'); ?></h4>
+	<div class="container">
+		<label class="pull-left" style="padding:0 5px;">
+			<?php
+			echo $this->Form->radio('',
+				array(
+					1=>"  ".__("投稿をメールで通知する"),
+					2=>"  ".__("投稿をメールで通知しない"),),
+				array(
+					'div'=>false,
+					'name'=>'name',
+					'legend'=>false,
+					'id'=>false,
+					'label'=>false,
+					'separator'=>'</label><label class="pull-left" style="padding:0 10px;">',
+				));
+			?>
+		</label>
+	<div style="clear: both;"></div>
 	</div>
+
+
+
+	<h5><?php echo __('通知する権限'); ?></h5>
+	<div class="container">
+	<label class="pull-left" style="padding:0 5px;">
 	<?php
-		echo $this->Form->end();
+	echo $this->Form->radio('',
+		array(
+			1=>" ".__("ルーム管理者"),
+			2=>" ".__("編集長"),
+			3=>" ".__("編集者"),
+			4=>" ".__("一般"),
+			5=>" ".__("参観者")),
+		array(
+			'div'=>false,
+			'name'=>'name',
+			'legend'=>false,
+			'id'=>false,
+			'separator'=>'</label><label class="pull-left" style="padding:0 5px;">',
+		));
 	?>
+	</label>
+	<div style="clear: both;"></div>
+	</div>
+
+
+	<h5><?php echo __('件名'); ?></h5>
+	<div>
+	<?php echo $this->Form->input('hoge',
+		array(
+			'div'=>false,
+			'name'=>'name',
+			'legend'=>false,
+			'id'=>false,
+			'label'=>false,
+			'class'=>'form-control'
+		));
+	?>
+	</div>
+
+	<h5><?php echo __('内容'); ?></h5>
+	<div>
+	<?php echo $this->Form->textarea("",
+		array(
+			"cols"=>20,
+			"rows"=>5,
+			"value"=>"",
+			"class"=>"form-control"));
+	?>
+	</div>
+
+	<p>
+		<?php echo __('件名と本文には、{X-SITE_NAME}、{X-ROOM}、{X-ANNOUNCEMENT_NAME}、{X-USER}、{X-TO_DATE}、{X-BODY}、{X-URL}というキーワードを使えます。'); ?>
+   </p>
+	<p>
+		<?php echo __('それぞれのキーワードは、サイト名称、ルーム名称、お知らせタイトル、投稿者ハンドル名称、投稿日時、記事本文、投稿内容のURLに変換されて送信されます。'); ?>
+	</p>
+
+	<p class="container text-center">
+		<button type="button" class="btn btn-default" data-dismiss="modal">キャンセル</button>
+		<button type="button" class="btn btn-primary"><?php echo __("登録")?></button>
+	</p>
+	<?php echo $this->Form->end(); ?>
 </div>

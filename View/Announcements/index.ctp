@@ -4,24 +4,30 @@
 
 
 <div class="text-right">
-	<p>
-		<span class="label label-info">編集中データあり</span><br>
-		<!-- <span class="label label-danger">公開申請中</span> -->
-	</p>
+
+	<!-- ラベル -->
+	<?php echo $this->element("Announcements.lavel"); ?>
+
 	<button class="btn btn-primary"
-	        id="announcement_content_edit_btn_<?php echo intval($frameId); ?>"+
+	        id="announcement_content_edit_btn_<?php echo intval($frameId); ?>"
 	        ng-click="getEditer('<?php echo intval($frameId); ?> , <?php echo intval($blockId); ?>')"
 	><span>編集</span></button>
-	<button
+	<!-- 公開申請ボタン -->
+	<!-- <button
 			class="btn btn-danger"
 			ng-click="PublishComfirm('<?php echo intval($frameId); ?> , <?php echo intval($blockId); ?>')"
 	>
-	<span>公開実行</span></button>
+	<span>公開実行</span></button>-->
 </div>
 <div class="clear:both;"> </div>
 
-	<!-- メッセージ表示 -->
-
+	<!-- メッセージ -->
+	<div id="announcements_mss_<?php echo intval($frameId);?>">
+		<div class="alert alert-danger hidden">
+			<span class="pull-right" ng-click="postAlertClose()"><span class="glyphicon glyphicon-remove"></span></span></span>
+			<span class="errorMss"></span>
+		</div>
+	</div>
 
 <!-- 内容表示 -->
 <div class="item" id="announcement_content_view_<?php echo intval($frameId); ?>">
@@ -48,13 +54,7 @@
 
 <!-- 編集枠  -->
 <div class="announcements_editer" id="announcements_form_<?php echo intval($frameId);?>">
-	<!-- メッセージ -->
-	<div id="announcements_mss_<?php echo intval($frameId);?>">
-		<div class="alert alert-danger hidden">
-			<span class="pull-right" ng-click="postAlertClose()"><span class="glyphicon glyphicon-remove"></span></span></span>
-			<span class="errorMss"></span>
-		</div>
-	</div>
+
    <!-- エディタ -->
 	<p>
 		<textarea ui-tinymce
@@ -72,7 +72,4 @@
 </div>
 
 	<div id="announcements_post_<?php echo $frameId;?>"></div>
-	debug : frameId:<?php echo $frameId;?><br>
-	debug : blockId:<?php echo $blockId;?>
-	<pre>{{debug}}</pre>
 </div>

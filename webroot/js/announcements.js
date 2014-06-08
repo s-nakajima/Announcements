@@ -1,19 +1,21 @@
-angular.module('NetCommonsApp',
-    [
-        'ui.bootstrap',
-        'ui.tinymce'
-    ]
-).controller('Announcements.edit', function($scope , $http) {
-    $scope.pluginsUrl = '/announcements/announcements/';
+
+NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
+    var pluginsUrl = '/announcements/announcements/';
+    var errorViewTag = "#announcements_mss_";
     $scope.frameId = 0;
     $scope.blockId = 0;
     $scope.dataId = 0;
-    $scope.geturl =  $scope.pluginsUrl + "get_edit_form/";
-    $scope.posturl = $scope.pluginsUrl + "post/";
+    $scope.geturl =  pluginsUrl + "get_edit_form/";
+    $scope.posturl = pluginsUrl + "post/";
     $scope.debug = null;
     $scope.tinymceModel = null;
-    errorViewTag = "#announcements_mss_";
+
     $scope.alertMss = null;
+    $scope.statusList = {
+        'Publish' : 1,
+        'PublishRequest' : 2,
+        'Draft' : 3
+    };
 
     //フォームを閉じる
     $scope.closeForm = function(frameId){
@@ -27,8 +29,8 @@ angular.module('NetCommonsApp',
     }
 
     //フォームを開く
-    $scope.getEditer = function(frameId , blockId){
-        $scope.setId(frameId , blockId);
+    $scope.getEditer = function(frameId , blockId, dataId){
+        $scope.setId(frameId , blockId, dataId);
         var editerTag = '#announcements_form_' + frameId;
         var viewerTag = '#announcement_content_view_' + frameId;
         var editerOpenBtnTag = '#announcement_content_edit_btn_' +frameId;
@@ -69,17 +71,24 @@ angular.module('NetCommonsApp',
     }
 
     //idのセット
-    $scope.setId = function(frameId , blockId){
+    $scope.setId = function(frameId , blockId, dataId){
         $scope.frameId = frameId;
+        if(! blockId){
+            blockId = 0;
+        }
+        if(! dataId){
+            dataId = 0;
+        }
         $scope.blockId = blockId;
+        $scope.dataId = dataId;
     }
 
 
 
     //post //todo:非同期通信中のボタン無効化
-    $scope.post = function(type , frameId , blockId){
+    $scope.post = function(type , frameId , blockId, dataId){
         //idセット
-        $scope.setId(frameId , blockId);
+        $scope.setId(frameId , blockId ,dataId);
 
         if(type == "Cancel"){
             $scope.closeForm(frameId);
@@ -102,21 +111,20 @@ angular.module('NetCommonsApp',
                     'data[AnnouncementDatum][type]'    : type,
                     'data[AnnouncementDatum][langId]'  : $(post_data_form + " input[name='data[AnnouncementDatum][langId]']").val(),
                     'data[AnnouncementDatum][id]'      : $scope.dataId
-
                 };
 
                 //post
                 $.ajax({
                     method:'POST' ,
-                    url: $scope.posturl + $scope.frameId,
+                    url: $scope.posturl + $scope.frameId + '/' + Math.random(),
                     data: post_params,
-                    success:function(data, status, headers, config){
-                        if(! data) { data = "success"; }
-                        $scope.postAlert("success" , data);
+                    success:function(json, status, headers, config){
+                        $scope.setIndex(json);
                     },
                     error:function(){
-                        if(! data) { data = "ERROR!"; }
-                        $scope.postAlert("error" , data);
+                        if(! json) { json = "ERROR!"; }
+                        $scope.postAlert("error" , 'NG');
+                        $scope.debug = json;
                     }
                 });
             })
@@ -124,9 +132,44 @@ angular.module('NetCommonsApp',
                 //keyの取得に失敗
                 if(! data) { data = "ERROR!"; }
                 $scope.postAlert("error" , data);
+                $scope.debug = data;
             });
 
 
+    }
+    //最新の情報にいれかえる
+    $scope.setIndex = function(json){
+        //フォームを閉じる
+        $scope.closeForm($scope.frameId);
+       //最新
+        var editerTag = '#announcements_form_' + $scope.frameId;
+        var viewerTag = '#announcement_content_view_' + $scope.frameId;
+        var editerOpenBtnTag = '#announcement_content_edit_btn_' + $scope.frameId;
+        var draftTag = '#announcement_content_draft_' + $scope.frameId;
+        var statusLavelTag = '#announcement_status_label_' + $scope.frameId;
+        var statusLavelClassTag = statusLavelTag + ' .announcement-status-';
+        var content = json.data.AnnouncementDatum.content;
+        var statusId = json.data.AnnouncementDatum.status_id;
+        $(statusLavelClassTag + $scope.statusList.Draft).addClass("hidden");
+        $(statusLavelClassTag + $scope.statusList.Publish).addClass("hidden");
+        $(statusLavelClassTag + $scope.statusList.PublishRequest).addClass("hidden");
+        if(statusId == $scope.statusList.Draft)
+        {
+            //下書き
+            $(draftTag).html(content);
+        }else if(statusId == $scope.statusList.Publish){
+            //公開中
+            $(viewerTag).html(content);
+            $(draftTag).html(content);
+        }else if(statusId == $scope.statusList.PublishRequest){
+            //申請中
+            $(draftTag).html(content);
+        }
+
+        $(statusLavelClassTag + statusId).removeClass("hidden");
+        $(editerOpenBtnTag).attr('ng-click' , 'etEditer(' + $scope.frameId + ',' +  json.data.AnnouncementDatum.block_id + ')');
+        $scope.debug = json.data.AnnouncementDatum.block_id;
+        $scope.postAlert("success" , json.message);
     }
 
     //公開確認
@@ -136,4 +179,12 @@ angular.module('NetCommonsApp',
     //全ての編集画面一旦非表示
     $(".announcements_editer").addClass('hidden');
 
+    //プレビューどうしようか？
+});
+
+NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
+
+    $scope.getPluginName = function(n){
+
+    }
 });

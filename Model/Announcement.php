@@ -19,33 +19,4 @@ App::uses('AppModel', 'Model');
  * Summary for Announcement Model
  */
 class Announcement extends AppModel {
-
-
-
-	public  $hasMany = 'AnnouncementDatum';
-
-
-	public function getData($blockId , $lang,  $isSetting=null) {
-
-		//if($isSetting){
-			//公開情報の最新を返す
-			return $this->getPublishData($blockId ,$lang);
-		//}
-		;
-	}
-
-	public function getPublishData($blockId , $lang) {
-		$this->hasMany['AnnouncementDatum']["conditions"] = array(
-			//'AnnouncementDatum.status_id'=>1,
-			//'AnnouncementDatum.language_id'=>$lang
-		);
-		$this->hasMany['AnnouncementDatum']['order'] = array(
-			//'AnnouncementDatum.id DESC'
-		);
-		return $this->find('all');;
-
-
-
-
-	}
 }
