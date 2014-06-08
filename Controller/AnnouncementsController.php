@@ -17,7 +17,10 @@
  *  post :修正
  *  delete : 削除
  */
-App::uses('AnnouncementsAppController','Announcements.Controller');
+App::uses(
+	'AnnouncementsAppController',
+	'Announcements.Controller'
+);
 
 class AnnouncementsController extends AnnouncementsAppController {
 
@@ -44,111 +47,181 @@ class AnnouncementsController extends AnnouncementsAppController {
 		'RequestHandler'
 	);
 
-	//セッティングモード
-	private $_isSetting = false;
+/**
+ * セッティングモードの状態
+ *
+ * @var bool
+ */
+	private $__isSetting = false;
 
-	//非同期通信判定
-	private $_isAjax = false;
-	//編集権源あり
-	private $_isEditer = false;
+/**
+ * 非同期通信の判定結果
+ *
+ * @var bool
+ */
+	private $__isAjax = false;
 
-	//model格納
+/**
+ * 編集権限
+ *
+ * @var bool
+ */
+	private $__isEditer = false;
+
+/**
+ * model object
+ *
+ * @var null
+ */
 	public $AnnouncementDatum = null;
+
+/**
+ * Frame model object
+ *
+ * @var null
+ */
 	public $Frame = null;
+
+/**
+ * Block model object
+ *
+ * @var null
+ */
 	public $Block = null;
+
+/**
+ * Announcement model object
+ *
+ * @var null
+ */
 	public $Announcement = null;
 
-	//値
-	public $langId = 2; //基本言語 日本語 あとで見直し。
+/**
+ * 言語ID
+ *
+ * @var int
+ */
+	public $langId = 2;
+
+/**
+ * 言語
+ *
+ * @var string
+ */
 	public $lang = 'ja';
+
+/**
+ * 言語一覧
+ *
+ * @var array
+ */
 	public $langList = array();
-	public $_roomId = 0;
-	private $_userId = 0;
 
+/**
+ * room id
+ *
+ * @var int
+ */
+	private $__roomId = 0;
 
-	// 仕込み
+/**
+ * user id
+ *
+ * @var int
+ */
+	private $__userId = 0;
+
+/**
+ * 準備
+ *
+ * @return void
+ */
 	public function beforeFilter() {
 		//親処理
 		parent::beforeFilter();
 		//modelのセット
 		$this->AnnouncementDatum = Classregistry::init("Announcements.AnnouncementDatum");
 		//設定値の格納
-		$this->_isSetting = Configure::read('Pages.isSetting');
+		$this->__isSetting = Configure::read('Pages.isSetting');
 		$this->Frame = Classregistry::init("Announcements.AnnouncementFrame");
 		//blockId初期値設定 view用
 		$this->set('blockId', 0);
 		//編集権源のチェックと設定値の格納
-		$this->_checkEditer();
+		$this->__checkEditer();
 		//公開権限のチェックと設定値の格納
-		$this->_checkAdmin();
+		$this->__checkAdmin();
 		//著者かどうかの確認と設定値の格納
-		$this->_checkAuthor();
+		$this->__checkAuthor();
 		//Ajax判定と設定値の格納
-		$this->_checkAjax();
+		$this->__checkAjax();
 		//言語設定
-		$this->_setLang();
+		$this->__setLang();
 		//ルームIDの設定
-		$this->_setRoomtId();
+		$this->__setRoomtId();
 		//ユーザIDの設定
-		$this->_setUserId();
+		$this->__setUserId();
 	}
 
-
 /**
- * Index
+ * index
+ *
+ * @param int $frameId frames.id
+ * @return CakeResponse
  */
 	public function index($frameId = 0) {
 		//レイアウトきりかえ
-		$this->_setLayout();
-		$this->set('item' , array());
+		$this->__setLayout();
+		$this->set('item', array());
 		//blockIdの取得
 		$blockId = $this->Frame->getBlockId($frameId);
-
-		 //編集権限が無い人 (ログイン中も含む 公開情報しかみえない）
-		if(! $this->_isEditer ){
+		//編集権限が無い人 (ログイン中も含む 公開情報しかみえない）
+		if (! $this->__isEditer ) {
 			//blockから情報を取得 $LangId
-			return $this->_index_no_login($frameId);
+			return $this->__indexNologin($frameId);
 		}
-
 		//ログインしている場合
 		//編集権源があるひと
 		//ブロックが設定されておらず、セッティングモードでもない
-		if(! $blockId && ! $this->_isSetting) {
+		if (! $blockId && ! $this->__isSetting) {
 			return $this->render('notice');
 		}
 
 		//最新情報（フォーム表示用）
-		$draftData = $this->AnnouncementDatum->getData($blockId , $this->langId , $this->_isSetting);
+		$draftData = $this->AnnouncementDatum->getData($blockId, $this->langId, $this->__isSetting);
 
 		//セッティングモードOFF データ無し(下書きもなし）
-		$data = $this->AnnouncementDatum->getPublishData($blockId , $this->langId);
-		if(! $data && ! $this->_isSetting && !$draftData) {
+		$data = $this->AnnouncementDatum->getPublishData($blockId, $this->langId);
+		if (! $data && ! $this->__isSetting && !$draftData) {
 			return $this->render('notice');
 		}
 
-
 		//編集権源がある場合
-		$this->set('draftItem' , array());
+		$this->set('draftItem', array());
 
-		$this->set('draftItem' , $draftData);
+		$this->set('draftItem', $draftData);
 		//echo '<pre>'; var_dump( $draftData); echo '</pre>';
 		//echo '<pre>'; var_dump( $data); echo '</pre>';
 		//出力情報セット
-		$this->set('item' , $data);
-		$this->set('frameId' , $frameId);
+		$this->set('item', $data);
+		$this->set('frameId', $frameId);
 		$this->set('blockId', $blockId);
 		//出力
 		return $this->render();
 	}
 
-	//未ログイン中の人用
-	private function _index_no_login($frameId){
+/**
+ * index 未ログイン向け処理
+ *
+ * @param int $frameId frames.id
+ * @return CakeResponse
+ */
+	private function __indexNologin($frameId) {
 		$blockId = $this->Frame->getBlockId($frameId);
-		$this->set('Data' , array());
+		$this->set('Data', array());
 		//blockから情報を取得 $LangId
-		$data = $this->AnnouncementDatum->getPublishData($blockId , $this->langId);
-		$this->set('item' , $data);
-		$this->set('frameId' , $frameId);
+		$data = $this->AnnouncementDatum->getPublishData($blockId, $this->langId);
+		$this->set('item', $data);
+		$this->set('frameId', $frameId);
 		$this->set('blockId', $blockId);
 		return $this->render("index_not_login");
 	}
@@ -156,63 +229,80 @@ class AnnouncementsController extends AnnouncementsAppController {
 /**
  * お知らせの保存処理実行
  *
- * @param int $frameId
- * @param int $blockId
+ * @param int $frameId frames.id
+ * @param int $blockId blocks.id
+ * @param int $dataId announcement_data.id
  * @return CakeResponse
  */
-	public function post($frameId=0 , $blockId=0 , $dataId=0)
-	{
-		$this->_setLayout();
-
+	public function post($frameId = 0, $blockId = 0, $dataId = 0) {
+		//レイアウトの設定
+		$this->__setLayout();
+		//保存
 		$rtn = $this->AnnouncementDatum->saveData(
-			$this->data ,
-			$this->_userId,
-			$this->_roomId,
-			$this->_isAjax
+			$this->data,
+			$this->__userId,
+			$this->__roomId,
+			$this->__isAjax
 		);
-
-	   if($rtn) {
-		   $result = array(
-				'status'=>'OK',
-				'message'=>__('保存しました'),
-				'data'=>$rtn
-		   );
-		   $this->viewClass = 'Json';
-		   $this->set(compact('result'));
-		   $this->set('_serialize', 'result');
-		   return $this->render();
-	   }
-
+		//成功結果を返す
+		if ($rtn) {
+			$result = array(
+				'status' => 'OK',
+				'message' => __('保存しました'),
+				'data' => $rtn
+			);
+			$this->viewClass = 'Json';
+			$this->set(compact('result'));
+			$this->set('_serialize', 'result');
+			return $this->render();
+		}
+		//失敗結果を返す
 		$result = array(
-			'status'=>'NG',
-			'message'=>__('保存に失敗しました')
+			'status' => 'NG',
+			'message' => __('保存に失敗しました')
 		);
 		$this->viewClass = 'Json';
 		$this->set(compact('result'));
 		$this->set('_serialize', 'result');
 		return $this->render();
-
 	}
 
-	//お知らせの新規作成 (ブロックの作成も含む）
-	public function put($type , $frameId=0 ,$blockId=0 , $dataId=0){
-		$this->post($frameId, $blockId, $dataId);
+/**
+ * 新規作成処理(非同期通信）
+ *
+ * @param string $type 情報のタイプ
+ * @param int $frameId frames.id
+ * @param int $blockId blocks.id
+ * @param int $dataId  announcement_data.id
+ * @return void
+ */
+	public function put($type, $frameId = 0, $blockId = 0, $dataId = 0) {
+		$this->post($type, $frameId, $blockId, $dataId);
 	}
 
-	//お知らせの削除
-	//ブロックごと削除 block
-	//記事だけ削除    data 物理削除
-	//
-	public function delete($type , $frameId=0 , $blockId=0, $dataId=0){
-
+/**
+ * 削除(非同期通信）
+ *
+ * @param string $type 情報のタイプ
+ * @param int $frameId frames.id
+ * @param int $blockId blocks.id
+ * @param int $dataId  announcement_data.id
+ * @return void
+ */
+	public function delete($type, $frameId = 0, $blockId = 0, $dataId = 0) {
 	}
-	//get
-	//記事情報を返す json
-	public function get($type , $flameId=0 , $blockId=0, $dataId=0){
 
+/**
+ * 取得(非同期通信）
+ *
+ * @param string $type 情報のタイプ
+ * @param int $flameId frames.id
+ * @param int $blockId blocks.id
+ * @param int $dataId announcement_data.id
+ * @return void
+ */
+	public function get($type, $flameId = 0, $blockId = 0, $dataId = 0) {
 	}
-
-
 
 /**
  * ブロック設定
@@ -225,88 +315,127 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->layout = false;
 		//パート名 あとでDBから取得する。
 		$part = array(
-			1=>array("id"=>1 ,"name"=>'ルーム管理者'),
-			2=>array("id"=>2 ,"name"=>'編集長'),
-			3=>array("id"=>3 ,"name"=>'編集者'),
-			4=>array("id"=>4 ,"name"=>'一般')
+			1 => array("id" => 1, "name" => 'ルーム管理者'),
+			2 => array("id" => 2, "name" => '編集長'),
+			3 => array("id" => 3, "name" => '編集者'),
+			4 => array("id" => 4, "name" => '一般')
 		);
-
-		$this->set('partList' , $part);
+		$this->set('partList', $part);
 		$this->set('partListSelect');
-		$this->set('frameId' , $frameId);
-
-
+		$this->set('frameId', $frameId);
 	}
 
-	//フォームの取得
-	public function get_edit_form($frameId = 0 , $blockId = 0) {
+/**
+ * お知らせ投稿用のformを取得する
+ *
+ * @param int $frameId frames.id
+ * @param int $blockId blocks.id
+ * @return void
+ */
+	public function get_edit_form($frameId = 0, $blockId = 0) {
 		$this->layout = false;
-		$this->set('frameId' , $frameId);
+		$this->set('frameId', $frameId);
+		$this->set('blockId', $blockId);
 	}
 
-	//編集権源のチェック
-	private  function _checkEditer() {
-		$this->_isEditer = true;
+/**
+ * 編集権源の設定
+ *
+ * @return bool
+ */
+	private function __checkEditer() {
+		$this->__isEditer = true;
 		$this->set('isEdit', true);
 		return true;
 	}
 
-	//公開する権限があるかどうかのチェック
-	private function _checkAdmin(){
+/**
+ * 公開権限の設定（ルーム管理者）
+ *
+ * @return void
+ */
+	private function __checkAdmin() {
 		$this->set('isAdmin', true);
 	}
 
-	//書いた人本人かどうかのチェック
-	private function _checkAuthor(){
+/**
+ * 書いた人設定
+ *
+ * @return void
+ */
+	private function __checkAuthor() {
 		$this->set('isAuthor', true);
 	}
 
-	//ajax通信だった場合、layoutをoffにする
-	private function _setLayout() {
-		if($this->_isAjax){
+/**
+ * 非同期通信の場合、レイアウトなし設定をする。
+ *
+ * @return void
+ */
+	private function __setLayout() {
+		if ($this->__isAjax) {
 			$this->layout = false;
 		}
 	}
 
-	//非同期通信ではなく直接表示された場合の処理
-	private function _checkAccess(){
-		if(! $this->_isAjax){
+/**
+ * ajax以外でアクセスした時の処理
+ *
+ * @return void
+ */
+	private function __checkAccess() {
+		if (! $this->__isAjax) {
 			//frameIdからページを判定 urlを取得し、リダイレクトする。
 			//javascriptが読み込まれてないことによる動作不良を防ぐため。
 		}
 	}
 
-	//ajaxの判定と設定値の格納
-	private function _checkAjax(){
-		if($this->request->is('ajax')){
-			$this->_isAjax = true;
+/**
+ * 非同期通設定
+ *
+ * @return void
+ */
+	private function __checkAjax() {
+		if ($this->request->is('ajax')) {
+			$this->__isAjax = true;
 		}
 	}
 
-	//言語list
-	private function _setLang(){
+/**
+ * 言語一覧の設定
+ *
+ * @return void
+ */
+	private function __setLang() {
 		//本来はDBより取得
 		$this->langList = array(
-			1=>'en',
-			2=>'ja'
+			1 => 'en',
+			2 => 'ja'
 		);
 		$this->lang = 'ja';
 		$this->langId = 2;
-		$this->set('langId' , $this->langId);
+		$this->set('langId', $this->langId);
 	}
-   //roomIdの設定
-	private function _setRoomtId(){
+
+/**
+ * room_idの設定
+ *
+ * @return void
+ */
+	private function __setRoomtId() {
 		//pageから取得するべき情報
-		$this->_roomId = 1;
-	}
-	//userIdの設定
-	private function _setUserId(){
-		$this->_userId = 1;
+		$this->__roomId = 1;
 	}
 
-
+/**
+ * user_idの設定
+ *
+ * @return void
+ */
+	private function __setUserId() {
+		$this->__userId = 1;
+	}
 }
-
 /*
  * frame_idから表示されるべき情報を取得する。
  * frame_idから、blockを新規作成する

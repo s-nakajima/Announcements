@@ -12,12 +12,19 @@
 App::uses('AppModel', 'Model');
 
 class AnnouncementFrame extends AppModel {
+
 /**
  * テーブルの指定
+ *
  * @var bool
  */
 	public $useTable = 'frames';
 
+/**
+ * name
+ *
+ * @var string
+ */
 	public $name = "AnnouncementsFrame";
 
 /**
@@ -33,23 +40,19 @@ class AnnouncementFrame extends AppModel {
 		parent::__construct($id, $table, $ds);
 	}
 
-
-	//blockが存在するかどうかチェック？
-
 /**
  * BlockIdが設定されているかどうか確認する。
- * @param $frameId
- * @return mixed
+ *
+ * @param int $frameId frames.id
+ * @return int blocks.id
  */
-	function getBlockId($frameId) {
+	public function getBlockId($frameId) {
 		$frame = $this->findById($frameId);
-		if($frame
+		if ($frame
 			&& isset($frame['AnnouncementFrame'])
 			&& isset($frame['AnnouncementFrame']['block_id'])
 			&& $frame['AnnouncementFrame']['block_id']) {
 			return $frame['AnnouncementFrame']['block_id'];
 		}
 	}
-
-
 }

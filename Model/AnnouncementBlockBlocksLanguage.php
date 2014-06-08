@@ -11,11 +11,17 @@
 
 class AnnouncementBlockBlocksLanguage extends AppModel {
 
-	/**
-	 * テーブルの指定
-	 * @var bool
-	 */
+/**
+ * table
+ *
+ * @var bool
+ */
 	public $useTable = 'blocks_language';
-	public $name = "AnnouncementBlockBlocksLanguage";
 
+/**
+ * name
+ *
+ * @var string
+ */
+	public $name = "AnnouncementBlockBlocksLanguage";
 }

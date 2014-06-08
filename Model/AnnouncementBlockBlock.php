@@ -1,10 +1,10 @@
 <?php
 /**
- * Created by IntelliJ IDEA.
- * User: neko
- * Date: 2014/06/06
- * Time: 16:30
- * blocks テーブルへの接続
+ * AnnouncementBlockBlock Model
+ *
+ * @author   Takako Miyagawa <nekoget@gmail.com>
+ * @link     http://www.netcommons.org NetCommons Project
+ * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 class AnnouncementBlockBlock extends AppModel {
 
@@ -13,9 +13,11 @@ class AnnouncementBlockBlock extends AppModel {
  * @var bool
  */
 	public $useTable = 'blocks';
+
+/**
+ * name
+ *
+ * @var string
+ */
 	public $name = "AnnouncementBlockBlock";
-
-
-
-
 }
