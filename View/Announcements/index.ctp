@@ -22,12 +22,12 @@
 <div class="clear:both;"> </div>
 
 	<!-- メッセージ -->
-	<div id="announcements_mss_<?php echo intval($frameId);?>">
+	<p id="announcements_mss_<?php echo intval($frameId);?>">
 		<div class="alert alert-danger hidden">
 			<span class="pull-right" ng-click="postAlertClose()"><span class="glyphicon glyphicon-remove"></span></span></span>
 			<span class="errorMss"></span>
 		</div>
-	</div>
+	</p>
 
 <!-- プレビュー-->
 <div class="preview" id="announcement_content_preview_<?php echo intval($frameId); ?>">
@@ -73,7 +73,7 @@
 			class="btn btn-default"
 			ng-click="post('Cancel', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)">
 			<span class="glyphicon glyphicon-remove"></span>
-			<span><?php echo __('キャンセル'); ?></span></button>
+			<span><?php echo __('閉じる'); ?></span></button>
 		<button
 			class="btn btn-default"
 			id="announcements_btn_preview_<?php echo intval($frameId);?>"

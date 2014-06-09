@@ -220,6 +220,9 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$blockId = $this->Frame->getBlockId($frameId);
 		//blockから情報を取得 $LangId
 		$data = $this->AnnouncementDatum->getPublishData($blockId, $this->langId);
+		if(! $data) {
+			return $this->render('notice');
+		}
 		$this->set('item', $data);
 		$this->set('frameId', $frameId);
 		$this->set('blockId', $blockId);
@@ -342,17 +345,21 @@ class AnnouncementsController extends AnnouncementsAppController {
 /**
  * 編集権源の設定
  *
- * @return bool
+ * @return void
  */
 	private function __checkEditer() {
+		if(! $this->__userId) {
+			$this->__setUserId();
+		}
 		if($this->__userId) {
 			$this->__isEditer = true;
 			$this->set('isEdit', true);
+			return ;
 		}
 		//未ログイン
 		$this->__isEditer = false;
 		$this->set('isEdit', false);
-		return true;
+		return ;
 	}
 
 /**
@@ -443,6 +450,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		//UserId格納
 		if(isset($User['id'])) {
 			$this->__userId = $User['id'];
+			return ;
 		}
 		$this->__userId = 0;
 		return ;

@@ -16,12 +16,15 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         'PublishRequest' : 2,
         'Draft' : 3
     };
+    $scope.isPreview = 0;
 
     //フォームを閉じる
     $scope.closeForm = function(frameId){
         var editerTag = '#announcements_form_' + frameId;
         var viewerTag = '#announcement_content_view_' + frameId;
         var editerOpenBtnTag = '#announcement_content_edit_btn_' +frameId;
+        //プレビューも閉じる
+        $scope.closePreview();
         $(viewerTag).removeClass('hidden');
         $(editerTag).addClass('hidden');
         $(editerOpenBtnTag).removeClass('hidden');
@@ -34,7 +37,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         var editerTag = '#announcements_form_' + frameId;
         var viewerTag = '#announcement_content_view_' + frameId;
         var editerOpenBtnTag = '#announcement_content_edit_btn_' +frameId;
-        var draftTag = '#announcement_content_draft_'+ frameId;;
+        var draftTag = '#announcement_content_draft_'+ frameId;
         $(editerTag).removeClass('hidden');
         $(viewerTag).addClass('hidden');
         $(editerOpenBtnTag).addClass('hidden');
@@ -89,6 +92,9 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         var previewCloseBtnTag = '#announcements_btn_preview_close_'+ $scope.frameId;;
         var previewBtnTag = '#announcements_btn_preview_'+ $scope.frameId;
         var statusLavelTag = '#announcement_status_label_' + $scope.frameId + " .announcement-preview";
+        var viewerTag = '#announcement_content_view_' + $scope.frameId;
+        //本記事を隠す
+        $(viewerTag).addClass('hidden');
         $(previewTag).html($scope.tinymceModel);
         $(previewTag).removeClass('hidden');
         //プレビュー終了ボタンを消す
@@ -102,10 +108,12 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
     //プレビューを終了する
     $scope.closePreview = function(){
         var previewTag = '#announcement_content_preview_' + $scope.frameId;
-        var previewCloseBtnTag = '#announcements_btn_preview_close_'+ $scope.frameId;;
-        var previewBtnTag = '#announcements_btn_preview_'+ $scope.frameId;;
+        var previewCloseBtnTag = '#announcements_btn_preview_close_'+ $scope.frameId;
+        var previewBtnTag = '#announcements_btn_preview_'+ $scope.frameId;
         var statusLavelTag = '#announcement_status_label_' + $scope.frameId + " .announcement-preview";
-
+        var viewerTag = '#announcement_content_view_' + $scope.frameId;
+        //本記事を表示する
+        $(viewerTag).removeClass('hidden');
         $(previewTag).html('');
         $(previewTag).addClass('hidden');
         //プレビュー中のラベルを下げる。
