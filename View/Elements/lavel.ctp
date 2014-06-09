@@ -11,7 +11,7 @@ if(isset($draftItem)
 	if($status == 2){
 		$status_hidden[2] = "";
 	}
-	elseif($status == 3){
+	if($status == 3){
 		$status_hidden[3] = "";
 	}
 }
