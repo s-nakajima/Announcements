@@ -12,6 +12,8 @@
  */
 class AnnouncementFixture extends CakeTestFixture {
 
+	public $useDbConfig = 'test';
+
 /**
  * Fields
  *
@@ -25,8 +27,7 @@ class AnnouncementFixture extends CakeTestFixture {
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'indexes' => array(
-			'PRIMARY' => array('column' => 'id', 'unique' => 1),
-			'announcements_block_id' => array('column' => 'block_id', 'unique' => 1)
+			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
@@ -38,7 +39,7 @@ class AnnouncementFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => 1,
+			'id' => NULL,
 			'block_id' => 1,
 			'created' => '2014-06-05 13:16:21',
 			'create_user_id' => 1,

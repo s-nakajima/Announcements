@@ -7,7 +7,7 @@
  * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 
-App::uses('AnnouncementBlocksPart', 'Model');
+App::uses('AnnouncementBlocksPart', 'Announcements.Model');
 
 /**
  * Summary for AnnouncementBlocksPart Test Case
@@ -30,7 +30,7 @@ class AnnouncementBlocksPartTest extends CakeTestCase {
  */
 	public function setUp() {
 		parent::setUp();
-		$this->AnnouncementBlocksPart = ClassRegistry::init('AnnouncementBlocksPart');
+		$this->AnnouncementBlocksPart = ClassRegistry::init('Announcements.AnnouncementBlocksPart');
 	}
 
 /**
@@ -42,6 +42,15 @@ class AnnouncementBlocksPartTest extends CakeTestCase {
 		unset($this->AnnouncementBlocksPart);
 
 		parent::tearDown();
+	}
+
+/**
+ * test run
+ *
+ * @return void
+ */
+	public function testRun() {
+		$this->assertTrue(true);
 	}
 
 }

@@ -7,8 +7,8 @@
  * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 
-App::uses('AnnouncementFrame', 'Announcements.Model');
-app::uses('Frame', 'Model');
+App::uses('AnnouncementFrame', 'Announcements.Announcements.Model');
+
 
 /**
  * Summary for Announcement Test Case
@@ -21,10 +21,10 @@ class AnnouncementFrameTest extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'app.FrameFixture'
+		'Frame'
 	);
 
-	public $Frame;
+	public $AnnouncementsFrame;
 
 /**
  * setUp method
@@ -33,7 +33,7 @@ class AnnouncementFrameTest extends CakeTestCase {
  */
 	public function setUp() {
 		parent::setUp();
-		$this->Frame = ClassRegistry::init('Announcements.AnnouncementFrame');
+		$this->AnnouncementsFrame = ClassRegistry::init('Announcements.AnnouncementFrame');
 	}
 
 /**
@@ -42,8 +42,20 @@ class AnnouncementFrameTest extends CakeTestCase {
  * @return void
  */
 	public function tearDown() {
-		unset($this->Frame);
+		unset($this->AnnouncementsFrame);
 		parent::tearDown();
+	}
+
+	public function testGetBlockId(){
+		$frameId = 1;
+		$rtn = $this->AnnouncementsFrame->getBlockId($frameId);
+		$this->assertTextEquals($rtn , 1);
+	}
+
+	public function testGetBlockIdNoData(){
+		$frameId = 9999999999;
+		$rtn = $this->AnnouncementsFrame->getBlockId($frameId);
+		$this->assertNull($rtn);
 	}
 
 }

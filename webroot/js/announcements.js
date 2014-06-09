@@ -168,7 +168,14 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
                 //post
                 $.ajax({
                     method:'POST' ,
-                    url: $scope.posturl + $scope.frameId + '/' + Math.random(),
+                    url: $scope.posturl
+                        + $scope.frameId
+                        + '/'
+                        + $scope.blockId
+                        + '/'
+                        + $scope.dataId
+                        + '/'
+                        + Math.random(),
                     data: post_params,
                     success:function(json, status, headers, config){
                         $scope.setIndex(json);
@@ -203,7 +210,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         var content = json.data.AnnouncementDatum.content;
         var statusId = json.data.AnnouncementDatum.status_id;
         $(statusLavelClassTag + $scope.statusList.Draft).addClass("hidden");
-        $(statusLavelClassTag + $scope.statusList.Publish).addClass("hidden");
+        //$(statusLavelClassTag + $scope.statusList.Publish).addClass("hidden");
         $(statusLavelClassTag + $scope.statusList.PublishRequest).addClass("hidden");
         if(statusId == $scope.statusList.Draft)
         {

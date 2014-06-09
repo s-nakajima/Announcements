@@ -218,16 +218,13 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	private function __indexNologin($frameId) {
 		$blockId = $this->Frame->getBlockId($frameId);
+		$this->set('Data', array());
 		//blockから情報を取得 $LangId
 		$data = $this->AnnouncementDatum->getPublishData($blockId, $this->langId);
-		if(! $data) {
-			return $this->render('notice');
-		}
 		$this->set('item', $data);
 		$this->set('frameId', $frameId);
 		$this->set('blockId', $blockId);
-		$this->view = 'index_not_login';
-		return $this->render();
+		return $this->render("index_not_login");
 	}
 
 /**
@@ -244,8 +241,10 @@ class AnnouncementsController extends AnnouncementsAppController {
 		//保存
 		$rtn = $this->AnnouncementDatum->saveData(
 			$this->data,
+			$frameId,
+			$blockId,
+			$dataId,
 			$this->__userId,
-			$this->__roomId,
 			$this->__isAjax
 		);
 		//成功結果を返す
@@ -345,21 +344,12 @@ class AnnouncementsController extends AnnouncementsAppController {
 /**
  * 編集権源の設定
  *
- * @return void
+ * @return bool
  */
 	private function __checkEditer() {
-		if(! $this->__userId) {
-			$this->__setUserId();
-		}
-		if($this->__userId) {
-			$this->__isEditer = true;
-			$this->set('isEdit', true);
-			return ;
-		}
-		//未ログイン
-		$this->__isEditer = false;
-		$this->set('isEdit', false);
-		return ;
+		$this->__isEditer = true;
+		$this->set('isEdit', true);
+		return true;
 	}
 
 /**
@@ -446,21 +436,6 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	private function __setUserId() {
-		$User = AuthComponent::user();
-		//UserId格納
-		if(isset($User['id'])) {
-			$this->__userId = $User['id'];
-			return ;
-		}
-		$this->__userId = 0;
-		return ;
+		$this->__userId = 1;
 	}
 }
-/*
- * frame_idから表示されるべき情報を取得する。
- * frame_idから、blockを新規作成する
- * frame_idから、内容の変更を取得する。
- * ブロックの削除についての考慮 6/16以降でOK
- *
- * エラーだった場合のjsonのフォーマットを考える
- */

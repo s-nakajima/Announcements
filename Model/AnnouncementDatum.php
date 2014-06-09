@@ -129,7 +129,8 @@ class AnnouncementDatum extends AppModel {
  * @param bool $isAjax ajax判定
  * @return array
  */
-	public function saveData($data, $userId, $roomId, $isAjax = false) {
+	public function saveData($data, $frameId, $blockId, $dataId, $userId, $isAjax = false) {
+		//例外処理をあとで追加する。
 		//Modelセット
 		$this->__setModel();
 
@@ -137,24 +138,44 @@ class AnnouncementDatum extends AppModel {
 		$isAjax = 1;
 		$data = $this->__decodeContent($data, $isAjax);
 
-		//status_idの設定
-		$data = $this->__setStatus($data);
+		//status_idの取得
+		$statusId = $this->__getStatusId($data);
 
-		//blockIdの設定
-		$data = $this->__setBlockId($data, $userId, $roomId);
-
-		//言語IDの設定
-		$data = $this->__setLangId($data);
-
-		//idなし。新規作成時
-		if (! $data[$this->name]['id']) {
-			unset($data[$this->name]['id']);
-			$data[$this->name]['create_user_id'] = $userId;
-		} else {
-			$data[$this->name]['modified_user_id'] = $userId;
+		//本体のIDを取得する
+		$announcementId = $this->__Announcement->getByBlockId($blockId);
+		if(! $announcementId || $announcementId < 1) {
+			//なければ作成
+			$announcementId =  $this->__createAnnouncement($blockId , $userId);
 		}
-		$d = $this->save($data);
-		return $d;
+
+		//登録情報をつくる
+		$insertData = array();
+		$insertData[$this->name]['announcement_id'] = $announcementId;
+		$insertData[$this->name]['create_user_id'] = $userId;
+		$insertData[$this->name]['language_id'] = $data[$this->name]['langId'];
+		$insertData[$this->name]['status_id'] = $statusId;
+		$insertData[$this->name]['content'] = $data[$this->name]['content'];
+
+		return $this->save($insertData);
+
+	}
+
+/**
+ * Announcementのinsert処理
+ *
+ * @param int $blockId
+ * @param int $userId
+ * @return int | null
+ */
+	private function __createAnnouncement($blockId , $userId) {
+		//announcement_blocksも作成する必要がある。
+		//blockの設定テーブルも作る必要が有る。
+		//現状のこれは仮実装の状態
+		$d = array();
+		$d['Announcement']['block_id'] = $blockId;
+		$d['Announcement']['create_user_id'] = $userId;
+		$rtn = $this->__Announcement->save($d);
+		return  $rtn['Announcement']['id'];
 	}
 
 /**
@@ -165,11 +186,10 @@ class AnnouncementDatum extends AppModel {
  * @return array mixed 加工されたデータ
  */
 	private function __decodeContent($data, $isAjax) {
-		if (! $isAjax) {
-			return $data;
+		if ($isAjax) {
+			//decode
+			$data[$this->name]['content'] = rawurldecode($data[$this->name]['content']);
 		}
-		//decode
-		$data[$this->name]['content'] = rawurldecode($data[$this->name]['content']);
 		return $data;
 	}
 
@@ -179,59 +199,15 @@ class AnnouncementDatum extends AppModel {
  * @param array $data postされたデータ
  * @return array
  */
-	private function __setStatus($data) {
-		$data[$this->name]['status_id'] = intval($this->type[$data[$this->name]['type']]);
-		return $data;
-	}
-
-/**
- * block_idを設定する
- *
- * @param array $data postされたデータ
- * @param int $userId user_id
- * @param int $roomId room_id
- * @return array
- */
-	private function __setBlockId($data, $userId, $roomId) {
-		if (! $data[$this->name]['blockId']) {
-			//blockIdをつくる
-			$block = array();
-			$d = array();
-			$d['AnnouncementBlockBlock']['create_user_id'] = $userId;
-			$d['AnnouncementBlockBlock']['room'] = $roomId;
-			$block = $this->__Block->save($d);
-
-			if ($block) {
-				//AnnouncementBlock , Announsmentをつくる
-				$d = array();
-				$d['Announcement']['block_id'] = $block['AnnouncementBlockBlock']['id'];
-				$d['Announcement']['create_user_id'] = $userId;
-				$mine = $this->__Announcement->save($d);
-				$data[$this->name]['announcement_id'] = $mine['Announcement']['id'];
-
-				$d = array();
-				$d['AnnouncementBlock']['block_id'] = $block['AnnouncementBlockBlock']['id'];
-				$d['AnnouncementBlock']['create_user_id'] = $userId;
-				$d['AnnouncementBlock']['announcement_id'] = $mine['Announcement']['id'];
-				$myblock = $this->__AnnouncementBlock->save($d);
-
-				//frameへ保存
-				$d = array();
-				$d['AnnouncementFrame']['id'] = $data[$this->name]['frameId'];
-				$d['AnnouncementFrame']['block_id'] = $block['AnnouncementBlockBlock']['id'];
-				$d['AnnouncementFrame']['modified_user_id'] = $userId;
-				$myframe = $this->__Frame->save($d);
-				unset($data[$this->name]['frameId']);
-			}
-			$data[$this->name]['block_id'] = $block['AnnouncementBlockBlock']['id'];
-		} else {
-			//announcement_idの取得
-			$data[$this->name]['announcement_id'] = 1;
-			$data[$this->name]['block_id'] = $data[$this->name]['blockId'];
+	private function __getStatusId($data) {
+		$statusId = null;
+		if(isset($this->type[$data[$this->name]['type']])
+			&& $this->type[$data[$this->name]['type']]) {
+			$statusId = intval($this->type[$data[$this->name]['type']]);
 		}
-		unset($data[$this->name]['blockId']);
-		return $data;
+		return $statusId;
 	}
+
 
 /**
  * model objectを格納する
@@ -243,19 +219,6 @@ class AnnouncementDatum extends AppModel {
 		$this->__Announcement = Classregistry::init("Announcements.Announcement");
 		$this->__AnnouncementBlock = Classregistry::init("Announcements.AnnouncementBlock");
 		$this->__Frame = Classregistry::init("Announcements.AnnouncementFrame");
-	}
-
-/**
- * 言語IDを取得する。
- *
- * @param array $data postされたデータ
- * @return array
- */
-	private function __setLangId($data) {
-		//langから、idを取得する とりあえず固定
-		$data[$this->name]['language_id'] = 2;
-		unset($data['lang']);
-		return $data;
 	}
 
 }

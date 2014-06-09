@@ -1,12 +1,5 @@
-<?php
-/**
- * AnnouncementSchema
- *
- * @author   Takako Miyagawa <nekoget@gmail.com>
- * @link     http://www.netcommons.org NetCommons Project
- * @license  http://www.netcommons.org/license.txt NetCommons License
- */
-class AnnouncementSchema extends CakeSchema {
+<?php 
+class AppSchema extends CakeSchema {
 
 	public function before($event = array()) {
 		return true;
@@ -26,8 +19,7 @@ class AnnouncementSchema extends CakeSchema {
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'indexes' => array(
-			'PRIMARY' => array('column' => 'id', 'unique' => 1),
-			'announcement_blocks_block_id' => array('column' => 'block_id', 'unique' => 1)
+			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
@@ -44,8 +36,7 @@ class AnnouncementSchema extends CakeSchema {
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'indexes' => array(
-			'PRIMARY' => array('column' => 'id', 'unique' => 1),
-			'announcement_blocks_parts_announcement_block_id' => array('column' => array('announcement_block_id', 'part_id'), 'unique' => 1)
+			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
@@ -76,8 +67,7 @@ class AnnouncementSchema extends CakeSchema {
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'indexes' => array(
-			'PRIMARY' => array('column' => 'id', 'unique' => 1),
-			'announcements_block_id' => array('column' => 'block_id', 'unique' => 1)
+			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
