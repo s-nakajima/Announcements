@@ -169,6 +169,8 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
                 $.ajax({
                     method:'POST' ,
                     url: $scope.posturl
+                        + type
+                        + '/'
                         + $scope.frameId
                         + '/'
                         + $scope.blockId
@@ -181,9 +183,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
                         $scope.setIndex(json);
                     },
                     error:function(){
-                        if(! json) { json = "ERROR!"; }
                         $scope.postAlert("error" , 'NG');
-                        $scope.debug = json;
                     }
                 });
             })

@@ -197,11 +197,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		}
 
 		//編集権源がある場合
-		$this->set('draftItem', array());
-
 		$this->set('draftItem', $draftData);
-		//echo '<pre>'; var_dump( $draftData); echo '</pre>';
-		//echo '<pre>'; var_dump( $data); echo '</pre>';
 		//出力情報セット
 		$this->set('item', $data);
 		$this->set('frameId', $frameId);
@@ -235,7 +231,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @param int $dataId announcement_data.id
  * @return CakeResponse
  */
-	public function post($frameId = 0, $blockId = 0, $dataId = 0) {
+	public function post($type, $frameId = 0, $blockId = 0, $dataId = 0) {
 		//レイアウトの設定
 		$this->__setLayout();
 		//保存

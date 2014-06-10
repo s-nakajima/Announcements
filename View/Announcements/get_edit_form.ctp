@@ -24,7 +24,7 @@
 		);
 		echo $this->Form->input("AnnouncementDatum.langId" , array(
 				"type" => "text",
-				"value" =>$lang,
+				"value" =>$langId,
 			)
 		);
 		echo $this->Form->input("AnnouncementDatum.id" , array(
