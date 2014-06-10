@@ -62,11 +62,16 @@
 <!-- 編集枠  -->
 <div class="announcements_editer" id="announcements_form_<?php echo intval($frameId);?>">
 
+
+
 	<!-- エディタ -->
+	<?php echo $this->element("Announcements.index_text_editer"); ?>
 
 
 	<div class="html-editer">
-		<textarea ui-tinymce="tinymceOptions"
+		<textarea
+			id="announcements-html-editer-<?php echo intval($frameId);?>"
+			ui-tinymce="tinymceOptions"
 			ng-model="tinymceModel"
 			class="form-control"
 		></textarea></div>

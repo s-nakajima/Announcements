@@ -242,12 +242,32 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
 
     $(".announcements_editer").addClass('hidden');
 
-    //プレビューどうしようか？
+    //TEXTエディタ
+    $scope.openTextEditer = function(frameId) {
+        var modalTag = "#announcements-text-editer-modal-" + frameId;
+        var textareaTag = "#announcements-text-editer-" + frameId;
+        $(textareaTag).html($scope.tinymceModel);
+        //モーダル Open
+        $(modalTag).modal('show');
+    }
+    //TEXTエディタ close データの受け渡しのみ
+    $scope.closeTextEditer = function(frameId) {
+        var editerTag = "#announcements-html-editer-" + frameId;
+        var modalTag = "#announcements-text-editer-modal-" + frameId;
+        var textEditerTag = "#announcements-text-editer-"+ frameId;
+        var d = $(textEditerTag).val();
+        $scope.tinymceModel = d;
+        $(modalTag).modal('hide');
+    }
+
+
+
+    //HTMLエディタの設定
     $scope.tinymceOptions = {
         mode : "exact",
         menubar: " ",
         plugins: "textcolor advlist autolink autoresize charmap code link ",
-        toolbar: "undo redo  | forecolor code | tyleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link ",
+        toolbar: "undo redo  | forecolor code | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link ",
     };
 });
 
