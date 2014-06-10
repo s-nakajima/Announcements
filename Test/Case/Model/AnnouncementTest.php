@@ -20,7 +20,7 @@ class AnnouncementTest extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'announcement'
+		'plugin.announcements.announcement'
 	);
 
 /**
@@ -68,7 +68,6 @@ class AnnouncementTest extends CakeTestCase {
 		$d['Announcement']['create_user_id'] = 1;
 		$mine = $this->Announcement->save($d);
 		$this->assertTrue(is_numeric($mine['Announcement']['id']));
-
 		$data = $this->Announcement->getByBlockId(100);
 		$this->assertNull($data);
 	}
