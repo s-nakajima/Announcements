@@ -1,25 +1,12 @@
 <div ng-controller="Announcements.edit">
-
 <!-- 編集ボタン 状態表示-->
-
-
-<div class="text-right">
-
-	<!-- ラベル -->
-	<?php echo $this->element("Announcements.lavel"); ?>
-
+<p class="text-right" style="margin-top: 5px;">
 	<button class="btn btn-primary"
 	        id="announcement_content_edit_btn_<?php echo intval($frameId); ?>"
 	        ng-click="getEditer('<?php echo intval($frameId); ?> , <?php echo intval($blockId); ?>')"
 	><span>編集</span></button>
-	<!-- 公開申請ボタン -->
-	<!-- <button
-			class="btn btn-danger"
-			ng-click="PublishComfirm('<?php echo intval($frameId); ?> , <?php echo intval($blockId); ?>')"
-	>
-	<span>公開実行</span></button>-->
-</div>
-<div class="clear:both;"> </div>
+</p>
+
 
 	<!-- メッセージ -->
 	<p id="announcements_mss_<?php echo intval($frameId);?>">
@@ -32,6 +19,7 @@
 <!-- プレビュー-->
 <div class="preview" id="announcement_content_preview_<?php echo intval($frameId); ?>">
 </div>
+
 
 
 <!-- 内容表示 -->
@@ -56,6 +44,10 @@
 	</div>
 
 
+
+
+<!-- ラベル -->
+<?php echo $this->element("Announcements.lavel"); ?>
 
 
 
