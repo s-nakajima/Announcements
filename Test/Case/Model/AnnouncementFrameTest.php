@@ -21,7 +21,7 @@ class AnnouncementFrameTest extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'Frame'
+		'plugin.announcements.announcement_frame'
 	);
 
 	public $AnnouncementsFrame;

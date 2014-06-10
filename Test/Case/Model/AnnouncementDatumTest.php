@@ -20,9 +20,9 @@ class AnnouncementDatumTest extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'announcement_datum',
-		'announcement',
-		'announcement_frame'
+		'plugin.announcements.announcement_datum',
+		'plugin.announcements.announcement',
+		'plugin.announcements.announcement_frame'
 	);
 
 /**

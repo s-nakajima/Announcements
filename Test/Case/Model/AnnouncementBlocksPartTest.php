@@ -20,7 +20,7 @@ class AnnouncementBlocksPartTest extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'app.announcement_blocks_part'
+		'plugin.announcements.announcement_blocks_part'
 	);
 
 /**
