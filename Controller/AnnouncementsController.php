@@ -234,6 +234,18 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public function post($type, $frameId = 0, $blockId = 0, $dataId = 0) {
 		//レイアウトの設定
 		$this->__setLayout();
+		if(! $this->request->isPost()) {
+			//post以外の場合、エラー
+			$this->response->statusCode(400);
+			$result = array(
+				'status' => 'error',
+				'message' => __('登録できません'),
+			);
+			$this->viewClass = 'Json';
+			$this->set(compact('result'));
+			$this->set('_serialize', 'result');
+			return $this->render();
+		}
 		//保存
 		$rtn = $this->AnnouncementDatum->saveData(
 			$this->data,
