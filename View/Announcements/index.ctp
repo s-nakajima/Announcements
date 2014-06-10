@@ -57,18 +57,22 @@
 
 
 
+
+
 <!-- 編集枠  -->
 <div class="announcements_editer" id="announcements_form_<?php echo intval($frameId);?>">
 
-   <!-- エディタ -->
-	<p>
-		<textarea ui-tinymce
-				ng-model="tinymceModel"
-				class="form-control html"
-		></textarea>
-	</p>
+	<!-- エディタ -->
+
+
+	<div class="html-editer">
+		<textarea ui-tinymce="tinymceOptions"
+			ng-model="tinymceModel"
+			class="form-control"
+		></textarea></div>
+
 	<!-- ボタン類 -->
-	<p class="text-center">
+	<p class="text-center" style="padding-top: 10px;">
 		<button
 			class="btn btn-default"
 			ng-click="post('Cancel', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)">

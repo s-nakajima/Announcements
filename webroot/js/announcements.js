@@ -235,10 +235,20 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
     $scope.PublishComfirm = function(){
         alert("公開処理前の確認");
     }
+
+
     //全ての編集画面一旦非表示
+    $(".text-editer").css('display:none;');
+
     $(".announcements_editer").addClass('hidden');
 
     //プレビューどうしようか？
+    $scope.tinymceOptions = {
+        mode : "exact",
+        menubar: " ",
+        plugins: "textcolor advlist autolink autoresize charmap code link ",
+        toolbar: "undo redo  | forecolor code | tyleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link ",
+    };
 });
 
 NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
