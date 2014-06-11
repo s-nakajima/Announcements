@@ -54,6 +54,18 @@ class AnnouncementDatumFixture extends CakeTestFixture {
 			'create_user_id' => 1,
 			'modified' => '2014-06-05 13:18:56',
 			'modified_user_id' => 1
+		),
+		array(
+			'announcement_id' => 2,
+			'status_id' => 1,
+			'language_id' => 1,
+			'is_original' => 1,
+			'translation_engine' => 'Lorem ipsum dolor sit amet',
+			'content' => 'unitTesting now!',
+			'created' => '2014-06-05 13:18:56',
+			'create_user_id' => 1,
+			'modified' => '2014-06-05 13:18:56',
+			'modified_user_id' => 1
 		)
 	);
 

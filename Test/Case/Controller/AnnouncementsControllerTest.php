@@ -49,12 +49,40 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 	}
 
 /**
- * post
+ * postへget
  *
  * @return   void
  */
-	public function testPost() {
+	public function testPostForGet() {
 		$this->testAction('/announcements/announcements/post/Draft/1/1/0/', array('method' => 'get'));
+		$this->assertTextNotContains('ERROR', $this->view);
+	}
+
+/**
+ * postへpost
+ *
+ * @return   void
+ */
+	public function testPostForPost() {
+		$this->Controller = $this->generate('Announcements.Announcements', array(
+			'components' => array(
+				'Security'
+			)
+		));
+		$this->Controller->isAjax = true;
+		$data = array();
+		$data['AnnouncementDatum']['content'] = rawurlencode("test"); //URLエンコード
+		$data['AnnouncementDatum']['frameId'] = 1;
+		$data['AnnouncementDatum']['blockId'] = 0;
+		$data['AnnouncementDatum']['type'] = "Draft";
+		$data['AnnouncementDatum']['langId'] = 2;
+		$data['AnnouncementDatum']['id'] = 0;
+		$this->testAction('/announcements/announcements/post/Draft/1/1/0/',
+			array(
+				'method' => 'post',
+				'data' => $data
+			)
+		);
 		$this->assertTextNotContains('ERROR', $this->view);
 	}
 
@@ -79,7 +107,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 	}
 
 /**
- * delete
+ * get
  *
  * @return   void
  */
@@ -104,7 +132,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return   void
  */
 	public function testGetEditForm() {
-		$this->testAction('/announcements/announcements/get_edit_form/1/1', array('method' => 'get'));
+		$result = $this->testAction('/announcements/announcements/get_edit_form/1/1', array('method' => 'get'));
 		$this->assertTextNotContains('ERROR', $this->view);
 	}
 }
