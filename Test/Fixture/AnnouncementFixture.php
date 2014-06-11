@@ -39,7 +39,7 @@ class AnnouncementFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => NULL,
+			'id' => null,
 			'block_id' => 1,
 			'created' => '2014-06-05 13:16:21',
 			'create_user_id' => 1,
@@ -47,5 +47,4 @@ class AnnouncementFixture extends CakeTestFixture {
 			'modified_user_id' => 1
 		),
 	);
-
 }

@@ -17,14 +17,34 @@ class AnnouncementFrameFixture extends CakeTestFixture {
  *
  * @var string
  */
-	public $table = 'Frames';
+	public $table = 'frames';
 
 /**
- * import
+ * Fields
  *
- * @var string
+ * @var array
  */
-	public $import = 'Frame';
+	public $fields = array(
+		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
+		'box_id' => array('type' => 'integer', 'null' => false, 'default' => null),
+		'parent_id' => array('type' => 'integer', 'null' => false, 'default' => null),
+		'lft' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'rght' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'plugin_id' => array('type' => 'integer', 'null' => false, 'default' => null),
+		'block_id' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'weight' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'is_published' => array('type' => 'boolean', 'null' => true, 'default' => null),
+		'from' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'to' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'created_user_id' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'modified_user_id' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'indexes' => array(
+			'PRIMARY' => array('column' => 'id', 'unique' => 1)
+		),
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
+	);
 
 /**
  * Records
@@ -33,7 +53,7 @@ class AnnouncementFrameFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => NULL,
+			'id' => null,
 			'box_id' => 1,
 			'parent_id' => 1,
 			'lft' => 1,
@@ -50,7 +70,7 @@ class AnnouncementFrameFixture extends CakeTestFixture {
 			'modified' => '2014-06-02 16:17:56'
 		),
 		array(
-			'id' => NULL,
+			'id' => null,
 			'box_id' => 1,
 			'parent_id' => 1,
 			'lft' => 1,

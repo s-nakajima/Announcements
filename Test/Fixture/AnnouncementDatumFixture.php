@@ -44,7 +44,7 @@ class AnnouncementDatumFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => NULL,
+			'id' => null,
 			'announcement_id' => 1,
 			'status_id' => 3,
 			'language_id' => 1,
