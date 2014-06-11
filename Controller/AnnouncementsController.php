@@ -129,6 +129,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public function beforeFilter() {
 		//親処理
 		parent::beforeFilter();
+		$this->Auth->allow();
 		//modelのセット
 		$this->AnnouncementDatum = Classregistry::init("Announcements.AnnouncementDatum");
 		//設定値の格納
