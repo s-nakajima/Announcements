@@ -81,7 +81,7 @@ class AnnouncementTest extends CakeTestCase {
 		$dd['Announcement']['create_user_id'] = 1;
 		$mine = $this->Announcement->save($dd);
 		$this->assertTrue(is_numeric($mine['Announcement']['id']));
-		$data = $this->Announcement->getByBlockId(100);
+		$data = $this->Announcement->getByBlockId(200);
 		$this->assertNull($data);
 	}
 

@@ -69,7 +69,6 @@ class Announcements extends CakeMigration {
 	public $records = array(
 			'announcement_data' =>
 				array (
-					'id' => '1',
 					'announcement_id' => '1',
 					'status_id' => '1',
 					'language_id' => '2',
@@ -86,13 +85,12 @@ class Announcements extends CakeMigration {
 				),
 			'announcement' =>
 				array (
-					'id' => '1',
 					'block_id' => '1',
 					'created' => '2014-06-10 23:54:27',
 					'create_user_id' => '1',
 					'modified' => '2014-06-10 23:54:27',
 					'modified_user_id' => '0',
-				),
+				)
 	);
 /**
  * Before migration callback
