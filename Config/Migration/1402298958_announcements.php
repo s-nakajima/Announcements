@@ -96,6 +96,7 @@ class Announcements extends CakeMigration {
 				)
 			)
 	);
+
 /**
  * Before migration callback
  *
