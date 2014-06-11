@@ -124,10 +124,12 @@ class AnnouncementDatum extends AppModel {
  * 保存する
  *
  * @param array $data postされたデータ
- * @param int $userId  User.id
- * @param int $roomId  room_id
- * @param bool $isAjax ajax判定
- * @return array
+ * @param int $frameId Frame.id
+ * @param int $blockId blocks.id
+ * @param int $dataId  announcement_data.id
+ * @param int $userId  users.id
+ * @param bool $isAjax ajax通信かどうかの判定　ajax通信の場合はjavascript側でurlencodeされているため。
+ * @return mixed
  */
 	public function saveData($data, $frameId, $blockId, $dataId, $userId, $isAjax = false) {
 		//例外処理をあとで追加する。
@@ -143,11 +145,10 @@ class AnnouncementDatum extends AppModel {
 
 		//本体のIDを取得する
 		$announcementId = $this->__Announcement->getByBlockId($blockId);
-		if(! $announcementId || $announcementId < 1) {
+		if (! $announcementId || $announcementId < 1) {
 			//なければ作成
-			$announcementId =  $this->__createAnnouncement($blockId , $userId);
+			$announcementId = $this->__createAnnouncement($blockId, $userId);
 		}
-
 		//登録情報をつくる
 		$insertData = array();
 		$insertData[$this->name]['announcement_id'] = $announcementId;
@@ -155,19 +156,18 @@ class AnnouncementDatum extends AppModel {
 		$insertData[$this->name]['language_id'] = $data[$this->name]['langId'];
 		$insertData[$this->name]['status_id'] = $statusId;
 		$insertData[$this->name]['content'] = $data[$this->name]['content'];
-
+		//保存結果を返す
 		return $this->save($insertData);
-
 	}
 
 /**
  * Announcementのinsert処理
  *
- * @param int $blockId
- * @param int $userId
- * @return int | null
+ * @param int $blockId blocks.id
+ * @param int $userId  users.id
+ * @return int | null  announsments.id
  */
-	private function __createAnnouncement($blockId , $userId) {
+	private function __createAnnouncement($blockId, $userId) {
 		//announcement_blocksも作成する必要がある。
 		//blockの設定テーブルも作る必要が有る。
 		//現状のこれは仮実装の状態
@@ -175,7 +175,7 @@ class AnnouncementDatum extends AppModel {
 		$d['Announcement']['block_id'] = $blockId;
 		$d['Announcement']['create_user_id'] = $userId;
 		$rtn = $this->__Announcement->save($d);
-		return  $rtn['Announcement']['id'];
+		return $rtn['Announcement']['id'];
 	}
 
 /**
@@ -201,13 +201,12 @@ class AnnouncementDatum extends AppModel {
  */
 	private function __getStatusId($data) {
 		$statusId = null;
-		if(isset($this->type[$data[$this->name]['type']])
+		if (isset($this->type[$data[$this->name]['type']])
 			&& $this->type[$data[$this->name]['type']]) {
 			$statusId = intval($this->type[$data[$this->name]['type']]);
 		}
 		return $statusId;
 	}
-
 
 /**
  * model objectを格納する
@@ -220,5 +219,4 @@ class AnnouncementDatum extends AppModel {
 		$this->__AnnouncementBlock = Classregistry::init("Announcements.AnnouncementBlock");
 		$this->__Frame = Classregistry::init("Announcements.AnnouncementFrame");
 	}
-
 }

@@ -160,7 +160,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->__setLang();
 		//ルームIDの設定
 		$this->__setRoomtId();
-
 	}
 
 /**
@@ -226,6 +225,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 /**
  * お知らせの保存処理実行
  *
+ * @param string $type type Draft : 下書き PublishRequest : 公開申請  Publish : 公開
  * @param int $frameId frames.id
  * @param int $blockId blocks.id
  * @param int $dataId announcement_data.id
@@ -234,7 +234,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public function post($type, $frameId = 0, $blockId = 0, $dataId = 0) {
 		//レイアウトの設定
 		$this->__setLayout();
-		if(! $this->request->isPost()) {
+		if (! $this->request->isPost()) {
 			//post以外の場合、エラー
 			$this->response->statusCode(400);
 			$result = array(

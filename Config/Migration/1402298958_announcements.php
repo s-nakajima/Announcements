@@ -1,4 +1,11 @@
 <?php
+/**
+ * Announcements Migration
+ *
+ * @author   Takako Miyagawa <nekoget@gmail.com>
+ * @link     http://www.netcommons.org NetCommons Project
+ * @license  http://www.netcommons.org/license.txt NetCommons License
+ */
 class Announcements extends CakeMigration {
 
 /**
@@ -57,7 +64,7 @@ class Announcements extends CakeMigration {
 /**
  * Before migration callback
  *
- * @param string $direction, up or down direction of migration process
+ * @param string $direction up or down direction of migration process
  * @return boolean Should process continue
  */
 	public function before($direction) {
@@ -67,7 +74,7 @@ class Announcements extends CakeMigration {
 /**
  * After migration callback
  *
- * @param string $direction, up or down direction of migration process
+ * @param string $direction up or down direction of migration process
  * @return boolean Should process continue
  */
 	public function after($direction) {

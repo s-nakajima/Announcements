@@ -27,15 +27,21 @@ class Announcement extends AppModel {
 		parent::__construct($id, $table, $ds);
 	}
 
+/**
+ * getByBlockId
+ *
+ * @param int $blockId blocks.id
+ * @return null or int
+ */
 	public function getByBlockId($blockId) {
 		$d = $this->find(
 			'first',
 			array(
-				'conditions' => array('Announcement.block_id'=>$blockId)
+				'conditions' => array('Announcement.block_id' => $blockId)
 			)
 		);
 
-		if(isset($d['Announcement'])
+		if (isset($d['Announcement'])
 			&& isset($d['Announcement']['id'])
 			&& $d['Announcement']['id']
 		) {

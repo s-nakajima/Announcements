@@ -1,13 +1,36 @@
-<?php 
+<?php
+/**
+ * AppSchema
+ *
+ * @author   Takako Miyagawa <nekoget@gmail.com>
+ * @link     http://www.netcommons.org NetCommons Project
+ * @license  http://www.netcommons.org/license.txt NetCommons License
+ */
 class AppSchema extends CakeSchema {
 
+/**
+ * before
+ *
+ * @param array $event
+ * @return bool
+ */
 	public function before($event = array()) {
 		return true;
 	}
 
+/**
+ * after
+ *
+ * @param array $event
+ */
 	public function after($event = array()) {
 	}
 
+/**
+ * announcement_data
+ *
+ * @var array
+ */
 	public $announcement_data = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 		'announcement_id' => array('type' => 'integer', 'null' => false, 'default' => null),
@@ -26,6 +49,11 @@ class AppSchema extends CakeSchema {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
+/**
+ *  announcements
+ *
+ * @var array
+ */
 	public $announcements = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 		'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'unique'),
