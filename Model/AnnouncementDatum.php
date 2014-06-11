@@ -167,22 +167,23 @@ class AnnouncementDatum extends AppModel {
 /**
  * frameIdの存在確認
  *
- * @param flameId $ frames.id
- * @return bool
+ * @param int $flameId frames.id
+ * @return int
  */
 	private function __checkFrameId($frameId) {
 		if (is_numeric($frameId)) {
-			return true;
+			return $frameId;
 		}
+		return null;
 	}
 
 /**
  * dataIdの確認
  *
- * @param $dataId
+ * @param int $dataId announcement_data.id
  * @return bool
  */
-	private function  __checkdataId($dataId) {
+	private function __checkdataId($dataId) {
 		if (is_numeric($dataId) || !$dataId) {
 			return true;
 		}

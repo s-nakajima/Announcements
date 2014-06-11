@@ -301,10 +301,9 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @param int $blockId blocks.id
  * @param int $dataId announcement_data.id
  * @return void
-
+ */
 	public function get($type, $flameId = 0, $blockId = 0, $dataId = 0) {
 	}
- */
 
 /**
  * ブロック設定

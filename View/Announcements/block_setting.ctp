@@ -137,7 +137,7 @@
 		<?php echo __('それぞれのキーワードは、サイト名称、ルーム名称、お知らせタイトル、投稿者ハンドル名称、投稿日時、記事本文、投稿内容のURLに変換されて送信されます。'); ?>
 	</p>
 
-	<p class="container text-center">
+	<p class="text-center">
 		<button type="button" class="btn btn-default" data-dismiss="modal">キャンセル</button>
 		<button type="button" class="btn btn-primary"><?php echo __("登録")?></button>
 	</p>
