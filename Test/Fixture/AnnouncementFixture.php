@@ -39,7 +39,6 @@ class AnnouncementFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => null,
 			'block_id' => 1,
 			'created' => '2014-06-05 13:16:21',
 			'create_user_id' => 1,

@@ -22,6 +22,7 @@ class AppSchema extends CakeSchema {
  * after
  *
  * @param array $event event
+ * @return null
  */
 	public function after($event = array()) {
 	}

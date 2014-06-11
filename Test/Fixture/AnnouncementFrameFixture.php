@@ -53,7 +53,6 @@ class AnnouncementFrameFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => null,
 			'box_id' => 1,
 			'parent_id' => 1,
 			'lft' => 1,
@@ -70,7 +69,6 @@ class AnnouncementFrameFixture extends CakeTestFixture {
 			'modified' => '2014-06-02 16:17:56'
 		),
 		array(
-			'id' => null,
 			'box_id' => 1,
 			'parent_id' => 1,
 			'lft' => 1,
