@@ -43,14 +43,23 @@ class AnnouncementTest extends CakeTestCase {
 		parent::tearDown();
 	}
 
-	public function testSaveBlockId()
-	{
+/**
+ * testSaveBlockId
+ *
+ * @return void
+ */
+	public function testSaveBlockId() {
 		$d['Announcement']['block_id'] = 1;
 		$d['Announcement']['create_user_id'] = 1;
 		$mine = $this->Announcement->save($d);
 		$this->assertTrue(is_numeric($mine['Announcement']['id']));
 	}
 
+/**
+ * testGetByBlockId
+ *
+ * @return void
+ */
 	public function testGetByBlockId() {
 		//blockId1のデータを作成
 		$d['Announcement']['block_id'] = 1;
@@ -62,6 +71,11 @@ class AnnouncementTest extends CakeTestCase {
 		$this->assertTrue(is_numeric($data));
 	}
 
+/**
+ * testGetByBlockIdNoData
+ *
+ * @return void
+ */
 	public function testGetByBlockIdNoData() {
 		//blockId1のデータを作成
 		$d['Announcement']['block_id'] = 1;

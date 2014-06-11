@@ -55,7 +55,7 @@ class AnnouncementDatumTest extends CakeTestCase {
 		$data['AnnouncementDatum']['content'] = "test";
 		$data['AnnouncementDatum']['frameId'] = 1;
 		$data['AnnouncementDatum']['blockId'] = 0;
-		$data['AnnouncementDatum']['type']    = "Draft";
+		$data['AnnouncementDatum']['type'] = "Draft";
 		$data['AnnouncementDatum']['langId'] = 2;
 		$data['AnnouncementDatum']['id'] = 0;
 		$frameId = 1;
@@ -63,10 +63,10 @@ class AnnouncementDatumTest extends CakeTestCase {
 		$blockId = 1;
 		$dataId = 0;
 		$isAjax = false;
-		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $blockId, $dataId, $userId , $isAjax);
+		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $blockId, $dataId, $userId, $isAjax);
 		$this->assertTrue(is_numeric($rtn['AnnouncementDatum']['id']));
-		$this->assertTextEquals($rtn['AnnouncementDatum']['status_id'] , 3);
-		$this->assertTextEquals($rtn['AnnouncementDatum']['content'] , "test");
+		$this->assertTextEquals($rtn['AnnouncementDatum']['status_id'], 3);
+		$this->assertTextEquals($rtn['AnnouncementDatum']['content'], "test");
 	}
 
 /**
@@ -79,7 +79,7 @@ class AnnouncementDatumTest extends CakeTestCase {
 		$data['AnnouncementDatum']['content'] = rawurlencode("test"); //URLエンコード
 		$data['AnnouncementDatum']['frameId'] = 1;
 		$data['AnnouncementDatum']['blockId'] = 0;
-		$data['AnnouncementDatum']['type']    = "Draft";
+		$data['AnnouncementDatum']['type'] = "Draft";
 		$data['AnnouncementDatum']['langId'] = 2;
 		$data['AnnouncementDatum']['id'] = 0;
 		$frameId = 1;
@@ -87,17 +87,22 @@ class AnnouncementDatumTest extends CakeTestCase {
 		$blockId = 1;
 		$dataId = 0;
 		$isAjax = true;
-		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $blockId, $dataId, $userId , $isAjax);
+		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $blockId, $dataId, $userId, $isAjax);
 		$this->assertTrue(is_numeric($rtn['AnnouncementDatum']['id']));
-		$this->assertTextEquals($rtn['AnnouncementDatum']['status_id'] , 3);
-		$this->assertTextEquals($rtn['AnnouncementDatum']['content'] , "test");
+		$this->assertTextEquals($rtn['AnnouncementDatum']['status_id'], 3);
+		$this->assertTextEquals($rtn['AnnouncementDatum']['content'], "test");
 	}
 
-	public function testSaveData_NewBlock() {
+/**
+ * testSaveData_NewBlock
+ *
+ * @return void
+ */
+	public function testSaveDataNewBlock() {
 		$data = array();
 		$data['AnnouncementDatum']['content'] = rawurlencode("test"); //URLエンコード
 		$data['AnnouncementDatum']['blockId'] = 100;
-		$data['AnnouncementDatum']['type']    = "Draft";
+		$data['AnnouncementDatum']['type'] = "Draft";
 		$data['AnnouncementDatum']['langId'] = 2;
 		$data['AnnouncementDatum']['id'] = 0;
 		$frameId = 2;
@@ -105,26 +110,10 @@ class AnnouncementDatumTest extends CakeTestCase {
 		$blockId = 1;
 		$dataId = 0;
 		$isAjax = true;
-		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $blockId, $dataId, $userId , $isAjax);
+		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $blockId, $dataId, $userId, $isAjax);
 		$this->assertTrue(is_numeric($rtn['AnnouncementDatum']['id']));
-		$this->assertTextEquals($rtn['AnnouncementDatum']['status_id'] , 3);
-		$this->assertTextEquals($rtn['AnnouncementDatum']['content'] , "test");
-	}
-
-
-
-	/**
-	 * saveData
-	 *
-	 * @return void
-	 */
-	public function testGetData_IsSetting(){
-		$blockId = 1;
-		$lang = 1;
-		$isSetting = 1;
-		//セッティングモードなので下書きを含む最新がとれる
-		$rtn = $this->AnnouncementDatum->getData($blockId, $lang, $isSetting);
-		$this->assertTextEquals($rtn['AnnouncementDatum']['id'] , 1);
+		$this->assertTextEquals($rtn['AnnouncementDatum']['status_id'], 3);
+		$this->assertTextEquals($rtn['AnnouncementDatum']['content'], "test");
 	}
 
 /**
@@ -132,7 +121,21 @@ class AnnouncementDatumTest extends CakeTestCase {
  *
  * @return void
  */
-	public function testGetData(){
+	public function testGetDataIsSetting() {
+		$blockId = 1;
+		$lang = 1;
+		$isSetting = 1;
+		//セッティングモードなので下書きを含む最新がとれる
+		$rtn = $this->AnnouncementDatum->getData($blockId, $lang, $isSetting);
+		$this->assertTextEquals($rtn['AnnouncementDatum']['id'], 1);
+	}
+
+/**
+ * saveData
+ *
+ * @return void
+ */
+	public function testGetData() {
 		$blockId = 1;
 		$lang = 1;
 		$isSetting = 0;
@@ -140,5 +143,4 @@ class AnnouncementDatumTest extends CakeTestCase {
 		//セッティングモードOFFなので公開情報がとれる
 		//$this->assertTextEquals($rtn['AnnouncementDatum']['id'] , 1);
 	}
-
 }

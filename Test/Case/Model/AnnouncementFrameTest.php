@@ -46,16 +46,25 @@ class AnnouncementFrameTest extends CakeTestCase {
 		parent::tearDown();
 	}
 
-	public function testGetBlockId(){
+/**
+ * testGetBlockId
+ *
+ * @return void
+ */
+	public function testGetBlockId() {
 		$frameId = 1;
 		$rtn = $this->AnnouncementsFrame->getBlockId($frameId);
-		$this->assertTextEquals($rtn , 1);
+		$this->assertTextEquals($rtn, 1);
 	}
 
-	public function testGetBlockIdNoData(){
+/**
+ * testGetBlockIdNoData
+ *
+ * @return void
+ */
+	public function testGetBlockIdNoData() {
 		$frameId = 9999999999;
 		$rtn = $this->AnnouncementsFrame->getBlockId($frameId);
 		$this->assertNull($rtn);
 	}
-
 }
