@@ -167,14 +167,13 @@ class AnnouncementDatum extends AppModel {
 /**
  * frameIdの存在確認
  *
- * @param int $flameId frames.id
+ * @param int $frameId frames.id
  * @return int
  */
 	private function __checkFrameId($frameId) {
 		if (is_numeric($frameId)) {
 			return $frameId;
 		}
-		return null;
 	}
 
 /**
