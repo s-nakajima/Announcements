@@ -67,8 +67,9 @@ class Announcements extends CakeMigration {
  * @var array $migration
  */
 	public $records = array(
-			'AnnouncementDatum' =>
+			'AnnouncementDatum' => array(
 				array (
+					'id' => 1,
 					'announcement_id' => '1',
 					'status_id' => '1',
 					'language_id' => '2',
@@ -82,15 +83,18 @@ class Announcements extends CakeMigration {
 					'create_user_id' => '1',
 					'modified' => '2014-06-11 14:41:42',
 					'modified_user_id' => '0',
-				),
-			'Announcements' =>
+				)
+			),
+			'Announcements' => array(
 				array (
+					'id' => 1,
 					'block_id' => '1',
 					'created' => '2014-06-10 23:54:27',
 					'create_user_id' => '1',
 					'modified' => '2014-06-10 23:54:27',
 					'modified_user_id' => '0',
 				)
+			)
 	);
 /**
  * Before migration callback
@@ -109,6 +113,37 @@ class Announcements extends CakeMigration {
  * @return boolean Should process continue
  */
 	public function after($direction) {
+		if ($direction === 'down') {
+			return true;
+		}
+
+		foreach ($this->records as $model => $records) {
+			if (!$this->updateRecords($model, $records)) {
+				return false;
+			}
+		}
+
 		return true;
 	}
+
+	/**
+	 * Update model records
+	 *
+	 * @param string $model model name to update
+	 * @param string $records records to be stored
+	 * @param string $scope ?
+	 * @return boolean Should process continue
+	 */
+	public function updateRecords($model, $records, $scope = null) {
+		$Model = $this->generateModel($model);
+		foreach ($records as $record) {
+			$Model->create();
+			if (!$Model->save($record, false)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 }
