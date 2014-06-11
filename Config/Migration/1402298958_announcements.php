@@ -73,7 +73,7 @@ class Announcements extends CakeMigration {
 					'status_id' => '1',
 					'language_id' => '2',
 					'is_original' => '1',
-					'translation_engine' => NULL,
+					'translation_engine' => null,
 					'content' => '<div class="jumbotron">
 <h1 class="text-center">NetCommons 3!</h1>
 <p><a class="btn btn-primary btn-lg container" href="setting">セッティングモードで編集しよう<span class="glyphicon glyphicon-pencil">.</span></a></p>
