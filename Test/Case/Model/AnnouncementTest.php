@@ -49,9 +49,9 @@ class AnnouncementTest extends CakeTestCase {
  * @return void
  */
 	public function testSaveBlockId() {
-		$d['Announcement']['block_id'] = 1;
-		$d['Announcement']['create_user_id'] = 1;
-		$mine = $this->Announcement->save($d);
+		$dd['Announcement']['block_id'] = 1;
+		$dd['Announcement']['create_user_id'] = 1;
+		$mine = $this->Announcement->save($dd);
 		$this->assertTrue(is_numeric($mine['Announcement']['id']));
 	}
 
@@ -62,11 +62,10 @@ class AnnouncementTest extends CakeTestCase {
  */
 	public function testGetByBlockId() {
 		//blockId1のデータを作成
-		$d['Announcement']['block_id'] = 1;
-		$d['Announcement']['create_user_id'] = 1;
-		$mine = $this->Announcement->save($d);
+		$dd['Announcement']['block_id'] = 1;
+		$dd['Announcement']['create_user_id'] = 1;
+		$mine = $this->Announcement->save($dd);
 		$this->assertTrue(is_numeric($mine['Announcement']['id']));
-
 		$data = $this->Announcement->getByBlockId(1);
 		$this->assertTrue(is_numeric($data));
 	}
@@ -78,9 +77,9 @@ class AnnouncementTest extends CakeTestCase {
  */
 	public function testGetByBlockIdNoData() {
 		//blockId1のデータを作成
-		$d['Announcement']['block_id'] = 1;
-		$d['Announcement']['create_user_id'] = 1;
-		$mine = $this->Announcement->save($d);
+		$dd['Announcement']['block_id'] = 1;
+		$dd['Announcement']['create_user_id'] = 1;
+		$mine = $this->Announcement->save($dd);
 		$this->assertTrue(is_numeric($mine['Announcement']['id']));
 		$data = $this->Announcement->getByBlockId(100);
 		$this->assertNull($data);

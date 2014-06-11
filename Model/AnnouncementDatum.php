@@ -128,17 +128,21 @@ class AnnouncementDatum extends AppModel {
  * @param int $blockId blocks.id
  * @param int $dataId  announcement_data.id
  * @param int $userId  users.id
- * @param bool $isAjax ajax通信かどうかの判定　ajax通信の場合はjavascript側でurlencodeされているため。
+ * @param bool $isEncode ajax通信かどうかの判定　ajax通信の場合はjavascript側でurlencodeされているため。
  * @return mixed
  */
-	public function saveData($data, $frameId, $blockId, $dataId, $userId, $isAjax = false) {
+	public function saveData($data, $frameId, $blockId, $dataId, $userId, $isEncode = null) {
 		//例外処理をあとで追加する。
+		$this->__checkFrameId($frameId);
+		//例外処理をあとで追加する。
+		$this->__checkdataId($dataId);
+
 		//Modelセット
 		$this->__setModel();
 
 		//複合
-		$isAjax = 1;
-		$data = $this->__decodeContent($data, $isAjax);
+		//$isEncode = 1;
+		$data = $this->__decodeContent($data, $isEncode);
 
 		//status_idの取得
 		$statusId = $this->__getStatusId($data);
@@ -161,6 +165,30 @@ class AnnouncementDatum extends AppModel {
 	}
 
 /**
+ * frameIdの存在確認
+ *
+ * @param flameId $ frames.id
+ * @return bool
+ */
+	private function __checkFrameId($frameId) {
+		if (is_numeric($frameId)) {
+			return true;
+		}
+	}
+
+/**
+ * dataIdの確認
+ *
+ * @param $dataId
+ * @return bool
+ */
+	private function  __checkdataId($dataId) {
+		if (is_numeric($dataId) || !$dataId) {
+			return true;
+		}
+	}
+
+/**
  * Announcementのinsert処理
  *
  * @param int $blockId blocks.id
@@ -171,10 +199,10 @@ class AnnouncementDatum extends AppModel {
 		//announcement_blocksも作成する必要がある。
 		//blockの設定テーブルも作る必要が有る。
 		//現状のこれは仮実装の状態
-		$d = array();
-		$d['Announcement']['block_id'] = $blockId;
-		$d['Announcement']['create_user_id'] = $userId;
-		$rtn = $this->__Announcement->save($d);
+		$dd = array();
+		$dd['Announcement']['block_id'] = $blockId;
+		$dd['Announcement']['create_user_id'] = $userId;
+		$rtn = $this->__Announcement->save($dd);
 		return $rtn['Announcement']['id'];
 	}
 
@@ -182,11 +210,11 @@ class AnnouncementDatum extends AppModel {
  * Ajax通信用にエンコードされている本文をデコードする。
  *
  * @param array $data postされたデータ
- * @param bool $isAjax ajax判定
+ * @param bool $isEncode ajax判定
  * @return array mixed 加工されたデータ
  */
-	private function __decodeContent($data, $isAjax) {
-		if ($isAjax) {
+	private function __decodeContent($data, $isEncode) {
+		if ($isEncode) {
 			//decode
 			$data[$this->name]['content'] = rawurldecode($data[$this->name]['content']);
 		}

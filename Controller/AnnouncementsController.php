@@ -5,17 +5,7 @@
  * @author   Takako Miyagawa <nekoget@gmail.com>
  * @link     http://www.netcommons.org NetCommons Project
  * @license  http://www.netcommons.org/license.txt NetCommons License
- *
- * type :
- *  Draft : 下書き
- *  PublishRequest : 公開申請
- *  Publish : 公開
- *
- * API:
- *  get : 取得
- *  put : 新規作成
- *  post :修正
- *  delete : 削除
+ * @SuppressWarnings(PHPMD.TooManyMethods)
  */
 App::uses(
 	'AnnouncementsAppController',
@@ -311,9 +301,10 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @param int $blockId blocks.id
  * @param int $dataId announcement_data.id
  * @return void
- */
+
 	public function get($type, $flameId = 0, $blockId = 0, $dataId = 0) {
 	}
+ */
 
 /**
  * ブロック設定
@@ -390,25 +381,13 @@ class AnnouncementsController extends AnnouncementsAppController {
 	}
 
 /**
- * ajax以外でアクセスした時の処理
- *
- * @return void
- */
-	private function __checkAccess() {
-		if (! $this->__isAjax) {
-			//frameIdからページを判定 urlを取得し、リダイレクトする。
-			//javascriptが読み込まれてないことによる動作不良を防ぐため。
-		}
-	}
-
-/**
  * 非同期通設定
  *
  * @return void
  */
 	private function __checkAjax() {
 		if ($this->request->is('ajax')) {
-			$this->__isAjax = true;
+			$this->__isAjax = 1;
 		}
 	}
 

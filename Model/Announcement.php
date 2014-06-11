@@ -34,20 +34,19 @@ class Announcement extends AppModel {
  * @return null or int
  */
 	public function getByBlockId($blockId) {
-		$d = $this->find(
+		$dd = $this->find(
 			'first',
 			array(
 				'conditions' => array('Announcement.block_id' => $blockId)
 			)
 		);
 
-		if (isset($d['Announcement'])
-			&& isset($d['Announcement']['id'])
-			&& $d['Announcement']['id']
+		if (isset($dd['Announcement'])
+			&& isset($dd['Announcement']['id'])
+			&& $dd['Announcement']['id']
 		) {
-			return $d['Announcement']['id'];
+			return $dd['Announcement']['id'];
 		}
 		return null;
 	}
-
 }

@@ -62,8 +62,8 @@ class AnnouncementDatumTest extends CakeTestCase {
 		$userId = 1;
 		$blockId = 1;
 		$dataId = 0;
-		$isAjax = false;
-		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $blockId, $dataId, $userId, $isAjax);
+		$isEncode = false;
+		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $blockId, $dataId, $userId, $isEncode);
 		$this->assertTrue(is_numeric($rtn['AnnouncementDatum']['id']));
 		$this->assertTextEquals($rtn['AnnouncementDatum']['status_id'], 3);
 		$this->assertTextEquals($rtn['AnnouncementDatum']['content'], "test");
@@ -86,8 +86,8 @@ class AnnouncementDatumTest extends CakeTestCase {
 		$userId = 1;
 		$blockId = 1;
 		$dataId = 0;
-		$isAjax = true;
-		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $blockId, $dataId, $userId, $isAjax);
+		$isEncode = true;
+		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $blockId, $dataId, $userId, $isEncode);
 		$this->assertTrue(is_numeric($rtn['AnnouncementDatum']['id']));
 		$this->assertTextEquals($rtn['AnnouncementDatum']['status_id'], 3);
 		$this->assertTextEquals($rtn['AnnouncementDatum']['content'], "test");
@@ -109,8 +109,8 @@ class AnnouncementDatumTest extends CakeTestCase {
 		$userId = 1;
 		$blockId = 1;
 		$dataId = 0;
-		$isAjax = true;
-		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $blockId, $dataId, $userId, $isAjax);
+		$isEncode = true;
+		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $blockId, $dataId, $userId, $isEncode);
 		$this->assertTrue(is_numeric($rtn['AnnouncementDatum']['id']));
 		$this->assertTextEquals($rtn['AnnouncementDatum']['status_id'], 3);
 		$this->assertTextEquals($rtn['AnnouncementDatum']['content'], "test");
@@ -141,6 +141,6 @@ class AnnouncementDatumTest extends CakeTestCase {
 		$isSetting = 0;
 		$rtn = $this->AnnouncementDatum->getData($blockId, $lang, $isSetting);
 		//セッティングモードOFFなので公開情報がとれる
-		//$this->assertTextEquals($rtn['AnnouncementDatum']['id'] , 1);
+		$this->assertTextEquals($rtn['AnnouncementDatum']['id'], 1);
 	}
 }
