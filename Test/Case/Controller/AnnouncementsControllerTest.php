@@ -132,7 +132,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return   void
  */
 	public function testGetEditForm() {
-		$result = $this->testAction('/announcements/announcements/get_edit_form/1/1', array('method' => 'get'));
+		$this->testAction('/announcements/announcements/get_edit_form/1/1', array('method' => 'get'));
 		$this->assertTextNotContains('ERROR', $this->view);
 	}
 }
