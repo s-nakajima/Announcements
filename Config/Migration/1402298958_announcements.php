@@ -62,6 +62,39 @@ class Announcements extends CakeMigration {
 	);
 
 /**
+ * recodes
+ *
+ * @var array $migration
+ */
+	public $records = array(
+			'announcement_data' =>
+				array (
+					'id' => '1',
+					'announcement_id' => '1',
+					'status_id' => '1',
+					'language_id' => '2',
+					'is_original' => '1',
+					'translation_engine' => NULL,
+					'content' => '<div class="jumbotron">
+<h1 class="text-center">NetCommons 3!</h1>
+<p><a class="btn btn-primary btn-lg container" href="setting">セッティングモードで編集しよう<span class="glyphicon glyphicon-pencil">.</span></a></p>
+ようこそ NetCommons3へ！<br /> NetCommons3は国立情報学研究所が次世代情報共有基盤システムとして開発したCMSです。</div>',
+					'created' => '2014-06-11 14:41:42',
+					'create_user_id' => '1',
+					'modified' => '2014-06-11 14:41:42',
+					'modified_user_id' => '0',
+				),
+			'announcement' =>
+				array (
+					'id' => '1',
+					'block_id' => '1',
+					'created' => '2014-06-10 23:54:27',
+					'create_user_id' => '1',
+					'modified' => '2014-06-10 23:54:27',
+					'modified_user_id' => '0',
+				),
+	);
+/**
  * Before migration callback
  *
  * @param string $direction up or down direction of migration process
