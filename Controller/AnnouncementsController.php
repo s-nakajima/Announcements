@@ -166,8 +166,8 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$blockId = $this->Frame->getBlockId($frameId);
 		//編集権限が無い人 (ログイン中も含む 公開情報しかみえない）
 		if (! $this->__isEditer ) {
-			//blockから情報を取得 $LangId
-			return $this->__indexNologin($frameId);
+				//blockから情報を取得 $LangId
+				return $this->__indexNologin($frameId);
 		}
 		//ログインしている場合
 		//編集権源があるひと
@@ -206,6 +206,9 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->set('Data', array());
 		//blockから情報を取得 $LangId
 		$data = $this->AnnouncementDatum->getPublishData($blockId, $this->langId);
+		if (! $data) {
+			return $this->render("notice");
+		}
 		$this->set('item', $data);
 		$this->set('frameId', $frameId);
 		$this->set('blockId', $blockId);
@@ -345,6 +348,11 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return bool
  */
 	private function __checkEditer() {
+		if (! $this->Auth->loggedIn()) {
+			$this->__isEditer = false;
+			$this->set('isEdit', false);
+			return false;
+		}
 		$this->__isEditer = true;
 		$this->set('isEdit', true);
 		return true;
@@ -422,6 +430,10 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	private function __setUserId() {
-		$this->__userId = 1;
+		if ($this->Auth->loggedIn()) {
+			$this->__userId = 1;
+			$this->Set('isLogin', true);
+		}
+		$this->Set('isLogin', false);
 	}
 }
