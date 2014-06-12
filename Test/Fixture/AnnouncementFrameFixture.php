@@ -74,7 +74,7 @@ class AnnouncementFrameFixture extends CakeTestFixture {
 			'lft' => 1,
 			'rght' => 1,
 			'plugin_id' => 1,
-			'block_id' => 100,
+			'block_id' => 0,
 			'weight' => 1,
 			'is_published' => 1,
 			'from' => '2014-06-02 16:17:56',

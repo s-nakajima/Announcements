@@ -246,7 +246,8 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
     $scope.openTextEditer = function(frameId) {
         var modalTag = "#announcements-text-editer-modal-" + frameId;
         var textareaTag = "#announcements-text-editer-" + frameId;
-        $(textareaTag).html($scope.tinymceModel);
+        var htmlEditerTag = "#announcements-html-editer-" + frameId;
+        $(textareaTag).val($(htmlEditerTag).val());
         //モーダル Open
         $(modalTag).modal('show');
     }
@@ -255,8 +256,12 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         var editerTag = "#announcements-html-editer-" + frameId;
         var modalTag = "#announcements-text-editer-modal-" + frameId;
         var textEditerTag = "#announcements-text-editer-"+ frameId;
+        var htmlEditerTag = "#announcements-html-editer-" + frameId;
         var d = $(textEditerTag).val();
         $scope.tinymceModel = d;
+        $(htmlEditerTag).val(d);
+
+        $(textEditerTag).val($(htmlEditerTag).val());
         $(modalTag).modal('hide');
     }
 

@@ -22,7 +22,8 @@ class AnnouncementDatumTest extends CakeTestCase {
 	public $fixtures = array(
 		'plugin.announcements.announcement_datum',
 		'plugin.announcements.announcement',
-		'plugin.announcements.announcement_frame'
+		'plugin.announcements.announcement_frame',
+		'plugin.announcements.announcement_block_block'
 	);
 
 /**
@@ -69,11 +70,11 @@ class AnnouncementDatumTest extends CakeTestCase {
 		$this->assertTextEquals($rtn['AnnouncementDatum']['content'], "test");
 	}
 
-/**
- * saveData
- *
- * @return void
- */
+	/**
+	 * saveData
+	 *
+	 * @return void
+	 */
 	public function testSaveDataIsAjax() {
 		$data = array();
 		$data['AnnouncementDatum']['content'] = rawurlencode("test"); //URLエンコード
@@ -85,6 +86,30 @@ class AnnouncementDatumTest extends CakeTestCase {
 		$frameId = 1;
 		$userId = 1;
 		$blockId = 1;
+		$dataId = 0;
+		$isEncode = true;
+		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $blockId, $dataId, $userId, $isEncode);
+		$this->assertTrue(is_numeric($rtn['AnnouncementDatum']['id']));
+		$this->assertTextEquals($rtn['AnnouncementDatum']['status_id'], 3);
+		$this->assertTextEquals($rtn['AnnouncementDatum']['content'], "test");
+	}
+
+/**
+ * saveData
+ *
+ * @return void
+ */
+	public function testSaveDataIsAjaxNoBlockId() {
+		$data = array();
+		$data['AnnouncementDatum']['content'] = rawurlencode("test"); //URLエンコード
+		$data['AnnouncementDatum']['frameId'] = 2;
+		$data['AnnouncementDatum']['blockId'] = 0;
+		$data['AnnouncementDatum']['type'] = "Draft";
+		$data['AnnouncementDatum']['langId'] = 2;
+		$data['AnnouncementDatum']['id'] = 0;
+		$frameId = 1;
+		$userId = 1;
+		$blockId = 0;
 		$dataId = 0;
 		$isEncode = true;
 		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $blockId, $dataId, $userId, $isEncode);

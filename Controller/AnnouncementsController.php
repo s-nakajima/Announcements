@@ -435,6 +435,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 			$this->__userId = 1;
 			$this->Set('isLogin', true);
 		}
+		$this->__userId = 1;
 		$this->Set('isLogin', false);
 	}
 }
