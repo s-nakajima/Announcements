@@ -82,13 +82,6 @@ class AnnouncementDatum extends AppModel {
 	);
 
 /**
- * room id
- *
- * @var int
- */
-	public $room_id = 1;
-
-/**
  * 最新のデータを取得する
  *
  * @param int $blockId  blocks.id
@@ -139,14 +132,11 @@ class AnnouncementDatum extends AppModel {
  * @return mixed
  */
 	public function saveData($data, $frameId, $blockId, $dataId, $userId, $isEncode = null) {
-
 		//Modelセット
 		$this->__setModel();
-
 		//例外処理をあとで追加する。
 		$frame = $this->__getFrame($frameId, $userId, $blockId);
 		$blockId = $frame['AnnouncementFrame']['block_id'];
-
 		//例外処理をあとで追加する。
 		$this->__checkdataId($dataId);
 
@@ -178,25 +168,25 @@ class AnnouncementDatum extends AppModel {
  * frameIdの存在確認
  *
  * @param int $frameId frames.id
+ * @param int $userId  users.id
+ * @param int $blockId  blocks.id
  * @return int
  */
-	private function __getFrame($frameId , $userId , $blockId) {
+	private function __getFrame($frameId, $userId, $blockId) {
 		$this->__setModel();
 		//フレームIDのデータを取得する。
 		$frame = $this->__Frame->findById($frameId);
 		$blockId = $frame['AnnouncementFrame']['block_id'];
 		if (! $blockId) {
-			 //$room_id
 			$data = array();
-			$data['AnnouncementBlockBlock']['room_id'] = $this->room_id;
+			$data['AnnouncementBlockBlock']['room_id'] = 1;
 			$data['AnnouncementBlockBlock']['created_user_id'] = $userId;
 			$block = $this->__Block->save($data);
 			//blockIdをframeに格納
 			$frame['AnnouncementFrame']['block_id'] = $block['AnnouncementBlockBlock']['id'];
 			$frame = $this->__Frame->save($frame);
 		}
-		if($blockId != $frame['AnnouncementFrame']['block_id'])
-		{
+		if ($blockId != $frame['AnnouncementFrame']['block_id']) {
 			return $frame;
 		}
 		return $frame;

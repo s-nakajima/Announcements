@@ -70,11 +70,11 @@ class AnnouncementDatumTest extends CakeTestCase {
 		$this->assertTextEquals($rtn['AnnouncementDatum']['content'], "test");
 	}
 
-	/**
-	 * saveData
-	 *
-	 * @return void
-	 */
+/**
+ * saveData Ajax
+ *
+ * @return void
+ */
 	public function testSaveDataIsAjax() {
 		$data = array();
 		$data['AnnouncementDatum']['content'] = rawurlencode("test"); //URLエンコード
