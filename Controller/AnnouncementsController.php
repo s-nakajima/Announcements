@@ -165,47 +165,60 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->set('item', array());
 		//blockIdの取得
 		$blockId = $this->Frame->getBlockId($frameId);
-		//編集権限が無い人 (ログイン中も含む 公開情報しかみえない）
-		if (! $this->__isEditer ) {
-				//blockから情報を取得 $LangId
-				return $this->__indexNologin($frameId);
-		}
-		//ログインしている場合
-		//編集権源があるひと
+
 		//ブロックが設定されておらず、セッティングモードでもない
 		if (! $blockId && ! $this->__isSetting) {
 			return $this->render('notice');
 		}
 
-		//最新情報（フォーム表示用）
-		$draftData = $this->AnnouncementDatum->getData($blockId, $this->langId, $this->__isSetting);
+		//編集権限が無い人 (ログイン中も含む 公開情報しかみえない）
+		if (! $this->__isEditer ) {
+				//blockから情報を取得 $LangId
+				return $this->__indexNologin($frameId, $blockId);
+		}
 
+		//セッティングモードではないが、編集権限はある
+		if (! $this->__isSetting && $this->__isEditer) {
+			return $this->__indexNoSetting($frameId, $blockId);
+		}
+
+		//セッティングモードON 編集権限がある
+		$draftData = $this->AnnouncementDatum->getData($blockId, $this->langId, true);
 		//セッティングモードOFF データ無し(下書きもなし）
-		$data = $this->AnnouncementDatum->getPublishData($blockId, $this->langId);
+		$data = $this->AnnouncementDatum->getData($blockId, $this->langId, $this->__isSetting);
 		if (! $data && ! $this->__isSetting && !$draftData) {
 			return $this->render('notice');
 		}
-
-		//編集権源がある場合
 		$this->set('draftItem', $draftData);
-		//出力情報セット
 		$this->set('item', $data);
 		$this->set('frameId', $frameId);
 		$this->set('blockId', $blockId);
 		//出力
-		return $this->render();
+		return $this->render("/announcements/setting/index");
 	}
-
+/**
+ * index セッティングモードOFF 書き込み権限有り
+ *
+ * @param int $frameId frames.id
+ * @return CakeResponse
+ */
+	private function __indexNoSetting($frameId, $blockId) {
+		$data = $this->AnnouncementDatum->getData($blockId, $this->langId, true);
+		if (! $data) {
+			return $this->render("notice");
+		}
+		$this->set('item', $data);
+		$this->set('frameId', $frameId);
+		$this->set('blockId', $blockId);
+		return $this->render("/announcements/index/editer");
+	}
 /**
  * index 未ログイン向け処理
  *
  * @param int $frameId frames.id
  * @return CakeResponse
  */
-	private function __indexNologin($frameId) {
-		$blockId = $this->Frame->getBlockId($frameId);
-		$this->set('Data', array());
-		//blockから情報を取得 $LangId
+	private function __indexNologin($frameId, $blockId) {
 		$data = $this->AnnouncementDatum->getPublishData($blockId, $this->langId);
 		if (! $data) {
 			return $this->render("notice");
@@ -213,19 +226,17 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->set('item', $data);
 		$this->set('frameId', $frameId);
 		$this->set('blockId', $blockId);
-		return $this->render("index_not_login");
+		return $this->render("/announcements/index/default");
 	}
 
 /**
  * お知らせの保存処理実行
  *
- * @param string $type type Draft : 下書き PublishRequest : 公開申請  Publish : 公開
  * @param int $frameId frames.id
- * @param int $blockId blocks.id
- * @param int $dataId announcement_data.id
  * @return CakeResponse
  */
-	public function post($type, $frameId = 0, $blockId = 0, $dataId = 0) {
+	public function edit($frameId = 0) {
+		$this->viewClass = 'Json';
 		//レイアウトの設定
 		$this->__setLayout();
 		if (! $this->request->isPost()) {
@@ -235,7 +246,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 				'status' => 'error',
 				'message' => __('登録できません'),
 			);
-			$this->viewClass = 'Json';
 			$this->set(compact('result'));
 			$this->set('_serialize', 'result');
 			return $this->render();
@@ -244,19 +254,17 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$rtn = $this->AnnouncementDatum->saveData(
 			$this->data,
 			$frameId,
-			$blockId,
-			$dataId,
 			$this->__userId,
 			$this->__isAjax
 		);
 		//成功結果を返す
 		if ($rtn) {
+			$rtn['AnnouncementDatum']['content'] = rawurlencode($rtn['AnnouncementDatum']['content']);
 			$result = array(
 				'status' => 'OK',
 				'message' => __('保存しました'),
 				'data' => $rtn
 			);
-			$this->viewClass = 'Json';
 			$this->set(compact('result'));
 			$this->set('_serialize', 'result');
 			return $this->render();
@@ -266,7 +274,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 			'status' => 'NG',
 			'message' => __('保存に失敗しました')
 		);
-		$this->viewClass = 'Json';
 		$this->set(compact('result'));
 		$this->set('_serialize', 'result');
 		return $this->render();
@@ -281,7 +288,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @param int $dataId  announcement_data.id
  * @return void
  */
-	public function put($type, $frameId = 0, $blockId = 0, $dataId = 0) {
+	public function add($type, $frameId = 0, $blockId = 0, $dataId = 0) {
 		$this->post($type, $frameId, $blockId, $dataId);
 	}
 
@@ -306,29 +313,9 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @param int $dataId announcement_data.id
  * @return void
  */
-	public function get($type, $flameId = 0, $blockId = 0, $dataId = 0) {
+	public function view($type, $flameId = 0, $blockId = 0, $dataId = 0) {
 	}
 
-/**
- * ブロック設定
- *
- * @param int $frameId フレームのID
- * @return void
- */
-	public function block_setting($frameId = 0) {
-		//レイアウトきりかえ
-		$this->layout = false;
-		//パート名 あとでDBから取得する。
-		$part = array(
-			1 => array("id" => 1, "name" => 'ルーム管理者'),
-			2 => array("id" => 2, "name" => '編集長'),
-			3 => array("id" => 3, "name" => '編集者'),
-			4 => array("id" => 4, "name" => '一般')
-		);
-		$this->set('partList', $part);
-		$this->set('partListSelect');
-		$this->set('frameId', $frameId);
-	}
 
 /**
  * お知らせ投稿用のformを取得する
@@ -341,6 +328,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->layout = false;
 		$this->set('frameId', $frameId);
 		$this->set('blockId', $blockId);
+		return $this->render("/announcements/setting/get_edit_form");
 	}
 
 /**

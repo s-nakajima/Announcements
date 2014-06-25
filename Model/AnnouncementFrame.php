@@ -52,5 +52,6 @@ class AnnouncementFrame extends AppModel {
 			&& $frame['AnnouncementFrame']['block_id']) {
 			return $frame['AnnouncementFrame']['block_id'];
 		}
+		return null;
 	}
 }

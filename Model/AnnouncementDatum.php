@@ -78,7 +78,8 @@ class AnnouncementDatum extends AppModel {
 	public $type = array(
 		'Publish' => 1,
 		'PublishRequest' => 2,
-		'Draft' => 3
+		'Draft' => 3,
+		'Reject' => 4
 	);
 
 /**
@@ -125,21 +126,20 @@ class AnnouncementDatum extends AppModel {
  *
  * @param array $data postされたデータ
  * @param int $frameId Frame.id
- * @param int $blockId blocks.id
- * @param int $dataId  announcement_data.id
  * @param int $userId  users.id
  * @param bool $isEncode ajax通信かどうかの判定　ajax通信の場合はjavascript側でurlencodeされているため。
- * @return mixed
+ * @return mixed null 失敗  array 成功
  */
-	public function saveData($data, $frameId, $blockId, $dataId, $userId, $isEncode = null) {
+	public function saveData($data, $frameId, $userId, $isEncode = null) {
 		//Modelセット
 		$this->__setModel();
 		//例外処理をあとで追加する。
-		$frame = $this->__getFrame($frameId, $userId, $blockId);
-		$blockId = $frame['AnnouncementFrame']['block_id'];
-		//例外処理をあとで追加する。
-		$this->__checkdataId($dataId);
+		$frame = $this->__getFrame($frameId, $userId);
+		if(! $frame) {
+			return null;
+		}
 
+		$blockId = $frame['AnnouncementFrame']['block_id'];
 		//複合
 		//$isEncode = 1;
 		$data = $this->__decodeContent($data, $isEncode);
@@ -161,7 +161,16 @@ class AnnouncementDatum extends AppModel {
 		$insertData[$this->name]['status_id'] = $statusId;
 		$insertData[$this->name]['content'] = $data[$this->name]['content'];
 		//保存結果を返す
-		return $this->save($insertData);
+		$rtn =  $this->save($insertData);
+		//id が戻ってこないなら、insert失敗
+		if(isset($rtn[$this->name])
+			&& isset($rtn[$this->name]['id'])
+			&& $rtn[$this->name]['id']
+		){
+			return $rtn;
+		} else {
+			return null ;
+		}
 	}
 
 /**
@@ -172,11 +181,20 @@ class AnnouncementDatum extends AppModel {
  * @param int $blockId  blocks.id
  * @return int
  */
-	private function __getFrame($frameId, $userId, $blockId) {
+	private function __getFrame($frameId, $userId) {
 		$this->__setModel();
 		//フレームIDのデータを取得する。
 		$frame = $this->__Frame->findById($frameId);
-		$blockId = $frame['AnnouncementFrame']['block_id'];
+		if($frame
+			&& isset($frame['AnnouncementFrame'])
+			&& isset($frame['AnnouncementFrame']['block_id'])
+		){
+			$blockId = $frame['AnnouncementFrame']['block_id'];
+		} else {
+			//存在しないfrale
+			return null;
+		}
+
 		if (! $blockId) {
 			$data = array();
 			$data['AnnouncementBlockBlock']['room_id'] = 1;
@@ -186,22 +204,8 @@ class AnnouncementDatum extends AppModel {
 			$frame['AnnouncementFrame']['block_id'] = $block['AnnouncementBlockBlock']['id'];
 			$frame = $this->__Frame->save($frame);
 		}
-		if ($blockId != $frame['AnnouncementFrame']['block_id']) {
-			return $frame;
-		}
-		return $frame;
-	}
 
-/**
- * dataIdの確認
- *
- * @param int $dataId announcement_data.id
- * @return bool
- */
-	private function __checkdataId($dataId) {
-		if (is_numeric($dataId) || !$dataId) {
-			return true;
-		}
+		return $frame;
 	}
 
 /**

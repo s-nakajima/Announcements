@@ -54,7 +54,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return   void
  */
 	public function testPostForGet() {
-		$this->testAction('/announcements/announcements/post/Draft/1/1/0/', array('method' => 'get'));
+		$this->testAction('/announcements/announcements/edit/1/', array('method' => 'get'));
 		$this->assertTextNotContains('ERROR', $this->view);
 	}
 
@@ -77,7 +77,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		$data['AnnouncementDatum']['type'] = "Draft";
 		$data['AnnouncementDatum']['langId'] = 2;
 		$data['AnnouncementDatum']['id'] = 0;
-		$this->testAction('/announcements/announcements/post/Draft/1/1/0/',
+		$this->testAction('/announcements/announcements/edit/1/',
 			array(
 				'method' => 'post',
 				'data' => $data
@@ -87,22 +87,12 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 	}
 
 /**
- * put
- *
- * @return   void
- */
-	public function testPut() {
-		$this->testAction('/announcements/announcements/put/Draft/1/1/0/', array('method' => 'get'));
-		$this->assertTextNotContains('ERROR', $this->view);
-	}
-
-/**
  * delete
  *
  * @return   void
  */
 	public function testDelete() {
-		$this->testAction('/announcements/announcements/delete/Draft/1/1/1/', array('method' => 'get'));
+		$this->testAction('/announcements/announcements/delete/1/', array('method' => 'get'));
 		$this->assertTextNotContains('ERROR', $this->view);
 	}
 
@@ -112,17 +102,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return   void
  */
 	public function testGet() {
-		$this->testAction('/announcements/announcements/get/Draft/1/1/1/', array('method' => 'get'));
-		$this->assertTextNotContains('ERROR', $this->view);
-	}
-
-/**
- * delete
- *
- * @return   void
- */
-	public function testBlockSetting() {
-		$this->testAction('/announcements/announcements/block_setting/1/', array('method' => 'get'));
+		$this->testAction('/announcements/announcements/view/1/', array('method' => 'get'));
 		$this->assertTextNotContains('ERROR', $this->view);
 	}
 
@@ -132,7 +112,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return   void
  */
 	public function testGetEditForm() {
-		$this->testAction('/announcements/announcements/get_edit_form/1/1', array('method' => 'get'));
+		$this->testAction('/announcements/announcements/get_edit_form/1/', array('method' => 'get'));
 		$this->assertTextNotContains('ERROR', $this->view);
 	}
 }

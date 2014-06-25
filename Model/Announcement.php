@@ -40,7 +40,6 @@ class Announcement extends AppModel {
 				'conditions' => array('Announcement.block_id' => $blockId)
 			)
 		);
-
 		if (isset($dd['Announcement'])
 			&& isset($dd['Announcement']['id'])
 			&& $dd['Announcement']['id']

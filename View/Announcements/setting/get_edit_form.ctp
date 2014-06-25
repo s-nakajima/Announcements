@@ -1,4 +1,4 @@
-<div id="announcements_data_<?php echo $frameId?>">
+<div id="announcements-data-<?php echo $frameId?>">
 <?php echo $this->Form->create(null); ?>
 	<div style="display: none;">
 		<?php
@@ -33,11 +33,6 @@
 			)
 		);
 		?>
-		?>
-
-		?>
-
-
 	</div>
 <?php echo $this->Form->end(); ?>
 </div>
