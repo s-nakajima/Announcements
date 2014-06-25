@@ -328,7 +328,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->layout = false;
 		$this->set('frameId', $frameId);
 		$this->set('blockId', $blockId);
-		return $this->render("announcements/setting/get_edit_form");
+		return $this->render("Announcements/setting/get_edit_form");
 	}
 
 /**
