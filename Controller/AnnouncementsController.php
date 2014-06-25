@@ -194,7 +194,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->set('frameId', $frameId);
 		$this->set('blockId', $blockId);
 		//出力
-		return $this->render("/announcements/setting/index");
+		return $this->render("announcements/setting/index");
 	}
 /**
  * index セッティングモードOFF 書き込み権限有り
@@ -210,7 +210,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->set('item', $data);
 		$this->set('frameId', $frameId);
 		$this->set('blockId', $blockId);
-		return $this->render("/announcements/index/editer");
+		return $this->render("announcements/index/editer");
 	}
 /**
  * index 未ログイン向け処理
@@ -226,7 +226,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->set('item', $data);
 		$this->set('frameId', $frameId);
 		$this->set('blockId', $blockId);
-		return $this->render("/announcements/index/default");
+		return $this->render("announcements/index/default");
 	}
 
 /**
@@ -328,7 +328,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->layout = false;
 		$this->set('frameId', $frameId);
 		$this->set('blockId', $blockId);
-		return $this->render("/announcements/setting/get_edit_form");
+		return $this->render("announcements/setting/get_edit_form");
 	}
 
 /**
