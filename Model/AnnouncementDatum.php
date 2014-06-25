@@ -135,7 +135,7 @@ class AnnouncementDatum extends AppModel {
 		$this->__setModel();
 		//例外処理をあとで追加する。
 		$frame = $this->__getFrame($frameId, $userId);
-		if(! $frame) {
+		if (! $frame) {
 			return null;
 		}
 
@@ -161,15 +161,15 @@ class AnnouncementDatum extends AppModel {
 		$insertData[$this->name]['status_id'] = $statusId;
 		$insertData[$this->name]['content'] = $data[$this->name]['content'];
 		//保存結果を返す
-		$rtn =  $this->save($insertData);
+		$rtn = $this->save($insertData);
 		//id が戻ってこないなら、insert失敗
-		if(isset($rtn[$this->name])
+		if (isset($rtn[$this->name])
 			&& isset($rtn[$this->name]['id'])
 			&& $rtn[$this->name]['id']
-		){
+		) {
 			return $rtn;
 		} else {
-			return null ;
+			return null;
 		}
 	}
 
@@ -178,17 +178,16 @@ class AnnouncementDatum extends AppModel {
  *
  * @param int $frameId frames.id
  * @param int $userId  users.id
- * @param int $blockId  blocks.id
  * @return int
  */
 	private function __getFrame($frameId, $userId) {
 		$this->__setModel();
 		//フレームIDのデータを取得する。
 		$frame = $this->__Frame->findById($frameId);
-		if($frame
+		if ($frame
 			&& isset($frame['AnnouncementFrame'])
 			&& isset($frame['AnnouncementFrame']['block_id'])
-		){
+		) {
 			$blockId = $frame['AnnouncementFrame']['block_id'];
 		} else {
 			//存在しないfrale

@@ -135,7 +135,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 		//設定値の格納
 		$this->__isSetting = Configure::read('Pages.isSetting');
 		$this->Frame = Classregistry::init("Announcements.AnnouncementFrame");
-		//blockId初期値設定 view用
 		$this->set('blockId', 0);
 		//ユーザIDの設定
 		$this->__setUserId();
@@ -194,12 +193,13 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->set('frameId', $frameId);
 		$this->set('blockId', $blockId);
 		//出力
-		return $this->render("announcements/setting/index");
+		return $this->render("Announcements/setting/index");
 	}
 /**
  * index セッティングモードOFF 書き込み権限有り
  *
  * @param int $frameId frames.id
+ * @param int $blockId blocks.id
  * @return CakeResponse
  */
 	private function __indexNoSetting($frameId, $blockId) {
@@ -210,12 +210,13 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->set('item', $data);
 		$this->set('frameId', $frameId);
 		$this->set('blockId', $blockId);
-		return $this->render("announcements/index/editer");
+		return $this->render("Announcements/index/editer");
 	}
 /**
  * index 未ログイン向け処理
  *
  * @param int $frameId frames.id
+ * @param int $blockId blocks.id
  * @return CakeResponse
  */
 	private function __indexNologin($frameId, $blockId) {
@@ -226,7 +227,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->set('item', $data);
 		$this->set('frameId', $frameId);
 		$this->set('blockId', $blockId);
-		return $this->render("announcements/index/default");
+		return $this->render("Announcements/index/default");
 	}
 
 /**
@@ -303,19 +304,6 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public function delete($type, $frameId = 0, $blockId = 0, $dataId = 0) {
 	}
-
-/**
- * 取得(非同期通信）
- *
- * @param string $type 情報のタイプ
- * @param int $flameId frames.id
- * @param int $blockId blocks.id
- * @param int $dataId announcement_data.id
- * @return void
- */
-	public function view($type, $flameId = 0, $blockId = 0, $dataId = 0) {
-	}
-
 
 /**
  * お知らせ投稿用のformを取得する
