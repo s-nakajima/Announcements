@@ -71,8 +71,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
             $(messageTag).removeClass("alert-danger");
             $(messageTag).removeClass("hidden");
             $(messageTag + " .message").html(text);
-            $(messageTag).fadeIn(500).fadeTo(1000, 1).fadeOut(500)
-            ;
+            $(messageTag).fadeIn(500).fadeTo(1000, 1).fadeOut(500);
         }
     }
 
