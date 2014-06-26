@@ -205,8 +205,6 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
                 $scope.postAlert("error" , data);
                 $scope.debug = data;
             });
-
-
     }
     //最新の情報にいれかえる
     $scope.setIndex = function(json){
@@ -287,13 +285,11 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         $scope.setId(frameId);
         alert("TODO : ブロック設定を開く");
     }
-
+    //エディタ非表示
     $('.announcements-editer').addClass('hidden');
-
 });
 
 NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
-
     $scope.getPluginName = function(n){
 
     }
