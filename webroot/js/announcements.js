@@ -59,16 +59,20 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
 
     //メッセージ（実行結果）を表示
     $scope.postAlert = function(alertType , text){
+        $(messageTag).css("display","none");
         if(alertType == "error") {
             $(messageTag).addClass("alert-danger");
             $(messageTag).removeClass("alert-success");
-            $(messageTag).removeClass("hidden");
+            //$(messageTag).removeClass("hidden");
             $(messageTag + " .message").html(text);
+            $(messageTag).fadeIn(500);//エラーの場合は消さない
         } else if(alertType == "success") {
             $(messageTag).addClass("alert-success");
             $(messageTag).removeClass("alert-danger");
             $(messageTag).removeClass("hidden");
             $(messageTag + " .message").html(text);
+            $(messageTag).fadeIn(500).fadeTo(1000, 1).fadeOut(500)
+            ;
         }
     }
 
