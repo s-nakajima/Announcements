@@ -3,7 +3,7 @@
 $publishBtnHidden = "hidden";
 if( isset($draftItem)
 	&& isset($draftItem['AnnouncementDatum'])
-	&& (! isset($draftItem['AnnouncementDatum']['content']) || $draftItem['AnnouncementDatum']['content'] != 2 )
+	&& (! isset($draftItem['AnnouncementDatum']['status_id']) || $draftItem['AnnouncementDatum']['status_id'] == 2 )
 ){  $publishBtnHidden  = "";}
 ?>
 
