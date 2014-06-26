@@ -23,7 +23,7 @@ class AnnouncementFrame extends AppModel {
  *
  * @var string
  */
-	public $name = "AnnouncementsFrame";
+	public $name = "Frame";
 
 /**
  * __construct

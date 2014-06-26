@@ -20,7 +20,7 @@ class AnnouncementBlockBlock extends AppModel {
  *
  * @var string
  */
-	public $name = "AnnouncementBlockBlock";
+	public $name = "Block";
 
 /**
  * __construct

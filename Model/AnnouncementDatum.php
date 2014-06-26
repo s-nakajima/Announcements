@@ -196,8 +196,8 @@ class AnnouncementDatum extends AppModel {
 
 		if (! $blockId) {
 			$data = array();
-			$data['AnnouncementBlockBlock']['room_id'] = 1;
-			$data['AnnouncementBlockBlock']['created_user_id'] = $userId;
+			$data['Block']['room_id'] = 1;
+			$data['Block']['created_user_id'] = $userId;
 			$block = $this->__Block->save($data);
 			//blockIdをframeに格納
 			$frame['AnnouncementFrame']['block_id'] = $block['AnnouncementBlockBlock']['id'];
