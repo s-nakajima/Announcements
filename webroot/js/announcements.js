@@ -30,6 +30,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
     var draftTag = '';
     var previewCloseBtnTag = '';
     var messageTag = '';
+    var blockSettingTag = '';
 
     //フォームを閉じる
     $scope.closeForm = function(frameId){
@@ -102,6 +103,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         editerOpenBtnTag = '#announcement-content-edit-btn-' + $scope.frameId;
         previewCloseBtnTag = '#announcement-editer-button-'+ $scope.frameId + ' .announcement-editer-button-preview-close';
         messageTag = '#announcements-mss-' + $scope.frameId;
+        blockSettingTag = '#announcements-block-setting-' + $scope.frameId;
     }
 
     //プレビューの表示
@@ -166,7 +168,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         }
 
         //form
-        $http({method: 'GET', url: $scope.geturl+$scope.frameId})
+        $http({method: 'GET', url: $scope.geturl+$scope.frameId + '/' + Math.random()})
             .success(function(data, status, headers, config) {
                 //set
                 $("#announcements-post-"+ $scope.frameId).html(data);
@@ -281,10 +283,32 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         $(textEditerTag).val($(htmlEditerTag).val());
         $(modalTag).modal('hide');
     }
+    //ブロック設定を表示する
     $scope.openBlockSetting = function(frameId){
         $scope.setId(frameId);
+        //非同期でHTMLを取得
+        var blockSettingUrl = '/announcements/announcements_block_setting/index/' + $scope.frameId + '/' + Math.random() ;
+        $http({method: 'GET', url:blockSettingUrl})
+            .success(function(data, status, headers, config) {
+                 //通信成功
+                $(blockSettingTag).html(data);
+                $("#block-setting-"+ $scope.frameId).modal("show");
+            })
+            .error(function(data, status, headers, config) {
+                //エラー
+                alert("error");
+            });
+
+
         alert("TODO : ブロック設定を開く");
     }
+    //ブロック設定の内容をpostするためのformを取得する。
+
+
+
+
+
+
     //エディタ非表示
     $('.announcements-editer').addClass('hidden');
 });

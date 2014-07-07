@@ -89,4 +89,5 @@ if( isset($draftItem)
 </div>
 
 	<div id="announcements-post-<?php echo $frameId;?>"></div>
+	<div id="announcements-block-setting-<?php echo intval($frameId);?>"></div>
 </div>
