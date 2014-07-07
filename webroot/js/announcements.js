@@ -31,6 +31,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
     var previewCloseBtnTag = '';
     var messageTag = '';
     var blockSettingTag = '';
+    var sendRock = false;
 
     //フォームを閉じる
     $scope.closeForm = function(frameId){
@@ -143,6 +144,12 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
 
     //post //todo:非同期通信中のボタン無効化
     $scope.post = function(type , frameId , blockId, dataId){
+        //送信中のため、処理せず
+        if(sendRock) {
+            return false;
+        }
+        //送信をロックする。
+        sendRock = true;
         //idセット
         $scope.setId(frameId , blockId ,dataId);
 
@@ -207,6 +214,8 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
                 $scope.postAlert("error" , data);
                 $scope.debug = data;
             });
+        //送信ロックを解除する
+        sendRock = false;
     }
     //最新の情報にいれかえる
     $scope.setIndex = function(json){
@@ -292,21 +301,22 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
             .success(function(data, status, headers, config) {
                  //通信成功
                 $(blockSettingTag).html(data);
+                //モーダルを開く
                 $("#block-setting-"+ $scope.frameId).modal("show");
             })
             .error(function(data, status, headers, config) {
                 //エラー
                 alert("error");
             });
-
-
-        alert("TODO : ブロック設定を開く");
     }
-    //ブロック設定の内容をpostするためのformを取得する。
+
+    //権限設定のフォーム取得
 
 
+    //メール送信設定のフォーム取得
 
 
+    //メールテンプレートのフォーム取得
 
 
     //エディタ非表示
