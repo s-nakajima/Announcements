@@ -1,3 +1,16 @@
+<?php
+$formMessage='件名と本文には、
+{X-SITE_NAME}、{X-ROOM}、
+{X-JOURNAL_NAME}、{X-CATEGORY_NAME}、{X-SUBJECT}、{X-USER}、
+{X-TO_DATE}、{X-BODY}、{X-URL}
+というキーワードを使えます。
+それぞれのキーワードは、
+サイト名称、ルーム名称、
+日誌名称、カテゴリ、記事タイトル、投稿者ハンドル名称、
+投稿日時、記事本文、投稿内容のURL
+に変換されて送信されます。';
+
+?>
 <!-- Modal -->
 <div class="modal fade" id="block-setting-<?php echo intval($frameId); ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div style="width: 90%;" class="modal-dialog">
@@ -83,18 +96,7 @@
 							</p>
 							</div>
 						</form>
-						<pre>
-件名と本文には、
-{X-SITE_NAME}、{X-ROOM}、
-{X-JOURNAL_NAME}、{X-CATEGORY_NAME}、{X-SUBJECT}、{X-USER}、
-{X-TO_DATE}、{X-BODY}、{X-URL}
-というキーワードを使えます。
-それぞれのキーワードは、
-サイト名称、ルーム名称、
-日誌名称、カテゴリ、記事タイトル、投稿者ハンドル名称、
-投稿日時、記事本文、投稿内容のURL
-に変換されて送信されます。
-						</pre>
+						<pre><?php echo $formMessage; ?></pre>
 
 
 
@@ -131,18 +133,7 @@
 							</p>
 							</div>
 						</form>
-						<pre>
-件名と本文には、
-{X-SITE_NAME}、{X-ROOM}、
-{X-JOURNAL_NAME}、{X-CATEGORY_NAME}、{X-SUBJECT}、{X-USER}、
-{X-TO_DATE}、{X-BODY}、{X-URL}
-というキーワードを使えます。
-それぞれのキーワードは、
-サイト名称、ルーム名称、
-日誌名称、カテゴリ、記事タイトル、投稿者ハンドル名称、
-投稿日時、記事本文、投稿内容のURL
-に変換されて送信されます。
-						</pre>
+						<pre><?php echo $formMessage; ?></pre>
 
 
 
