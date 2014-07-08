@@ -112,7 +112,7 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 					'can_create_block' => 1,
 					'can_publish_block' => 1,
 					'can_read_content' => 1,
-					'can_edit_content' => 0,
+					'can_edit_content' => 1,
 					'can_create_content' => 0,
 					'can_publish_content' => 2,
 					'created_user_id' => 1,

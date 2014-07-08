@@ -37,13 +37,15 @@
 						<p class="container">
 						<?php
 						foreach($partList as $key=>$item){
-							if ($item['roomParts']['can_edit_content'] == 1) {
-								echo '<span class="glyphicon glyphicon-ok"></span>';
-							} elseif ($item['roomParts']['can_edit_content'] == 0) {
-								echo '<span class="glyphicon glyphicon-remove"></span>';
+							if ($item['roomParts']['can_edit_content'] == 1 && $item['roomParts']['part_id'] != 1) {
+								echo '<input type="checkbox">';
 							}
-							elseif ($item['roomParts']['can_edit_content'] == 2) {
-								?><input type="checkbox"><?php
+							elseif ($item['roomParts']['part_id'] == 1) {
+								//ルーム管理者
+								echo '<span class="glyphicon glyphicon-ok"></span>';
+							}
+							elseif ($item['roomParts']['can_edit_content'] == 0) {
+								echo '<span class="glyphicon glyphicon-remove"></span>';
 							}
 							echo h($item['languagesParts']['name']) . "<br>";
 						}
