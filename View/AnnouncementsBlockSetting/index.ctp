@@ -11,8 +11,8 @@
 				<ul class="nav nav-tabs" role="tablist">
 					<li class="active">
 						<a href="#announcements-block-setting-parts-<?php echo intval($frameId); ?>" role="tab" data-toggle="tab">権限管理</a></li>
-					<li><a href="#announcements-block-setting-update-<?php echo intval($frameId); ?>" role="tab" data-toggle="tab">更新通知</a></li>
-					<li><a href="#announcements-block-setting-request-<?php echo intval($frameId); ?>" role="tab" data-toggle="tab">申請通知</a></li>
+					<li><a href="#announcements-block-setting-update-<?php echo intval($frameId); ?>" role="tab" data-toggle="tab">記事変更通知</a></li>
+					<li><a href="#announcements-block-setting-request-<?php echo intval($frameId); ?>" role="tab" data-toggle="tab">公開申請通知</a></li>
 				</ul>
 
 				<!-- Tab panes -->
@@ -57,7 +57,7 @@
 					</div>
 
 					<div class="tab-pane" id="announcements-block-setting-update-<?php echo intval($frameId); ?>">
-						<h3><?php echo __("更新通知"); ?></h3>
+						<h3><?php echo __("記事変更通知"); ?></h3>
 						<form>
 						<h4><?php echo __("送信設定"); ?></h4>
 							<input type="radio" name="send" value="1" checked> <?php echo __("送信する"); ?>
@@ -65,10 +65,11 @@
 						<h4><?php echo __('送信先設定'); ?></h4>
 							<?php
 							foreach($partList as $key=>$item){
-								?><input type="checkbox"> <?php
-								echo h($item['languagesParts']['name']) . "<br>";
+								?><span style="display:block; float:left; margin-right: 10px;"><input type="checkbox"> <?php
+								echo h($item['languagesParts']['name']) . "</span>";
 							}
 							?>
+							<p style="clear:both;"></p>
 
 						<h4><?php echo __('メール文書設定'); ?></h4>
 							<div>
@@ -78,10 +79,22 @@
 							</p>
 							<p>
 								<?php echo __('本文'); ?> :
-								<textarea class="form-control" rows="5"></textarea>
+								<textarea class="form-control" rows="10"></textarea>
 							</p>
 							</div>
 						</form>
+						<pre>
+件名と本文には、
+{X-SITE_NAME}、{X-ROOM}、
+{X-JOURNAL_NAME}、{X-CATEGORY_NAME}、{X-SUBJECT}、{X-USER}、
+{X-TO_DATE}、{X-BODY}、{X-URL}
+というキーワードを使えます。
+それぞれのキーワードは、
+サイト名称、ルーム名称、
+日誌名称、カテゴリ、記事タイトル、投稿者ハンドル名称、
+投稿日時、記事本文、投稿内容のURL
+に変換されて送信されます。
+						</pre>
 
 
 
@@ -92,20 +105,12 @@
 					</div>
 
 					<div class="tab-pane" id="announcements-block-setting-request-<?php echo intval($frameId); ?>">
-						<h3><?php echo __('申請通知'); ?></h3>
+						<h3><?php echo __('公開申請通知'); ?></h3>
 
 						<form>
 							<h4><?php echo __('送信設定'); ?></h4>
 							<input type="radio" name="send" value="1" checked> <?php echo __('送信する'); ?>
 							<input type="radio" name="send" value="0"> <?php echo __('送信しない'); ?>
-							<h4><?php echo __('送信先設定'); ?></h4>
-							<?php
-							foreach($partList as $key=>$item){
-								?><input type="checkbox"> <?php
-								echo h($item['languagesParts']['name']) . "<br>";
-							}
-							?>
-							<input type="checkbox"> <?php echo __('申請者'); ?>
 
 							<h4><?php echo __('メール文書設定'); ?></h4>
 							<div>
@@ -115,10 +120,29 @@
 							</p>
 							<p>
 								<?php echo __('本文'); ?> :
-								<textarea class="form-control" rows="5"></textarea>
+								<textarea class="form-control" rows="10">
+日誌に投稿されたのでお知らせします。
+ルーム名称:{X-ROOM}
+投稿者:{X-USER}
+投稿日時:{X-TO_DATE}
+この記事に返信するには、下記アドレスへ
+{X-URL}
+								</textarea>
 							</p>
 							</div>
 						</form>
+						<pre>
+件名と本文には、
+{X-SITE_NAME}、{X-ROOM}、
+{X-JOURNAL_NAME}、{X-CATEGORY_NAME}、{X-SUBJECT}、{X-USER}、
+{X-TO_DATE}、{X-BODY}、{X-URL}
+というキーワードを使えます。
+それぞれのキーワードは、
+サイト名称、ルーム名称、
+日誌名称、カテゴリ、記事タイトル、投稿者ハンドル名称、
+投稿日時、記事本文、投稿内容のURL
+に変換されて送信されます。
+						</pre>
 
 
 
