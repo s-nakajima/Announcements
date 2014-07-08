@@ -17,8 +17,8 @@
 
 				<!-- Tab panes -->
 				<div class="tab-content">
-					<div class="tab-pane active container" id="announcements-block-setting-parts-<?php echo intval($frameId); ?>">
-							<h3>公開権限管理</h3>
+					<div class="tab-pane active" id="announcements-block-setting-parts-<?php echo intval($frameId); ?>">
+							<h3><?php echo __("公開権限管理"); ?></h3>
 						<p class="container">
 						<?php
 							foreach($partList as $key=>$item){
@@ -49,18 +49,18 @@
 						}
 						?></p>
 						<p class="text-center">
-							<button type="button" class="btn btn-default" data-dismiss="modal">キャンセル</button>
-							<button type="button" class="btn btn-primary"><span>更新する</span></button>
+							<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo __("キャンセル"); ?></button>
+							<button type="button" class="btn btn-primary"><span><?php echo __("更新する"); ?></span></button>
 						</p>
 					</div>
 
-					<div class="tab-pane container" id="announcements-block-setting-update-<?php echo intval($frameId); ?>">
-						<h3>更新通知</h3>
+					<div class="tab-pane" id="announcements-block-setting-update-<?php echo intval($frameId); ?>">
+						<h3><?php echo __("更新通知"); ?></h3>
 						<form>
-						<h4>送信設定</h4>
-							<input type="radio" name="send" value="1" checked> 送信する
-							<input type="radio" name="send" value="0"> 送信しない
-						<h4>送信先設定</h4>
+						<h4><?php echo __("送信設定"); ?></h4>
+							<input type="radio" name="send" value="1" checked> <?php echo __("送信する"); ?>
+							<input type="radio" name="send" value="0"> <?php echo __("送信しない"); ?>
+						<h4><?php echo __('送信先設定'); ?></h4>
 							<?php
 							foreach($partList as $key=>$item){
 								?><input type="checkbox"> <?php
@@ -68,58 +68,62 @@
 							}
 							?>
 
-						<h4>メール文書設定</h4>
+						<h4><?php echo __('メール文書設定'); ?></h4>
+							<div>
 							<p>
-								タイトル :
+								<?php echo __('タイトル'); ?> :
 								<input type="text" class="form-control">
 							</p>
 							<p>
-								本文 :
+								<?php echo __('本文'); ?> :
 								<textarea class="form-control" rows="5"></textarea>
 							</p>
+							</div>
 						</form>
 
 
 
 						<p class="text-center">
-							<button type="button" class="btn btn-default" data-dismiss="modal">キャンセル</button>
-							<button type="button" class="btn btn-primary"><span>更新する</span></button>
+							<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo __('キャンセル'); ?></button>
+							<button type="button" class="btn btn-primary"><span><?php echo __('更新する'); ?></span></button>
 						</p>
 					</div>
 
-					<div class="tab-pane container" id="announcements-block-setting-request-<?php echo intval($frameId); ?>">
-						<h3>申請通知</h3>
+					<div class="tab-pane" id="announcements-block-setting-request-<?php echo intval($frameId); ?>">
+						<h3><?php echo __('申請通知'); ?></h3>
 
 						<form>
-							<h4>送信設定</h4>
-							<input type="radio" name="send" value="1" checked> 送信する
-							<input type="radio" name="send" value="0"> 送信しない
-							<h4>送信先設定</h4>
+							<h4><?php echo __('送信設定'); ?></h4>
+							<input type="radio" name="send" value="1" checked> <?php echo __('送信する'); ?>
+							<input type="radio" name="send" value="0"> <?php echo __('送信しない'); ?>
+							<h4><?php echo __('送信先設定'); ?></h4>
 							<?php
 							foreach($partList as $key=>$item){
 								?><input type="checkbox"> <?php
 								echo h($item['languagesParts']['name']) . "<br>";
 							}
 							?>
-							<input type="checkbox"> 申請者
+							<input type="checkbox"> <?php echo __('申請者'); ?>
 
-							<h4>メール文書設定</h4>
+							<h4><?php echo __('メール文書設定'); ?></h4>
+							<div>
 							<p>
-								タイトル :
+								<?php echo __('タイトル'); ?> :
 								<input type="text" class="form-control">
 							</p>
 							<p>
-								本文 :
+								<?php echo __('本文'); ?> :
 								<textarea class="form-control" rows="5"></textarea>
 							</p>
+							</div>
 						</form>
 
 
 
 
 						<p class="text-center">
-							<button type="button" class="btn btn-default" data-dismiss="modal">キャンセル</button>
-							<button type="button" class="btn btn-primary"><span>更新する</span></button>
+							<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo __('キャンセル'); ?></button>
+							<button type="button" class="btn btn-primary"><span><?php echo __('更新する'); ?></span></button>
 						</p>
 					</div>
 
