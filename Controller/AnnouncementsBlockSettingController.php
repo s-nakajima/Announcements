@@ -15,6 +15,36 @@ App::uses(
 class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 
 /**
+ * Model name
+ *
+ * @var array
+ */
+	public $uses = array(
+		'Announcements.Announcement',
+		'Announcements.AnnouncementBlock',
+		'Announcements.AnnouncementDatum',
+		'Announcements.AnnouncementsFrame', //frames
+		'Announcements.AnnouncementRoomPart',
+	);
+
+/**
+ * 言語ID
+ *
+ * @var int
+ */
+	public $langId = 2;
+
+/**
+ * 準備
+ *
+ * @return void
+ */
+	public function beforeFilter() {
+		//親処理
+		parent::beforeFilter();
+	}
+
+/**
  * index
  *
  * @param int $frameId frames.id
@@ -33,137 +63,6 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
  * @SuppressWarnings(PHPMD)
  */
 	private function __getPartList() {
-		//2の場合は可変
-		$data = array(
-			0 => array(
-				'roomParts' => array(
-					'id' => 1,
-					'part_id' => 1,
-					'can_read_page' => 1,
-					'can_edit_page' => 1,
-					'can_create_page' => 1,
-					'can_publish_page' => 1,
-					'can_read_block' => 1,
-					'can_edit_block' => 1,
-					'can_create_block' => 1,
-					'can_publish_block' => 1,
-					'can_read_content' => 1,
-					'can_edit_content' => 1,
-					'can_create_content' => 1,
-					'can_publish_content' => 1,
-					'created_user_id' => 1,
-					'created' => '2014-07-03 12:30:59',
-					'modified_user_id' => null,
-					'modified' => null,
-				),
-				'languagesParts' => array(
-					'id' => "",
-					'part_id' => 1,
-					'language_id' => "2",
-					'name' => "ルーム管理者",
-					'created_user_id' => 1,
-					'created' => '2014-07-03 12:30:59',
-					'modified_user_id' => null,
-					'modified' => null,
-				)
-			),
-			1 => array(
-				'roomParts' => array(
-					'id' => 2,
-					'part_id' => 2,
-					'can_read_page' => 1,
-					'can_edit_page' => 1,
-					'can_create_page' => 1,
-					'can_publish_page' => 1,
-					'can_read_block' => 1,
-					'can_edit_block' => 1,
-					'can_create_block' => 1,
-					'can_publish_block' => 1,
-					'can_read_content' => 1,
-					'can_edit_content' => 1,
-					'can_create_content' => 1,
-					'can_publish_content' => 2,
-					'created_user_id' => 1,
-					'created' => '2014-07-03 12:30:59',
-					'modified_user_id' => null,
-					'modified' => null,
-				),
-				'languagesParts' => array(
-					'id' => 2,
-					'part_id' => 2,
-					'language_id' => "2",
-					'name' => "編集長",
-					'created_user_id' => 1,
-					'created' => '2014-07-03 12:30:59',
-					'modified_user_id' => null,
-					'modified' => null,
-				)
-			),
-			2 => array(
-				'roomParts' => array(
-					'id' => 3,
-					'part_id' => 3,
-					'can_read_page' => 1,
-					'can_edit_page' => 1,
-					'can_create_page' => 1,
-					'can_publish_page' => 1,
-					'can_read_block' => 1,
-					'can_edit_block' => 1,
-					'can_create_block' => 1,
-					'can_publish_block' => 1,
-					'can_read_content' => 1,
-					'can_edit_content' => 1,
-					'can_create_content' => 0,
-					'can_publish_content' => 2,
-					'created_user_id' => 1,
-					'created' => '2014-07-03 12:30:59',
-					'modified_user_id' => null,
-					'modified' => null,
-				),
-				'languagesParts' => array(
-					'id' => 3,
-					'part_id' => 3,
-					'language_id' => "2",
-					'name' => "編集者",
-					'created_user_id' => 1,
-					'created' => '2014-07-03 12:30:59',
-					'modified_user_id' => null,
-					'modified' => null,
-				)
-			),
-			3 => array(
-				'roomParts' => array(
-					'id' => 4,
-					'part_id' => 4,
-					'can_read_page' => 1,
-					'can_edit_page' => 1,
-					'can_create_page' => 1,
-					'can_publish_page' => 1,
-					'can_read_block' => 1,
-					'can_edit_block' => 1,
-					'can_create_block' => 1,
-					'can_publish_block' => 1,
-					'can_read_content' => 1,
-					'can_edit_content' => 0,
-					'can_create_content' => 0,
-					'can_publish_content' => 0,
-					'created_user_id' => 1,
-					'created' => '2014-07-03 12:30:59',
-					'modified_user_id' => null,
-					'modified' => null,
-				),
-				'languagesParts' => array(
-					'id' => 4,
-					'part_id' => 4,
-					'language_id' => "2",
-					'name' => "一般",
-					'created_user_id' => 1,
-					'created' => '2014-07-03 12:30:59',
-					'modified_user_id' => null,
-					'modified' => null,
-				)
-			)
-		);
-		return $data;
+		return $this->AnnouncementRoomPart->getList($this->langId);
 	}
 }

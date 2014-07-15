@@ -9,7 +9,6 @@ $formMessage='件名と本文には、
 日誌名称、カテゴリ、記事タイトル、投稿者ハンドル名称、
 投稿日時、記事本文、投稿内容のURL
 に変換されて送信されます。';
-
 ?>
 <!-- Modal -->
 <div class="modal fade" id="block-setting-<?php echo intval($frameId); ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -35,34 +34,32 @@ $formMessage='件名と本文には、
 						<p class="container">
 						<?php
 							foreach($partList as $key=>$item){
-								if ($item['roomParts']['can_publish_content'] == 1) {
+								if ($item['AnnouncementRoomPart']['can_publish_content'] == 1) {
 									echo '<span class="glyphicon glyphicon-ok"></span>';
-								} elseif ($item['roomParts']['can_publish_content'] == 0) {
+								} elseif ($item['AnnouncementRoomPart']['can_publish_content'] == 0) {
 									echo '<span class="glyphicon glyphicon-remove"></span>';
 								}
-								elseif ($item['roomParts']['can_publish_content'] == 2) {
+								elseif ($item['AnnouncementRoomPart']['can_publish_content'] == 2) {
 									?><input type="checkbox"><?php
 								}
-								echo h($item['languagesParts']['name']) . "<br>";
+								echo h($item["LanguagesPart"]['name']) . "<br>";
 							}
 						?></p>
 						<h4>編集権限管理</h4>
 						<p class="container">
-						<?php
-						foreach($partList as $key=>$item){
-							if ($item['roomParts']['can_edit_content'] == 1 && $item['roomParts']['part_id'] != 1) {
-								echo '<input type="checkbox">';
+							<?php
+							foreach($partList as $key=>$item){
+								if ($item['AnnouncementRoomPart']['can_publish_content'] == 1) {
+									echo '<span class="glyphicon glyphicon-ok"></span>';
+								} elseif ($item['AnnouncementRoomPart']['can_publish_content'] == 0) {
+									echo '<span class="glyphicon glyphicon-remove"></span>';
+								}
+								elseif ($item['AnnouncementRoomPart']['can_publish_content'] == 2) {
+									?><input type="checkbox"><?php
+								}
+								echo h($item["LanguagesPart"]['name']) . "<br>";
 							}
-							elseif ($item['roomParts']['part_id'] == 1) {
-								//ルーム管理者
-								echo '<span class="glyphicon glyphicon-ok"></span>';
-							}
-							elseif ($item['roomParts']['can_edit_content'] == 0) {
-								echo '<span class="glyphicon glyphicon-remove"></span>';
-							}
-							echo h($item['languagesParts']['name']) . "<br>";
-						}
-						?></p>
+							?></p>
 						<p class="text-center">
 							<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo __("キャンセル"); ?></button>
 							<button type="button" class="btn btn-primary"><span><?php echo __("更新する"); ?></span></button>
@@ -79,7 +76,7 @@ $formMessage='件名と本文には、
 							<?php
 							foreach($partList as $key=>$item){
 								?><span style="display:block; float:left; margin-right: 10px;"><input type="checkbox"> <?php
-								echo h($item['languagesParts']['name']) . "</span>";
+								echo h($item["LanguagesPart"]['name']) . "</span>";
 							}
 							?>
 							<p style="clear:both;"></p>
