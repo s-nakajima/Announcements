@@ -200,7 +200,7 @@ class AnnouncementDatum extends AppModel {
 			$data['Block']['created_user_id'] = $userId;
 			$block = $this->__Block->save($data);
 			//blockIdをframeに格納
-			$frame['AnnouncementFrame']['block_id'] = $block['AnnouncementBlockBlock']['id'];
+			$frame['AnnouncementFrame']['block_id'] = $block['AnnouncementBlock']['id'];
 			$frame = $this->__Frame->save($frame);
 		}
 
@@ -261,7 +261,7 @@ class AnnouncementDatum extends AppModel {
  * @return void
  */
 	private function __setModel() {
-		$this->__Block = Classregistry::init("Announcements.AnnouncementBlockBlock");
+		$this->__Block = Classregistry::init("Announcements.AnnouncementBlock");
 		$this->__Announcement = Classregistry::init("Announcements.Announcement");
 		$this->__AnnouncementBlock = Classregistry::init("Announcements.AnnouncementBlock");
 		$this->__Frame = Classregistry::init("Announcements.AnnouncementFrame");

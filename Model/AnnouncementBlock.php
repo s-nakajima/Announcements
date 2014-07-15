@@ -7,7 +7,7 @@
  * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 
-class AnnouncementBlockBlock extends AppModel {
+class AnnouncementBlock extends AppModel {
 
 /**
  * テーブルの指定
