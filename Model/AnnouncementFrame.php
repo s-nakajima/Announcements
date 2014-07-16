@@ -8,6 +8,7 @@
  */
 
 App::uses('AppModel', 'Model');
+App::uses('AnnouncementBlock', 'Announcements.Model');
 
 class AnnouncementFrame extends AppModel {
 
@@ -19,11 +20,18 @@ class AnnouncementFrame extends AppModel {
 	public $useTable = 'frames';
 
 /**
- * name
+ * Use database config
  *
  * @var string
  */
-	public $name = "Frame";
+	public $useDbConfig = 'master';
+
+/**
+ * Blocks model object
+ *
+ * @var null
+ */
+	private $__Block = null;
 
 /**
  * __construct
@@ -47,11 +55,58 @@ class AnnouncementFrame extends AppModel {
 	public function getBlockId($frameId) {
 		$frame = $this->findById($frameId);
 		if ($frame
-			&& isset($frame['AnnouncementFrame'])
-			&& isset($frame['AnnouncementFrame']['block_id'])
-			&& $frame['AnnouncementFrame']['block_id']) {
-			return $frame['AnnouncementFrame']['block_id'];
+			&& isset($frame[$this->name])
+			&& isset($frame[$this->name]['block_id'])
+			&& $frame[$this->name]['block_id']) {
+			return $frame[$this->name]['block_id'];
 		}
 		return null;
+	}
+
+/**
+ * blockの作成
+ *
+ * @param int $flameId frames.id
+ * @param int $userId  users.id
+ * @return mix array or null
+ */
+	public function createBlock($flameId, $userId) {
+		if (! $frame = $this->findById($flameId)) {
+			return null;
+		}
+		//Block class object
+		$this->__setModel();
+		// data set
+		$data = array();
+		$data[$this->__Block->name]['room_id'] = $frame['AnnouncementFrame']['room_id'];
+		$data[$this->__Block->name]['created_user_id'] = $userId;
+		$block = $this->__Block->save($data);
+		return $block;
+	}
+
+/**
+ * blockIdの更新
+ *
+ * @param int $flameId frames.id
+ * @param int $blockId blocks.id
+ * @param int $userId users.id
+ * @return array
+ */
+	public function updateBlockId($flameId, $blockId, $userId) {
+		$flame[$this->name]['id'] = $flameId;
+		$flame[$this->name]['block_id'] = $blockId;
+		$flame[$this->name]['modified_user_id'] = $userId;
+		return $this->save($flame);
+	}
+
+/**
+ * Model Object set.
+ *
+ * @return void
+ */
+	private function __setModel() {
+		if (! $this->__Block) {
+			$this->__Block = Classregistry::init("Announcements.AnnouncementBlock");
+		}
 	}
 }

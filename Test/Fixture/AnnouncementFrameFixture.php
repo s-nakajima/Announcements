@@ -26,10 +26,8 @@ class AnnouncementFrameFixture extends CakeTestFixture {
  */
 	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
+		'room_id' => array('type' => 'integer', 'null' => false, 'default' => null),
 		'box_id' => array('type' => 'integer', 'null' => false, 'default' => null),
-		'parent_id' => array('type' => 'integer', 'null' => false, 'default' => null),
-		'lft' => array('type' => 'integer', 'null' => true, 'default' => null),
-		'rght' => array('type' => 'integer', 'null' => true, 'default' => null),
 		'plugin_id' => array('type' => 'integer', 'null' => false, 'default' => null),
 		'block_id' => array('type' => 'integer', 'null' => true, 'default' => null),
 		'weight' => array('type' => 'integer', 'null' => true, 'default' => null),
@@ -41,9 +39,9 @@ class AnnouncementFrameFixture extends CakeTestFixture {
 		'modified_user_id' => array('type' => 'integer', 'null' => true, 'default' => null),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'indexes' => array(
-			'PRIMARY' => array('column' => 'id', 'unique' => 1)
-		),
-		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
+			'PRIMARY' => array('column' => 'id', 'unique' => 1),
+			),
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
 	);
 
 /**
@@ -53,37 +51,31 @@ class AnnouncementFrameFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
+			'id' => 1,
+			'room_id' => 1,
 			'box_id' => 1,
-			'parent_id' => 1,
-			'lft' => 1,
-			'rght' => 1,
 			'plugin_id' => 1,
 			'block_id' => 1,
 			'weight' => 1,
-			'is_published' => 1,
-			'from' => '2014-06-02 16:17:56',
-			'to' => '2014-06-02 16:17:56',
+			'is_published' => true,
+			'from' => '2014-07-07 10:00:00',
+			'to' => '2014-08-07 10:00:00',
 			'created_user_id' => 1,
-			'created' => '2014-06-02 16:17:56',
-			'modified_user_id' => 1,
-			'modified' => '2014-06-02 16:17:56'
+			'created' => '2014-07-07 10:00:00',
 		),
 		array(
+			'id' => 2,
+			'room_id' => 1,
 			'box_id' => 1,
-			'parent_id' => 1,
-			'lft' => 1,
-			'rght' => 1,
 			'plugin_id' => 1,
-			'block_id' => 0,
+			'block_id' => 1,
 			'weight' => 1,
-			'is_published' => 1,
-			'from' => '2014-06-02 16:17:56',
-			'to' => '2014-06-02 16:17:56',
+			'is_published' => true,
+			'from' => '2014-07-07 10:00:00',
+			'to' => '2014-08-07 10:00:00',
 			'created_user_id' => 1,
-			'created' => '2014-06-02 16:17:56',
-			'modified_user_id' => 1,
-			'modified' => '2014-06-02 16:17:56'
-		),
+			'created' => '2014-07-07 10:00:00',
+		)
 	);
 
 }
