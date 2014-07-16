@@ -7,7 +7,7 @@
  * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 
-App::uses('AnnouncementFrame', 'Announcements.Announcements.Model');
+App::uses('AnnouncementFrame', 'Announcements.Model');
 
 
 /**
@@ -65,6 +65,16 @@ class AnnouncementRoomTest extends CakeTestCase {
 	public function testCheckApprovalFalse() {
 		$roomId = 2;
 		$rtn = $this->Room->checkApproval($roomId);
+		$this->assertFalse($rtn);
+	}
+
+/**
+ * save
+ *
+ * @return void
+ */
+	public function testSave() {
+		$rtn = $this->Room->save();
 		$this->assertFalse($rtn);
 	}
 }

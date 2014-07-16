@@ -162,14 +162,21 @@ class AnnouncementDatum extends AppModel {
 		$insertData[$this->name]['content'] = $data[$this->name]['content'];
 		//保存結果を返す
 		$rtn = $this->save($insertData);
-		//id が戻ってこないなら、insert失敗
+		return $this->checkDataSave($rtn);
+	}
+
+/**
+ * saveされたかどうかチェック
+ *
+ * @param array $rtn save data
+ * @return mix array or null
+ */
+	public function checkDataSave($rtn) {
 		if (isset($rtn[$this->name])
 			&& isset($rtn[$this->name]['id'])
 			&& $rtn[$this->name]['id']
 		) {
 			return $rtn;
-		} else {
-			return null;
 		}
 	}
 
@@ -203,7 +210,6 @@ class AnnouncementDatum extends AppModel {
 			$frame['AnnouncementFrame']['block_id'] = $block['AnnouncementBlock']['id'];
 			$frame = $this->__Frame->save($frame);
 		}
-
 		return $frame;
 	}
 

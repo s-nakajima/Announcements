@@ -34,12 +34,12 @@ $formMessage='件名と本文には、
 						<p class="container">
 						<?php
 							foreach($partList as $key=>$item){
-								if ($item['AnnouncementRoomPart']['can_publish_content'] == 1) {
+								if ($item['AnnouncementRoomPart']['publish_content'] == 1) {
 									echo '<span class="glyphicon glyphicon-ok"></span>';
-								} elseif ($item['AnnouncementRoomPart']['can_publish_content'] == 0) {
+								} elseif ($item['AnnouncementRoomPart']['publish_content'] == 0) {
 									echo '<span class="glyphicon glyphicon-remove"></span>';
 								}
-								elseif ($item['AnnouncementRoomPart']['can_publish_content'] == 2) {
+								elseif ($item['AnnouncementRoomPart']['publish_content'] == 2) {
 									?><input type="checkbox"><?php
 								}
 								echo h($item["LanguagesPart"]['name']) . "<br>";
@@ -49,12 +49,12 @@ $formMessage='件名と本文には、
 						<p class="container">
 							<?php
 							foreach($partList as $key=>$item){
-								if ($item['AnnouncementRoomPart']['can_publish_content'] == 1) {
+								if ($item['AnnouncementRoomPart']['publish_content'] == 1) {
 									echo '<span class="glyphicon glyphicon-ok"></span>';
-								} elseif ($item['AnnouncementRoomPart']['can_publish_content'] == 0) {
+								} elseif ($item['AnnouncementRoomPart']['publish_content'] == 0) {
 									echo '<span class="glyphicon glyphicon-remove"></span>';
 								}
-								elseif ($item['AnnouncementRoomPart']['can_publish_content'] == 2) {
+								elseif ($item['AnnouncementRoomPart']['publish_content'] == 2) {
 									?><input type="checkbox"><?php
 								}
 								echo h($item["LanguagesPart"]['name']) . "<br>";

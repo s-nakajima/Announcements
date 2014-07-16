@@ -61,13 +61,31 @@ class AnnouncementDatumTest extends CakeTestCase {
 		$data['AnnouncementDatum']['id'] = 0;
 		$frameId = 1;
 		$userId = 1;
-		$blockId = 1;
-		$dataId = 0;
 		$isEncode = false;
-		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $blockId, $dataId, $userId, $isEncode);
+		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $userId, $isEncode);
 		$this->assertTrue(is_numeric($rtn['AnnouncementDatum']['id']));
 		$this->assertTextEquals($rtn['AnnouncementDatum']['status_id'], 3);
 		$this->assertTextEquals($rtn['AnnouncementDatum']['content'], "test");
+	}
+
+/**
+ * saveData no Flame ID
+ *
+ * @return void
+ */
+	public function testSaveDataNoFrame() {
+		$data = array();
+		$data['AnnouncementDatum']['content'] = "test";
+		$data['AnnouncementDatum']['frameId'] = 9999999999;
+		$data['AnnouncementDatum']['blockId'] = 0;
+		$data['AnnouncementDatum']['type'] = "Draft";
+		$data['AnnouncementDatum']['langId'] = 2;
+		$data['AnnouncementDatum']['id'] = 0;
+		$frameId = 9999999999;
+		$userId = 1;
+		$isEncode = false;
+		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $userId, $isEncode);
+		$this->assertNull($rtn);
 	}
 
 /**
@@ -85,10 +103,8 @@ class AnnouncementDatumTest extends CakeTestCase {
 		$data['AnnouncementDatum']['id'] = 0;
 		$frameId = 1;
 		$userId = 1;
-		$blockId = 1;
-		$dataId = 0;
 		$isEncode = true;
-		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $blockId, $dataId, $userId, $isEncode);
+		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $userId, $isEncode);
 		$this->assertTrue(is_numeric($rtn['AnnouncementDatum']['id']));
 		$this->assertTextEquals($rtn['AnnouncementDatum']['status_id'], 3);
 		$this->assertTextEquals($rtn['AnnouncementDatum']['content'], "test");
@@ -109,10 +125,8 @@ class AnnouncementDatumTest extends CakeTestCase {
 		$data['AnnouncementDatum']['id'] = 0;
 		$frameId = 1;
 		$userId = 1;
-		$blockId = 0;
-		$dataId = 0;
 		$isEncode = true;
-		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $blockId, $dataId, $userId, $isEncode);
+		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $userId, $isEncode);
 		$this->assertTrue(is_numeric($rtn['AnnouncementDatum']['id']));
 		$this->assertTextEquals($rtn['AnnouncementDatum']['status_id'], 3);
 		$this->assertTextEquals($rtn['AnnouncementDatum']['content'], "test");
@@ -132,10 +146,8 @@ class AnnouncementDatumTest extends CakeTestCase {
 		$data['AnnouncementDatum']['id'] = 0;
 		$frameId = 2;
 		$userId = 1;
-		$blockId = 1;
-		$dataId = 0;
 		$isEncode = true;
-		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $blockId, $dataId, $userId, $isEncode);
+		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $userId, $isEncode);
 		$this->assertTrue(is_numeric($rtn['AnnouncementDatum']['id']));
 		$this->assertTextEquals($rtn['AnnouncementDatum']['status_id'], 3);
 		$this->assertTextEquals($rtn['AnnouncementDatum']['content'], "test");
@@ -167,5 +179,25 @@ class AnnouncementDatumTest extends CakeTestCase {
 		$rtn = $this->AnnouncementDatum->getData($blockId, $lang, $isSetting);
 		//セッティングモードOFFなので公開情報がとれる
 		$this->assertTextEquals($rtn['AnnouncementDatum']['id'], 1);
+	}
+
+/**
+ * save checker
+ *
+ * @return void
+ */
+	public function testCheckDataSave() {
+		$data = array(
+			'AnnouncementDatum' => array(
+				'id' => 1,
+				'test' => 1
+			)
+		);
+		$rtn = $this->AnnouncementDatum->checkDataSave($data);
+		$this->assertEquals($data, $rtn);
+		//null
+		$data = array();
+		$rtn = $this->AnnouncementDatum->checkDataSave($data);
+		$this->assertEquals(null, $rtn);
 	}
 }

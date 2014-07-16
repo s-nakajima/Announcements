@@ -43,20 +43,6 @@ class AnnouncementRoomPart extends AppModel {
 	}
 
 /**
- * ルーム管理者の承認が必要かどうかを取得する
- *
- * @param int $roomId rooms.id
- * @return bool
- */
-	public function checkApproval($roomId) {
-		$room = $this->findById($roomId);
-		if (isset($room["Room"]) && isset($room["Room"]['need_approval']) && $room["Room"]['need_approval'] > 0) {
-			return true;
-		}
-		return false;
-	}
-
-/**
  * パート一覧
  *
  * @param int $langId languages.id

@@ -13,6 +13,13 @@
 class AnnouncementBlockBlockFixture extends CakeTestFixture {
 
 /**
+ * db config
+ *
+ * @var string
+ */
+	public $useDbConfig = 'test';
+
+/**
  * table
  *
  * @var string
@@ -36,4 +43,17 @@ class AnnouncementBlockBlockFixture extends CakeTestFixture {
 					),
 					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
 				);
+
+/**
+ * Records
+ *
+ * @var array
+ */
+	public $records = array(
+		array(
+			'id' => 1,
+			'room_id' => 1,
+			'created_user_id' => 1
+		)
+	);
 }

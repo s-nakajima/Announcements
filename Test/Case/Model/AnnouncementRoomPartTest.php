@@ -7,9 +7,9 @@
  * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 
-App::uses('AnnouncementRoomPart', 'Announcements.Announcements.Model');
-App::uses('AnnouncementRoom', 'Announcements.Announcements.Model');
-App::uses('LanguagesPart', 'Announcements.Announcements.Model');
+App::uses('AnnouncementRoomPart', 'Announcements.Model');
+App::uses('AnnouncementRoom', 'Announcements.Model');
+App::uses('LanguagesPart', 'Announcements.Model');
 
 
 /**
@@ -52,7 +52,7 @@ class AnnouncementRoomPartTest extends CakeTestCase {
 	}
 
 /**
- * testCheckApprovalTrue
+ * getList
  *
  * @return void
  */
