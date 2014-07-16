@@ -102,6 +102,15 @@ class Announcements extends CakeMigration {
 					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
 				),
 			)
+		),
+		'down' => array(
+			'drop_table' => array(
+				'announcement_data',
+				'announcements',
+				'announcement_block_setting',
+				'announcement_block_parts',
+				'announcement_block_message'
+			)
 		)
 	);
 
