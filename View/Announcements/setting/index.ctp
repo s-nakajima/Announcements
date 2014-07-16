@@ -13,9 +13,11 @@ if( isset($draftItem)
    id="announcement-content-edit-btn-<?php echo intval($frameId); ?>"
 >
 	<!-- block setting-->
+	<?php if (isset($isBlockEditer) && $isBlockEditer) { ?>
 	<button class="btn btn-default"
 		ng-click="openBlockSetting(<?php echo intval($frameId); ?>)"
 	><span class="glyphicon glyphicon-cog"> <?php echo __("ブロック設定"); ?></span></button>
+	<?php } ?>
 	<!-- edit buttun -->
 	<button class="btn btn-primary"
 		ng-click="getEditer('<?php echo intval($frameId); ?> , <?php echo intval($blockId); ?>')"

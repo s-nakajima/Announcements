@@ -122,6 +122,13 @@ class AnnouncementsController extends AnnouncementsAppController {
 	private $__userId = 0;
 
 /**
+ * isBlockEditer room_parts.edit_block
+ *
+ * @var bool
+ */
+	private $__BlockEditer = false;
+
+/**
  * 準備
  *
  * @return void
@@ -150,6 +157,8 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->__setLang();
 		//ルームIDの設定
 		$this->__setRoomtId();
+		//ブロックの編集権限の確認と設定
+		$this->__setBlockEditer();
 	}
 
 /**
@@ -413,5 +422,15 @@ class AnnouncementsController extends AnnouncementsAppController {
 		}
 		$this->__userId = 1;
 		$this->Set('isLogin', false);
+	}
+
+/**
+ * ブロックに対する編集権限
+ *
+ * @return void
+ */
+	private function __setBlockEditer() {
+		$this->__BlockEditer = true;
+		$this->Set('isBlockEditer', $this->__BlockEditer);
 	}
 }
