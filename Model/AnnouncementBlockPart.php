@@ -85,4 +85,35 @@ class AnnouncementBlockPart extends AppModel {
 		}
 		return null;
 	}
+
+/**
+ * blockの権限更新
+ *
+ * @param string $type edit or publish
+ * @param int $frameId frames.id
+ * @param array $data  post array
+ * @param int $userId  users.id
+ * @return array
+ */
+	public function updateParts($type, $frameId, $data, $userId) {
+		$calName = '';
+		if ($type == 'public') {
+			$calName = 'edit_content';
+		} elseif ($type == 'edit') {
+			$calName = 'publish_content';
+		}
+		//frame情報取得
+		//blockが無かった場合作成
+			//blocks announcements_block_parts 両方作成
+			//announcementsはここでは作成しない。
+		//ルーム管理者の承認が必要確認
+			//承認が必要な場合でpublishの場合は、空arrayを返す
+		//変更可能パートの取得
+		//$data[part_id]を配列に変換 : ,区切り
+		//数字かどうかのチェックはバリデーションに任せる
+		//更新処理 : $data[part_id]になかったものは0 あるものは1に更新
+
+		//とりあえず。
+		return $this->getList(1);
+	}
 }

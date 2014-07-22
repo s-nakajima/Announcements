@@ -10,4 +10,6 @@
 App::uses('AuthComponent', 'Controller/Component');
 
 class AnnouncementsAuthComponent extends Component {
+
+
 }

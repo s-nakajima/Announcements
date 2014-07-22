@@ -17,7 +17,6 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         'Reject' : 4
     };
     $scope.isPreview = 0;
-
     //DOM
     var viewerTag = '';
     var editerOpenBtnTag = '';
@@ -32,6 +31,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
     var messageTag = '';
     var blockSettingTag = '';
     var sendRock = false;
+    var blockSettingGetFormTag = '';
 
     //フォームを閉じる
     $scope.closeForm = function(frameId){
@@ -280,7 +280,13 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         //モーダル Open
         $(modalTag).modal('show');
     }
-    //TEXTエディタ close データの受け渡しのみ
+
+/**
+ * TEXTエディタ close データの受け渡しのみ
+ * これも、tinymceのcodeでレスポンシブ対応が出来次第消去の予定
+ *
+ * @param {int} frameId
+ */
     $scope.closeTextEditer = function(frameId) {
         $scope.setId(frameId);
         var modalTag = "#announcements-text-editer-modal-" + frameId;
@@ -292,39 +298,317 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         $(textEditerTag).val($(htmlEditerTag).val());
         $(modalTag).modal('hide');
     }
-    //ブロック設定を表示する
+
+/**
+ * ブロック設定のモーダルを表示させる。
+ *
+ * @param {int} frameId
+ */
     $scope.openBlockSetting = function(frameId){
         $scope.setId(frameId);
-        //非同期でHTMLを取得
-        var blockSettingUrl = '/announcements/announcements_block_setting/index/' + $scope.frameId + '/' + Math.random() ;
-        $http({method: 'GET', url:blockSettingUrl})
-            .success(function(data, status, headers, config) {
-                 //通信成功
-                $(blockSettingTag).html(data);
-                //モーダルを開く
-                $("#block-setting-"+ $scope.frameId).modal("show");
-            })
-            .error(function(data, status, headers, config) {
-                //エラー
-                alert("error");
-            });
+        $("#block-setting-"+ $scope.frameId).modal("show");
     }
-
-    //権限設定のフォーム取得
-
-
-    //メール送信設定のフォーム取得
-
-
-    //メールテンプレートのフォーム取得
-
 
     //エディタ非表示
     $('.announcements-editer').addClass('hidden');
 });
 
+/**
+ * block setting用controller
+ *
+ */
 NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
-    $scope.getPluginName = function(n){
+    $scope.setId = function (frameId, BlockId) {
+        $scope.frameId = frameId;
+        $scope.blockId = blockId;
+        blockSettingGetFormTag = 'announcements_setting_get_edit_form_'; + $scope.frameId;
+    }
+/**
+ * ヒエラルキーによるチェック状態の制御
+ * 共通処理にするべきだが後回しにする。
+ *
+ * @param {string} type
+ * @param {int} flameId
+ * @param {int} partId
+ */
+    $scope.partChange = function(type, flameId, partId) {
+        var con = 0;
+        var idTag = '#announcements_'+ type +'_frame_'+ flameId + '_part_';
+        var baseH = $scope.getHierarchy(partId).hierarchy;
+        var checkedFlg = $(idTag + partId+":checked").val();
 
+        while(con < $scope.roomParts.length) {
+            var changeTag = idTag + $scope.roomParts[con].id;
+            if(checkedFlg){
+                //チェックボックスON
+                //ヒエラルキーの大きいものはすべてONにする
+                if($scope.roomParts[con].hierarchy >= baseH) {
+                    $(changeTag).prop('checked', true);
+                } else {
+                    $(changeTag).prop('checked', false);
+                }
+            }
+            else{
+                //チェックボックスOFF
+                //ヒエラルキーが小さいものはすべてOFFにする。
+                if($scope.roomParts[con].hierarchy <= baseH) {
+                    $(changeTag).prop('checked', false);
+                }
+            }
+            con ++;
+        }
+    }
+
+    $scope.partSend = function(type, frameId, blockId, langId) {
+        //$scope.setId(frameId, blockId);
+        if (type == "editParts") {
+            $scope.postSendToEditPart(frameId, blockId);
+        } else if (type == "publishParts") {
+            $scope.postToPublishPart(frameId, blockId);
+        } else if (type == "publishMessage") {
+            $scope.postSendToPublishMessage(frameId, blockId, langId);
+        } else if (type == "updateMessage") {
+            $scope.postSendToUpdateMessage(frameId, blockId, langId);
+        }
+    }
+
+    $scope.postToPublishPart = function(frameId, blockId) {
+        var setFormTag = '#announcements-block-setting-get-edit-form-' + frameId;
+        var getFormUrl = '/announcements/announcements_block_setting/get_edit_form/publishParts/'
+            + frameId
+            + '/'
+            + blockId
+            + '/'
+            + Math.random();
+        var postFormUrl = '/announcements/announcements_block_setting/edit/publishParts/'
+            + frameId
+            + '/'
+            + blockId
+            + '/'
+            + Math.random();
+
+
+        //formの取得
+        $http({method: 'GET', url: getFormUrl})
+            .success(function(data, status, headers, config) {
+                var partIdList = "";;
+                for(i=0; i < $scope.roomParts.length; i++) {
+                   var t = '#announcements_publish_frame_'
+                       + frameId
+                       + '_part_'
+                       + i
+                       + ':checked'
+                    ;
+                    if($(t).val()) {
+                        partIdList = partIdList + $(t).val() + ",";
+                    }
+                }
+
+                $(setFormTag).html(data);
+                var post_params = {
+                    'data[_Token][fields]' : $(setFormTag + " input[name='data[_Token][fields]']").val(),
+                    'data[_Token][key]' : $(setFormTag + " input[name='data[_Token][key]']").val(),
+                    '_method' : $(setFormTag + " input[name='_method']").val(),
+                    'data[_Token][unlocked]' : $(setFormTag + " input[name='data[_Token][unlocked]']").val(),
+                    'data[frame_id]' : frameId,
+                    'data[block_id]' : blockId,
+                    'data[part_id]' : partIdList
+                 };
+
+                $.ajax({
+                    method: 'POST',
+                    url: postFormUrl,
+                    data: post_params,
+                    success: function (json, status, headers, config) {
+                        $(setFormTag).html(json);
+                    },
+                    error: function (json, status, headers, config) {
+                        $(setFormTag).html(json);
+                    }
+                });
+
+
+            })
+            .error(
+            function(data, status, headers, config) {
+                alert(data);
+            });
+
+            //完了動作
+
+    }
+    $scope.postSendToEditPart = function(frameId, blockId) {
+
+        var setFormTag = '#announcements-block-setting-get-edit-form-' + frameId;
+        var getFormUrl = '/announcements/announcements_block_setting/get_edit_form/editParts/'
+            + frameId
+            + '/'
+            + blockId
+            + '/'
+            + Math.random();
+        var postFormUrl = '/announcements/announcements_block_setting/edit/editParts/'
+            + frameId
+            + '/'
+            + blockId
+            + '/'
+            + Math.random();
+
+        //formの取得
+        $http({method: 'GET', url: getFormUrl})
+            .success(function(data, status, headers, config) {
+                //part_idを取得
+                var partIdList = '';
+                for(i=0; i < $scope.roomParts.length; i++) {
+                    var t = '#announcements_edit_frame_'
+                            + frameId
+                            + '_part_'
+                            + i
+                            + ':checked'
+                        ;
+                    if($(t).val()) {
+                        partIdList = partIdList + $(t).val() + ",";
+                    }
+                }
+
+                $(setFormTag).html(data);
+                var post_params = {
+                    'data[_Token][fields]' : $(setFormTag + " input[name='data[_Token][fields]']").val(),
+                    'data[_Token][key]' : $(setFormTag + " input[name='data[_Token][key]']").val(),
+                    '_method' : $(setFormTag + " input[name='_method']").val(),
+                    'data[_Token][unlocked]' : $(setFormTag + " input[name='data[_Token][unlocked]']").val(),
+                    'data[frame_id]' : frameId,
+                    'data[block_id]' : blockId,
+                    'data[part_id]' : partIdList
+                };
+
+                $.ajax({
+                    method: 'POST',
+                    url: postFormUrl,
+                    data: post_params,
+                    success: function (json, status, headers, config) {
+                        alert("success");
+                    },
+                    error: function (json, status, headers, config) {
+                        alert(json.message);
+                    }
+                });
+            })
+            .error(
+            function(data, status, headers, config) {
+                alert(data);
+            });
+
+    }
+    $scope.postSendToPublishMessage = function(frameId, blockId, langId) {
+        var viewFormTag = '#announcements-block-setting-request-' + frameId;
+        var setFormTag = '#announcements-block-setting-get-edit-form-' + frameId;
+        var getFormUrl = '/announcements/announcements_block_setting/get_edit_form/publishMessage/'
+            + frameId
+            + '/'
+            + blockId
+            + '/'
+            + Math.random();
+        var postFormUrl = '/announcements/announcements_block_setting/edit/publishMessage/'
+            + frameId
+            + '/'
+            + blockId
+            + '/'
+            + Math.random();
+
+
+        //formの取得
+        $http({method: 'GET', url: getFormUrl})
+            .success(function(data, status, headers, config) {
+
+                $(setFormTag).html(data);
+                var post_params = {
+                    'data[_Token][fields]' : $(setFormTag + " input[name='data[_Token][fields]']").val(),
+                    'data[_Token][key]' : $(setFormTag + " input[name='data[_Token][key]']").val(),
+                    '_method' : $(setFormTag + " input[name='_method']").val(),
+                    'data[_Token][unlocked]' : $(setFormTag + " input[name='data[_Token][unlocked]']").val(),
+                    'data[frame_id]' : frameId,
+                    'data[block_id]' : blockId,
+                    'data[is_send]' :  $(viewFormTag + " input[name='is_send']:checked").val(),
+                    'data[language_id]' : langId,
+                    'data[subject]' : encodeURIComponent($(viewFormTag + " input[name='subject']").val()),
+                    'data[body]' : encodeURIComponent($(viewFormTag + " textarea[name='body']").val())
+                };
+                $.ajax({
+                    method: 'POST',
+                    url: postFormUrl,
+                    data: post_params,
+                    success: function (json, status, headers, config) {
+                        alert("success");
+                    },
+                    error: function (json, status, headers, config) {
+                        alert("error2");
+                    }
+                });
+            })
+            .error(
+            function(data, status, headers, config) {
+                alert(data);
+            });
+    }
+    $scope.postSendToUpdateMessage = function(frameId, blockId, langId) {
+        var viewFormTag = '#announcements-block-setting-update-' + frameId;
+        var setFormTag = '#announcements-block-setting-get-edit-form-' + frameId;
+        var getFormUrl = '/announcements/announcements_block_setting/get_edit_form/updateMessage/'
+            + frameId
+            + '/'
+            + blockId
+            + '/'
+            + Math.random();
+        var postFormUrl = '/announcements/announcements_block_setting/edit/updateMessage/'
+            + frameId
+            + '/'
+            + blockId
+            + '/'
+            + Math.random();
+        //formの取得
+        $http({method: 'GET', url: getFormUrl})
+            .success(function(data, status, headers, config) {
+                //partIdを取得 //後で切り出し
+                var partIdList = '';
+                for(i=0; i < $scope.roomParts.length; i++) {
+                    var t = viewFormTag
+                            + " input[name='part_id_"+ $scope.roomParts[i].id +"']"
+                            + ':checked'
+                        ;
+                    if($(t).val()) {
+                        partIdList = partIdList + $scope.roomParts[i].id + ",";
+                    }
+                }
+                //フォーム仮設置
+                $(setFormTag).html(data);
+                var post_params = {
+                    'data[_Token][fields]' : $(setFormTag + " input[name='data[_Token][fields]']").val(),
+                    'data[_Token][key]' : $(setFormTag + " input[name='data[_Token][key]']").val(),
+                    '_method' : $(setFormTag + " input[name='_method']").val(),
+                    'data[_Token][unlocked]' : $(setFormTag + " input[name='data[_Token][unlocked]']").val(),
+                    'data[frame_id]' : frameId,
+                    'data[block_id]' : blockId,
+                    'data[is_send]' :  $(viewFormTag + " input[name='is_send']:checked").val(),
+                    'data[language_id]' : langId,
+                    'data[part_id]' : partIdList,
+                    'data[subject]' : encodeURIComponent($(viewFormTag + " input[name='subject']").val()),
+                    'data[body]' : encodeURIComponent($(viewFormTag + " textarea[name='body']").val())
+                };
+                $.ajax({
+                    method: 'POST',
+                    url: postFormUrl,
+                    data: post_params,
+                    success: function (json, status, headers, config) {
+                        alert("success");
+                    },
+                    error: function (json, status, headers, config) {
+                        alert("error2");
+                    }
+                });
+            })
+            .error(
+            function(data, status, headers, config) {
+                alert(data);
+            });
     }
 });

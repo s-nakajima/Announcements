@@ -53,7 +53,10 @@ class AnnouncementRoom extends AppModel {
  */
 	public function checkApproval($roomId) {
 		$room = $this->findById($roomId);
-		if (isset($room["AnnouncementRoom"]) && isset($room["AnnouncementRoom"]['need_approval']) && $room["AnnouncementRoom"]['need_approval']) {
+		if (isset($room["AnnouncementRoom"])
+			&& isset($room["AnnouncementRoom"]['need_approval'])
+			&& $room["AnnouncementRoom"]['need_approval']
+		) {
 			return true;
 		}
 		return false;

@@ -15,7 +15,6 @@ if(isset($item)
 		$status_hidden[3] = "";
 	}
 }
-
 ?>
 <p id="announcement-status-label_<?php echo intval($frameId); ?>">
 	<span class="label label-info announcement-status-3   <?php echo $status_hidden[3]; ?>">下書きあり</span>

@@ -9,6 +9,7 @@
 
 App::uses('AppModel', 'Model');
 App::uses('AnnouncementBlock', 'Announcements.Model');
+App::uses('AnnouncementRoom', 'Announcements.Model');
 
 class AnnouncementFrame extends AppModel {
 
@@ -32,6 +33,13 @@ class AnnouncementFrame extends AppModel {
  * @var null
  */
 	private $__Block = null;
+
+/**
+ * Room model object
+ *
+ * @var null
+ */
+	private $__Room = null;
 
 /**
  * __construct
@@ -100,6 +108,18 @@ class AnnouncementFrame extends AppModel {
 	}
 
 /**
+ * ルーム管理者の承認が必要かどうかの確認
+ *
+ * @param int $frameId flames.id
+ * @return bool
+ */
+	public function getRoomApproval($frameId) {
+		$frame = $this->findById($frameId);
+		//$frame[$this->name]['room_id'];
+		return true;
+	}
+
+/**
  * Model Object set.
  *
  * @return void
@@ -107,6 +127,9 @@ class AnnouncementFrame extends AppModel {
 	private function __setModel() {
 		if (! $this->__Block) {
 			$this->__Block = Classregistry::init("Announcements.AnnouncementBlock");
+		}
+		if (! $this->__Room) {
+			$this->__Room = Classregistry::init("Announcements.AnnouncementRoom");
 		}
 	}
 }

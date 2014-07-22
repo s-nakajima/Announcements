@@ -65,7 +65,25 @@ class AnnouncementRoomPart extends AppModel {
 					'AnnouncementRoomPart.*',
 					'LanguagesPart.name'
 				),
-				'order' => array('AnnouncementRoomPart.hierarchy DESC')
+				'order' => array('AnnouncementRoomPart.weight ASC')
+			)
+		);
+	}
+
+/**
+ * 変更可能な権限のpartIdを取得する
+ *
+ * @param string $abilityName edit_content or publish_content
+ * @return array
+ */
+	public function getVariableList($abilityName) {
+		if (! $abilityName) {
+			return array();
+		}
+		return $this->find('all', array(
+				'conditions' => array(
+					$this->name . "." . $abilityName => 1
+				)
 			)
 		);
 	}

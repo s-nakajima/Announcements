@@ -15,19 +15,6 @@ App::uses(
 class AnnouncementsController extends AnnouncementsAppController {
 
 /**
- * Model name
- *
- * @var array
- */
-	public $uses = array(
-		'Announcements.Announcement',
-		'Announcements.AnnouncementBlock',
-		'Announcements.AnnouncementDatum',
-		'Announcements.AnnouncementsFrame', //frames
-		'Announcements.AnnouncementBlocksView',
-	);
-
-/**
  * 使用するコンポーネント
  *
  * @var array
@@ -87,32 +74,11 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public $Announcement = null;
 
 /**
- * 言語ID
- *
- * @var int
- */
-	public $langId = 2;
-
-/**
- * 言語
- *
- * @var string
- */
-	public $lang = 'ja';
-
-/**
  * 言語一覧
  *
  * @var array
  */
 	public $langList = array();
-
-/**
- * room id
- *
- * @var int
- */
-	private $__roomId = 0;
 
 /**
  * user id
@@ -139,24 +105,24 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->Auth->allow();
 		//modelのセット
 		$this->AnnouncementDatum = Classregistry::init("Announcements.AnnouncementDatum");
-		//設定値の格納
+		//設定値の格納 (セッティングモード判定結果）
 		$this->__isSetting = Configure::read('Pages.isSetting');
 		$this->Frame = Classregistry::init("Announcements.AnnouncementFrame");
+		//初期値
 		$this->set('blockId', 0);
+
 		//ユーザIDの設定
 		$this->__setUserId();
-		//編集権源のチェックと設定値の格納
+		//編集権限のチェックと設定値の格納
 		$this->__checkEditer();
-		//公開権限のチェックと設定値の格納
-		$this->__checkAdmin();
+		//ルーム管理者判定
+		$this->__checkRoomAdmin();
 		//著者かどうかの確認と設定値の格納
 		$this->__checkAuthor();
 		//Ajax判定と設定値の格納
 		$this->__checkAjax();
 		//言語設定
 		$this->__setLang();
-		//ルームIDの設定
-		$this->__setRoomtId();
 		//ブロックの編集権限の確認と設定
 		$this->__setBlockEditer();
 	}
@@ -170,6 +136,10 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public function index($frameId = 0) {
 		//レイアウトきりかえ
 		$this->__setLayout();
+		$this->__setFrame($frameId);
+		$this->__setCheckPart();
+		$this->__setPartList();
+
 		$this->set('item', array());
 		//blockIdの取得
 		$blockId = $this->Frame->getBlockId($frameId);
@@ -204,6 +174,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		//出力
 		return $this->render("Announcements/setting/index");
 	}
+
 /**
  * index セッティングモードOFF 書き込み権限有り
  *
@@ -221,6 +192,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->set('blockId', $blockId);
 		return $this->render("Announcements/index/editer");
 	}
+
 /**
  * index 未ログイン向け処理
  *
@@ -250,15 +222,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		//レイアウトの設定
 		$this->__setLayout();
 		if (! $this->request->isPost()) {
-			//post以外の場合、エラー
-			$this->response->statusCode(400);
-			$result = array(
-				'status' => 'error',
-				'message' => __('登録できません'),
-			);
-			$this->set(compact('result'));
-			$this->set('_serialize', 'result');
-			return $this->render();
+			return $this->__ajaxPostError();
 		}
 		//保存
 		$rtn = $this->AnnouncementDatum->saveData(
@@ -269,9 +233,10 @@ class AnnouncementsController extends AnnouncementsAppController {
 		);
 		//成功結果を返す
 		if ($rtn) {
+			//urlEncode
 			$rtn['AnnouncementDatum']['content'] = rawurlencode($rtn['AnnouncementDatum']['content']);
 			$result = array(
-				'status' => 'OK',
+				'status' => 'success',
 				'message' => __('保存しました'),
 				'data' => $rtn
 			);
@@ -287,6 +252,23 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->set(compact('result'));
 		$this->set('_serialize', 'result');
 		return $this->render();
+	}
+
+/**
+ * post以外でrequestされた場合のエラー出力
+ *
+ * @return CakeResponse
+ */
+	private function __ajaxPostError() {
+		//post以外の場合、エラー
+			$this->response->statusCode(400);
+			$result = array(
+				'status' => 'error',
+				'message' => __('登録できません'),
+			);
+			$this->set(compact('result'));
+			$this->set('_serialize', 'result');
+			return $this->render();
 	}
 
 /**
@@ -345,11 +327,11 @@ class AnnouncementsController extends AnnouncementsAppController {
 	}
 
 /**
- * 公開権限の設定（ルーム管理者）
+ * ルーム管理者判定
  *
  * @return void
  */
-	private function __checkAdmin() {
+	private function __checkRoomAdmin() {
 		$this->set('isAdmin', true);
 	}
 
@@ -395,19 +377,8 @@ class AnnouncementsController extends AnnouncementsAppController {
 			1 => 'en',
 			2 => 'ja'
 		);
-		$this->lang = 'ja';
 		$this->langId = 2;
 		$this->set('langId', $this->langId);
-	}
-
-/**
- * room_idの設定
- *
- * @return void
- */
-	private function __setRoomtId() {
-		//pageから取得するべき情報
-		$this->__roomId = 1;
 	}
 
 /**
@@ -433,4 +404,41 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->__BlockEditer = true;
 		$this->Set('isBlockEditer', $this->__BlockEditer);
 	}
+
+/**
+ * frame 取得とそこからの諸々設定
+ *
+ * @param int $frameId flames.id
+ * @return mixed
+ */
+	private function __setFrame($frameId) {
+		return $this->_setFrame($frameId);
+	}
+
+/**
+ * 操作している人の権限の確認
+ * blockのedit権限、ルーム管理者
+ *
+ * @return void
+ */
+	private function __setCheckPart() {
+		//ルーム管理者
+		$this->isRoomAdmin = true;
+		$this->set("isRoomAdmin", $this->isRoomAdmin);
+		//ブロックの編集権限
+		$this->set('isBlockEditer', true);
+	}
+
+/**
+ * パートの取得
+ *
+ * @return array
+ */
+	private function __setPartList() {
+		//room_partの一覧を取得。setし返す。
+		$rtn = $this->AnnouncementRoomPart->getList($this->langId);
+		$this->set('partList', $rtn);
+		return $rtn;
+	}
+
 }

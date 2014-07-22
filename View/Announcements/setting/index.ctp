@@ -93,3 +93,12 @@ if( isset($draftItem)
 	<div id="announcements-post-<?php echo $frameId;?>"></div>
 	<div id="announcements-block-setting-<?php echo intval($frameId);?>"></div>
 </div>
+
+<?php
+if($isRoomAdmin) {
+	echo $this->element("block_setting/room_admin");
+} else {
+	echo $this->element("block_setting/editer");
+}
+
+?>
