@@ -35,7 +35,10 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		'app.Page',
 		'plugin.announcements.announcement_datum',
 		'plugin.announcements.announcement',
-		'plugin.announcements.announcement_frame'
+		'plugin.announcements.announcement_frame',
+		'plugin.announcements.Announcement_block_part',
+		'app.room_part',
+		'app.languages_part'
 	);
 
 /**
