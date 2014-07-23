@@ -10,13 +10,6 @@
 class AnnouncementBlock extends AppModel {
 
 /**
- * Use database config
- *
- * @var string
- */
-	public $useDbConfig = 'master';
-
-/**
  * テーブルの指定
  * @var bool
  */

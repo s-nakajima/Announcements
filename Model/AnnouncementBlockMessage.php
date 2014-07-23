@@ -15,13 +15,6 @@ App::uses('AppModel', 'Model');
 class AnnouncementBlockMessage extends AppModel {
 
 /**
- * Use database config
- *
- * @var string
- */
-	public $useDbConfig = 'master';
-
-/**
  * __construct
  *
  * @param bool $id id

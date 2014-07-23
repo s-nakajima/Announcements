@@ -21,13 +21,6 @@ class AnnouncementFrame extends AppModel {
 	public $useTable = 'frames';
 
 /**
- * Use database config
- *
- * @var string
- */
-	public $useDbConfig = 'master';
-
-/**
  * Blocks model object
  *
  * @var null
@@ -112,9 +105,10 @@ class AnnouncementFrame extends AppModel {
  *
  * @param int $frameId flames.id
  * @return bool
+ * @SuppressWarnings(PHPMD)
  */
 	public function getRoomApproval($frameId) {
-		$frame = $this->findById($frameId);
+		//$frame = $this->findById($frameId);
 		//$frame[$this->name]['room_id'];
 		return true;
 	}

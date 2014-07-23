@@ -82,9 +82,63 @@ class AnnouncementRoomPart extends AppModel {
 		}
 		return $this->find('all', array(
 				'conditions' => array(
-					$this->name . "." . $abilityName => 1
+					$this->name . "." . $abilityName => 2
 				)
 			)
 		);
+	}
+
+/**
+ * 変更可能な権限のpartのidを返す
+ *
+ * @param string $abilityName edit_content or publish_content
+ * @return array
+ */
+	public function getVariableListPartIds($abilityName) {
+		$list = $this->getVariableList($abilityName);
+		$rtn = array();
+		foreach ($list as $item) {
+			if (isset($item[$this->name])
+				&& isset($item[$this->name]['part_id'])
+			) {
+				$rtn[$item[$this->name]['part_id']] = $item[$this->name]['part_id'];
+			}
+		}
+		return $rtn;
+	}
+
+/**
+ * plugin block part 設定を作成するためのデェフォルト値の作成
+ *
+ * @param int $blockId blocks.d
+ * @param int $userId users.id ( create_user_id )
+ * @return array
+ */
+	public function getBlockPartConfig($blockId, $userId) {
+		$rtn = array();
+		$roomPartList = $this->find('all', array(
+				'fields' => array(
+					'part_id',
+					'read_content',
+					'edit_content',
+					'create_content',
+					'publish_content'
+				)
+			)
+		);
+		$con = 0;
+		// 2:可変の場合はまずは権限無しとして初期値を作る。
+		foreach ($roomPartList as $roomPart) {
+			foreach ($roomPart[$this->name] as $key => $item) {
+				if ($key != 'part_id' && $item == 2) {
+					$roomPart[$this->name][$key] = 0;
+				}
+			}
+			$roomPart[$this->name]['block_id'] = $blockId;
+			$roomPart[$this->name]['create_user_id'] = $userId;
+			$rtn[$con] = $roomPart[$this->name];
+			$con++;
+		}
+		return $rtn;
 	}
 }

@@ -60,4 +60,75 @@ class AnnouncementRoomPartTest extends CakeTestCase {
 		$rtn = $this->RoomPart->getList();
 		$this->assertTrue(isset($rtn));
 	}
+
+/**
+ * blockの設定を作成するテスト
+ * 配列名を変換し、blockidを追加した値を返す
+ *
+ * @return void
+ */
+	public function testGetBlockPartConfig() {
+		$ans = array (
+			1 => array (
+				'part_id' => '2',
+				'read_content' => '1',
+				'edit_content' => '1',
+				'create_content' => '1',
+				'publish_content' => 0, //DB上は2だが可変なので0に変換されている
+				'block_id' => 10,
+				'create_user_id' => 1
+			),
+		);
+		//block_id:10でinsert用配列が戻る
+		$rtn = $this->RoomPart->getBlockPartConfig(10, 1);
+		$this->assertEquals($ans[1], $rtn[1]);
+		//block_id :100 配列名test
+		$ans = array (
+			0 =>
+				array (
+					'part_id' => '1',
+					'read_content' => '1',
+					'edit_content' => '1',
+					'create_content' => '1',
+					'publish_content' => '1',
+					'block_id' => 100,
+					'create_user_id' => 1
+				),
+		);
+		$rtn = $this->RoomPart->getBlockPartConfig(100, 1);
+		$this->assertEquals($ans[0], $rtn[0]);
+	}
+
+/**
+ * 可変可能なレコードを返す
+ *
+ * @return void
+ */
+	public function testGetVariableListPublishContent() {
+		$abilityName = 'publish_content';
+		$rtn = $this->RoomPart->getVariableList($abilityName);
+		$this->assertEquals(3, count($rtn));
+		$this->assertEquals(2, $rtn[0][$this->RoomPart->name]['id']);
+	}
+
+/**
+ * 可変可能なレコードを返す
+ *
+ * @return void
+ */
+	public function testGetVariableListCreateContent() {
+		$abilityName = 'create_content';
+		$rtn = $this->RoomPart->getVariableList($abilityName);
+		$this->assertEquals(0, count($rtn));
+
+		$abilityName = '';
+		$rtn = $this->RoomPart->getVariableList($abilityName);
+		$this->assertEquals(0, count($rtn));
+	}
+
+	public function testGetVariableListPartIds() {
+		$abilityName = 'publish_content';
+		$rtn = $this->RoomPart->getVariableListPartIds($abilityName);
+		$this->assertEquals(3, count($rtn));
+	}
 }

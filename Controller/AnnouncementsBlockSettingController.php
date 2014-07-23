@@ -27,13 +27,6 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 	public $isRoomAdmin = true;
 
 /**
- * block id
- *
- * @var int
- */
-	private $__blockId = null;
-
-/**
  * 準備
  *
  * @return void
@@ -41,6 +34,7 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 	public function beforeFilter() {
 		//親処理
 		parent::beforeFilter();
+		//user情報の取得
 	}
 
 /**
@@ -79,13 +73,6 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
  * @return void
  */
 	public function view($type, $frameId, $blockId, $dataType = "json") {
-		$type;
-		$this->__setFrame($frameId);
-		$blockId;
-		$dataType;
-		if (! $dataType) {
-			$dataType = "json";
-		}
 		//ルーム管理者の承認が必要なルームかどうかを返す
 		//ログインしているユーザのルームパートの取得
 		//パート別の公開権限ベースを取得
@@ -101,6 +88,7 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
  * @param string $type タイプ
  * @param int $frameId flames.id
  * @return CakeResponse
+ * @SuppressWarnings(PHPMD)
  */
 	public function edit($type, $frameId) {
 		$this->layout = false;
@@ -108,6 +96,7 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 		if (! $this->request->isPost()) {
 			return $this->__ajaxError(405, __("POSTのみ操作可能です。"));
 		}
+		//ブロックの編集権限についてのチェック
 		//必須パラメータ
 		if (is_numeric($frameId) && $frameId > 0 && $type) {
 			if (! $this->_setFrame($frameId)) {
@@ -115,13 +104,10 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 				return $this->__ajaxError(404, __("指定されたデータは存在しません。"));
 			}
 			//実行
-			var_dump($this->data);
 			if ($type == "publishMessage") {
-				var_dump("公開申請通知");
-				exit();
+				return $this->__editPublishMessage($frameId, $this->request->data);
 			} elseif ($type == "updateMessage") {
-				var_dump("記事変更通知");
-				exit();
+				return $this->__editUpdateMessage($frameId, $this->request->data);
 			} elseif ($type == 'publishParts') {
 				return $this->__updateBlockParts("publish", $frameId, $this->request->data);
 			} elseif ($type == 'editParts') {
@@ -130,6 +116,29 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 		}
 		//パラメータエラー:urlに対してなので404で返す
 		return $this->__ajaxError(404, __("指定されたデータは存在しません。"));
+	}
+
+/**
+ * 記事変更通知設定の更新処理
+ *
+ * @param int $frameId flames.id
+ * @param array $data post data
+ * @return CakeResponse
+ */
+	private function __editUpdateMessage($frameId, $data) {
+		var_dump($this->data);
+		//exit();
+	}
+/**
+ * 公開申請通知設定の更新処理
+ *
+ * @param int $frameId flames.id
+ * @param array $data post data
+ * @return CakeResponse
+ */
+	private function __editPublishMessage($frameId, $data) {
+		var_dump($this->data);
+		//exit();
 	}
 
 /**
@@ -187,9 +196,6 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
  * @return CakeResponse
  */
 	public function add($type, $frameId) {
-		$this->__setFrame($frameId);
-		$type;
-		//blockの作成
 	}
 
 /**
@@ -201,9 +207,8 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
  */
 	public function delete($type, $frameId) {
 		//必ずpostで
-			// blockの削除
-			// 記事のみ削除 announcement_data.id
-		return $this->render();
+		// blockの削除
+		// 記事のみ削除 announcement_data.id
 	}
 
 /**
@@ -219,10 +224,6 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 		$this->__setFrame($frameId);
 		$this->__setPartList();
 		$this->__setCheckPart();
-		//後で例外追加
-		if ($this->blockId != $blockId) {
-			//frameに設定されているblockIdと指定されたblockIdが違う
-		}
 		//type別にフォームを返す
 		if ($type == "editParts") {
 			//タイプ別フォーム : 権限設定
@@ -236,21 +237,9 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 			//タイプ別フォーム：更新通知設定
 			return $this->render("AnnouncementsBlockSetting/get_edit_form/update_message");
 		}
-		//404 error
-		//post以外の場合、エラー
-		$this->response->statusCode(400);
-		$result = array(
-			'status' => 'error',
-			'message' => __('登録できません'),
-		);
-		$this->set(compact('result'));
-		$this->set('_serialize', 'result');
-		return $this->render();
+		//該当のフォームが無い
+		return $this->__ajaxError(404, __('登録できません'));
 	}
-
-	//非同期での公開権限設定を取得
-	//非同期での編集権限ベースを取得
-	//言語の設定
 
 /**
  * frame 取得
@@ -259,22 +248,8 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
  * @return mixed
  */
 	private function __setFrame($frameId) {
+		//権限の確認。edit_blockの権限がなければ404エラー
+		//_setFrame内で諸々権限の状態を格納する。
 		return $this->_setFrame($frameId);
 	}
-
-/**
- * block別のpartを取得
- *
- * @return array
- */
-	private function __setBlockPartList() {
-		if (! $this->__blockId) {
-			$this->set('blockPartList', array());
-			return array();
-		}
-		$blockPart = $this->AnnouncementBlockPart->getList($this->__blockId);
-		$this->set("blockPartList", $blockPart);
-		return $blockPart;
-	}
-
 }

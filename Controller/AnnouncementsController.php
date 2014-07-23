@@ -7,22 +7,10 @@
  * @license  http://www.netcommons.org/license.txt NetCommons License
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */
-App::uses(
-	'AnnouncementsAppController',
-	'Announcements.Controller'
-);
+App::uses('AppController', 'Controller');
+App::uses('AnnouncementsAppController', 'Announcements.Controller');
 
 class AnnouncementsController extends AnnouncementsAppController {
-
-/**
- * 使用するコンポーネント
- *
- * @var array
- */
-	public $components = array(
-		'Security',
-		'RequestHandler'
-	);
 
 /**
  * セッティングモードの状態

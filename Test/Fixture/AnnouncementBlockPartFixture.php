@@ -40,7 +40,7 @@ class AnnouncementBlockPartFixture extends CakeTestFixture {
  * Records
  *
  * @var array
- */
+
 	public $records = array(
 		array(
 			'id' => 1,
@@ -57,5 +57,6 @@ class AnnouncementBlockPartFixture extends CakeTestFixture {
 			'modified_user_id' => 1
 		),
 	);
+ */
 
 }
