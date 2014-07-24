@@ -541,10 +541,10 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
                     url: postFormUrl,
                     data: post_params,
                     success: function (json, status, headers, config) {
-                        alert("success");
+                        alert(json.message);
                     },
                     error: function (json, status, headers, config) {
-                        alert("error2");
+                        alert(json.message);
                     }
                 });
             })
@@ -603,10 +603,10 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
                     url: postFormUrl,
                     data: post_params,
                     success: function (json, status, headers, config) {
-                        alert("success");
+                        alert(json.message);
                     },
                     error: function (json, status, headers, config) {
-                        alert("error2");
+                        alert(json.message);
                     }
                 });
             })

@@ -92,6 +92,7 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
  */
 	public function edit($type, $frameId) {
 		$this->layout = false;
+		$this->viewClass = 'Json';
 		//postのみ許可
 		if (! $this->request->isPost()) {
 			return $this->__ajaxError(405, __("POSTのみ操作可能です。"));
@@ -126,8 +127,13 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
  * @return CakeResponse
  */
 	private function __editUpdateMessage($frameId, $data) {
-		var_dump($this->data);
-		//exit();
+		$result = array(
+			'status' => 'success',
+			'message' => __('保存しました'),
+		);
+		$this->set(compact('result'));
+		$this->set('_serialize', 'result');
+		return $this->render();
 	}
 /**
  * 公開申請通知設定の更新処理
@@ -137,8 +143,13 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
  * @return CakeResponse
  */
 	private function __editPublishMessage($frameId, $data) {
-		var_dump($this->data);
-		//exit();
+		$result = array(
+			'status' => 'success',
+			'message' => __('保存しました'),
+		);
+		$this->set(compact('result'));
+		$this->set('_serialize', 'result');
+		return $this->render();
 	}
 
 /**
