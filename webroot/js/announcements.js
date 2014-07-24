@@ -424,7 +424,7 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
                         alert(json.message);
                     },
                     error: function (json, status, headers, config) {
-                        alert(json.message);
+                        alert(JSON.stringify(json));
                     }
                 });
 
@@ -491,7 +491,7 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
                         alert(json.message);
                     },
                     error: function (json, status, headers, config) {
-                        alert(json.message);
+                        alert(JSON.stringify(json));
                     }
                 });
             })
@@ -544,7 +544,7 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
                         alert(json.message);
                     },
                     error: function (json, status, headers, config) {
-                        alert(json.message);
+                        alert(JSON.stringify(json));
                     }
                 });
             })
@@ -606,7 +606,7 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
                         alert(json.message);
                     },
                     error: function (json, status, headers, config) {
-                        alert(json.message);
+                        alert(json);
                     }
                 });
             })

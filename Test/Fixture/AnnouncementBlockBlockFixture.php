@@ -54,6 +54,26 @@ class AnnouncementBlockBlockFixture extends CakeTestFixture {
 			'id' => 1,
 			'room_id' => 1,
 			'created_user_id' => 1
+		),
+		array(
+			'id' => 2,
+			'room_id' => 1,
+			'created_user_id' => 1
+		),
+		array(
+			'id' => 3,
+			'room_id' => 1,
+			'created_user_id' => 1
+		),
+		array(
+			'id' => 4,
+			'room_id' => 1,
+			'created_user_id' => 1
+		),
+		array(
+			'id' => 5,
+			'room_id' => 1,
+			'created_user_id' => 1
 		)
 	);
 }

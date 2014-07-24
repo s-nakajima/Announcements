@@ -33,12 +33,12 @@
 	<p class="text-center">
 		<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo __("キャンセル"); ?></button>
 		<button type="button" class="btn btn-primary"
-		        ng-click="partSend('editParts',<?php echo $frameId; ?>,<?php echo $blockId; ?>,<?php echo $langId; ?>)"
+		        ng-click="partSend('editParts',<?php echo intval($frameId); ?>,<?php echo intval($blockId); ?>,<?php echo intval($langId); ?>)"
 			>
 			<span><?php echo __("更新する"); ?></span></button>
 	</p>
 
-	<div id="announcements_setting_get_edit_form_<?php echo $frameId; ?>">
+	<div id="announcements_setting_get_edit_form_<?php echo intval($frameId); ?>">
 
 	</div>
 

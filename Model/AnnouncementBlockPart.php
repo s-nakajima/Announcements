@@ -126,7 +126,17 @@ class AnnouncementBlockPart extends AppModel {
 		}
 
 		//配列からblockのidを取得する
-		$blockId = $this->getBlockIdByFrame($frame);
+		$blockId = $this->getBlockIdByFrame($frame, $userId);
+		if ($blockId == 0) {
+			$block = $this->__Frame->createBlock($frameId, $userId);
+			if (isset($block['AnnouncementBlock'])
+				&& isset($block['AnnouncementBlock']['id'])
+			) {
+				$blockId = $block['AnnouncementBlock']['id'];
+			} else {
+				return array();
+			}
+		}
 
 		//元データの取得 : 無ければ初期値をinsert処理を実行する
 		//blockが無かった場合作成。
@@ -217,9 +227,10 @@ class AnnouncementBlockPart extends AppModel {
  * frame 配列からblock_idを取得する。
  *
  * @param array $frame frames recode
+ * @param int $userId user.id
  * @return int or null
  */
-	public function getBlockIdByFrame($frame) {
+	public function getBlockIdByFrame($frame, $userId) {
 		if ( $frame && isset($frame[$this->__Frame->name])
 			&& isset($frame[$this->__Frame->name]['block_id'])
 		) {

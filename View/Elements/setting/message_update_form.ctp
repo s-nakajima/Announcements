@@ -37,6 +37,6 @@
 	<p class="text-center">
 		<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo __('キャンセル'); ?></button>
 		<button type="button" class="btn btn-primary"
-		        ng-click="partSend('updateMessage',<?php echo $frameId; ?>,<?php echo $blockId; ?>,<?php echo $langId; ?>)"
+		        ng-click="partSend('updateMessage',<?php echo intval($frameId); ?>,<?php echo intval($blockId); ?>,<?php echo intval($langId); ?>)"
 			><span><?php echo __('更新する'); ?></span></button>
 	</p>

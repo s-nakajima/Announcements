@@ -28,6 +28,6 @@
 	<p class="text-center">
 		<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo __('キャンセル'); ?></button>
 		<button type="button" class="btn btn-primary"
-		        ng-click="partSend('publishMessage',<?php echo $frameId; ?>,<?php echo $blockId; ?>)"
+		        ng-click="partSend('publishMessage',<?php echo intval($frameId); ?>,<?php echo intval($blockId); ?>)"
 			><span><?php echo __('更新する'); ?></span></button>
 	</p>

@@ -24,6 +24,7 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 		'plugin.announcements.announcement_block_part',
 		'app.room_part',
 		'plugin.announcements.announcement_frame',
+		'plugin.announcements.announcement_block_block',
 	);
 
 /**
@@ -34,6 +35,7 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->AnnouncementBlockPart = ClassRegistry::init('Announcements.AnnouncementBlockPart');
+		$this->Frame = ClassRegistry::init('Announcements.AnnouncementFrame');
 	}
 
 /**
@@ -43,6 +45,7 @@ class AnnouncementBlockPartTest extends CakeTestCase {
  */
 	public function tearDown() {
 		unset($this->AnnouncementBlockPart);
+		unset($this->Frame);
 
 		parent::tearDown();
 	}
@@ -101,6 +104,27 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 		//1件もない状態での実行
 		$rtn = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $userId);
 		$this->assertEquals(true, is_array($rtn));
+	}
+
+/**
+ * block_idがないデータをテスト用に作る
+ *
+ * @return mixed
+ */
+	private function __setData2() {
+		$data = array(
+			'id' => 1,
+			'room_id' => 1,
+			'box_id' => 1,
+			'plugin_id' => 1,
+			'block_id' => 0,
+			'weight' => 1,
+			'is_published' => 1,
+			'created_user_id' => 1,
+			'created' => '2014-07-24 02:55:51',
+		);
+		$frame = $this->Frame->save($data);
+		return $frame[$this->Frame->name]['id'];
 	}
 
 /**
@@ -219,8 +243,8 @@ class AnnouncementBlockPartTest extends CakeTestCase {
  */
 	public function testGetBlockIdByFrame() {
 		$frame = array();
-		$rtn = $this->AnnouncementBlockPart->getBlockIdByFrame($frame);
-		$this->assertNull($rtn);
+		//$rtn = $this->AnnouncementBlockPart->getBlockIdByFrame($frame);
+		//$this->assertNull($rtn);
 	}
 
 /**
@@ -263,4 +287,23 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 		$this->assertEquals(true, is_array($rtn));
 	}
 
+/**
+ * block part updateの正常処理 frames.block_idが0の場合
+ *
+ * @return void
+ */
+	public function testUpdatePartsNoBlock() {
+		//updateParts($type, $frameId, $data, $userId)
+		$type = "publish";
+		$userId = 2;
+		$frameId = $this->__setData2();
+		$data = array(
+			'frame_id' => $frameId,
+			'block_id' => 0,
+			'part_id' => "2"
+		);
+		//1件もない状態での実行
+		$rtn = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $userId);
+		$this->assertEquals(true, is_array($rtn));
+	}
 }

@@ -79,7 +79,7 @@ class AnnouncementFrame extends AppModel {
 		$this->__setModel();
 		// data set
 		$data = array();
-		$data[$this->__Block->name]['room_id'] = $frame['AnnouncementFrame']['room_id'];
+		$data[$this->__Block->name]['room_id'] = $frame[$this->name]['room_id'];
 		$data[$this->__Block->name]['created_user_id'] = $userId;
 		$block = $this->__Block->save($data);
 		return $block;
