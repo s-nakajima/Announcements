@@ -360,6 +360,9 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
 
     //設定の更新 post処理分岐
     $scope.partSend = function(type, frameId, blockId, langId) {
+        //すべてのボタンを無効に。 //ちょっと乱暴すぎるのであとで範囲指定。
+        $('input').attr("disabled", "disabled");
+        $("button").fadeTo(1000, 0.3);
         //$scope.setId(frameId, blockId);
         if (type == "editParts") {
             $scope.postSendToEditPart(frameId, blockId);
@@ -370,6 +373,9 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
         } else if (type == "updateMessage") {
             $scope.postSendToUpdateMessage(frameId, blockId, langId);
         }
+        //すべてのボタンを有効に。//ちょっと乱暴すぎるのであとで範囲指定。
+        $('input').removeAttr("disabled");
+
     }
     //更新処理 :公開権限の編集
     $scope.postToPublishPart = function(frameId, blockId) {
@@ -386,7 +392,6 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
             + blockId
             + '/'
             + Math.random();
-
 
         //formの取得
         $http({method: 'GET', url: getFormUrl})
@@ -422,9 +427,11 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
                     success: function (json, status, headers, config) {
                         //$(setFormTag).html(json);
                         alert(json.message);
+                        $("button").fadeTo(100, 1);
                     },
                     error: function (json, status, headers, config) {
                         alert(JSON.stringify(json));
+                        $("button").fadeTo(100, 1);
                     }
                 });
 
@@ -433,6 +440,7 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
             .error(
             function(data, status, headers, config) {
                 alert(data);
+                $("button").fadeTo(100, 1);
             });
 
             //完了動作
@@ -489,15 +497,18 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
                     data: post_params,
                     success: function (json, status, headers, config) {
                         alert(json.message);
+                        $("button").fadeTo(100, 1);
                     },
                     error: function (json, status, headers, config) {
                         alert(JSON.stringify(json));
+                        $("button").fadeTo(100, 1);
                     }
                 });
             })
             .error(
             function(data, status, headers, config) {
                 alert(data);
+                $("button").fadeTo(100, 1);
             });
 
     }
@@ -542,15 +553,18 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
                     data: post_params,
                     success: function (json, status, headers, config) {
                         alert(json.message);
+                        $("button").fadeTo(100, 1);
                     },
                     error: function (json, status, headers, config) {
-                        alert(JSON.stringify(json));
+                        alert(json.message);
+                        $("button").fadeTo(100, 1);
                     }
                 });
             })
             .error(
             function(data, status, headers, config) {
                 alert(data);
+                $("button").fadeTo(100, 1);
             });
     }
     //更新処理 : 記事変更通知の編集
@@ -604,15 +618,18 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
                     data: post_params,
                     success: function (json, status, headers, config) {
                         alert(json.message);
+                        $("button").fadeTo(100, 1);
                     },
                     error: function (json, status, headers, config) {
-                        alert(json);
+                        alert(json.message);
+                        $("button").fadeTo(100, 1);
                     }
                 });
             })
             .error(
             function(data, status, headers, config) {
                 alert(data);
+                $("button").fadeTo(100, 1);
             });
     }
 });
