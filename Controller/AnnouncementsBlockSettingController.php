@@ -150,11 +150,6 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
  * @return CakeResponse
  */
 	private function __updateBlockParts($type, $frameId, $data) {
-		//$type publish or edit & $frameId
-		//room管理者のチェック : NG 403エラー 権限なし
-		//ルーム管理者の承認が必要チェック : NG 409 リソースの競合 : 変更できない
-		//$dataのframeIdと$frameIdが違う パラメータエラー URLとpostされた情報が合致しない
-		//modelへデータ渡す
 		if ($blockPart = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $this->userId)) {
 			//結果を返す : json
 			$result = array(
