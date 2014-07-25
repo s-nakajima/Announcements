@@ -13,20 +13,6 @@ App::uses('AnnouncementsAppController', 'Announcements.Controller');
 class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 
 /**
- * ルーム管理者の承認が必要
- *
- * @var bool
- */
-	public $isNeedApproval = true;
-
-/**
- * room admin
- *
- * @var bool
- */
-	public $isRoomAdmin = true;
-
-/**
  * 準備
  *
  * @return void
@@ -34,7 +20,8 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 	public function beforeFilter() {
 		//親処理
 		parent::beforeFilter();
-		//user情報の取得
+		//セッティングモード
+		$this->set('isSetting', Configure::read('Pages.isSetting'));
 	}
 
 /**
@@ -47,19 +34,6 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 		$rtn = $this->AnnouncementRoomPart->getList($this->langId);
 		$this->set('partList', $this->AnnouncementRoomPart->getList($this->langId));
 		return $rtn;
-	}
-
-/**
- * ブロックの編集権限
- *
- * @return void;
- */
-	private function __setCheckPart() {
-		//ルーム管理者
-		$this->isRoomAdmin = true;
-		$this->set("isRoomAdmin", $this->isRoomAdmin);
-		//ブロックの編集権限
-		$this->set('isBlockEditer', true);
 	}
 
 /**
@@ -229,7 +203,6 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 		$this->layout = false;
 		$this->__setFrame($frameId);
 		$this->__setPartList();
-		$this->__setCheckPart();
 		//type別にフォームを返す
 		if ($type == "editParts") {
 			//タイプ別フォーム : 権限設定

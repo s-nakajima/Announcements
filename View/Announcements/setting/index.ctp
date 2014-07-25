@@ -13,19 +13,23 @@ if( isset($draftItem)
    id="announcement-content-edit-btn-<?php echo intval($frameId); ?>"
 >
 	<!-- block setting-->
-	<?php if (isset($isBlockEditer) && $isBlockEditer) { ?>
+	<?php if (isset($isBlockEdit) && $isBlockEdit) { ?>
 	<button class="btn btn-default"
 		ng-click="openBlockSetting(<?php echo intval($frameId); ?>)"
 	><span class="glyphicon glyphicon-cog"> <?php echo __("ブロック設定"); ?></span></button>
 	<?php } ?>
 	<!-- edit buttun -->
+	<?php if($isEdit) { ?>
 	<button class="btn btn-primary"
 		ng-click="getEditer('<?php echo intval($frameId); ?> , <?php echo intval($blockId); ?>')"
 	><span class="glyphicon glyphicon-pencil"> <?php echo __("編集"); ?></span></button>
+	<?php } ?>
 	<!-- publich button -->
+	<?php if($isPublish) { ?>
 	<button class="btn btn-danger announcement-btn-publish <?php echo $publishBtnHidden;?>"
 		ng-click="post('Publish', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)"
 	><span class="glyphicon glyphicon-share-alt"> <?php echo __("公開する"); ?></span></button>
+	<?php } ?>
 </p>
 
 

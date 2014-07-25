@@ -27,13 +27,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 	private $__isAjax = false;
 
 /**
- * 編集権限
- *
- * @var bool
- */
-	private $__isEditer = false;
-
-/**
  * model object
  *
  * @var null
@@ -76,13 +69,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 	private $__userId = 0;
 
 /**
- * isBlockEditer room_parts.edit_block
- *
- * @var bool
- */
-	private $__BlockEditer = false;
-
-/**
  * 準備
  *
  * @return void
@@ -90,29 +76,26 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public function beforeFilter() {
 		//親処理
 		parent::beforeFilter();
+		//未ログインでもアクセスを許可
 		$this->Auth->allow();
 		//modelのセット
 		$this->AnnouncementDatum = Classregistry::init("Announcements.AnnouncementDatum");
 		//設定値の格納 (セッティングモード判定結果）
 		$this->__isSetting = Configure::read('Pages.isSetting');
+		$this->set('isSetting', $this->__isSetting);
 		$this->Frame = Classregistry::init("Announcements.AnnouncementFrame");
 		//初期値
 		$this->set('blockId', 0);
-
-		//ユーザIDの設定
-		$this->__setUserId();
-		//編集権限のチェックと設定値の格納
-		$this->__checkEditer();
-		//ルーム管理者判定
-		$this->__checkRoomAdmin();
-		//著者かどうかの確認と設定値の格納
-		$this->__checkAuthor();
+		//ユーザIDの取得と設定
+		$this->_setLoginUserId();
+		//編集権限初期値
+		$this->set('isEdit', false);
+		//ブロックの編集権限初期値
+		$this->Set('isBlockEdit', false);
 		//Ajax判定と設定値の格納
 		$this->__checkAjax();
 		//言語設定
-		$this->__setLang();
-		//ブロックの編集権限の確認と設定
-		$this->__setBlockEditer();
+		$this->_setLang();
 	}
 
 /**
@@ -124,8 +107,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public function index($frameId = 0) {
 		//レイアウトきりかえ
 		$this->__setLayout();
-		$this->__setFrame($frameId);
-		$this->__setCheckPart();
+		$this->_setFrame($frameId);
 		$this->__setPartList();
 
 		$this->set('item', array());
@@ -138,13 +120,13 @@ class AnnouncementsController extends AnnouncementsAppController {
 		}
 
 		//編集権限が無い人 (ログイン中も含む 公開情報しかみえない）
-		if (! $this->__isEditer ) {
+		if (! $this->isEdit && ! $this->isBlockEdit && ! $this->__isSetting) {
 				//blockから情報を取得 $LangId
 				return $this->__indexNologin($frameId, $blockId);
 		}
 
 		//セッティングモードではないが、編集権限はある
-		if (! $this->__isSetting && $this->__isEditer) {
+		if (! $this->__isSetting && $this->isEdit) {
 			return $this->__indexNoSetting($frameId, $blockId);
 		}
 
@@ -152,9 +134,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$draftData = $this->AnnouncementDatum->getData($blockId, $this->langId, true);
 		//セッティングモードOFF データ無し(下書きもなし）
 		$data = $this->AnnouncementDatum->getData($blockId, $this->langId, $this->__isSetting);
-		if (! $data && ! $this->__isSetting && !$draftData) {
-			return $this->render('notice');
-		}
 		$this->set('draftItem', $draftData);
 		$this->set('item', $data);
 		$this->set('frameId', $frameId);
@@ -299,40 +278,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 	}
 
 /**
- * 編集権源の設定
- *
- * @return bool
- */
-	private function __checkEditer() {
-		if (! $this->Auth->loggedIn()) {
-			$this->__isEditer = false;
-			$this->set('isEdit', false);
-			return false;
-		}
-		$this->__isEditer = true;
-		$this->set('isEdit', true);
-		return true;
-	}
-
-/**
- * ルーム管理者判定
- *
- * @return void
- */
-	private function __checkRoomAdmin() {
-		$this->set('isAdmin', true);
-	}
-
-/**
- * 書いた人設定
- *
- * @return void
- */
-	private function __checkAuthor() {
-		$this->set('isAuthor', true);
-	}
-
-/**
  * 非同期通信の場合、レイアウトなし設定をする。
  *
  * @return void
@@ -352,69 +297,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 		if ($this->request->is('ajax')) {
 			$this->__isAjax = 1;
 		}
-	}
-
-/**
- * 言語一覧の設定
- *
- * @return void
- */
-	private function __setLang() {
-		//本来はDBより取得
-		$this->langList = array(
-			1 => 'en',
-			2 => 'ja'
-		);
-		$this->langId = 2;
-		$this->set('langId', $this->langId);
-	}
-
-/**
- * user_idの設定
- *
- * @return void
- */
-	private function __setUserId() {
-		if ($this->Auth->loggedIn()) {
-			$this->__userId = 1;
-			$this->Set('isLogin', true);
-		}
-		$this->__userId = 1;
-		$this->Set('isLogin', false);
-	}
-
-/**
- * ブロックに対する編集権限
- *
- * @return void
- */
-	private function __setBlockEditer() {
-		$this->__BlockEditer = true;
-		$this->Set('isBlockEditer', $this->__BlockEditer);
-	}
-
-/**
- * frame 取得とそこからの諸々設定
- *
- * @param int $frameId flames.id
- * @return mixed
- */
-	private function __setFrame($frameId) {
-		return $this->_setFrame($frameId);
-	}
-
-/**
- * 操作している人の権限の確認
- * blockのedit権限、ルーム管理者
- *
- * @return void
- */
-	private function __setCheckPart() {
-		//ルーム管理者
-		$this->isRoomAdmin = true;
-		$this->set("isRoomAdmin", $this->isRoomAdmin);
-		//ブロックの編集権限
-		$this->set('isBlockEditer', true);
 	}
 
 /**

@@ -58,7 +58,7 @@ class AnnouncementBlockPart extends AppModel {
 	}
 
 /**
- * blockIdからidを取得する
+ * blockIdとpartIdからidを取得する
  *
  * @param int $blockId blocks.id
  * @param int $partId parts.id
@@ -68,7 +68,7 @@ class AnnouncementBlockPart extends AppModel {
 		$rtn = $this->find('first', array(
 			'conditions' => array(
 				$this->name . '.block_id' => $blockId,
-				$this->name . '.part_id' => $blockId
+				$this->name . '.part_id' => $partId
 			)
 		));
 		return $rtn;
