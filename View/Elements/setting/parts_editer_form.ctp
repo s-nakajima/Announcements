@@ -1,5 +1,5 @@
 
-	<h3>編集権限管理</h3>
+	<h3><?php echo __("編集権限設定");?> </h3>
 	<p class="container">
 		<?php
 

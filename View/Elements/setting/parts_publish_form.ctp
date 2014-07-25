@@ -1,5 +1,5 @@
 
-	<h3><?php echo __("公開権限管理"); ?></h3>
+	<h3><?php echo __("公開権限設定"); ?></h3>
 	<p class="container">
 		<?php
 

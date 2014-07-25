@@ -18,11 +18,11 @@
 							<li class="active">
 								<a href="#announcements-block-setting-parts-publish-<?php echo intval($frameId); ?>"
 									role="tab"
-									data-toggle="tab"><?php echo __("公開権限管理"); ?></a></li>
+									data-toggle="tab"><?php echo __("公開権限設定"); ?></a></li>
 
 							<li><a href="#announcements-block-setting-parts-editer-<?php echo intval($frameId); ?>"
 									role="tab"
-									data-toggle="tab"><?php echo __("編集権限管理"); ?></a></li>
+									data-toggle="tab"><?php echo __("編集権限設定"); ?></a></li>
 							<li><a href="#announcements-block-setting-update-<?php echo intval($frameId); ?>"
 									role="tab"
 									data-toggle="tab"><?php echo __("記事変更通知"); ?></a></li>
