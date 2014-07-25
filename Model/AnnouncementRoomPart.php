@@ -136,6 +136,7 @@ class AnnouncementRoomPart extends AppModel {
 			}
 			$roomPart[$this->name]['block_id'] = $blockId;
 			$roomPart[$this->name]['create_user_id'] = $userId;
+			$roomPart[$this->name]['modified_user_id'] = $userId;
 			$rtn[$con] = $roomPart[$this->name];
 			$con++;
 		}

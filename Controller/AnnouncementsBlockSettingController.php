@@ -22,6 +22,7 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 		parent::beforeFilter();
 		//セッティングモード
 		$this->set('isSetting', Configure::read('Pages.isSetting'));
+		$this->_setLoginUserId();
 	}
 
 /**

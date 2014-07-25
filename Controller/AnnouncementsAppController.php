@@ -109,7 +109,7 @@ class AnnouncementsAppController extends AppController {
  *
  * @var int
  */
-	public $userId = null;
+	public $userId = 0;
 
 /**
  * ルーム管理者のpart_id
@@ -226,10 +226,11 @@ class AnnouncementsAppController extends AppController {
  * @SuppressWarnings(PHPMD)
  */
 	private function __checkPartSetting($roomPart, $columnName, $blockId) {
+		$RoomsUserName = $this->AnnouncementPartsRoomsUser->name;
 		if (! $roomPart
 			|| ! isset($roomPart['RoomPart'])
-			|| ! isset($roomPart[$this->AnnouncementPartsRoomsUser->name])
-			|| ! isset($roomPart[$this->AnnouncementPartsRoomsUser->name]['part_id'])
+			|| ! isset($roomPart[$RoomsUserName])
+			|| ! isset($roomPart[$RoomsUserName]['part_id'])
 		) {
 			return false;
 		}
@@ -251,10 +252,10 @@ class AnnouncementsAppController extends AppController {
 		if (! $blockId) {
 			return false;
 		}
-		$partId = $roomPart[$this->AnnouncementPartsRoomsUser->name]['part_id'];
+		$partId = $roomPart[$RoomsUserName]['part_id'];
 		$blockPart = $this->AnnouncementBlockPart->findByBlockId($blockId, $partId);
-		if (isset($blockPart[$this->AnnouncementBlockPart->name][$columnName])
-			&& $blockPart[$this->AnnouncementBlockPart->name][$columnName] == 1
+		if (isset($blockPart[$RoomsUserName][$columnName])
+			&& $blockPart[$RoomsUserName][$columnName] == 1
 		) {
 			return true;
 		}
@@ -319,26 +320,7 @@ class AnnouncementsAppController extends AppController {
  */
 	private function __getRoomPart() {
 		//共通処理にすべき : Modelに移動したい
-		$rtn = $this->AnnouncementPartsRoomsUser->find('first', array(
-				'joins' => array(
-					array(
-						'type' => 'LEFT',
-						'table' => 'room_parts',
-						'alias' => 'RoomPart',
-						'conditions' => array(
-							$this->AnnouncementPartsRoomsUser->name . '.user_id' => $this->userId,
-							$this->AnnouncementPartsRoomsUser->name . '.room_id' => $this->roomId,
-							'RoomPart.part_id=' . $this->AnnouncementPartsRoomsUser->name . '.part_id'
-						)
-					)
-				),
-				'fields' => array(
-					$this->AnnouncementPartsRoomsUser->name . '.*',
-					'RoomPart.*'
-				)
-			)
-		);
-		return $rtn;
+		return $this->AnnouncementPartsRoomsUser->getRoomPart($this->roomId, $this->userId);
 	}
 
 /**
@@ -361,11 +343,6 @@ class AnnouncementsAppController extends AppController {
  * @return void
  */
 	protected function _setLang() {
-		//本来はDBより取得
-		$this->langList = array(
-			1 => 'en',
-			2 => 'ja'
-		);
 		$this->langId = 2;
 		$this->set('langId', $this->langId);
 	}

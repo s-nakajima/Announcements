@@ -55,20 +55,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public $Announcement = null;
 
 /**
- * 言語一覧
- *
- * @var array
- */
-	public $langList = array();
-
-/**
- * user id
- *
- * @var int
- */
-	private $__userId = 0;
-
-/**
  * 準備
  *
  * @return void
@@ -195,7 +181,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$rtn = $this->AnnouncementDatum->saveData(
 			$this->data,
 			$frameId,
-			$this->__userId,
+			$this->userId,
 			$this->__isAjax
 		);
 		//成功結果を返す

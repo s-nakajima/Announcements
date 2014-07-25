@@ -76,7 +76,8 @@ class AnnouncementRoomPartTest extends CakeTestCase {
 				'create_content' => '1',
 				'publish_content' => 0, //DB上は2だが可変なので0に変換されている
 				'block_id' => 10,
-				'create_user_id' => 1
+				'create_user_id' => 1,
+				'modified_user_id' => 1
 			),
 		);
 		//block_id:10でinsert用配列が戻る
@@ -92,7 +93,8 @@ class AnnouncementRoomPartTest extends CakeTestCase {
 					'create_content' => '1',
 					'publish_content' => '1',
 					'block_id' => 100,
-					'create_user_id' => 1
+					'create_user_id' => 1,
+					'modified_user_id' => 1
 				),
 		);
 		$rtn = $this->RoomPart->getBlockPartConfig(100, 1);

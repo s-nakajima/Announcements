@@ -61,8 +61,7 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 		$blockId = 1;
 		$partId = 2;
 		$rtn = $this->AnnouncementBlockPart->findByBlockId($blockId, $partId);
-		//var_dump($rtn);
-		$this->assertTextEquals(1, $rtn["AnnouncementBlockPart"]['id']);
+		$this->assertTextEquals(1, $rtn["AnnouncementBlockPart"]['block_id']);
 		//無い場合
 		$blockId = 100;
 		$rtn = $this->AnnouncementBlockPart->findByBlockId($blockId, $partId);
@@ -78,7 +77,7 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 		$this->__setData();
 		//ある場合
 		$blockId = 1;
-		$partId = 2;
+		$partId = 1;
 		$rtn = $this->AnnouncementBlockPart->getIdByBlockId($blockId, $partId);
 		$this->assertTextEquals(1, $rtn);
 		//無い場合
