@@ -36,12 +36,6 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
     var blockSettingTag = '';
     var sendRock = false;
 
-    $scope.nekoget = null;
-    $scope.setNekoget = function(text) {
-        alert(text);
-        $scope.nekoget = text;
-    }
-
     //フォームを閉じる
     $scope.closeForm = function(frameId){
         //set
