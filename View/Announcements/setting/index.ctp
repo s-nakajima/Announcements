@@ -7,7 +7,10 @@ if( isset($draftItem)
 ){  $publishBtnHidden  = "";}
 ?>
 
-<div ng-controller="Announcements.edit">
+<div ng-controller="Announcements.edit"
+	ng-init="setInit(<?php echo intval($frameId); ?>,<?php echo intval($blockId); ?>,<?php echo intval($langId); ?>)"
+>
+
 <!-- 編集ボタン 状態表示-->
 <p class="text-right" style="margin-top: 5px;"
    id="announcement-content-edit-btn-<?php echo intval($frameId); ?>"
@@ -22,16 +25,19 @@ if( isset($draftItem)
 	<!-- edit buttun -->
 	<?php if($isEdit) { ?>
 	<button class="btn btn-primary"
-		ng-click="getEditer('<?php echo intval($frameId); ?> , <?php echo intval($blockId); ?>')"
+		ng-click="getEditer(<?php echo intval($frameId); ?>)"
 	><span class="glyphicon glyphicon-pencil"> <?php echo __("編集"); ?></span></button>
 	<?php } ?>
 	<!-- publich button -->
 	<?php if($isPublish) { ?>
 	<button class="btn btn-danger announcement-btn-publish <?php echo $publishBtnHidden;?>"
-		ng-click="post('Publish', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)"
+		ng-click="post('Publish', <?php echo intval($frameId);?>)"
 	><span class="glyphicon glyphicon-share-alt"> <?php echo __("公開する"); ?></span></button>
 	<?php } ?>
 </p>
+
+
+
 
 
 	<!-- メッセージ -->
@@ -42,11 +48,13 @@ if( isset($draftItem)
 		</div>
 	</p>
 
+
 <!-- プレビュー-->
 <div class="preview"
-     id="announcement-content-preview-<?php echo intval($frameId); ?>"
      ng-show="View.edit.preview"
+     ng-bind-html='Preview.html'
 >
+{{Preview.html}}
 </div>
 
 

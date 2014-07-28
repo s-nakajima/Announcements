@@ -44,19 +44,19 @@ if ($draftItem
 		<span class="glyphicon glyphicon-file"></span> <span><?php echo __('プレビューを閉じる'); ?></span></button>
 	<button
 		class="btn btn-default announcement-editer-button-draft <?php echo $hidden['draft']; ?>"
-		ng-click="post('Draft', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)">
+		ng-click="post('Draft', <?php echo intval($frameId);?>)">
 		<span class="glyphicon glyphicon-pencil"></span> <span><?php echo __('下書き'); ?></span></button>
 	<button
 		class="btn btn-default announcement-editer-button-reject <?php echo $hidden['reject']; ?>"
-		ng-click="post('Reject', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)">
+		ng-click="post('Reject', <?php echo intval($frameId);?>)">
 		<span class="glyphicon glyphicon-pencil"></span> <span><?php echo __('差し戻し'); ?></span></button>
 	<button
 		class="btn btn-primary announcement-editer-button-request"
-		ng-click="post('PublishRequest', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)"
+		ng-click="post('PublishRequest', <?php echo intval($frameId);?>)"
 		>
 		<span class="glyphicon glyphicon-share-alt"></span> <span><?php echo __('公開申請'); ?></span></button>
 	<button
 		class="btn btn-primary announcement-editer-button-publish"
-		ng-click="post('Publish', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)">
+		ng-click="post('Publish', <?php echo intval($frameId);?>)">
 		<span class="glyphicon glyphicon-share-alt"></span> <span><?php echo __('公開'); ?></span></button>
 </p>
