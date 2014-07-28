@@ -59,8 +59,6 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         //プレビューも閉じる
         $scope.closePreview(frameId);
 
-        //$(editerTag).addClass('hidden');
-
         //メッセージ非表示
         $scope.postAlertClose();
     }
@@ -273,10 +271,6 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         $scope.postAlert("success" , json.message);
         $scope.closeForm($scope.frameId);
     }
-
-    //全ての編集画面一旦非表示
-    $(".text-editer").css('display:none;');
-    $(".announcements-editer").addClass('hidden');
 
     //TEXTエディタ
     $scope.openTextEditer = function(frameId) {

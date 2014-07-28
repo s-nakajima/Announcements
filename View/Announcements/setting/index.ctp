@@ -79,6 +79,7 @@ if( isset($draftItem)
 <!-- 編集枠  -->
 <div class="announcements-editer"
      id="announcements-form-<?php echo intval($frameId);?>"
+     ng-show="View.edit.body"
 >
 
 	<!-- エディタ -->
