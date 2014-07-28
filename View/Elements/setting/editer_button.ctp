@@ -26,17 +26,17 @@ if ($draftItem
 >
 	<button
 		class="btn btn-default announcement-editer-button-close "
-		ng-click="post('Cancel', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)">
+		ng-click="closeForm(<?php echo intval($frameId);?>)">
 		<span class="glyphicon glyphicon-remove"></span>
 		<span><?php echo __('閉じる'); ?></span></button>
 	<button
 		class="btn btn-default announcement-editer-button-preview "
 		id="announcements-btn-preview-<?php echo intval($frameId);?>"
-		ng-click="post('Preview', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)">
+		ng-click="showPreview(<?php echo intval($frameId);?>)">
 		<span class="glyphicon glyphicon-file"></span> <span><?php echo __('プレビュー'); ?></span></button>
 	<button
 		class="btn btn-default <?php echo $hidden['previewCLose']; ?> announcement-editer-button-preview-close"
-		ng-click="post('PreviewClose', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)">
+		ng-click="closePreview(<?php echo intval($frameId);?>)">
 		<span class="glyphicon glyphicon-file"></span> <span><?php echo __('プレビューを閉じる'); ?></span></button>
 	<button
 		class="btn btn-default announcement-editer-button-draft <?php echo $hidden['draft']; ?>"
@@ -48,7 +48,8 @@ if ($draftItem
 		<span class="glyphicon glyphicon-pencil"></span> <span><?php echo __('差し戻し'); ?></span></button>
 	<button
 		class="btn btn-primary announcement-editer-button-request"
-		ng-click="post('PublishRequest', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)">
+		ng-click="post('PublishRequest', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)"
+		>
 		<span class="glyphicon glyphicon-share-alt"></span> <span><?php echo __('公開申請'); ?></span></button>
 	<button
 		class="btn btn-primary announcement-editer-button-publish"
