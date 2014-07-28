@@ -303,7 +303,6 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 		);
 		//1件もない状態での実行
 		$rtn = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $userId);
-		//var_dump($rtn);
 		$this->assertEquals(5, count($rtn));
 	}
 }
