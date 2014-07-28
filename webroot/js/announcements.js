@@ -1,4 +1,8 @@
-
+/*
+* 発生箇所 : プレビューを閉じる。
+* 編集 閉じる 編集 --- で発生。
+*
+* */
 NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
     var pluginsUrl = '/announcements/announcements/';
     $scope.frameId = 0;
@@ -32,16 +36,22 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
     var blockSettingTag = '';
     var sendRock = false;
 
+    $scope.nekoget = null;
+    $scope.setNekoget = function(text) {
+        alert(text);
+        $scope.nekoget = text;
+    }
+
     //フォームを閉じる
     $scope.closeForm = function(frameId){
         //set
         $scope.setId(frameId);
         //プレビューも閉じる
-        $scope.closePreview();
+        $scope.closePreview(frameId);
         $(viewerTag).removeClass('hidden');
         $(editerTag).addClass('hidden');
         $(editerOpenBtnTag).removeClass('hidden');
-        $(editerOpenBtnTag).removeClass('hidden');
+
         //メッセージ非表示
         $scope.postAlertClose();
     }
@@ -56,6 +66,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         $scope.tinymceModel = $(draftTag).html();
         //メッセージ非表示
         $scope.postAlertClose();
+
     }
 
     //メッセージ（実行結果）を表示
@@ -107,8 +118,9 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
     }
 
     //プレビューの表示
-    $scope.showPreview = function(){
+    $scope.showPreview = function(frameId){
         //本記事を隠す
+        $scope.setId(frameId);
         $(viewerTag).addClass('hidden');
         $(previewTag).html($scope.tinymceModel);
         $(previewTag).removeClass('hidden');
@@ -122,7 +134,8 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
     }
 
     //プレビューを終了する
-    $scope.closePreview = function(){
+    $scope.closePreview = function(frameId){
+        $scope.setId(frameId);
         //本記事を表示する
         $(viewerTag).removeClass('hidden');
         //プレビューをクリア。非表示
@@ -151,21 +164,6 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         sendRock = true;
         //idセット
         $scope.setId(frameId , blockId ,dataId);
-
-        if(type == "Cancel"){
-            $scope.closeForm(frameId);
-            return ;
-        }
-        //プレビュー
-        if(type == 'Preview'){
-            $scope.showPreview();
-            return  ;
-        }
-        //プレビューの終了
-        if(type == "PreviewClose"){
-            $scope.closePreview();
-            return ;
-        }
         if(type == 'Publish'
             && $(draftTag).html()
             && ! $scope.tinymceModel
@@ -309,7 +307,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
     }
 
     //エディタ非表示
-    $('.announcements-editer').addClass('hidden');
+    //$('.announcements-editer').addClass('hidden');
 });
 
 /**
