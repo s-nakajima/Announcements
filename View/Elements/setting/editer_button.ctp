@@ -32,11 +32,15 @@ if ($draftItem
 	<button
 		class="btn btn-default announcement-editer-button-preview "
 		id="announcements-btn-preview-<?php echo intval($frameId);?>"
-		ng-click="showPreview(<?php echo intval($frameId);?>)">
+		ng-click="showPreview(<?php echo intval($frameId);?>)"
+		ng-hide="View.edit.preview"
+		>
 		<span class="glyphicon glyphicon-file"></span> <span><?php echo __('プレビュー'); ?></span></button>
 	<button
-		class="btn btn-default <?php echo $hidden['previewCLose']; ?> announcement-editer-button-preview-close"
-		ng-click="closePreview(<?php echo intval($frameId);?>)">
+		class="btn btn-default <?php //echo $hidden['previewCLose']; ?> announcement-editer-button-preview-close"
+		ng-click="closePreview(<?php echo intval($frameId);?>)"
+		ng-show="View.edit.preview"
+		>
 		<span class="glyphicon glyphicon-file"></span> <span><?php echo __('プレビューを閉じる'); ?></span></button>
 	<button
 		class="btn btn-default announcement-editer-button-draft <?php echo $hidden['draft']; ?>"

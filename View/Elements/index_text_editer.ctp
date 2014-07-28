@@ -1,7 +1,12 @@
 <!-- open -->
+<ul class="nav nav-tabs" role="tablist">
+	<li class="active">
+		<span class="btn btn-default" ng-click="openTextEditer(<?php echo intval($frameId);?>)"
+		>HTML</span></li>
+	<li>
 <a ng-click="openTextEditer(<?php echo intval($frameId);?>)"
-    class="btn "
-	>TEXT</a>
+	>TEXT</button></a></li>
+</ul>
 
 <!-- modal -->
 <div

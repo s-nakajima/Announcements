@@ -11,6 +11,7 @@ if( isset($draftItem)
 <!-- 編集ボタン 状態表示-->
 <p class="text-right" style="margin-top: 5px;"
    id="announcement-content-edit-btn-<?php echo intval($frameId); ?>"
+   ng-hide="View.edit.body"
 >
 	<!-- block setting-->
 	<?php if (isset($isBlockEdit) && $isBlockEdit) { ?>
@@ -42,13 +43,18 @@ if( isset($draftItem)
 	</p>
 
 <!-- プレビュー-->
-<div class="preview" id="announcement-content-preview-<?php echo intval($frameId); ?>">
+<div class="preview"
+     id="announcement-content-preview-<?php echo intval($frameId); ?>"
+     ng-show="View.edit.preview"
+>
 </div>
 
 
 
 <!-- 内容表示 -->
-<div class="item" id="announcement-content-view-<?php echo intval($frameId); ?>">
+<div class="item" id="announcement-content-view-<?php echo intval($frameId); ?>"
+	ng-show="View.default"
+>
 <?php if(isset($item)
 	&& isset($item['AnnouncementDatum'])
 	&& isset($item['AnnouncementDatum']['content'])) {
@@ -70,14 +76,16 @@ if( isset($draftItem)
 
 <!-- ラベル -->
 <?php echo $this->element("Announcements.setting/label"); ?>
-
 <!-- 編集枠  -->
-<div class="announcements-editer" id="announcements-form-<?php echo intval($frameId);?>">
+<div class="announcements-editer"
+     id="announcements-form-<?php echo intval($frameId);?>"
+>
 
 	<!-- エディタ -->
-	<?php echo $this->element("Announcements.index_text_editer"); ?>
 
-	<div class="html-editer">
+
+	<div class="html-editer" ng-show="View.edit.html">
+		<?php echo $this->element("Announcements.index_text_editer"); ?>
 		<textarea
 			id="announcements-html-editer-<?php echo intval($frameId);?>"
 			ui-tinymce="tinymceOptions"

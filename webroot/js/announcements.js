@@ -21,6 +21,20 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         'Reject' : 4
     };
     $scope.isPreview = 0;
+
+    //表示制御
+    $scope.View = {
+        'default' : true,
+        'edit' : {
+            'preview' : false,
+            'html' : false,
+            'text' : false,
+            'body' : false
+        }
+    };
+
+
+
     //DOM
     var viewerTag = '';
     var editerOpenBtnTag = '';
@@ -29,28 +43,23 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
     var previewBtnTag = '';
     var htmlEditerTag = '';
     var statusLabelTag = '';
-    var editerOpenBtnTag = '';
     var draftTag = '';
-    var previewCloseBtnTag = '';
     var messageTag = '';
     var blockSettingTag = '';
     var sendRock = false;
-
-    $scope.nekoget = null;
-    $scope.setNekoget = function(text) {
-        alert(text);
-        $scope.nekoget = text;
-    }
 
     //フォームを閉じる
     $scope.closeForm = function(frameId){
         //set
         $scope.setId(frameId);
+        //編集全体 OFF
+        $scope.View.edit.body = false;
+        //標準表示ON
+        $scope.View.default = true;
         //プレビューも閉じる
         $scope.closePreview(frameId);
-        $(viewerTag).removeClass('hidden');
-        $(editerTag).addClass('hidden');
-        $(editerOpenBtnTag).removeClass('hidden');
+
+        //$(editerTag).addClass('hidden');
 
         //メッセージ非表示
         $scope.postAlertClose();
@@ -59,9 +68,11 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
     //フォームを開く
     $scope.getEditer = function(frameId , blockId, dataId){
         $scope.setId(frameId , blockId, dataId);
+
+        $scope.View.default = false;
+        $scope.View.edit.html = true;
+        $scope.View.edit.body = true;
         $(editerTag).removeClass('hidden');
-        $(viewerTag).addClass('hidden');
-        $(editerOpenBtnTag).addClass('hidden');
         //表示内容をエディターに反映 公開とは別に最新のドラフトが会った場合そちらが表示される。
         $scope.tinymceModel = $(draftTag).html();
         //メッセージ非表示
@@ -112,7 +123,6 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         htmlEditerTag = '#announcements-form-' + $scope.frameId + ' .html-editer';
         statusLabelTag = '#announcement-status-label-' + $scope.frameId;
         editerOpenBtnTag = '#announcement-content-edit-btn-' + $scope.frameId;
-        previewCloseBtnTag = '#announcement-editer-button-'+ $scope.frameId + ' .announcement-editer-button-preview-close';
         messageTag = '#announcements-mss-' + $scope.frameId;
         blockSettingTag = '#announcements-block-setting-' + $scope.frameId;
     }
@@ -121,36 +131,20 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
     $scope.showPreview = function(frameId){
         //本記事を隠す
         $scope.setId(frameId);
-        $(viewerTag).addClass('hidden');
+        $scope.View.edit.preview = true;
+        $scope.View.edit.html = false;
+        $scope.View.default = false;
         $(previewTag).html($scope.tinymceModel);
-        $(previewTag).removeClass('hidden');
-        //プレビュー終了ボタンを消す
-        $(previewCloseBtnTag).removeClass('hidden');
-        //プレビューボタンを表示する
-        $(previewBtnTag).addClass('hidden');
-        //プレビュー中のラベル。
-        $(statusLabelTag + " .announcement-preview").removeClass('hidden');
-        $(htmlEditerTag).addClass('hidden');
-
     }
 
     //プレビューを終了する
     $scope.closePreview = function(frameId){
         $scope.setId(frameId);
+        $scope.View.edit.preview = false;
         //本記事を表示する
-        $(viewerTag).removeClass('hidden');
-        //プレビューをクリア。非表示
+        //プレビューの中身をclear
         $(previewTag).html('');
-        $(previewTag).addClass('hidden');
-        //プレビュー中のラベルを下げる。
-        $(statusLabelTag + " .announcement-preview").addClass('hidden');
-        //プレビューを終了するボタンを非表示にする。
-        $(previewCloseBtnTag).addClass('hidden');
-        //プレビューボタンを表示する。
-        $(previewBtnTag ).removeClass('hidden');
-        //htmlエディタ非表示する
-        $(htmlEditerTag).removeClass('hidden');
-        $(viewerTag).addClass('hidden');
+        $scope.View.edit.html = true;
 
     }
 
@@ -215,7 +209,22 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
             });
         //送信ロックを解除する
         sendRock = false;
+        //defaultに戻す
+        $scope.setViewdDefault();
     }
+
+    $scope.setViewdDefault = function () {
+        $scope.View = {
+            'default' : true,
+            'edit' : {
+                'preview' : false,
+                'html' : false,
+                'text' : false,
+                'body' : false
+            }
+        };
+    }
+
     //最新の情報にいれかえる
     $scope.setIndex = function(json){
 
@@ -274,8 +283,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         $scope.setId(frameId);
         var modalTag = "#announcements-text-editer-modal-" + frameId;
         var textareaTag = "#announcements-text-editer-" + frameId;
-        var htmlEditerTag = "#announcements-html-editer-" + frameId;
-        $(textareaTag).val($(htmlEditerTag).val());
+        $(textareaTag).val($scope.tinymceModel);
         //モーダル Open
         $(modalTag).modal('show');
     }
@@ -293,8 +301,6 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         var htmlEditerTag = "#announcements-html-editer-" + frameId;
         var d = $(textEditerTag).val();
         $scope.tinymceModel = d;
-        $(htmlEditerTag).val(d);
-        $(textEditerTag).val($(htmlEditerTag).val());
         $(modalTag).modal('hide');
     }
 
@@ -308,8 +314,8 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         $("#block-setting-"+ $scope.frameId).modal("show");
     }
 
-    //エディタ非表示
-    //$('.announcements-editer').addClass('hidden');
+    //初期画面表示
+    $scope.setViewdDefault();
 });
 
 /**
