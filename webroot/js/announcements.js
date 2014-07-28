@@ -131,6 +131,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         //プレビュー中のラベル。
         $(statusLabelTag + " .announcement-preview").removeClass('hidden');
         $(htmlEditerTag).addClass('hidden');
+
     }
 
     //プレビューを終了する
@@ -149,6 +150,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http) {
         $(previewBtnTag ).removeClass('hidden');
         //htmlエディタ非表示する
         $(htmlEditerTag).removeClass('hidden');
+        $(viewerTag).addClass('hidden');
 
     }
 
