@@ -30,7 +30,8 @@ if( isset($draftItem)
 	<?php } ?>
 	<!-- publich button -->
 	<?php if($isPublish) { ?>
-	<button class="btn btn-danger announcement-btn-publish <?php echo $publishBtnHidden;?>"
+	<button class="btn btn-danger"
+		ng-show="label.request"
 		ng-click="post('Publish', <?php echo intval($frameId);?>)"
 	><span class="glyphicon glyphicon-share-alt"> <?php echo __("公開する"); ?></span></button>
 	<?php } ?>

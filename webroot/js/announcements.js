@@ -43,6 +43,8 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
        'request' : false,
        'reject' : false
    };
+    //テキストエディタ
+    $scope.textEditorModel = '';
 
 
     //DOM
@@ -99,9 +101,6 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
 
         $(messageTag).css("display","none");
         if(alertType == "error") {
-
-
-
             $(messageTag).addClass("alert-danger");
             $(messageTag).removeClass("alert-success");
             //$(messageTag).removeClass("hidden");
@@ -114,12 +113,10 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
             $(messageTag + " .message").html(text);
             $(messageTag).fadeIn(500).fadeTo(1000, 1).fadeOut(500);
         }
-       // */
     }
 
     //アラートメッセージを非表示にする
     $scope.postAlertClose = function(frameId){
-
         $scope.setId(frameId);
         $(messageTag).addClass("hidden");
         $(messageTag + " .message").html("");
@@ -158,7 +155,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         $scope.Preview.html = '';
     }
 
-    //エディターの切り替え
+    //送信
     $scope.post = function(type , frameId){
         //送信中のため、処理せず
         if(sendRock) {
@@ -300,7 +297,8 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         $scope.setId(frameId);
         var modalTag = "#announcements-text-editor-modal-" + frameId;
         var textareaTag = "#announcements-text-editor-" + frameId;
-        $(textareaTag).val($scope.tinymceModel);
+        $scope.textEditorModel = $sce.trustAsHtml($scope.tinymceModel);
+        //$(textareaTag).val($scope.tinymceModel);
         //モーダル Open
         $(modalTag).modal('show');
     }
