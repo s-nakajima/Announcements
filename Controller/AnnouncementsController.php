@@ -198,9 +198,11 @@ class AnnouncementsController extends AnnouncementsAppController {
 			return $this->render();
 		}
 		//失敗結果を返す
+		$this->response->statusCode(500);
 		$result = array(
-			'status' => 'NG',
-			'message' => __('保存に失敗しました')
+			'status' => 'error',
+			'message' => __('保存に失敗しました'),
+			'data' => $rtn
 		);
 		$this->set(compact('result'));
 		$this->set('_serialize', 'result');

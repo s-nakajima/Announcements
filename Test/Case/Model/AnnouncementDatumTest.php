@@ -8,6 +8,7 @@
  */
 
 App::uses('AnnouncementDatum', 'Announcements.Model');
+App::uses('AnnouncementFrame', 'Announcements.Model');
 
 /**
  * Summary for AnnouncementDatum Test Case
@@ -34,6 +35,7 @@ class AnnouncementDatumTest extends CakeTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->AnnouncementDatum = ClassRegistry::init('Announcements.AnnouncementDatum');
+		$this->AnnouncementFrame = ClassRegistry::init('Announcements.AnnouncementFrame');
 	}
 
 /**
@@ -43,6 +45,7 @@ class AnnouncementDatumTest extends CakeTestCase {
  */
 	public function tearDown() {
 		unset($this->AnnouncementDatum);
+		unset($this->AnnouncementFrame);
 		parent::tearDown();
 	}
 
@@ -86,6 +89,35 @@ class AnnouncementDatumTest extends CakeTestCase {
 		$isEncode = false;
 		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $userId, $isEncode);
 		$this->assertNull($rtn);
+	}
+
+/**
+ * frames.block_idが0の場合に、blockを作成してから、登録する
+ *
+ * @return void
+ */
+	public function testSaveDataNoBlockId() {
+		$frameData = array(
+			'room_id' => 1,
+			'box_id' => 2,
+			'plugin_id' => 1,
+			'block_id' => null,
+			'weight' => 1
+		);
+		$rtn = $this->AnnouncementFrame->save($frameData);
+		//var_dump($rtn);
+		$frameId = $rtn["AnnouncementFrame"]['id'];
+		$data = array();
+		$data['AnnouncementDatum']['content'] = "test";
+		$data['AnnouncementDatum']['frameId'] = $frameId;
+		$data['AnnouncementDatum']['blockId'] = 0;
+		$data['AnnouncementDatum']['type'] = "Draft";
+		$data['AnnouncementDatum']['langId'] = 2;
+		$data['AnnouncementDatum']['id'] = 0;
+		$userId = 1;
+		$isEncode = false;
+		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $userId, $isEncode);
+		$this->assertTextEquals(3, $rtn[$this->AnnouncementDatum->name]['id']);
 	}
 
 /**
@@ -200,4 +232,5 @@ class AnnouncementDatumTest extends CakeTestCase {
 		$rtn = $this->AnnouncementDatum->checkDataSave($data);
 		$this->assertEquals(null, $rtn);
 	}
+
 }

@@ -135,11 +135,13 @@ class AnnouncementDatum extends AppModel {
 		$this->__setModel();
 		//例外処理をあとで追加する。
 		$frame = $this->__getFrame($frameId, $userId);
+
 		if (! $frame) {
 			return null;
 		}
 
-		$blockId = $frame['AnnouncementFrame']['block_id'];
+		$blockId = $frame[$this->__Frame->name]['block_id'];
+
 		//複合
 		//$isEncode = 1;
 		$data = $this->__decodeContent($data, $isEncode);
@@ -162,7 +164,12 @@ class AnnouncementDatum extends AppModel {
 		$insertData[$this->name]['content'] = $data[$this->name]['content'];
 		//保存結果を返す
 		$rtn = $this->save($insertData);
-		return $this->checkDataSave($rtn);
+		if ($data = $this->checkDataSave($rtn)) {
+			//master
+			$frame = $this->__Frame->findById($frameId);
+			$rtn[$this->__Frame->name] = $frame[$this->__Frame->name];
+			return $rtn;
+		}
 	}
 
 /**
@@ -190,24 +197,23 @@ class AnnouncementDatum extends AppModel {
 	private function __getFrame($frameId, $userId) {
 		$this->__setModel();
 		//フレームIDのデータを取得する。
+		$blockId = null;
 		$frame = $this->__Frame->findById($frameId);
 		if ($frame
-			&& isset($frame['AnnouncementFrame'])
-			&& isset($frame['AnnouncementFrame']['block_id'])
+			&& isset($frame[$this->__Frame->name])
+			&& isset($frame[$this->__Frame->name]['block_id'])
 		) {
-			$blockId = $frame['AnnouncementFrame']['block_id'];
-		} else {
-			//存在しないfrale
-			return null;
+			$blockId = $frame[$this->__Frame->name]['block_id'];
 		}
 
-		if (! $blockId) {
+		if ($frame && ! $blockId) {
 			$data = array();
-			$data['Block']['room_id'] = 1;
-			$data['Block']['created_user_id'] = $userId;
-			$block = $this->__Block->save($data);
+			$data[$this->__Block->name]['room_id'] = $frame[$this->__Frame->name]['room_id'];
+			$data[$this->__Block->name]['created_user_id'] = $userId;
+
+			$block = $this->__Block->save($data[$this->__Block->name]);
 			//blockIdをframeに格納
-			$frame['AnnouncementFrame']['block_id'] = $block['AnnouncementBlock']['id'];
+			$frame[$this->__Frame->name]['block_id'] = $block[$this->__Block->name]['id'];
 			$frame = $this->__Frame->save($frame);
 		}
 		return $frame;

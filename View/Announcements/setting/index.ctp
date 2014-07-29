@@ -7,10 +7,14 @@ if( isset($draftItem)
 ){  $publishBtnHidden  = "";}
 ?>
 
-<div ng-controller="Announcements.edit">
+<div ng-controller="Announcements.edit"
+	ng-init="setInit(<?php echo intval($frameId); ?>,<?php echo intval($blockId); ?>,<?php echo intval($langId); ?>)"
+>
+
 <!-- 編集ボタン 状態表示-->
 <p class="text-right" style="margin-top: 5px;"
    id="announcement-content-edit-btn-<?php echo intval($frameId); ?>"
+   ng-hide="View.edit.body"
 >
 	<!-- block setting-->
 	<?php if (isset($isBlockEdit) && $isBlockEdit) { ?>
@@ -21,16 +25,19 @@ if( isset($draftItem)
 	<!-- edit buttun -->
 	<?php if($isEdit) { ?>
 	<button class="btn btn-primary"
-		ng-click="getEditer('<?php echo intval($frameId); ?> , <?php echo intval($blockId); ?>')"
+		ng-click="getEditer(<?php echo intval($frameId); ?>)"
 	><span class="glyphicon glyphicon-pencil"> <?php echo __("編集"); ?></span></button>
 	<?php } ?>
 	<!-- publich button -->
 	<?php if($isPublish) { ?>
 	<button class="btn btn-danger announcement-btn-publish <?php echo $publishBtnHidden;?>"
-		ng-click="post('Publish', <?php echo intval($frameId);?> , <?php echo intval($blockId);?>)"
+		ng-click="post('Publish', <?php echo intval($frameId);?>)"
 	><span class="glyphicon glyphicon-share-alt"> <?php echo __("公開する"); ?></span></button>
 	<?php } ?>
 </p>
+
+
+
 
 
 	<!-- メッセージ -->
@@ -41,14 +48,21 @@ if( isset($draftItem)
 		</div>
 	</p>
 
+
 <!-- プレビュー-->
-<div class="preview" id="announcement-content-preview-<?php echo intval($frameId); ?>">
+<div class="preview"
+     ng-show="View.edit.preview"
+     ng-bind-html='Preview.html'
+>
+{{Preview.html}}
 </div>
 
 
 
 <!-- 内容表示 -->
-<div class="item" id="announcement-content-view-<?php echo intval($frameId); ?>">
+<div class="item" id="announcement-content-view-<?php echo intval($frameId); ?>"
+	ng-show="View.default"
+>
 <?php if(isset($item)
 	&& isset($item['AnnouncementDatum'])
 	&& isset($item['AnnouncementDatum']['content'])) {
@@ -70,14 +84,17 @@ if( isset($draftItem)
 
 <!-- ラベル -->
 <?php echo $this->element("Announcements.setting/label"); ?>
-
 <!-- 編集枠  -->
-<div class="announcements-editer" id="announcements-form-<?php echo intval($frameId);?>">
+<div class="announcements-editer"
+     id="announcements-form-<?php echo intval($frameId);?>"
+     ng-show="View.edit.body"
+>
 
 	<!-- エディタ -->
-	<?php echo $this->element("Announcements.index_text_editer"); ?>
 
-	<div class="html-editer">
+
+	<div class="html-editer" ng-show="View.edit.html">
+		<?php echo $this->element("Announcements.index_text_editer"); ?>
 		<textarea
 			id="announcements-html-editer-<?php echo intval($frameId);?>"
 			ui-tinymce="tinymceOptions"

@@ -35,5 +35,5 @@ if(isset($item)
 	<span class="label label-info announcement-status-3   <?php echo $status_hidden[3]; ?>"><?php echo __('下書きあり'); ?></span>
 	<span class="label label-danger announcement-status-2 <?php echo $status_hidden[2]; ?>"><?php echo __('公開申請あり'); ?></span>
 	<span class="label label-default announcement-status-4 <?php echo $status_hidden[4]; ?>"><?php echo __('差し戻しあり'); ?></span>
-	<span class="label label-danger announcement-preview hidden"><?php echo __("プレビュー表示中"); ?></span>
+	<span class="label label-danger" ng-show="View.edit.preview"><?php echo __("プレビュー表示中"); ?></span>
 </p>
