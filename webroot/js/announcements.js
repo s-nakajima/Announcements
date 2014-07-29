@@ -13,7 +13,6 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
     $scope.posturl = pluginsUrl + "edit/";
     $scope.debug = null;
     $scope.tinymceModel = null;
-
     $scope.alertMss = null;
     $scope.statusList = {
         'Publish' : 1,
@@ -33,16 +32,20 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
             'body' : false
         }
     };
-
+    //プレビューのhtmlデータ
     $scope.Preview = {
         'html' : null
     };
+    //ラベル表示
+   $scope.label = {
+       'publish' : false,
+       'draft' : false,
+       'request' : false,
+       'reject' : false
+   };
 
 
     //DOM
-    var viewerTag = '';
-    var editerOpenBtnTag = '';
-    var editerTag = '';
     var statusLabelTag = '';
     var draftTag = '';
     var messageTag = '';
@@ -72,12 +75,11 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
     }
 
     //フォームを開く
-    $scope.getEditer = function(frameId){
+    $scope.getEditor = function(frameId){
         $scope.setId(frameId);
         $scope.View.default = false;
         $scope.View.edit.html = true;
         $scope.View.edit.body = true;
-        $(editerTag).removeClass('hidden');
         //表示内容をエディターに反映 公開とは別に最新のドラフトが会った場合そちらが表示される。
         $scope.tinymceModel = $(draftTag).html();
         //メッセージ非表示
@@ -106,8 +108,6 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
             $(messageTag + " .message").html(text);
             $(messageTag).fadeIn(500);//エラーの場合は消さない
         } else if(alertType == "success") {
-
-
             $(messageTag).addClass("alert-success");
             $(messageTag).removeClass("alert-danger");
             $(messageTag).removeClass("hidden");
@@ -128,12 +128,8 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
     //idのセット
     $scope.setId = function(frameId){
         $scope.frameId = frameId;
-
-        viewerTag = '#announcement-content-view-' + $scope.frameId;
         draftTag = '#announcement-content-draft-' + $scope.frameId;
-        editerTag = '#announcements-form-'  + $scope.frameId;
         statusLabelTag = '#announcement-status-label-' + $scope.frameId;
-        editerOpenBtnTag = '#announcement-content-edit-btn-' + $scope.frameId;
         messageTag = '#announcements-mss-' + $scope.frameId;
         blockSettingTag = '#announcements-block-setting-' + $scope.frameId;
     }
@@ -241,68 +237,69 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         };
     }
 
+    //ラベル(状態）をすべてfalseにする。
+    $scope.labelClear = function (){
+        $scope.label.publish = false;
+        $scope.label.draft = false;
+        $scope.label.publish = false;
+        $scope.label.draft = false;
+        $scope.label.request = false;
+        $scope.label.reject = false;
+
+    }
+
+
     //最新の情報にいれかえる
     $scope.setIndex = function(json){
        //最新
         var content = '';
         var statusId = 0;
         var statusLabelClassTag = statusLabelTag + ' .announcement-status-';
+
         if(json.data && json.data.AnnouncementDatum.content) {
             content = decodeURIComponent(json.data.AnnouncementDatum.content);
             statusId = json.data.AnnouncementDatum.status_id;
         }
+        var textareaTag = "#announcements-text-editor-" + $scope.frameId;
 
+        //ラベル - クリア初期値に戻す
+        $scope.labelClear();
 
-        var textareaTag = "#announcements-text-editer-" + $scope.frameId;
-        var btnRejectTag = "#announcement-editer-button-" + $scope.frameId + " .announcement-editer-button-reject";
-        var btnDraftTag =  "#announcement-editer-button-" + $scope.frameId + " .announcement-editer-button-draft";
-        var btnTopPublishTag = '#announcement-content-edit-btn-'+ $scope.frameId + ' .announcement-btn-publish';
-        //ラベルのクリア
-        $(statusLabelClassTag + $scope.statusList.Draft).addClass("hidden");
-        $(statusLabelClassTag + $scope.statusList.PublishRequest).addClass("hidden");
-        $(statusLabelClassTag + $scope.statusList.Reject).addClass("hidden");
         //入れ替え : 初期値
         $(textareaTag).val(content);
-        $(viewerTag).html(content);
+        $('#announcement-content-view-' + $scope.frameId).html(content);
         $(draftTag).html(content);
-        $(btnRejectTag).addClass('hidden');
-        $(btnDraftTag).removeClass('hidden');
-        $(btnTopPublishTag).addClass('hidden');
         if(statusId == $scope.statusList.Draft) {
             //下書き
-            $(statusLabelClassTag + $scope.statusList.Draft).removeClass("hidden");
+            alert("draft");
+            $scope.label.draft = true;
         } else if (statusId == $scope.statusList.Publish) {
-            //公開中
-            //ラベル変更
-            $(statusLabelClassTag + $scope.statusList.Publish).removeClass("hidden");
+            //公開中 //ラベル変更
+            $scope.label.publish = true;
         }else if(statusId == $scope.statusList.PublishRequest){
-            //申請中
-            //ラベルの変更
-            $(statusLabelClassTag + $scope.statusList.PublishRequest).removeClass("hidden");
-            //ボタン切り替え
-            $(btnRejectTag).removeClass('hidden');
-            $(btnDraftTag).addClass('hidden');
-            $(btnTopPublishTag).removeClass('hidden');
+            //申請中 //ラベルの変更
+            $scope.label.request = true;
         }
         else if(statusId == $scope.statusList.Reject){
             //差し戻し
-            //Tラベルの変更(表示）
-            $(statusLabelClassTag + $scope.statusList.Reject).removeClass("hidden");
+            $scope.label.reject = true;
         }
-        $(statusLabelClassTag + statusId).removeClass("hidden");
+
         $scope.blockId = json.data.AnnouncementFrame.block_id;
 
-        //$(editerOpenBtnTag).attr('ng-click' , 'etEditer(' + $scope.frameId + ',' +  json.data.AnnouncementDatum.block_id + ')');
         $scope.postAlert("success" , json.message);
         $scope.closeForm($scope.frameId);
+
+        //ラベルなど表示の反映
+        $scope.$apply();
 
     }
 
     //TEXTエディタ
-    $scope.openTextEditer = function(frameId) {
+    $scope.openTextEditor = function(frameId) {
         $scope.setId(frameId);
-        var modalTag = "#announcements-text-editer-modal-" + frameId;
-        var textareaTag = "#announcements-text-editer-" + frameId;
+        var modalTag = "#announcements-text-editor-modal-" + frameId;
+        var textareaTag = "#announcements-text-editor-" + frameId;
         $(textareaTag).val($scope.tinymceModel);
         //モーダル Open
         $(modalTag).modal('show');
@@ -314,11 +311,11 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
  *
  * @param {int} frameId
  */
-    $scope.closeTextEditer = function(frameId) {
+    $scope.closeTextEditor = function(frameId) {
         $scope.setId(frameId);
-        var modalTag = "#announcements-text-editer-modal-" + frameId;
-        var textEditerTag = "#announcements-text-editer-"+ frameId;
-        var d = $(textEditerTag).val();
+        var modalTag = "#announcements-text-editor-modal-" + frameId;
+        var textEditorTag = "#announcements-text-editor-"+ frameId;
+        var d = $(textEditorTag).val();
         $scope.tinymceModel = d;
         $(modalTag).modal('hide');
     }

@@ -25,7 +25,7 @@ if( isset($draftItem)
 	<!-- edit buttun -->
 	<?php if($isEdit) { ?>
 	<button class="btn btn-primary"
-		ng-click="getEditer(<?php echo intval($frameId); ?>)"
+		ng-click="getEditor(<?php echo intval($frameId); ?>)"
 	><span class="glyphicon glyphicon-pencil"> <?php echo __("編集"); ?></span></button>
 	<?php } ?>
 	<!-- publich button -->
@@ -85,7 +85,7 @@ if( isset($draftItem)
 <!-- ラベル -->
 <?php echo $this->element("Announcements.setting/label"); ?>
 <!-- 編集枠  -->
-<div class="announcements-editer"
+<div class="announcements-editor"
      id="announcements-form-<?php echo intval($frameId);?>"
      ng-show="View.edit.body"
 >
@@ -93,10 +93,10 @@ if( isset($draftItem)
 	<!-- エディタ -->
 
 
-	<div class="html-editer" ng-show="View.edit.html">
-		<?php echo $this->element("Announcements.index_text_editer"); ?>
+	<div class="html-editor" ng-show="View.edit.html">
+		<?php echo $this->element("Announcements.index_text_editor"); ?>
 		<textarea
-			id="announcements-html-editer-<?php echo intval($frameId);?>"
+			id="announcements-html-editor-<?php echo intval($frameId);?>"
 			ui-tinymce="tinymceOptions"
 			ng-model="tinymceModel"
 			class="form-control"
@@ -108,7 +108,7 @@ if( isset($draftItem)
 		}?></textarea></div>
 
 	<!-- ボタン類 -->
-	<?php echo $this->element("Announcements.setting/editer_button");?>
+	<?php echo $this->element("Announcements.setting/editor_button");?>
 </div>
 
 	<div id="announcements-post-<?php echo $frameId;?>"></div>
@@ -119,7 +119,7 @@ if( isset($draftItem)
 if($isRoomAdmin) {
 	echo $this->element("block_setting/room_admin");
 } else {
-	echo $this->element("block_setting/editer");
+	echo $this->element("block_setting/editor");
 }
 
 ?>

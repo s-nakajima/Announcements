@@ -143,7 +143,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->set('item', $data);
 		$this->set('frameId', $frameId);
 		$this->set('blockId', $blockId);
-		return $this->render("Announcements/index/editer");
+		return $this->render("Announcements/index/editor");
 	}
 
 /**

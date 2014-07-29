@@ -1,10 +1,10 @@
 <!-- open -->
 <ul class="nav nav-tabs" role="tablist">
 	<li class="active">
-		<span class="btn btn-default" ng-click="openTextEditer(<?php echo intval($frameId);?>)"
+		<span class="btn btn-default" ng-click="openTextEditor(<?php echo intval($frameId);?>)"
 		>HTML</span></li>
 	<li>
-<a ng-click="openTextEditer(<?php echo intval($frameId);?>)"
+<a ng-click="openTextEditor(<?php echo intval($frameId);?>)"
 	>TEXT</button></a></li>
 </ul>
 
@@ -14,7 +14,7 @@
 	tabindex="-1" role="dialog"
 	aria-labelledby="myLargeModalLabel"
 	aria-hidden="true"
-    id="announcements-text-editer-modal-<?php echo intval($frameId);?>"
+    id="announcements-text-editor-modal-<?php echo intval($frameId);?>"
 >
 	<div class="modal-dialog">
 	<div class="modal-content">
@@ -24,7 +24,7 @@
 		</div>
 		<div class="modal-body">
 			<textarea
-				id="announcements-text-editer-<?php echo intval($frameId);?>"
+				id="announcements-text-editor-<?php echo intval($frameId);?>"
 				class="form-control"
 				style="height: 150px;"
 			></textarea>
@@ -32,7 +32,7 @@
 		<div class="modal-footer">
 			<button
 				class="btn btn-primary"
-				ng-click="closeTextEditer(<?php echo intval($frameId);?>)"
+				ng-click="closeTextEditor(<?php echo intval($frameId);?>)"
 				><?php echo __("閉じる"); ?></button>
 		</div>
 	</div>

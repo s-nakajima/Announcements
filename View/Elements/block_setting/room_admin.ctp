@@ -20,7 +20,7 @@
 									role="tab"
 									data-toggle="tab"><?php echo __("公開権限設定"); ?></a></li>
 
-							<li><a href="#announcements-block-setting-parts-editer-<?php echo intval($frameId); ?>"
+							<li><a href="#announcements-block-setting-parts-editor-<?php echo intval($frameId); ?>"
 									role="tab"
 									data-toggle="tab"><?php echo __("編集権限設定"); ?></a></li>
 							<li><a href="#announcements-block-setting-update-<?php echo intval($frameId); ?>"
@@ -45,8 +45,8 @@
 							}
 
 
-						?><div class="tab-pane <?php if($isNeedApproval) { echo 'active'; } ?>" id="announcements-block-setting-parts-editer-<?php echo intval($frameId); ?>"><?php
-							echo $this->element("Announcements.setting/parts_editer_form");
+						?><div class="tab-pane <?php if($isNeedApproval) { echo 'active'; } ?>" id="announcements-block-setting-parts-editor-<?php echo intval($frameId); ?>"><?php
+							echo $this->element("Announcements.setting/parts_editor_form");
 						?></div>
 
 						<?php
