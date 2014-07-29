@@ -71,7 +71,7 @@ class AnnouncementRoomPart extends AppModel {
 	}
 
 /**
- * 変更可能な権限のpartIdを取得する
+ * 変更可能な権限のpartを取得する
  *
  * @param string $abilityName edit_content or publish_content
  * @return array
@@ -80,9 +80,23 @@ class AnnouncementRoomPart extends AppModel {
 		if (! $abilityName) {
 			return array();
 		}
+		if ($abilityName != 'publish_content') {
+			return $this->find('all', array(
+					'conditions' => array(
+						$this->name . "." . $abilityName => 2
+					)
+				)
+			);
+		}
+		//公開権限の場合 編集権限がなければ変更不可とします。
 		return $this->find('all', array(
 				'conditions' => array(
-					$this->name . "." . $abilityName => 2
+					$this->name . ".publish_content" => 2,
+					'and' => array(
+						'or' => array($this->name . ".edit_content" => 1,
+						'or' => array($this->name . ".edit_content" => 2)
+						)
+					)
 				)
 			)
 		);

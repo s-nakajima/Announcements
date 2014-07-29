@@ -296,6 +296,14 @@ class AnnouncementsController extends AnnouncementsAppController {
 		//room_partの一覧を取得。setし返す。
 		$rtn = $this->AnnouncementRoomPart->getList($this->langId);
 		$this->set('partList', $rtn);
+		//公開権限の可変リスト
+		$abilityName = 'publish_content';
+		$publishVariableArray = $this->AnnouncementRoomPart->getVariableListPartIds($abilityName);
+		$this->set('publishVariableArray', $publishVariableArray);
+		//編集権限の可変リスト
+		$abilityName = 'publish_content';
+		$editVariableArray = $this->AnnouncementRoomPart->getVariableListPartIds($abilityName);
+		$this->set('editVariableArray', $editVariableArray);
 		return $rtn;
 	}
 

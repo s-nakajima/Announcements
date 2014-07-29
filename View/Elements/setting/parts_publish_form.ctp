@@ -2,8 +2,8 @@
 	<h3><?php echo __("公開権限設定"); ?></h3>
 	<p class="container">
 		<?php
-
 		foreach($partList as $key=>$item){
+			$part_id = $item['AnnouncementRoomPart']['part_id'];
 			echo '<p class="container">';
 			if ($item['AnnouncementRoomPart']['publish_content'] == 1) {
 				echo '<span class="glyphicon glyphicon-ok"></span>';
@@ -12,7 +12,7 @@
 				echo '<span class="glyphicon glyphicon-remove"></span>';
 				echo h($item["LanguagesPart"]['name']) . "";
 			}
-			elseif ($item['AnnouncementRoomPart']['publish_content'] == 2) {
+			elseif (isset($publishVariableArray[$part_id]) && $publishVariableArray[$part_id]) {
 				echo $this->Form->input(h($item["LanguagesPart"]['name']),
 					array(
 						'type' => 'checkbox',
@@ -24,6 +24,9 @@
 						'ng-click'=>'partChange("publish", '.$frameId.','.$item['AnnouncementRoomPart']['part_id'].')',
 					)
 				);
+			} else {
+				echo '<span class="glyphicon glyphicon-remove"></span>';
+				echo h($item["LanguagesPart"]['name']) . "";
 			}
 			echo '</p>';
 		}

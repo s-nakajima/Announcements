@@ -29,6 +29,11 @@ class AnnouncementRoomPartTest extends CakeTestCase {
 		'app.languages_part'
 	);
 
+/**
+ * RoomPart class object
+ *
+ * @var object
+ */
 	public $RoomPart;
 
 /**
@@ -109,8 +114,7 @@ class AnnouncementRoomPartTest extends CakeTestCase {
 	public function testGetVariableListPublishContent() {
 		$abilityName = 'publish_content';
 		$rtn = $this->RoomPart->getVariableList($abilityName);
-		$this->assertEquals(3, count($rtn));
-		$this->assertEquals(2, $rtn[0][$this->RoomPart->name]['id']);
+		$this->assertEquals(2, count($rtn));
 	}
 
 /**
@@ -128,9 +132,14 @@ class AnnouncementRoomPartTest extends CakeTestCase {
 		$this->assertEquals(0, count($rtn));
 	}
 
+/**
+ * 可変可能なレコードを返す : 公開の場合 edit_contentが必要
+ *
+ * @return void
+ */
 	public function testGetVariableListPartIds() {
 		$abilityName = 'publish_content';
 		$rtn = $this->RoomPart->getVariableListPartIds($abilityName);
-		$this->assertEquals(3, count($rtn));
+		$this->assertEquals(2, count($rtn));
 	}
 }
