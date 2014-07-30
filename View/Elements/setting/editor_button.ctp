@@ -21,7 +21,7 @@ if ($draftItem
 
 ?>
 <p class="text-center"
-   id="announcement-editor-button-<?php echo intval($frameId); ?>"
+   id="nc-announcement-editor-button-<?php echo intval($frameId); ?>"
 	style="padding-top: 10px;"
 >
 	<button

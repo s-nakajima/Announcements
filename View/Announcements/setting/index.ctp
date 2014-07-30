@@ -89,8 +89,7 @@ if( isset($draftItem)
 <!-- ラベル -->
 <?php echo $this->element("Announcements.setting/label"); ?>
 <!-- 編集枠  -->
-<div class="announcements-editor"
-     id="nc-announcements-form-<?php echo intval($frameId);?>"
+<div id="nc-announcements-form-<?php echo intval($frameId);?>"
      ng-show="View.edit.body"
 >
 
