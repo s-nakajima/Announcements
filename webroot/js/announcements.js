@@ -258,8 +258,6 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
        //最新
         var content = '';
         var statusId = 0;
-        var statusLabelClassTag = statusLabelTag + ' .announcement-status-';
-
         if(json.data && json.data.AnnouncementDatum.content) {
             content = decodeURIComponent(json.data.AnnouncementDatum.content);
             statusId = json.data.AnnouncementDatum.status_id;
@@ -359,12 +357,10 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
  * @param {int} partId
  */
     $scope.partChange = function(type, flameId, partId) {
-
         var con = 0;
         var idTag = '#nc-announcements-'+ type +'-frame-'+ flameId + '-part-';
         var baseH = $scope.getHierarchy(partId).hierarchy;
         var checkedFlg = $(idTag + partId+":checked").val();
-
         while(con < $scope.roomParts.length) {
             var changeTag = idTag + $scope.roomParts[con].id;
             if(checkedFlg){
@@ -385,7 +381,14 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
     }
 
 
-    //設定の更新 post処理分岐
+    /**
+     * 設定の更新 post処理分岐
+     *
+     * @param {string} type 送信するタイプ
+     * @param {int} frameId frames.id
+     * @param {int} blockId blocks.id
+     * @param {int} langId languages.id
+     */
     $scope.partSend = function(type, frameId, blockId, langId) {
         //すべてのボタンを無効に。 //ちょっと乱暴すぎるのであとで範囲指定。
         $('input').attr("disabled", "disabled");
@@ -468,9 +471,7 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
                 alert(data);
                 $("button").fadeTo(100, 1);
             });
-
             //完了動作
-
     }
     //更新処理 :編集権限の編集
     $scope.postSendToEditPart = function(frameId, blockId) {

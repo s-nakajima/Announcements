@@ -17,6 +17,6 @@ if(isset($item)
 }
 ?>
 <p id="nc-announcement-status-label_<?php echo intval($frameId); ?>">
-	<span class="label label-info announcement-status-3   <?php echo $status_hidden[3]; ?>">下書きあり</span>
-	<span class="label label-danger announcement-status-2 <?php echo $status_hidden[2]; ?>">公開申請あり</span>
+	<span class="label label-info <?php echo $status_hidden[3]; ?>">下書きあり</span>
+	<span class="label label-danger <?php echo $status_hidden[2]; ?>">公開申請あり</span>
 </p>
