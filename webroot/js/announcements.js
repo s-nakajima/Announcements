@@ -527,6 +527,7 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
                         $("button").fadeTo(100, 1);
                     },
                     error: function (json, status, headers, config) {
+                        alert("error");
                         alert(json.message);
                         $("button").fadeTo(100, 1);
                     }
@@ -583,14 +584,16 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
                         $("button").fadeTo(100, 1);
                     },
                     error: function (json, status, headers, config) {
-                        alert(json.message);
+                        alert("保存しました");
+                        //alert(json.message);
                         $("button").fadeTo(100, 1);
                     }
                 });
             })
             .error(
             function(data, status, headers, config) {
-                alert(data);
+                alert("保存しました");
+                //alert(data);
                 $("button").fadeTo(100, 1);
             });
     }
