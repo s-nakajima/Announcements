@@ -268,7 +268,6 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         $(draftTag).html(content);
         if(statusId == $scope.statusList.Draft) {
             //下書き
-            alert("draft");
             $scope.label.draft = true;
         } else if (statusId == $scope.statusList.Publish) {
             //公開中 //ラベル変更
@@ -283,13 +282,12 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         }
 
         $scope.blockId = json.data.AnnouncementFrame.block_id;
-
+        //完了メッセージを表示
         $scope.postAlert("success" , json.message);
+        //編集フォームを閉じる
         $scope.closeForm($scope.frameId);
-
-        //ラベルなど表示の反映
+        //ラベル表示等ng-show, ng-hideへの反映
         $scope.$apply();
-
     }
 
     //TEXTエディタ
