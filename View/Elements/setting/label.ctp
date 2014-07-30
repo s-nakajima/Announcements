@@ -33,24 +33,24 @@ if (isset($item)
 	<span
 		ng-init="label.publish=<?php echo $status_on[1];?>"
 		ng-show="label.publish"
-		class="label label-info"
+		class="label label-info ng-hide"
 		><?php echo __('公開中'); ?></span>
 	<span
 		ng-init="label.draft=<?php echo $status_on[3];?>"
 		ng-show="label.draft"
-		class="label label-info"
+		class="label label-info ng-hide"
 		><?php echo __('下書きあり'); ?></span>
 	<span
 		ng-init="label.request=<?php echo $status_on[2];?>"
 		ng-show="label.request"
-		class="label label-danger"
+		class="label label-danger ng-hide"
 		><?php echo __('公開申請あり'); ?></span>
 	<span
 		ng-init="label.reject=<?php echo $status_on[4];?>"
 		ng-show="label.reject"
-		class="label label-default"
+		class="label label-default ng-hide"
 		><?php echo __('差し戻しあり'); ?></span>
 	<span class="label label-danger"
-	      ng-show="View.edit.preview"
+	      ng-show="View.edit.preview ng-hide"
 	><?php echo __("プレビュー表示中"); ?></span>
 </p>

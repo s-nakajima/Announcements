@@ -34,17 +34,20 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         }
     };
     //プレビューのhtmlデータ
+    //$scope.View.previewとまとめるか検討する。
     $scope.Preview = {
         'html' : null
     };
-    //ラベル表示
+
+    //ラベルとボタンの表示制御 : お知らせの状態の格納
    $scope.label = {
        'publish' : false,
        'draft' : false,
        'request' : false,
        'reject' : false
    };
-    //テキストエディタ
+
+    //テキストエディタの内容格納
     $scope.textEditorModel = '';
 
     //DOM

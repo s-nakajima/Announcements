@@ -1,3 +1,4 @@
+
 <?php
 //公開するボタンの非表示
 $publishBtnHidden = "hidden";
@@ -53,13 +54,7 @@ if( isset($draftItem)
 	</p>
 
 
-<!-- プレビュー-->
-<div class="preview"
-     ng-show="View.edit.preview"
-     ng-bind-html='Preview.html'
->
-{{Preview.html}}
-</div>
+
 
 
 
@@ -73,6 +68,17 @@ if( isset($draftItem)
 	$content =  $item['AnnouncementDatum']['content'];
 	echo $content;
 }?>
+</div>
+
+	<!-- プレビュー-->
+<div
+	ng-init="Preview.html=''"
+	ng-init="View.edit.preview=false"
+	ng-show="View.edit.preview"
+	ng-bind-html='Preview.html'
+    class="ng-hide"
+>
+		{{Preview.html}}
 </div>
 
 <!-- 非表示 最新 -->
