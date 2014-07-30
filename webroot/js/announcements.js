@@ -5,6 +5,7 @@
 * */
 NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
     var pluginsUrl = '/announcements/announcements/';
+	$scope.show = false;
     $scope.frameId = 0;
     $scope.blockId = 0;
     $scope.langId = 2; //デェフォルト日本語
@@ -45,7 +46,6 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
    };
     //テキストエディタ
     $scope.textEditorModel = '';
-
 
     //DOM
     var statusLabelTag = '';
@@ -136,6 +136,8 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         //本記事を隠す
         $scope.setId(frameId);
         //previewにコードを格納する
+        //scriptタグを除去し、格納
+		$scope.tinymceModel = $scope.tinymceModel.replace(/<script(.*)script>/gi , '');
         $scope.Preview.html = $sce.trustAsHtml($scope.tinymceModel);
         $scope.View.edit.preview = true;
         $scope.View.edit.html = false;
@@ -171,6 +173,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
             && ! $scope.tinymceModel
         ) {
             $scope.tinymceModel = $(draftTag).html();
+			$scope.tinymceModel = $scope.tinymceModel.replace(/<script(.*)script>/gi , '');
         }
 
         //form
@@ -257,13 +260,12 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
             content = decodeURIComponent(json.data.AnnouncementDatum.content);
             statusId = json.data.AnnouncementDatum.status_id;
         }
-        var textareaTag = "#announcements-text-editor-" + $scope.frameId;
 
         //ラベル - クリア初期値に戻す
         $scope.labelClear();
 
         //入れ替え : 初期値
-        $(textareaTag).val(content);
+		$scope.textEditorModel = $sce.trustAsHtml(content);
         $('#announcement-content-view-' + $scope.frameId).html(content);
         $(draftTag).html(content);
         if(statusId == $scope.statusList.Draft) {
@@ -292,11 +294,12 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
 
     //TEXTエディタ
     $scope.openTextEditor = function(frameId) {
+        //モーダルのため臨時にidで対応中。
         $scope.setId(frameId);
         var modalTag = "#announcements-text-editor-modal-" + frameId;
-        var textareaTag = "#announcements-text-editor-" + frameId;
-        $scope.textEditorModel = $sce.trustAsHtml($scope.tinymceModel);
-        //$(textareaTag).val($scope.tinymceModel);
+        var textEditorTag = "#announcements-text-editor-"+ frameId;
+        $scope.textEditorModel = $sce.trustAsHtml($scope.tinymceModel.replace(/<script(.*)script>/gi , ''));
+        $(textEditorTag).val($scope.textEditorModel);
         //モーダル Open
         $(modalTag).modal('show');
     }
@@ -309,10 +312,13 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
  */
     $scope.closeTextEditor = function(frameId) {
         $scope.setId(frameId);
+        //モーダルのため臨時にidで対応中。
+
         var modalTag = "#announcements-text-editor-modal-" + frameId;
         var textEditorTag = "#announcements-text-editor-"+ frameId;
         var d = $(textEditorTag).val();
-        $scope.tinymceModel = d;
+
+        $scope.tinymceModel = d.replace(/<script(.*)script>/gi , '');
         $(modalTag).modal('hide');
     }
 
