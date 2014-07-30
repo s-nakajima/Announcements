@@ -4,7 +4,7 @@
 <!-- Modal -->
 <div ng-controller="Announcements.setting">
 
-	<div class="modal fade" id="block-setting-<?php echo intval($frameId); ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="nc-block-setting-<?php echo intval($frameId); ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div style="width: 90%;" class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -15,10 +15,10 @@
 
 					<!-- Nav tabs -->
 					<ul class="nav nav-tabs" role="tablist">
-						<li class="active"><a href="#announcements-block-setting-update-<?php echo intval($frameId); ?>"
+						<li class="active"><a href="#nc-announcements-block-setting-update-<?php echo intval($frameId); ?>"
 						       role="tab"
 						       data-toggle="tab"><?php echo __("記事変更通知"); ?></a></li>
-						<li><a href="#announcements-block-setting-request-<?php echo intval($frameId); ?>"
+						<li><a href="#nc-announcements-block-setting-request-<?php echo intval($frameId); ?>"
 						       role="tab"
 						       data-toggle="tab"><?php echo __("公開申請通知"); ?></a>
 						</li>
@@ -30,13 +30,13 @@
 
 						<?php
 						//更新メッセージ設定
-						?><div class="tab-pane" id="announcements-block-setting-update-<?php echo intval($frameId); ?>"><?php
+						?><div class="tab-pane" id="nc-announcements-block-setting-update-<?php echo intval($frameId); ?>"><?php
 							echo $this->element("Announcements.setting/message_update_form");
 							?></div>
 
 						<?php
 						//申請メッセージ設定
-						?><div class="tab-pane" id="announcements-block-setting-request-<?php echo intval($frameId); ?>"><?php
+						?><div class="tab-pane" id="nc-announcements-block-setting-request-<?php echo intval($frameId); ?>"><?php
 							echo $this->element("Announcements.setting/message_publish_form");
 						?></div>
 
@@ -45,5 +45,5 @@
 			</div>
 		</div>
 	</div>
-	<div id="announcements-block-setting-get-edit-form-<?php echo $frameId; ?>"></div>
+	<div id="nc-announcements-block-setting-get-edit-form-<?php echo $frameId; ?>"></div>
 </div>

@@ -7,8 +7,16 @@
 		<h4><?php echo __('送信先設定'); ?></h4>
 		<?php
 		foreach($partList as $key=>$item){
+		$partid = $item['AnnouncementRoomPart']["part_id"];
 		?><span style="display:block; float:left; margin-right: 10px;">
-			<input type="checkbox" name="part_id_<?php echo h($item['AnnouncementRoomPart']['part_id']); ?>"> <?php
+			<input
+				type="checkbox"
+				name="part_id_<?php echo h($item['AnnouncementRoomPart']['part_id']); ?>"
+				id="nc-announcements-message-update-frame-<?php echo $frameId; ?>-part-<?php echo $partid; ?>"
+				ng-click="partChange('message-update',<?php echo $frameId; ?>,<?php echo $partid; ?>)"
+			    checked=""
+			    value="<?php echo $partid; ?>"
+			> <?php
 			echo h($item["LanguagesPart"]['name']) . "</span>";
 			}
 			?>
@@ -31,8 +39,6 @@
 	<pre><?php
 		//説明
 		echo $this->element("Announcements.setting/message_info"); ?></pre>
-
-
 
 	<p class="text-center">
 		<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo __('キャンセル'); ?></button>

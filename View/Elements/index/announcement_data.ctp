@@ -1,5 +1,5 @@
 <!-- 内容表示 -->
-<div class="item" id="announcement-content-view-<?php echo intval($frameId); ?>">
+<div class="item" id="nc-announcement-content-view-<?php echo intval($frameId); ?>">
 	<?php if(isset($item)
 		&& isset($item['AnnouncementDatum'])
 		&& isset($item['AnnouncementDatum']['content'])) {

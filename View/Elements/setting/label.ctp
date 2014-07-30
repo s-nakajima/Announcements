@@ -29,7 +29,7 @@ if (isset($item)
 }
 
 ?>
-<p id="announcement-status-label-<?php echo intval($frameId); ?>">
+<p id="nc-announcement-status-label-<?php echo intval($frameId); ?>">
 	<span
 		ng-init="label.publish=<?php echo $status_on[1];?>"
 		ng-show="label.publish"

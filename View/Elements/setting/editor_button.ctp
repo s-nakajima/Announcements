@@ -26,26 +26,30 @@ if ($draftItem
 >
 	<button
 		class="btn btn-default announcement-editor-button-close "
+		ng-disabled="sendRock"
 		ng-click="closeForm(<?php echo intval($frameId);?>)">
 		<span class="glyphicon glyphicon-remove"></span>
 		<span><?php echo __('閉じる'); ?></span></button>
 	<button
 		class="btn btn-default announcement-editor-button-preview "
-		id="announcements-btn-preview-<?php echo intval($frameId);?>"
+		id="nc-announcements-btn-preview-<?php echo intval($frameId);?>"
 		ng-click="showPreview(<?php echo intval($frameId);?>)"
 		ng-hide="View.edit.preview"
+		ng-disabled="sendRock"
 		>
 		<span class="glyphicon glyphicon-file"></span> <span><?php echo __('プレビュー'); ?></span></button>
 	<button
 		class="btn btn-default <?php //echo $hidden['previewCLose']; ?> announcement-editor-button-preview-close"
 		ng-click="closePreview(<?php echo intval($frameId);?>)"
 		ng-show="View.edit.preview"
+		ng-disabled="sendRock"
 		>
 		<span class="glyphicon glyphicon-file"></span> <span><?php echo __('プレビューを閉じる'); ?></span></button>
 	<button
 		class="btn btn-default"
 		ng-click="post('Draft', <?php echo intval($frameId);?>)"
 		ng-hide="label.request"
+		ng-disabled="sendRock"
 	>
 		<span class="glyphicon glyphicon-pencil"></span> <span><?php echo __('下書き'); ?></span></button>
 
@@ -53,6 +57,7 @@ if ($draftItem
 		class="btn btn-default"
 		ng-click="post('Reject', <?php echo intval($frameId);?>)"
 		ng-show="label.request"
+		ng-disabled="sendRock"
 		>
 		<span class="glyphicon glyphicon-pencil"></span> <span><?php echo __('差し戻し'); ?></span>
 	</button>
@@ -60,10 +65,13 @@ if ($draftItem
 	<button
 		class="btn btn-primary announcement-editor-button-request"
 		ng-click="post('PublishRequest', <?php echo intval($frameId);?>)"
+		ng-disabled="sendRock"
 		>
 		<span class="glyphicon glyphicon-share-alt"></span> <span><?php echo __('公開申請'); ?></span></button>
 	<button
 		class="btn btn-primary announcement-editor-button-publish"
-		ng-click="post('Publish', <?php echo intval($frameId);?>)">
+		ng-click="post('Publish', <?php echo intval($frameId);?>)"
+		ng-disabled="sendRock"
+	>
 		<span class="glyphicon glyphicon-share-alt"></span> <span><?php echo __('公開'); ?></span></button>
 </p>

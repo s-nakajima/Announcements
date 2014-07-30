@@ -1,4 +1,4 @@
-<div id="announcements-data-<?php echo $frameId?>">
+<div id="nc-announcements-data-<?php echo $frameId?>">
 <?php echo $this->Form->create(null); ?>
 	<div style="display: none;">
 		<?php

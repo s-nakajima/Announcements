@@ -17,7 +17,7 @@
 					array(
 						'type' => 'checkbox',
 						'div' => null,
-						'id' => 'announcements_publish_frame_'.$frameId. "_part_" .$item['AnnouncementRoomPart']['part_id'],
+						'id' => 'nc-announcements-publish-frame-'.$frameId. "-part-" .$item['AnnouncementRoomPart']['part_id'],
 						'value' => $item['AnnouncementRoomPart']['part_id'],
 						'name' => 'part_id['. $item['AnnouncementRoomPart']['part_id'] .']',
 						//'ng-change'=>'partChange("publish", '.$frameId.','.$item['AnnouncementRoomPart']['part_id'].')',

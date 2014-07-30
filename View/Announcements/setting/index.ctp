@@ -13,19 +13,21 @@ if( isset($draftItem)
 
 <!-- 編集ボタン 状態表示-->
 <p class="text-right" style="margin-top: 5px;"
-   id="announcement-content-edit-btn-<?php echo intval($frameId); ?>"
+   id="nc-announcement-content-edit-btn-<?php echo intval($frameId); ?>"
    ng-hide="View.edit.body"
 >
 	<!-- block setting-->
 	<?php if (isset($isBlockEdit) && $isBlockEdit) { ?>
 	<button class="btn btn-default"
 		ng-click="openBlockSetting(<?php echo intval($frameId); ?>)"
+		ng-disabled="sendRock"
 	><span class="glyphicon glyphicon-cog"> <?php echo __("ブロック設定"); ?></span></button>
 	<?php } ?>
 	<!-- edit buttun -->
 	<?php if($isEdit) { ?>
 	<button class="btn btn-primary"
 		ng-click="getEditor(<?php echo intval($frameId); ?>)"
+		ng-disabled="sendRock"
 	><span class="glyphicon glyphicon-pencil"> <?php echo __("編集"); ?></span></button>
 	<?php } ?>
 	<!-- publich button -->
@@ -33,6 +35,7 @@ if( isset($draftItem)
 	<button class="btn btn-danger"
 		ng-show="label.request"
 		ng-click="post('Publish', <?php echo intval($frameId);?>)"
+		ng-disabled="sendRock"
 	><span class="glyphicon glyphicon-share-alt"> <?php echo __("公開する"); ?></span></button>
 	<?php } ?>
 </p>
@@ -43,7 +46,7 @@ if( isset($draftItem)
 
 	<!-- メッセージ -->
 	<p>
-		<div class="alert alert-danger hidden" id="announcements-mss-<?php echo intval($frameId);?>">
+		<div class="alert alert-danger hidden" id="nc-announcements-mss-<?php echo intval($frameId);?>">
 			<span class="pull-right" ng-click="postAlertClose(<?php echo intval($frameId);?>)"><span class="glyphicon glyphicon-remove"> </span></span></span>
 			<span class="message"> </span>
 		</div>
@@ -61,7 +64,7 @@ if( isset($draftItem)
 
 
 <!-- 内容表示 -->
-<div class="item" id="announcement-content-view-<?php echo intval($frameId); ?>"
+<div class="item" id="nc-announcement-content-view-<?php echo intval($frameId); ?>"
 	ng-show="View.default"
 >
 <?php if(isset($item)
@@ -74,7 +77,7 @@ if( isset($draftItem)
 
 <!-- 非表示 最新 -->
 
-	<div class="draft hidden" id="announcement-content-draft-<?php echo intval($frameId); ?>">
+	<div class="draft hidden" id="nc-announcement-content-draft-<?php echo intval($frameId); ?>">
 		<?php if(isset($draftItem)
 			&& isset($draftItem['AnnouncementDatum'])
 			&& isset($draftItem['AnnouncementDatum']['content'])) {
@@ -87,7 +90,7 @@ if( isset($draftItem)
 <?php echo $this->element("Announcements.setting/label"); ?>
 <!-- 編集枠  -->
 <div class="announcements-editor"
-     id="announcements-form-<?php echo intval($frameId);?>"
+     id="nc-announcements-form-<?php echo intval($frameId);?>"
      ng-show="View.edit.body"
 >
 
@@ -97,7 +100,7 @@ if( isset($draftItem)
 	<div class="html-editor" ng-show="View.edit.html">
 		<?php echo $this->element("Announcements.index_text_editor"); ?>
 		<textarea
-			id="announcements-html-editor-<?php echo intval($frameId);?>"
+			id="nc-announcements-html-editor-<?php echo intval($frameId);?>"
 			ui-tinymce="tinymceOptions"
 			ng-model="tinymceModel"
 			class="form-control"
@@ -112,8 +115,8 @@ if( isset($draftItem)
 	<?php echo $this->element("Announcements.setting/editor_button");?>
 </div>
 
-	<div id="announcements-post-<?php echo $frameId;?>"></div>
-	<div id="announcements-block-setting-<?php echo intval($frameId);?>"></div>
+	<div id="nc-announcements-post-<?php echo $frameId;?>"></div>
+	<div id="nc-announcements-block-setting-<?php echo intval($frameId);?>"></div>
 </div>
 
 <?php
@@ -124,3 +127,4 @@ if($isRoomAdmin) {
 }
 
 ?>
+

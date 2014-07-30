@@ -306,5 +306,4 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->set('editVariableArray', $editVariableArray);
 		return $rtn;
 	}
-
 }

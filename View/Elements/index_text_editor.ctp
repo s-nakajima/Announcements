@@ -14,7 +14,7 @@
 	tabindex="-1" role="dialog"
 	aria-labelledby="myLargeModalLabel"
 	aria-hidden="true"
-    id="announcements-text-editor-modal-<?php echo intval($frameId);?>"
+    id="nc-announcements-text-editor-modal-<?php echo intval($frameId);?>"
 >
 	<div class="modal-dialog">
 	<div class="modal-content">
@@ -24,10 +24,10 @@
 		</div>
 		<div class="modal-body">
 			<textarea
-				id="announcements-text-editor-<?php echo intval($frameId);?>"
+				id="nc-announcements-text-editor-<?php echo intval($frameId);?>"
 				class="form-control"
 				style="height: 150px;"
-
+			    ng-init="textEditorModel=''"
 			>{{textEditorModel}}</textarea>
 		</div>
 		<div class="modal-footer">

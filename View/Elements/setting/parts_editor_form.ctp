@@ -18,7 +18,7 @@
 					array(
 						'type' => 'checkbox',
 						'div' => null,
-						'id' => 'announcements_edit_frame_'.$frameId. "_part_" .$item['AnnouncementRoomPart']['part_id'],
+						'id' => 'nc-announcements-edit-frame-'.$frameId. "-part-" .$item['AnnouncementRoomPart']['part_id'],
 						'value' => $item['AnnouncementRoomPart']['part_id'],
 						'name' => 'part_id['. $item['AnnouncementRoomPart']['part_id'] .']',
 						//'ng-change'=>'partChange("edit", '.$frameId.','.$item['AnnouncementRoomPart']['part_id'].')',
@@ -41,7 +41,7 @@
 			<span><?php echo __("更新する"); ?></span></button>
 	</p>
 
-	<div id="announcements_setting_get_edit_form_<?php echo intval($frameId); ?>">
+	<div id="nc-announcements-setting-get-edit-form-<?php echo intval($frameId); ?>">
 
 	</div>
 
