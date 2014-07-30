@@ -1,4 +1,3 @@
-
 <?php
 //公開するボタンの非表示
 $publishBtnHidden = "hidden";
@@ -92,44 +91,60 @@ if( isset($draftItem)
 		}?>
 	</div>
 
-<!-- ラベル -->
-<?php echo $this->element("Announcements.setting/label"); ?>
-<!-- 編集枠  -->
-<div id="nc-announcements-form-<?php echo intval($frameId);?>"
-     ng-show="View.edit.body"
->
+	<!-- ラベル -->
+	<?php echo $this->element("Announcements.setting/label"); ?>
+	<!-- 編集枠  -->
+	<div id="nc-announcements-form-<?php echo intval($frameId);?>" ng-show="View.edit.body">
 
-	<!-- エディタ -->
+		<!-- エディタ -->
+		<div class="html-editor" ng-show="View.edit.html">
+			<!-- textエディタ　open -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li>
+					<span class="btn btn-default" ng-click="openTextEditor(<?php echo intval($frameId);?>)"
+				>TEXT</span></li>
+			</ul>
+			<textarea
+				id="nc-announcements-html-editor-<?php echo intval($frameId);?>"
+				ui-tinymce="tinymceOptions"
+				ng-model="tinymceModel"
+				class="form-control"
+			><?php if(isset($draftItem)
+				&& isset($draftItem['AnnouncementDatum'])
+				&& isset($draftItem['AnnouncementDatum']['content'])) {
+				$draftContent =  $draftItem['AnnouncementDatum']['content'];
+				echo $draftContent;
+			}?></textarea>
+		</div>
 
+		<div ng-show="View.edit.text">
+			<!-- html editor　open -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li class="active">
+					<span class="btn btn-default"
+		                ng-click="closeTextEditor(<?php echo intval($frameId);?>)"
+					>HTML</span></li>
+			</ul>
+			<textarea
+				class="form-control"
+				ng-model="textEditorModel"
+				rows="7"
+				>{{textEditorModel}}</textarea>
+		</div>
 
-	<div class="html-editor" ng-show="View.edit.html">
-		<?php echo $this->element("Announcements.index_text_editor"); ?>
-		<textarea
-			id="nc-announcements-html-editor-<?php echo intval($frameId);?>"
-			ui-tinymce="tinymceOptions"
-			ng-model="tinymceModel"
-			class="form-control"
-		><?php if(isset($draftItem)
-			&& isset($draftItem['AnnouncementDatum'])
-			&& isset($draftItem['AnnouncementDatum']['content'])) {
-			$draftContent =  $draftItem['AnnouncementDatum']['content'];
-			echo $draftContent;
-		}?></textarea></div>
-
-	<!-- ボタン類 -->
-	<?php echo $this->element("Announcements.setting/editor_button");?>
-</div>
-
+		<!-- editor button -->
+		<?php echo $this->element("Announcements.setting/editor_button");?>
+	</div>
 	<div id="nc-announcements-post-<?php echo $frameId;?>"></div>
 	<div id="nc-announcements-block-setting-<?php echo intval($frameId);?>"></div>
 </div>
 
 <?php
+//block setting
 if($isRoomAdmin) {
 	echo $this->element("block_setting/room_admin");
 } else {
 	echo $this->element("block_setting/editor");
 }
-
 ?>
 

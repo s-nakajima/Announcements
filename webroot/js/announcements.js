@@ -12,18 +12,35 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
     $scope.dataId = 0;
     $scope.geturl =  pluginsUrl + "get_edit_form/";
     $scope.posturl = pluginsUrl + "edit/";
+
+    /**
+     * debug
+     * @type {null}
+     */
     $scope.debug = null;
+
+    /**
+     * HTMLエディタ用データ
+     *
+     * @type {null}
+     */
     $scope.tinymceModel = null;
-    $scope.alertMss = null;
+
+    /**
+     * ステータスコード
+     * @type {{Publish: number, PublishRequest: number, Draft: number, Reject: number}}
+     */
     $scope.statusList = {
         'Publish' : 1,
         'PublishRequest' : 2,
         'Draft' : 3,
         'Reject' : 4
     };
-    $scope.isPreview = 0;
 
-    //表示制御
+    /**
+     * 表示制御設定
+     * @type {{default: boolean, edit: {preview: boolean, html: boolean, text: boolean, body: boolean}}}
+     */
     $scope.View = {
         'default' : true,
         'edit' : {
@@ -33,13 +50,23 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
             'body' : false
         }
     };
-    //プレビューのhtmlデータ
-    //$scope.View.previewとまとめるか検討する。
+
+    /**
+     * プレビューのhtmlデータ
+     * $scope.View.previewとまとめるか検討する。
+     *
+     * @type {{html: null}}
+     */
     $scope.Preview = {
         'html' : null
     };
 
-    //ラベルとボタンの表示制御 : お知らせの状態の格納
+    /**
+     * 記事の状態設定
+     * ラベルとボタンの表示制御 : お知らせの状態の格納
+     *
+     * @type {{publish: boolean, draft: boolean, request: boolean, reject: boolean}}
+     */
    $scope.label = {
        'publish' : false,
        'draft' : false,
@@ -47,14 +74,37 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
        'reject' : false
    };
 
-    //テキストエディタの内容格納
+    /**
+     * テキストエディタ用データ
+     *
+     * @type {string}
+     */
     $scope.textEditorModel = '';
 
-    //DOM
-    var statusLabelTag = '';
+    /**
+     * 記事最新の格納DOM
+     * @type {string}
+     */
     var draftTag = '';
+
+    /**
+     * 送信完了メッセージ用DOM
+     * @type {string}
+     */
     var messageTag = '';
+
+    /**
+     * ブロック設定用DOM
+     *
+     * @type {string}
+     */
     var blockSettingTag = '';
+
+    /**
+     * 送信のロック設定
+     *
+     * @type {boolean}
+     */
     $scope.sendRock =  false;
 
     //初期値設定 ng-initで指定
@@ -64,7 +114,11 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
       $scope.langId = langId;
     }
 
-    //フォームを閉じる
+    /**
+     * 編集画面を閉じる
+     *
+     * @param {int} frameId
+     */
     $scope.closeForm = function(frameId){
         //set
         $scope.setId(frameId);
@@ -79,7 +133,11 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
 
     }
 
-    //フォームを開く
+    /**
+     * 編集画面を表示させる
+     *
+     * @param {int} frameId
+     */
     $scope.getEditor = function(frameId){
         $scope.setId(frameId);
         $scope.View.default = false;
@@ -94,10 +152,14 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
             'message' : '',
             'class' : 'alert alert-success'
         };
-
     }
 
-    //メッセージ（実行結果）を表示
+    /**
+     * メッセージ（実行結果）を表示
+     *
+     * @param {string} alertType
+     * @param {string} text
+     */
     $scope.postAlert = function(alertType , text){
         $scope.PostMessage.view = true;
         $scope.PostMessage.message = text;
@@ -118,48 +180,72 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         }
     }
 
-    //アラートメッセージを非表示にする
+    /**
+     * 送信完了メッセージを非表示の状態にする。
+     *
+     * @param {int} frameId
+     */
     $scope.postAlertClose = function(frameId){
         $scope.setId(frameId);
         $(messageTag).addClass("hidden");
         $(messageTag + " .message").html("");
     }
 
-    //idのセット
+    /**
+     * idのセット
+     *
+     * @param {int} frameId
+     */
     $scope.setId = function(frameId){
         $scope.frameId = frameId;
         draftTag = '#nc-announcement-content-draft-' + $scope.frameId;
-        statusLabelTag = '#nc-announcement-status-label-' + $scope.frameId;
         messageTag = '#nc-announcements-mss-' + $scope.frameId;
         blockSettingTag = '#nc-announcements-block-setting-' + $scope.frameId;
     }
 
-    //プレビューの表示
+    /**
+     * プレビューの表示
+     *
+     * @param {int} frameId
+     */
     $scope.showPreview = function(frameId){
         //本記事を隠す
         $scope.setId(frameId);
         //previewにコードを格納する
         //scriptタグを除去し、格納
+        //textの状態でpostされた場合は、格納しなおす。
+        if($scope.View.edit.text){
+            $scope.tinymceModel = $scope.textEditorModel;
+        }
 		$scope.tinymceModel = $scope.tinymceModel.replace(/<script(.*)script>/gi , '');
         $scope.Preview.html = $sce.trustAsHtml($scope.tinymceModel);
         $scope.View.edit.preview = true;
         $scope.View.edit.html = false;
+        $scope.View.edit.text = false;
         $scope.View.default = false;
+        $scope.$apply();
     }
 
-/**
- * プレビューを閉じる
- *
- * @param {int} frameId
- */
+    /**
+     * プレビューを閉じる
+     *
+     * @param {int} frameId
+     */
     $scope.closePreview = function(frameId){
         $scope.setId(frameId);
         $scope.View.edit.preview = false;
         $scope.View.edit.html = true;
         $scope.Preview.html = ''; //プレビューの中身をclear
+        $scope.$apply();
     }
 
-    //送信
+    /**
+     * お知らせの内容を送信する。
+     *
+     * @param {string} type
+     * @param {int} frameId
+     * @returns {boolean}
+     */
     $scope.post = function(type , frameId){
         //送信中のため、処理せず
         if($scope.sendRock) {
@@ -167,6 +253,11 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         }
         $("button").fadeTo(100, 0.3);
         $('button').attr("disabled", "disabled");
+
+        //textの状態でpostされた場合は、格納しなおす。
+        if($scope.View.edit.text){
+            $scope.tinymceModel = $scope.textEditorModel;
+        }
 
         //送信をロックする。
         $scope.sendRock = true;
@@ -226,9 +317,11 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
 		$("button").fadeTo(3000, 1);
 		$('button').removeAttr("disabled");
 		$scope.setViewdDefault();
-
     }
 
+    /**
+     * Viewの設定を標準値に戻す
+     */
     $scope.setViewdDefault = function () {
         $scope.View = {
             'default' : true,
@@ -241,7 +334,9 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         };
     }
 
-    //ラベル(状態）をすべてfalseにする。
+    /**
+     * ラベル(状態）をすべてfalseにする。
+     */
     $scope.labelClear = function (){
         $scope.label.publish = false;
         $scope.label.draft = false;
@@ -249,14 +344,13 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         $scope.label.draft = false;
         $scope.label.request = false;
         $scope.label.reject = false;
-
     }
 
-/**
- * 最新の情報にいれかえる。
- *
- * @param json
- */
+    /**
+     * 最新の情報にいれかえる。
+     *
+     * @param json
+     */
     $scope.setIndex = function(json){
        //最新
         var content = '';
@@ -265,10 +359,8 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
             content = decodeURIComponent(json.data.AnnouncementDatum.content);
             statusId = json.data.AnnouncementDatum.status_id;
         }
-
         //ラベル - クリア初期値に戻す
         $scope.labelClear();
-
         //入れ替え : 初期値
 		$scope.textEditorModel = $sce.trustAsHtml(content);
         $('#announcement-content-view-' + $scope.frameId).html(content);
@@ -297,49 +389,52 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         $scope.$apply();
     }
 
-    //TEXTエディタ
+    /**
+     * TEXT editor open
+     *
+     * @param {int} frameId
+     */
     $scope.openTextEditor = function(frameId) {
         //モーダルのためidで対応中。
         $scope.setId(frameId);
-        var modalTag = "#nc-announcements-text-editor-modal-" + frameId;
-        var textEditorTag = "#nc-announcements-text-editor-"+ frameId;
-        $scope.textEditorModel = $sce.trustAsHtml($scope.tinymceModel.replace(/<script(.*)script>/gi , ''));
-        $(textEditorTag).val($scope.textEditorModel);
-        //モーダル Open
-        $(modalTag).modal('show');
+        //変更があったなら、<scriptタグの除去
+        if ($scope.textEditorModel != $scope.tinymceModel) {
+            $scope.tinymceModel = $sce.trustAsHtml($scope.tinymceModel.replace(/<script(.*)script>/gi , ''));
+        }
+        $scope.textEditorModel = $scope.tinymceModel;
+        $scope.View.edit.html=false;
+        $scope.View.edit.text=true;
+        $scope.View.edit.preview = false;
+        $scope.View.default = false;
         $scope.$apply();
-
-
     }
 
-/**
- * TEXTエディタ close データの受け渡しのみ
- * これも、tinymceのcodeでレスポンシブ対応が出来次第消去の予定
- *
- * @param {int} frameId
- */
+    /**
+     * TEXTエディタ close データの受け渡しのみ
+     * これも、tinymceのcodeでレスポンシブ対応が出来次第消去の予定
+     *
+     * @param {int} frameId
+     */
     $scope.closeTextEditor = function(frameId) {
         $scope.setId(frameId);
-        //モーダルのためidで対応中。
-        var modalTag = "#nc-announcements-text-editor-modal-" + frameId;
-        var textEditorTag = "#nc-announcements-text-editor-"+ frameId;
-        var d = $(textEditorTag).val();
-        $scope.tinymceModel = d.replace(/<script(.*)script>/gi , '');
-        $(modalTag).modal('hide');
+        if ($scope.textEditorModel != $scope.tinymceModel) {
+            $scope.textEditorModel = $scope.textEditorModel.replace(/<script(.*)script>/gi , '');
+        }
+        $scope.tinymceModel = $scope.textEditorModel;
+        $scope.View.edit.html=true;
+        $scope.View.edit.text=false;
+        $scope.$apply();
     }
 
-/**
- * ブロック設定のモーダルを表示させる。
- *
- * @param {int} frameId
- */
+    /**
+     * ブロック設定のモーダルを表示させる。
+     *
+     * @param {int} frameId
+     */
     $scope.openBlockSetting = function(frameId){
         $scope.setId(frameId);
         $("#nc-block-setting-"+ $scope.frameId).modal("show");
     }
-
-    //初期画面表示
-    $scope.setViewdDefault();
 });
 
 /**
@@ -350,15 +445,16 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
         $scope.frameId = frameId;
         blockSettingGetFormTag = 'announcements-setting-get-edit-form-'; + $scope.frameId;
     }
-/**
- * ヒエラルキーによるチェック状態の制御
- * 共通処理にするべき : 後でがっつり修正する
- * input[name='part_id_']にhitさせるようにしたい。
- *
- * @param {string} type
- * @param {int} flameId
- * @param {int} partId
- */
+
+    /**
+     * ヒエラルキーによるチェック状態の制御
+     * 共通処理にするべき : 後でがっつり修正する
+     * input[name='part_id_']にhitさせるようにしたい。
+     *
+     * @param {string} type
+     * @param {int} flameId
+     * @param {int} partId
+     */
     $scope.partChange = function(type, flameId, partId) {
         var con = 0;
         var idTag = '#nc-announcements-'+ type +'-frame-'+ flameId + '-part-';
@@ -383,7 +479,6 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
         }
     }
 
-
     /**
      * 設定の更新 post処理分岐
      *
@@ -407,9 +502,14 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
         }
         //すべてのボタンを有効に。//ちょっと乱暴すぎるのであとで範囲指定。
         $('input').removeAttr("disabled");
-
     }
-    //更新処理 :公開権限の編集
+
+    /**
+     * 更新処理 :公開権限の編集
+     *
+     * @param {int} frameId
+     * @param {int} blockId
+     */
     $scope.postToPublishPart = function(frameId, blockId) {
         var setFormTag = '#nc-announcements-block-setting-get-edit-form-' + frameId;
         var getFormUrl = '/announcements/announcements_block_setting/get_edit_form/publishParts/'
@@ -476,7 +576,13 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
             });
             //完了動作
     }
-    //更新処理 :編集権限の編集
+
+    /**
+     * 更新処理 :編集権限の編集
+     *
+     * @param {int} frameId
+     * @param {int} blockId
+     */
     $scope.postSendToEditPart = function(frameId, blockId) {
 
         var setFormTag = '#nc-announcements-block-setting-get-edit-form-' + frameId;
@@ -543,7 +649,14 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
             });
 
     }
-    //更新処理 :公開申請通知の編集
+
+    /**
+     * 更新処理 :公開申請通知の編集
+     *
+     * @param {int} frameId
+     * @param {int} blockId
+     * @param {int} langId
+     */
     $scope.postSendToPublishMessage = function(frameId, blockId, langId) {
         var viewFormTag = '#nc-announcements-block-setting-request-' + frameId;
         var setFormTag = '#nc-announcements-block-setting-get-edit-form-' + frameId;
@@ -600,7 +713,14 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
                 $("button").fadeTo(100, 1);
             });
     }
-    //更新処理 : 記事変更通知の編集
+
+    /**
+     * 更新処理 : 記事変更通知の編集
+     *
+     * @param {int} frameId
+     * @param {int} blockId
+     * @param {int} langId
+     */
     $scope.postSendToUpdateMessage = function(frameId, blockId, langId) {
         var viewFormTag = '#nc-announcements-block-setting-update-' + frameId;
         var setFormTag = '#nc-announcements-block-setting-get-edit-form-' + frameId;
@@ -666,3 +786,4 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
             });
     }
 });
+
