@@ -67,14 +67,4 @@ class AnnouncementRoomTest extends CakeTestCase {
 		$rtn = $this->Room->checkApproval($roomId);
 		$this->assertFalse($rtn);
 	}
-
-/**
- * save
- *
- * @return void
- */
-	public function testSave() {
-		$rtn = $this->Room->save();
-		$this->assertFalse($rtn);
-	}
 }
