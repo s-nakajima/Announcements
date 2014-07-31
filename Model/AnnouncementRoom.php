@@ -36,16 +36,6 @@ class AnnouncementRoom extends AppModel {
 	}
 
 /**
- * save
- *
- * @return bool|mixed
- */
-	public function save() {
-		//このmodelではread onlyのためsave処理を殺しておく。
-		return false;
-	}
-
-/**
  * ルーム管理者の承認が必要かどうかを取得する
  *
  * @param int $roomId rooms.id
