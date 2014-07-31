@@ -214,16 +214,16 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         //previewにコードを格納する
         //scriptタグを除去し、格納
         //textの状態でpostされた場合は、格納しなおす。 .replace(/<script(.*)script>/gi , '')
-
+        if($scope.View.edit.text){
+            $scope.textEditorModel = $scope.textEditorModel;//.replace(/<script(.*)script>/gi , '');
+            $scope.tinymceModel = $scope.textEditorModel;
+        }
         $scope.Preview.html = $sce.trustAsHtml($scope.tinymceModel);
         $scope.View.edit.preview = true;
         $scope.View.edit.html = false;
         $scope.View.edit.text = false;
         $scope.View.default = false;
-        if($scope.View.edit.text){
-            $scope.textEditorModel = $scope.textEditorModel;//.replace(/<script(.*)script>/gi , '');
-            $scope.tinymceModel = $scope.textEditorModel;
-        }
+
         //$scope.$apply();
     }
 
@@ -403,10 +403,10 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         //モーダルのためidで対応中。
         $scope.setId(frameId);
         //変更があったなら、<scriptタグの除去
-        if ($scope.textEditorModel != $scope.tinymceModel) {
-            $scope.tinymceModel = $sce.trustAsHtml($scope.tinymceModel);//.replace(/<script(.*)script>/gi , ''));
-        }
-        $scope.textEditorModel = $scope.tinymceModel;
+        //if ($scope.textEditorModel != $scope.tinymceModel) {
+        //    $scope.tinymceModel = $sce.trustAsHtml($scope.tinymceModel);//.replace(/<script(.*)script>/gi , ''));
+        //}
+        $scope.textEditorModel = $sce.trustAsHtml($scope.tinymceModel);
         $scope.View.edit.html=false;
         $scope.View.edit.text=true;
         $scope.View.edit.preview = false;
@@ -423,9 +423,11 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
     $scope.closeTextEditor = function(frameId) {
         $scope.setId(frameId);
         if ($scope.textEditorModel != $scope.tinymceModel) {
-            $scope.textEditorModel = $scope.textEditorModel;//.replace(/<script(.*)script>/gi , '');
+            $scope.tinymceModel = $scope.textEditorModel;//.replace(/<script(.*)script>/gi , '');
         }
-        $scope.tinymceModel = $scope.textEditorModel;
+        //$scope.tinymceModel = $scope.textEditorModel;
+        //var content = $scope.tinymceModel;
+        //$scope.tinymceModel = content.replace(/<script(.*)script>/gi , '');
         $scope.View.edit.html=true;
         $scope.View.edit.text=false;
         //$scope.$apply();
