@@ -320,7 +320,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
 		$("button").fadeTo(3000, 1);
 		$('button').removeAttr("disabled");
 		$scope.setViewdDefault();
-        //$scope.$apply();
+        $scope.$apply();
     }
 
     /**
@@ -393,7 +393,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         //編集フォームを閉じる
         $scope.closeForm($scope.frameId);
         //ラベル表示等ng-show, ng-hideへの反映
-
+        $scope.$apply();
     }
 
     /**
