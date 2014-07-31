@@ -51,6 +51,6 @@ if (isset($item)
 		class="label label-default ng-hide"
 		><?php echo __('差し戻しあり'); ?></span>
 	<span class="label label-danger"
-	      ng-show="View.edit.preview ng-hide"
+	      ng-show="View.edit.preview"
 	><?php echo __("プレビュー表示中"); ?></span>
 </p>
