@@ -213,17 +213,18 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         $scope.setId(frameId);
         //previewにコードを格納する
         //scriptタグを除去し、格納
-        //textの状態でpostされた場合は、格納しなおす。
-        if($scope.View.edit.text){
-            $scope.tinymceModel = $scope.textEditorModel;
-        }
-		$scope.tinymceModel = $scope.tinymceModel.replace(/<script(.*)script>/gi , '');
+        //textの状態でpostされた場合は、格納しなおす。 .replace(/<script(.*)script>/gi , '')
+
         $scope.Preview.html = $sce.trustAsHtml($scope.tinymceModel);
         $scope.View.edit.preview = true;
         $scope.View.edit.html = false;
         $scope.View.edit.text = false;
         $scope.View.default = false;
-        $scope.$apply();
+        if($scope.View.edit.text){
+            $scope.textEditorModel = $scope.textEditorModel;//.replace(/<script(.*)script>/gi , '');
+            $scope.tinymceModel = $scope.textEditorModel;
+        }
+        //$scope.$apply();
     }
 
     /**
@@ -236,7 +237,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         $scope.View.edit.preview = false;
         $scope.View.edit.html = true;
         $scope.Preview.html = ''; //プレビューの中身をclear
-        $scope.$apply();
+        //$scope.$apply();
     }
 
     /**
@@ -268,7 +269,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
             && ! $scope.tinymceModel
         ) {
             $scope.tinymceModel = $(draftTag).html();
-			$scope.tinymceModel = $scope.tinymceModel.replace(/<script(.*)script>/gi , '');
+			$scope.tinymceModel = $scope.tinymceModel;//.replace(/<script(.*)script>/gi , '');
         }
 
         //form
@@ -317,6 +318,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
 		$("button").fadeTo(3000, 1);
 		$('button').removeAttr("disabled");
 		$scope.setViewdDefault();
+        //$scope.$apply();
     }
 
     /**
@@ -363,8 +365,11 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         $scope.labelClear();
         //入れ替え : 初期値
 		$scope.textEditorModel = $sce.trustAsHtml(content);
-        $('#announcement-content-view-' + $scope.frameId).html(content);
+        $scope.tinymceModel = $sce.trustAsHtml(content);
+        $('#nc-announcement-content-view-' + $scope.frameId).html(content);
+
         $(draftTag).html(content);
+
         if(statusId == $scope.statusList.Draft) {
             //下書き
             $scope.label.draft = true;
@@ -386,7 +391,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         //編集フォームを閉じる
         $scope.closeForm($scope.frameId);
         //ラベル表示等ng-show, ng-hideへの反映
-        $scope.$apply();
+
     }
 
     /**
@@ -399,14 +404,14 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         $scope.setId(frameId);
         //変更があったなら、<scriptタグの除去
         if ($scope.textEditorModel != $scope.tinymceModel) {
-            $scope.tinymceModel = $sce.trustAsHtml($scope.tinymceModel.replace(/<script(.*)script>/gi , ''));
+            $scope.tinymceModel = $sce.trustAsHtml($scope.tinymceModel);//.replace(/<script(.*)script>/gi , ''));
         }
         $scope.textEditorModel = $scope.tinymceModel;
         $scope.View.edit.html=false;
         $scope.View.edit.text=true;
         $scope.View.edit.preview = false;
         $scope.View.default = false;
-        $scope.$apply();
+        //$scope.$apply();
     }
 
     /**
@@ -418,12 +423,12 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
     $scope.closeTextEditor = function(frameId) {
         $scope.setId(frameId);
         if ($scope.textEditorModel != $scope.tinymceModel) {
-            $scope.textEditorModel = $scope.textEditorModel.replace(/<script(.*)script>/gi , '');
+            $scope.textEditorModel = $scope.textEditorModel;//.replace(/<script(.*)script>/gi , '');
         }
         $scope.tinymceModel = $scope.textEditorModel;
         $scope.View.edit.html=true;
         $scope.View.edit.text=false;
-        $scope.$apply();
+        //$scope.$apply();
     }
 
     /**
