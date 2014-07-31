@@ -52,8 +52,6 @@ class AnnouncementRoomFixture extends CakeTestFixture {
 			'space_id' => 1,
 			'need_approval' => 1,
 			'top_page_id' => 1,
-			'created' => 1,
-			'modified' => 1,
 		),
 		array(
 			'id' => 2,
@@ -61,8 +59,6 @@ class AnnouncementRoomFixture extends CakeTestFixture {
 			'space_id' => 2,
 			'need_approval' => 0,
 			'top_page_id' => 1,
-			'created' => 1,
-			'modified' => 1,
 		),
 	);
 
