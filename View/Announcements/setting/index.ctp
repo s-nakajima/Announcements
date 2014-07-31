@@ -32,7 +32,7 @@ if( isset($draftItem)
 	<?php } ?>
 	<!-- publich button -->
 	<?php if($isPublish) { ?>
-	<button class="btn btn-danger"
+	<button class="btn btn-danger ng-hide"
 		ng-show="label.request"
 		ng-click="post('Publish', <?php echo intval($frameId);?>)"
 		ng-disabled="sendRock"

@@ -216,9 +216,11 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         //textの状態でpostされた場合は、格納しなおす。 .replace(/<script(.*)script>/gi , '')
         if($scope.View.edit.text){
             $scope.textEditorModel = $scope.textEditorModel;//.replace(/<script(.*)script>/gi , '');
-            $scope.tinymceModel = $scope.textEditorModel;
+            $scope.Preview.html = $sce.trustAsHtml($scope.textEditorModel);
+        } else {
+            $scope.Preview.html = $sce.trustAsHtml($scope.tinymceModel);
         }
-        $scope.Preview.html = $sce.trustAsHtml($scope.tinymceModel);
+
         $scope.View.edit.preview = true;
         $scope.View.edit.html = false;
         $scope.View.edit.text = false;
