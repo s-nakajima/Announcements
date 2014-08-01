@@ -521,7 +521,7 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
      */
     $scope.postToPublishPart = function(frameId, blockId) {
         var setFormTag = '#nc-announcements-block-setting-get-edit-form-' + frameId;
-        var getFormUrl = '/announcements/announcements_block_setting/get_edit_form/publishParts/'
+        var getFormUrl = '/announcements/announcements_block_setting/form/publishParts/'
             + frameId
             + '/'
             + blockId
@@ -595,7 +595,7 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
     $scope.postSendToEditPart = function(frameId, blockId) {
 
         var setFormTag = '#nc-announcements-block-setting-get-edit-form-' + frameId;
-        var getFormUrl = '/announcements/announcements_block_setting/get_edit_form/editParts/'
+        var getFormUrl = '/announcements/announcements_block_setting/form/editParts/'
             + frameId
             + '/'
             + blockId
@@ -733,7 +733,7 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
     $scope.postSendToUpdateMessage = function(frameId, blockId, langId) {
         var viewFormTag = '#nc-announcements-block-setting-update-' + frameId;
         var setFormTag = '#nc-announcements-block-setting-get-edit-form-' + frameId;
-        var getFormUrl = '/announcements/announcements_block_setting/get_edit_form/updateMessage/'
+        var getFormUrl = '/announcements/announcements_block_setting/form/updateMessage/'
             + frameId
             + '/'
             + blockId

@@ -200,7 +200,7 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
  * @param int $blockId blocks.id 存在しない場合もある。
  * @return void
  */
-	public function get_edit_form($type, $frameId, $blockId) {
+	public function form($type, $frameId, $blockId) {
 		$this->layout = false;
 		$this->__setFrame($frameId);
 		$this->__setPartList();
