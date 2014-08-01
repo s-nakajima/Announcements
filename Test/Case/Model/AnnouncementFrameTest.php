@@ -95,18 +95,6 @@ class AnnouncementFrameTest extends CakeTestCase {
 	}
 
 /**
- * createBlock userId error
- *
- * @return void
- */
-	public function testCreateBlockFrameIdError() {
-		$frameId = "A";
-		$userId = 1;
-		$rtn = $this->AnnouncementsFrame->createBlock($frameId, $userId);
-		$this->assertTextEquals(null, $rtn);
-	}
-
-/**
  * updateBlockId
  *
  * @return void
