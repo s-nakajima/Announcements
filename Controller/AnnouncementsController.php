@@ -258,7 +258,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @param int $blockId blocks.id
  * @return void
  */
-	public function get_edit_form($frameId = 0, $blockId = 0) {
+	public function form($frameId = 0, $blockId = 0) {
 		$this->layout = false;
 		$this->set('frameId', $frameId);
 		$this->set('blockId', $blockId);

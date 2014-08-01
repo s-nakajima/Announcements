@@ -10,7 +10,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
     $scope.blockId = 0;
     $scope.langId = 2; //デェフォルト日本語
     $scope.dataId = 0;
-    $scope.geturl =  pluginsUrl + "get_edit_form/";
+    $scope.geturl =  pluginsUrl + "form/";
     $scope.posturl = pluginsUrl + "edit/";
 
     /**
