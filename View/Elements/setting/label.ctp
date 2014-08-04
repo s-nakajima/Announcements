@@ -24,7 +24,9 @@ if(isset($draftItem)
 //公開中表示
 if (isset($item)
 	&& isset($item['AnnouncementDatum'])
-	&& isset($item['AnnouncementDatum']['content'])) {
+	&& isset($item['AnnouncementDatum']['status_id'])
+ 	&& $item['AnnouncementDatum']['status_id'] == 1
+) {
 	$status_on[1] = 'true';
 }
 
