@@ -115,7 +115,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 		if (! $this->__isSetting && $this->isEdit) {
 			return $this->__indexNoSetting($frameId, $blockId);
 		}
-
 		//セッティングモードON 編集権限がある
 		$draftData = $this->AnnouncementDatum->getData($blockId, $this->langId, true);
 		//セッティングモードOFF データ無し(下書きもなし）
@@ -124,7 +123,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->set('item', $data);
 		$this->set('frameId', $frameId);
 		$this->set('blockId', $blockId);
-		//出力
 		return $this->render("Announcements/setting/index");
 	}
 
@@ -228,15 +226,13 @@ class AnnouncementsController extends AnnouncementsAppController {
 
 /**
  * 新規作成処理(非同期通信）
+ * add
  *
- * @param string $type 情報のタイプ
  * @param int $frameId frames.id
- * @param int $blockId blocks.id
- * @param int $dataId  announcement_data.id
  * @return void
  */
-	public function add($type, $frameId = 0, $blockId = 0, $dataId = 0) {
-		$this->post($type, $frameId, $blockId, $dataId);
+	public function add($frameId) {
+		return $this->edit($frameId);
 	}
 
 /**

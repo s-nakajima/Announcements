@@ -164,6 +164,21 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 	}
 
 /**
+ * block part 作成のテストerror
+ *
+ * @return void
+ */
+	public function testCreateBlockPartError() {
+		$blockId = 1000;
+		$userId = 2;
+		$this->AnnouncementBlockPart->validate = array(
+			'block_id' => 'email'
+		);
+		$rtn = $this->AnnouncementBlockPart->createBlockPart($blockId, $userId);
+		$this->assertEquals(null, $rtn);
+	}
+
+/**
  * block part updateの正常処理
  *
  * @return void
@@ -304,5 +319,41 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 		//1件もない状態での実行
 		$rtn = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $userId);
 		$this->assertEquals(5, count($rtn));
+	}
+
+/**
+ * block part
+ *
+ * @return void
+ */
+	public function testUpdatePartsNoBlockError() {
+		//updateParts($type, $frameId, $data, $userId)
+		$type = "publish";
+		$userId = 2;
+		$frameId = $this->__setData2();
+		$data = array(
+			'frame_id' => $frameId,
+			'block_id' => 0,
+			'part_id' => "2"
+		);
+		//1件もない状態での実行
+		//エラーに絶対なっちゃうバリデーションルール設定
+		$this->AnnouncementBlockPart->validate = array(
+			'block_id' => 'email'
+		);
+		$rtn = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $userId);
+		$this->assertEquals(0, count($rtn));
+	}
+
+/**
+ * 配列にblockIdが無かった場合
+ *
+ * @return void
+ */
+	public function testGetBlockIdByFrameNoBlock() {
+		$frame = array();
+		$userId = 1;
+		$rtn = $this->AnnouncementBlockPart->getBlockIdByFrame($frame, $userId);
+		$this->assertNull($rtn);
 	}
 }

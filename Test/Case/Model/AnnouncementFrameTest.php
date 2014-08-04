@@ -107,4 +107,14 @@ class AnnouncementFrameTest extends CakeTestCase {
 		$this->assertTrue(is_array($rtn));
 	}
 
+/**
+ * getRoomApproval
+ *
+ * @return void
+ */
+	public function testGetRoomApproval() {
+		$frameId = 1;
+		$rtn = $this->AnnouncementsFrame->getRoomApproval($frameId);
+		$this->assertTrue($rtn);
+	}
 }

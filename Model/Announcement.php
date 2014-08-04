@@ -15,6 +15,22 @@ App::uses('AppModel', 'Model');
 class Announcement extends AppModel {
 
 /**
+ * validation
+ *
+ * @var array
+ */
+	public $validate = array(
+		'block_id' => array(
+			'rule' => array(
+				'numeric',
+				'notEmpty'
+			)
+		),
+		'create_user_id' => 'numeric',
+		'modified_user_id' => 'numeric'
+	);
+
+/**
  * __construct
  *
  * @param bool $id id
