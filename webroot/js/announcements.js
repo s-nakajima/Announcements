@@ -3,7 +3,7 @@
 * 編集 閉じる 編集 --- で発生。
 *
 * */
-NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
+NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce, $timeout) {
     var pluginsUrl = '/announcements/announcements/';
 	$scope.show = false;
     $scope.frameId = 0;
@@ -304,8 +304,11 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
                     success:function(json, status, headers, config){
                         $scope.setIndex(json);
 
-                        $scope.updateStatus($scope.statusId);
-                        $scope.$apply();
+
+                        $timeout(function(){
+                            $scope.updateStatus($scope.statusId);
+                        }, 1000);
+                        //$scope.$apply();
                         //$timeout.cancel(timeoutId);
                         //$scope.$apply();
 
@@ -373,8 +376,8 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         //ラベル - クリア初期値に戻す
         $scope.labelClear();
         //入れ替え : 初期値
-		$scope.textEditorModel = $sce.trustAsHtml(content);
-        $scope.tinymceModel = $sce.trustAsHtml(content);
+		$scope.textEditorModel = content;
+        $scope.tinymceModel = content;
         $('#nc-announcement-content-view-' + $scope.frameId).html(content);
 
         $(draftTag).html(content);
@@ -420,7 +423,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         //if ($scope.textEditorModel != $scope.tinymceModel) {
         //    $scope.tinymceModel = $sce.trustAsHtml($scope.tinymceModel);//.replace(/<script(.*)script>/gi , ''));
         //}
-        $scope.textEditorModel = $sce.trustAsHtml($scope.tinymceModel);
+        $scope.textEditorModel = $scope.tinymceModel;
         $scope.View.edit.html=false;
         $scope.View.edit.text=true;
         $scope.View.edit.preview = false;
