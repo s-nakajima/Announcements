@@ -147,11 +147,11 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         $scope.tinymceModel = $(draftTag).html();
         //メッセージ非表示
         //$scope.postAlertClose();
-        $scope.PostMessage = {
+        /*$scope.PostMessage = {
             'view' : false,
             'message' : '',
             'class' : 'alert alert-success'
-        };
+        };*/
     }
 
     /**
@@ -161,8 +161,8 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
      * @param {string} text
      */
     $scope.postAlert = function(alertType , text){
-        $scope.PostMessage.view = true;
-        $scope.PostMessage.message = text;
+        //$scope.PostMessage.view = true;
+        //$scope.PostMessage.message = text;
 
         $(messageTag).css("display","none");
         if(alertType == "error") {
@@ -302,6 +302,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
                     data: post_params,
                     success:function(json, status, headers, config){
                         $scope.setIndex(json);
+                        return true;
                     },
                     error:function(){
                         $scope.postAlert("error" , 'ERROR!');
@@ -320,7 +321,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
 		$("#nc-announcements-" + $scope.frameId + " button").fadeTo(3000, 1);
 		$("#nc-announcements-" + $scope.frameId + " button").removeAttr("disabled");
 		$scope.setViewdDefault();
-        $scope.$apply();
+
     }
 
     /**
@@ -371,7 +372,23 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         $('#nc-announcement-content-view-' + $scope.frameId).html(content);
 
         $(draftTag).html(content);
+        $scope.updateStatus(statusId);
 
+        $scope.blockId = json.data.AnnouncementFrame.block_id;
+        //完了メッセージを表示
+        $scope.postAlert("success" , json.message);
+        //編集フォームを閉じる
+
+
+        $scope.closeForm($scope.frameId);
+        $scope.$apply();
+
+    }
+    function test() {
+        alert("hoge");
+    }
+
+    $scope.updateStatus = function (statusId) {
         if(statusId == $scope.statusList.Draft) {
             //下書き
             $scope.label.draft = true;
@@ -386,13 +403,6 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
             //差し戻し
             $scope.label.reject = true;
         }
-
-        $scope.blockId = json.data.AnnouncementFrame.block_id;
-        //完了メッセージを表示
-        $scope.postAlert("success" , json.message);
-        //編集フォームを閉じる
-        $scope.closeForm($scope.frameId);
-        //ラベル表示等ng-show, ng-hideへの反映
     }
 
     /**
@@ -443,7 +453,6 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         $("#nc-block-setting-"+ $scope.frameId).modal("show");
     }
 });
-
 /**
  * block setting用controller
  */
