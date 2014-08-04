@@ -16,6 +16,17 @@ App::uses('AppModel', 'Model');
 class AnnouncementBlockPart extends AppModel {
 
 /**
+ * validation
+ *
+ * @var array
+ */
+	public $validate = array(
+		'create_user_id' => array(
+			'numeric'
+		)
+	);
+
+/**
  * frame
  *
  * @var class object
@@ -160,6 +171,9 @@ class AnnouncementBlockPart extends AppModel {
 		}
 		$partIdList = $this->__RoomPart->getVariableListPartIds($abilityName);
 		//更新処理
+		if (! is_array($blockParts)) {
+			return array();
+		}
 		foreach ($blockParts as $item) {
 			if (isset($partIdList[$item[$this->name]['part_id']]) //可変可能である事
 			) {
@@ -175,7 +189,7 @@ class AnnouncementBlockPart extends AppModel {
 				unset($item[$this->name]['modified']);
 				$item[$this->name]['modified_user_id'] = $userId;
 				//更新を実行する
-				if (! $this->save($item[$this->name])) {
+				if (!$this->save($item[$this->name])) {
 					//ロールバック
 					return array();
 				}
