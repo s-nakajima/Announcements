@@ -22,16 +22,21 @@ if(isset($draftItem)
 }
 
 //公開中表示
+$statusId = 0;
 if (isset($item)
 	&& isset($item['AnnouncementDatum'])
 	&& isset($item['AnnouncementDatum']['status_id'])
- 	&& $item['AnnouncementDatum']['status_id'] == 1
 ) {
+	$statusId = intval($item['AnnouncementDatum']['status_id']);
+}
+if($statusId == 1) {
 	$status_on[1] = 'true';
 }
 
 ?>
-<p id="nc-announcement-status-label-<?php echo intval($frameId); ?>">
+<p id="nc-announcement-status-label-<?php echo intval($frameId); ?>"
+   ng-init="statusId=<?php echo $statusId; ?>"
+>
 	<span
 		ng-init="label.publish=<?php echo $status_on[1];?>"
 		ng-show="label.publish"

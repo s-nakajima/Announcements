@@ -12,6 +12,7 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
     $scope.dataId = 0;
     $scope.geturl =  pluginsUrl + "form/";
     $scope.posturl = pluginsUrl + "edit/";
+    $scope.statusId = 0;
 
     /**
      * debug
@@ -302,7 +303,12 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
                     data: post_params,
                     success:function(json, status, headers, config){
                         $scope.setIndex(json);
-                        return true;
+
+                        $scope.updateStatus($scope.statusId);
+                        $scope.$apply();
+                        //$timeout.cancel(timeoutId);
+                        //$scope.$apply();
+
                     },
                     error:function(){
                         $scope.postAlert("error" , 'ERROR!');
@@ -378,17 +384,14 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         //完了メッセージを表示
         $scope.postAlert("success" , json.message);
         //編集フォームを閉じる
-
-
+        $scope.statusId = statusId;
         $scope.closeForm($scope.frameId);
-        $scope.$apply();
+    }
 
-    }
-    function test() {
-        alert("hoge");
-    }
+
 
     $scope.updateStatus = function (statusId) {
+
         if(statusId == $scope.statusList.Draft) {
             //下書き
             $scope.label.draft = true;

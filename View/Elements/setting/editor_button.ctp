@@ -23,6 +23,7 @@ if ($draftItem
 <p class="text-center"
    id="nc-announcement-editor-button-<?php echo intval($frameId); ?>"
 	style="padding-top: 10px;"
+
 >
 	<button
 		class="btn btn-default announcement-editor-button-close "
