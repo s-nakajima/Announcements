@@ -23,6 +23,7 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 		//セッティングモード
 		$this->set('isSetting', Configure::read('Pages.isSetting'));
 		$this->_setLoginUserId();
+		$this->set('isRoomAdmin', false);
 	}
 
 /**

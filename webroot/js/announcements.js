@@ -393,7 +393,6 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         //編集フォームを閉じる
         $scope.closeForm($scope.frameId);
         //ラベル表示等ng-show, ng-hideへの反映
-        $scope.$apply();
     }
 
     /**
@@ -413,7 +412,6 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         $scope.View.edit.text=true;
         $scope.View.edit.preview = false;
         $scope.View.default = false;
-        //$scope.$apply();
     }
 
     /**

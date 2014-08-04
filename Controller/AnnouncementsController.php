@@ -72,6 +72,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->Frame = Classregistry::init("Announcements.AnnouncementFrame");
 		//初期値
 		$this->set('blockId', 0);
+		$this->set('isRoomAdmin', false);
 		//ユーザIDの取得と設定
 		$this->_setLoginUserId();
 		//編集権限初期値

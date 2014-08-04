@@ -72,7 +72,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		$data['AnnouncementDatum']['langId'] = 2;
 		$data['AnnouncementDatum']['id'] = 0;
 		$this->testAction('/announcements/announcements/edit/1/',
-			array(
+			array (
 				'method' => 'post',
 				'data' => $data
 			)
