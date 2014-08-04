@@ -41,17 +41,17 @@ if (isset($item)
 		ng-init="label.draft=<?php echo $status_on[3];?>"
 		ng-show="label.draft"
 		class="label label-info ng-hide"
-		><?php echo __('下書きあり'); ?></span>
+		><?php echo __('下書き中'); ?></span>
 	<span
 		ng-init="label.request=<?php echo $status_on[2];?>"
 		ng-show="label.request"
 		class="label label-danger ng-hide"
-		><?php echo __('公開申請あり'); ?></span>
+		><?php echo __('公開申請中'); ?></span>
 	<span
 		ng-init="label.reject=<?php echo $status_on[4];?>"
 		ng-show="label.reject"
 		class="label label-default ng-hide"
-		><?php echo __('差し戻しあり'); ?></span>
+		><?php echo __('差し戻し中'); ?></span>
 	<span class="label label-danger"
 	      ng-show="View.edit.preview"
 	><?php echo __("プレビュー表示中"); ?></span>
