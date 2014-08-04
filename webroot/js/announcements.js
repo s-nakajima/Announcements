@@ -254,8 +254,8 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         if($scope.sendRock) {
             return false;
         }
-        $("button").fadeTo(100, 0.3);
-        $('button').attr("disabled", "disabled");
+        $("#nc-announcements-" + $scope.frameId + " button").fadeTo(100, 0.3);
+        $("#nc-announcements-" + $scope.frameId + " button").attr("disabled", "disabled");
 
         //textの状態でpostされた場合は、格納しなおす。
         if($scope.View.edit.text){
@@ -317,8 +317,8 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce) {
         //送信ロックを解除する
         $scope.sendRock = false;
         //defaultに戻す
-		$("button").fadeTo(3000, 1);
-		$('button').removeAttr("disabled");
+		$("#nc-announcements-" + $scope.frameId + " button").fadeTo(3000, 1);
+		$("#nc-announcements-" + $scope.frameId + " button").removeAttr("disabled");
 		$scope.setViewdDefault();
         $scope.$apply();
     }
@@ -498,8 +498,9 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
      */
     $scope.partSend = function(type, frameId, blockId, langId) {
         //すべてのボタンを無効に。 //ちょっと乱暴すぎるのであとで範囲指定。
-        $('input').attr("disabled", "disabled");
-        $("button").fadeTo(1000, 0.3);
+        $("#nc-announcements-" + $scope.frameId + " input").attr("disabled", "disabled");
+        $("#nc-announcements-" + $scope.frameId + " button").attr("disabled", "disabled");
+        $("#nc-announcements-" + $scope.frameId + " input").fadeTo(1000, 0.3);
         if (type == "editParts") {
             $scope.postSendToEditPart(frameId, blockId);
         } else if (type == "publishParts") {
@@ -510,7 +511,8 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
             $scope.postSendToUpdateMessage(frameId, blockId, langId);
         }
         //すべてのボタンを有効に。//ちょっと乱暴すぎるのであとで範囲指定。
-        $('input').removeAttr("disabled");
+        $("#nc-announcements-" + $scope.frameId + " input").removeAttr("disabled");
+        $("#nc-announcements-" + $scope.frameId + " button").removeAttr("disabled");
     }
 
     /**

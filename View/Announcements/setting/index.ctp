@@ -7,7 +7,9 @@ if( isset($draftItem)
 ){  $publishBtnHidden  = "";}
 ?>
 
-<div ng-controller="Announcements.edit"
+<div
+	id="nc-announcements-<?php echo $frameId; ?>"
+	ng-controller="Announcements.edit"
 	ng-init="setInit(<?php echo intval($frameId); ?>,<?php echo intval($blockId); ?>,<?php echo intval($langId); ?>)"
 >
 
