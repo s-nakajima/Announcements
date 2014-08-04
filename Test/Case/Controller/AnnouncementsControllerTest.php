@@ -108,7 +108,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  *
  * @return   void
  */
-	public function testEditPostError() {
+	public function testEditGetError() {
 		$this->testAction('/announcements/announcements/edit/1/', array('method' => 'get'));
 		$this->assertTextNotContains('ERROR', $this->view);
 	}
