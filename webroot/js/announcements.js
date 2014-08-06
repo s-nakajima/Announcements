@@ -3,15 +3,16 @@
 * 編集 閉じる 編集 --- で発生。
 *
 * */
-NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce, $timeout) {
+NetCommonsApp.controller('Announcements.edit',
+    function($scope , $http, $sce, $timeout) {
     var pluginsUrl = '/announcements/announcements/';
-	$scope.show = false;
+    $scope.show = false;
     $scope.frameId = 0;
     $scope.blockId = 0;
     $scope.langId = 2; //デェフォルト日本語
     $scope.dataId = 0;
-    $scope.geturl =  pluginsUrl + "form/";
-    $scope.posturl = pluginsUrl + "edit/";
+    $scope.geturl = pluginsUrl + 'form/';
+    $scope.posturl = pluginsUrl + 'edit/';
     $scope.statusId = 0;
 
     /**
@@ -106,21 +107,21 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce, $t
      *
      * @type {boolean}
      */
-    $scope.sendRock =  false;
+    $scope.sendRock = false;
 
     //初期値設定 ng-initで指定
-    $scope.setInit = function (frameId, blockId, langId) {
+    $scope.setInit = function(frameId, blockId, langId) {
       $scope.frameId = frameId;
       $scope.blockId = blockId;
       $scope.langId = langId;
-    }
+    };
 
     /**
      * 編集画面を閉じる
      *
      * @param {int} frameId
      */
-    $scope.closeForm = function(frameId){
+    $scope.closeForm = function(frameId) {
         //set
         $scope.setId(frameId);
         //プレビューも閉じる
@@ -132,28 +133,21 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce, $t
         //メッセージ非表示
         $scope.postAlertClose();
 
-    }
+    };
 
     /**
      * 編集画面を表示させる
      *
      * @param {int} frameId
      */
-    $scope.getEditor = function(frameId){
+    $scope.getEditor = function(frameId) {
         $scope.setId(frameId);
         $scope.View.default = false;
         $scope.View.edit.html = true;
         $scope.View.edit.body = true;
         //表示内容をエディターに反映 公開とは別に最新のドラフトが会った場合そちらが表示される。
         $scope.tinymceModel = $(draftTag).html();
-        //メッセージ非表示
-        //$scope.postAlertClose();
-        /*$scope.PostMessage = {
-            'view' : false,
-            'message' : '',
-            'class' : 'alert alert-success'
-        };*/
-    }
+    };
 
     /**
      * メッセージ（実行結果）を表示
@@ -161,105 +155,96 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce, $t
      * @param {string} alertType
      * @param {string} text
      */
-    $scope.postAlert = function(alertType , text){
-        //$scope.PostMessage.view = true;
-        //$scope.PostMessage.message = text;
-
-        $(messageTag).css("display","none");
-        if(alertType == "error") {
-            $(messageTag).addClass("alert-danger");
-            $(messageTag).removeClass("alert-success");
-            //$(messageTag).removeClass("hidden");
-            $(messageTag + " .message").html(text);
+    $scope.postAlert = function(alertType , text) {
+        $(messageTag).css('display', 'none');
+        if (alertType == 'error') {
+            $(messageTag)
+                .addClass('alert-danger')
+                .removeClass('alert-success');
+            $(messageTag + ' .message').html(text);
             $(messageTag).fadeIn(500);//エラーの場合は消さない
-        } else if(alertType == "success") {
-            $(messageTag).addClass("alert-success");
-            $(messageTag).removeClass("alert-danger");
-            $(messageTag).removeClass("hidden");
-            $(messageTag + " .message").html(text);
+        } else if (alertType == 'success') {
+            $(messageTag).addClass('alert-success');
+            $(messageTag).removeClass('alert-danger');
+            $(messageTag).removeClass('hidden');
+            $(messageTag + ' .message').html(text);
             $(messageTag).fadeIn(500).fadeTo(1000, 1).fadeOut(500);
         }
-    }
+    };
 
     /**
      * 送信完了メッセージを非表示の状態にする。
      *
      * @param {int} frameId
      */
-    $scope.postAlertClose = function(frameId){
+    $scope.postAlertClose = function(frameId) {
         $scope.setId(frameId);
-        $(messageTag).addClass("hidden");
-        $(messageTag + " .message").html("");
-    }
+        $(messageTag).addClass('hidden');
+        $(messageTag + ' .message').html('');
+    };
 
     /**
      * idのセット
      *
      * @param {int} frameId
      */
-    $scope.setId = function(frameId){
+    $scope.setId = function(frameId) {
         $scope.frameId = frameId;
         draftTag = '#nc-announcement-content-draft-' + $scope.frameId;
         messageTag = '#nc-announcements-mss-' + $scope.frameId;
         blockSettingTag = '#nc-announcements-block-setting-' + $scope.frameId;
-    }
+    };
 
     /**
      * プレビューの表示
      *
      * @param {int} frameId
      */
-    $scope.showPreview = function(frameId){
+    $scope.showPreview = function(frameId) {
         //本記事を隠す
         $scope.setId(frameId);
-        //previewにコードを格納する
-        //scriptタグを除去し、格納
-        //textの状態でpostされた場合は、格納しなおす。 .replace(/<script(.*)script>/gi , '')
-        if($scope.View.edit.text){
-            $scope.textEditorModel = $scope.textEditorModel;//.replace(/<script(.*)script>/gi , '');
+        if ($scope.View.edit.text) {
+            $scope.textEditorModel = $scope.textEditorModel;
             $scope.Preview.html = $sce.trustAsHtml($scope.textEditorModel);
         } else {
             $scope.Preview.html = $sce.trustAsHtml($scope.tinymceModel);
         }
-
         $scope.View.edit.preview = true;
         $scope.View.edit.html = false;
         $scope.View.edit.text = false;
         $scope.View.default = false;
-
-        //$scope.$apply();
-    }
+    };
 
     /**
      * プレビューを閉じる
      *
      * @param {int} frameId
      */
-    $scope.closePreview = function(frameId){
+    $scope.closePreview = function(frameId) {
         $scope.setId(frameId);
         $scope.View.edit.preview = false;
         $scope.View.edit.html = true;
         $scope.Preview.html = ''; //プレビューの中身をclear
-        //$scope.$apply();
-    }
+    };
 
     /**
      * お知らせの内容を送信する。
      *
      * @param {string} type
      * @param {int} frameId
-     * @returns {boolean}
+     * @return {boolean}
      */
-    $scope.post = function(type , frameId){
+    $scope.post = function(type , frameId) {
         //送信中のため、処理せず
-        if($scope.sendRock) {
+        if ($scope.sendRock) {
             return false;
         }
-        $("#nc-announcements-" + $scope.frameId + " button").fadeTo(100, 0.3);
-        $("#nc-announcements-" + $scope.frameId + " button").attr("disabled", "disabled");
+        $('#nc-announcements-' + $scope.frameId + ' button')
+        .fadeTo(100, 0.3)
+        .attr('disabled', 'disabled');
 
         //textの状態でpostされた場合は、格納しなおす。
-        if($scope.View.edit.text){
+        if ($scope.View.edit.text) {
             $scope.tinymceModel = $scope.textEditorModel;
         }
 
@@ -267,76 +252,80 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce, $t
         $scope.sendRock = true;
         //idセット
         $scope.setId(frameId);
-        if(type == 'Publish'
-            && $(draftTag).html()
-            && ! $scope.tinymceModel
+        if (
+            type == 'Publish' &&
+            $(draftTag).html() &&
+            ! $scope.tinymceModel
         ) {
             $scope.tinymceModel = $(draftTag).html();
-			$scope.tinymceModel = $scope.tinymceModel;//.replace(/<script(.*)script>/gi , '');
         }
 
         //form
-        $http({method: 'GET', url: $scope.geturl + $scope.frameId + '/' + Math.random()})
+        $http({
+            method: 'GET',
+            url: $scope.geturl + $scope.frameId + '/' + Math.random()
+        })
             .success(function(data, status, headers, config) {
                 //set
-                $("#nc-announcements-post-"+ $scope.frameId).html(data);
-                var post_data_form = "#nc-announcements-data-"+ $scope.frameId;
+                $('#nc-announcements-post-' +
+                    $scope.frameId).html(data);
+                var post_data_form = '#nc-announcements-data-' + $scope.frameId;
                 var post_params = {
-                    'data[_Token][fields]' : $(post_data_form + " input[name='data[_Token][fields]']").val(),
-                    'data[_Token][key]' : $(post_data_form + " input[name='data[_Token][key]']").val(),
-                    '_method' : $(post_data_form + " input[name='_method']").val(),
-                    'data[_Token][unlocked]' : $(post_data_form + " input[name='data[_Token][unlocked]']").val(),
-                    'data[AnnouncementDatum][content]' : encodeURIComponent($scope.tinymceModel),
+                    'data[_Token][fields]' : $(post_data_form +
+                        " input[name='data[_Token][fields]']").val(),
+                    'data[_Token][key]' : $(post_data_form +
+                        " input[name='data[_Token][key]']").val(),
+                    '_method' : $(post_data_form +
+                        ' input[name=_method]').val(),
+                    'data[_Token][unlocked]' : $(post_data_form +
+                        ' input[name=data[_Token][unlocked]]').val(),
+                    'data[AnnouncementDatum][content]' : encodeURIComponent(
+                        $scope.tinymceModel
+                    ),
                     'data[AnnouncementDatum][frameId]' : $scope.frameId,
                     'data[AnnouncementDatum][blockId]' : $scope.blockId,
-                    'data[AnnouncementDatum][type]'    : type,
-                    'data[AnnouncementDatum][langId]'  : $scope.langId,
-                    'data[AnnouncementDatum][id]'      : $scope.dataId
+                    'data[AnnouncementDatum][type]' : type,
+                    'data[AnnouncementDatum][langId]' : $scope.langId,
+                    'data[AnnouncementDatum][id]' : $scope.dataId
                 };
                 //post
                 $.ajax({
-                    method:'POST' ,
-                    url: $scope.posturl
-                        + $scope.frameId
-                        + '/'
-                        + Math.random(),
+                    method: 'POST',
+                    url: $scope.posturl +
+                         $scope.frameId +
+                         '/' +
+                         Math.random(),
                     data: post_params,
-                    success:function(json, status, headers, config){
+                    success: function(json, status, headers, config) {
                         $scope.setIndex(json);
-
-
-                        $timeout(function(){
+                        $timeout(function() {
                             $scope.updateStatus($scope.statusId);
                         }, 1000);
-                        //$scope.$apply();
-                        //$timeout.cancel(timeoutId);
-                        //$scope.$apply();
-
                     },
-                    error:function(){
-                        $scope.postAlert("error" , 'ERROR!');
+                    error: function() {
+                        $scope.postAlert('error', 'ERROR!');
                     }
                 });
             })
             .error(function(data, status, headers, config) {
                 //keyの取得に失敗
-                if(! data) { data = "ERROR!"; }
-                $scope.postAlert("error" , data);
+                if (! data) { data = 'ERROR!'; }
+                $scope.postAlert('error', data);
                 $scope.debug = data;
             });
         //送信ロックを解除する
         $scope.sendRock = false;
         //defaultに戻す
-		$("#nc-announcements-" + $scope.frameId + " button").fadeTo(3000, 1);
-		$("#nc-announcements-" + $scope.frameId + " button").removeAttr("disabled");
-		$scope.setViewdDefault();
-
-    }
+        $('#nc-announcements-' + $scope.frameId + ' button')
+            .fadeTo(3000, 1)
+            .removeAttr('disabled');
+        $scope.setViewdDefault();
+    };
 
     /**
      * Viewの設定を標準値に戻す
      */
-    $scope.setViewdDefault = function () {
+    $scope.setViewdDefault = function() {
         $scope.View = {
             'default' : true,
             'edit' : {
@@ -346,70 +335,71 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce, $t
                 'body' : false
             }
         };
-    }
+    };
 
     /**
      * ラベル(状態）をすべてfalseにする。
      */
-    $scope.labelClear = function (){
+    $scope.labelClear = function() {
         $scope.label.publish = false;
         $scope.label.draft = false;
         $scope.label.publish = false;
         $scope.label.draft = false;
         $scope.label.request = false;
         $scope.label.reject = false;
-    }
+    };
 
     /**
      * 最新の情報にいれかえる。
      *
-     * @param json
+     * @param {json} json
      */
-    $scope.setIndex = function(json){
+    $scope.setIndex = function(json) {
        //最新
         var content = '';
         var statusId = 0;
-        if(json.data && json.data.AnnouncementDatum.content) {
+        if (json.data && json.data.AnnouncementDatum.content) {
             content = decodeURIComponent(json.data.AnnouncementDatum.content);
             statusId = json.data.AnnouncementDatum.status_id;
         }
         //ラベル - クリア初期値に戻す
         $scope.labelClear();
         //入れ替え : 初期値
-		$scope.textEditorModel = content;
+        $scope.textEditorModel = content;
         $scope.tinymceModel = content;
         $('#nc-announcement-content-view-' + $scope.frameId).html(content);
-
         $(draftTag).html(content);
         $scope.updateStatus(statusId);
-
         $scope.blockId = json.data.AnnouncementFrame.block_id;
         //完了メッセージを表示
-        $scope.postAlert("success" , json.message);
+        $scope.postAlert('success' , json.message);
         //編集フォームを閉じる
         $scope.statusId = statusId;
         $scope.closeForm($scope.frameId);
-    }
+    };
 
+    /**
+     * status
+     *
+     * @param {int} statusId
+     */
+    $scope.updateStatus = function(statusId) {
 
-
-    $scope.updateStatus = function (statusId) {
-
-        if(statusId == $scope.statusList.Draft) {
+        if (statusId == $scope.statusList.Draft) {
             //下書き
             $scope.label.draft = true;
         } else if (statusId == $scope.statusList.Publish) {
             //公開中 //ラベル変更
             $scope.label.publish = true;
-        }else if(statusId == $scope.statusList.PublishRequest){
+        } else if (statusId == $scope.statusList.PublishRequest) {
             //申請中 //ラベルの変更
             $scope.label.request = true;
         }
-        else if(statusId == $scope.statusList.Reject){
+        else if (statusId == $scope.statusList.Reject) {
             //差し戻し
             $scope.label.reject = true;
         }
-    }
+    };
 
     /**
      * TEXT editor open
@@ -417,18 +407,13 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce, $t
      * @param {int} frameId
      */
     $scope.openTextEditor = function(frameId) {
-        //モーダルのためidで対応中。
         $scope.setId(frameId);
-        //変更があったなら、<scriptタグの除去
-        //if ($scope.textEditorModel != $scope.tinymceModel) {
-        //    $scope.tinymceModel = $sce.trustAsHtml($scope.tinymceModel);//.replace(/<script(.*)script>/gi , ''));
-        //}
         $scope.textEditorModel = $scope.tinymceModel;
-        $scope.View.edit.html=false;
-        $scope.View.edit.text=true;
+        $scope.View.edit.html = false;
+        $scope.View.edit.text = true;
         $scope.View.edit.preview = false;
         $scope.View.default = false;
-    }
+    };
 
     /**
      * TEXTエディタ close データの受け渡しのみ
@@ -439,34 +424,31 @@ NetCommonsApp.controller('Announcements.edit', function($scope , $http, $sce, $t
     $scope.closeTextEditor = function(frameId) {
         $scope.setId(frameId);
         if ($scope.textEditorModel != $scope.tinymceModel) {
-            $scope.tinymceModel = $scope.textEditorModel;//.replace(/<script(.*)script>/gi , '');
+            $scope.tinymceModel = $scope.textEditorModel;
         }
-        //$scope.tinymceModel = $scope.textEditorModel;
-        //var content = $scope.tinymceModel;
-        //$scope.tinymceModel = content.replace(/<script(.*)script>/gi , '');
-        $scope.View.edit.html=true;
-        $scope.View.edit.text=false;
-        //$scope.$apply();
-    }
+        $scope.View.edit.html = true;
+        $scope.View.edit.text = false;
+    };
 
     /**
      * ブロック設定のモーダルを表示させる。
      *
      * @param {int} frameId
      */
-    $scope.openBlockSetting = function(frameId){
+    $scope.openBlockSetting = function(frameId) {
         $scope.setId(frameId);
-        $("#nc-block-setting-"+ $scope.frameId).modal("show");
-    }
+        $('#nc-block-setting-' + $scope.frameId).modal('show');
+    };
 });
 /**
  * block setting用controller
  */
-NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
-    $scope.setId = function (frameId) {
+NetCommonsApp.controller('Announcements.setting', function($scope, $http) {
+    $scope.setId = function(frameId) {
         $scope.frameId = frameId;
-        blockSettingGetFormTag = 'announcements-setting-get-edit-form-'; + $scope.frameId;
-    }
+        blockSettingGetFormTag = 'announcements-setting-get-edit-form-' +
+            $scope.frameId;
+    };
 
     /**
      * ヒエラルキーによるチェック状態の制御
@@ -479,27 +461,31 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
      */
     $scope.partChange = function(type, flameId, partId) {
         var con = 0;
-        var idTag = '#nc-announcements-'+ type +'-frame-'+ flameId + '-part-';
+        var idTag = '#nc-announcements-' +
+            type +
+            '-frame-' +
+            flameId +
+            '-part-';
         var baseH = $scope.getHierarchy(partId).hierarchy;
-        var checkedFlg = $(idTag + partId+":checked").val();
-        while(con < $scope.roomParts.length) {
+        var checkedFlg = $(idTag + partId + ':checked').val();
+        while (con < $scope.roomParts.length) {
             var changeTag = idTag + $scope.roomParts[con].id;
-            if(checkedFlg){
-                if($scope.roomParts[con].hierarchy >= baseH) {
+            if (checkedFlg) {
+                if ($scope.roomParts[con].hierarchy >= baseH) {
                     $(changeTag).prop('checked', true);
                 } else {
                     $(changeTag).prop('checked', false);
                 }
             }
-            else{
+            else {
                 //チェックボックスOFF
-                if($scope.roomParts[con].hierarchy <= baseH) {
+                if ($scope.roomParts[con].hierarchy <= baseH) {
                     $(changeTag).prop('checked', false);
                 }
             }
-            con ++;
+            con++;
         }
-    }
+    };
 
     /**
      * 設定の更新 post処理分岐
@@ -511,22 +497,29 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
      */
     $scope.partSend = function(type, frameId, blockId, langId) {
         //すべてのボタンを無効に。 //ちょっと乱暴すぎるのであとで範囲指定。
-        $("#nc-announcements-" + $scope.frameId + " input").attr("disabled", "disabled");
-        $("#nc-announcements-" + $scope.frameId + " button").attr("disabled", "disabled");
-        $("#nc-announcements-" + $scope.frameId + " input").fadeTo(1000, 0.3);
-        if (type == "editParts") {
+        $('#nc-announcements-' + $scope.frameId + ' input')
+            .attr('disabled', 'disabled');
+        $('#nc-announcements-' + $scope.frameId + ' button')
+            .attr('disabled', 'disabled');
+        $('#nc-announcements-' + $scope.frameId + ' input')
+            .fadeTo(1000, 0.3);
+        if (type == 'editParts') {
             $scope.postSendToEditPart(frameId, blockId);
-        } else if (type == "publishParts") {
+        } else if (type == 'publishParts') {
             $scope.postToPublishPart(frameId, blockId);
-        } else if (type == "publishMessage") {
+        } else if (type == 'publishMessage') {
             $scope.postSendToPublishMessage(frameId, blockId, langId);
-        } else if (type == "updateMessage") {
+        } else if (type == 'updateMessage') {
             $scope.postSendToUpdateMessage(frameId, blockId, langId);
         }
         //すべてのボタンを有効に。//ちょっと乱暴すぎるのであとで範囲指定。
-        $("#nc-announcements-" + $scope.frameId + " input").removeAttr("disabled");
-        $("#nc-announcements-" + $scope.frameId + " button").removeAttr("disabled");
-    }
+        $('#nc-announcements-' +
+            $scope.frameId +
+            ' input').removeAttr('disabled');
+        $('#nc-announcements-' +
+            $scope.frameId +
+            ' button').removeAttr('disabled');
+    };
 
     /**
      * 更新処理 :公開権限の編集
@@ -535,42 +528,48 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
      * @param {int} blockId
      */
     $scope.postToPublishPart = function(frameId, blockId) {
-        var setFormTag = '#nc-announcements-block-setting-get-edit-form-' + frameId;
-        var getFormUrl = '/announcements/announcements_block_setting/form/publishParts/'
-            + frameId
-            + '/'
-            + blockId
-            + '/'
-            + Math.random();
-        var postFormUrl = '/announcements/announcements_block_setting/edit/publishParts/'
-            + frameId
-            + '/'
-            + blockId
-            + '/'
-            + Math.random();
+        var setFormTag = '#nc-announcements-block-setting-get' +
+            '-edit-form-' + frameId;
+        var getFormUrl = '/announcements/announcements_block_setting/' +
+            'form/publishParts/' +
+            frameId +
+            '/' +
+            blockId +
+            '/' +
+            Math.random();
+        var postFormUrl = '/announcements/announcements_block_setting/' +
+            'edit/publishParts/' +
+            frameId +
+            '/' +
+            blockId +
+            '/' +
+            Math.random();
 
         //formの取得
         $http({method: 'GET', url: getFormUrl})
             .success(function(data, status, headers, config) {
-                var partIdList = "";;
-                for(i=0; i < $scope.roomParts.length; i++) {
-                   var t = '#nc-announcements_publish_frame_'
-                       + frameId
-                       + '_part_'
-                       + i
-                       + ':checked'
-                    ;
-                    if($(t).val()) {
-                        partIdList = partIdList + $(t).val() + ",";
+                var partIdList = '';
+                for (i = 0; i < $scope.roomParts.length; i++) {
+                   var t = '#nc-announcements_publish_frame_' +
+                       frameId +
+                       '_part_' +
+                       i +
+                       ':checked';
+                    if ($(t).val()) {
+                        partIdList = partIdList + $(t).val() + ',';
                     }
                 }
 
                 $(setFormTag).html(data);
                 var post_params = {
-                    'data[_Token][fields]' : $(setFormTag + " input[name='data[_Token][fields]']").val(),
-                    'data[_Token][key]' : $(setFormTag + " input[name='data[_Token][key]']").val(),
-                    '_method' : $(setFormTag + " input[name='_method']").val(),
-                    'data[_Token][unlocked]' : $(setFormTag + " input[name='data[_Token][unlocked]']").val(),
+                    'data[_Token][fields]' : $(setFormTag +
+                        ' input[name=data[_Token][fields]]').val(),
+                    'data[_Token][key]' : $(setFormTag +
+                        ' input[name=data[_Token][key]]').val(),
+                    '_method' : $(setFormTag +
+                        ' input[name=_method]').val(),
+                    'data[_Token][unlocked]' : $(setFormTag +
+                        ' input[name=data[_Token][unlocked]]').val(),
                     'data[frame_id]' : frameId,
                     'data[block_id]' : blockId,
                     'data[part_id]' : partIdList
@@ -580,14 +579,14 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
                     method: 'POST',
                     url: postFormUrl,
                     data: post_params,
-                    success: function (json, status, headers, config) {
+                    success: function(json, status, headers, config) {
                         //$(setFormTag).html(json);
                         alert(json.message);
-                        $("button").fadeTo(100, 1);
+                        $('button').fadeTo(100, 1);
                     },
-                    error: function (json, status, headers, config) {
+                    error: function(json, status, headers, config) {
                         alert(JSON.stringify(json));
-                        $("button").fadeTo(100, 1);
+                        $('button').fadeTo(100, 1);
                     }
                 });
 
@@ -596,10 +595,9 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
             .error(
             function(data, status, headers, config) {
                 alert(data);
-                $("button").fadeTo(100, 1);
+                $('button').fadeTo(100, 1);
             });
-            //完了動作
-    }
+    };
 
     /**
      * 更新処理 :編集権限の編集
@@ -609,43 +607,49 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
      */
     $scope.postSendToEditPart = function(frameId, blockId) {
 
-        var setFormTag = '#nc-announcements-block-setting-get-edit-form-' + frameId;
-        var getFormUrl = '/announcements/announcements_block_setting/form/editParts/'
-            + frameId
-            + '/'
-            + blockId
-            + '/'
-            + Math.random();
-        var postFormUrl = '/announcements/announcements_block_setting/edit/editParts/'
-            + frameId
-            + '/'
-            + blockId
-            + '/'
-            + Math.random();
+        var setFormTag = '#nc-announcements-block-setting-get-edit-form-' +
+            frameId;
+        var getFormUrl = '/announcements/announcements_block_setting/' +
+            'form/editParts/' +
+            frameId +
+            '/' +
+            blockId +
+            '/' +
+            Math.random();
+        var postFormUrl = '/announcements/announcements_block_setting/' +
+            'edit/editParts/' +
+            frameId +
+            '/' +
+            blockId +
+            '/' +
+            Math.random();
 
         //formの取得
         $http({method: 'GET', url: getFormUrl})
             .success(function(data, status, headers, config) {
                 //part_idを取得
                 var partIdList = '';
-                for(i=0; i < $scope.roomParts.length; i++) {
-                    var t = '#nc-announcements-edit-frame_'
-                            + frameId
-                            + '_part_'
-                            + i
-                            + ':checked'
-                        ;
-                    if($(t).val()) {
-                        partIdList = partIdList + $(t).val() + ",";
+                for (i = 0; i < $scope.roomParts.length; i++) {
+                    var t = '#nc-announcements-edit-frame_' +
+                            frameId +
+                            '_part_' +
+                            i +
+                            ':checked';
+                    if ($(t).val()) {
+                        partIdList = partIdList + $(t).val() + ',';
                     }
                 }
 
                 $(setFormTag).html(data);
                 var post_params = {
-                    'data[_Token][fields]' : $(setFormTag + " input[name='data[_Token][fields]']").val(),
-                    'data[_Token][key]' : $(setFormTag + " input[name='data[_Token][key]']").val(),
-                    '_method' : $(setFormTag + " input[name='_method']").val(),
-                    'data[_Token][unlocked]' : $(setFormTag + " input[name='data[_Token][unlocked]']").val(),
+                    'data[_Token][fields]' : $(setFormTag +
+                        " input[name='data[_Token][fields]']").val(),
+                    'data[_Token][key]' : $(setFormTag +
+                        " input[name='data[_Token][key]']").val(),
+                    '_method' : $(setFormTag +
+                        " input[name='_method']").val(),
+                    'data[_Token][unlocked]' : $(setFormTag +
+                        " input[name='data[_Token][unlocked]']").val(),
                     'data[frame_id]' : frameId,
                     'data[block_id]' : blockId,
                     'data[part_id]' : partIdList
@@ -655,24 +659,23 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
                     method: 'POST',
                     url: postFormUrl,
                     data: post_params,
-                    success: function (json, status, headers, config) {
+                    success: function(json, status, headers, config) {
                         alert(json.message);
-                        $("button").fadeTo(100, 1);
+                        $('button').fadeTo(100, 1);
                     },
-                    error: function (json, status, headers, config) {
-                        alert("error");
+                    error: function(json, status, headers, config) {
+                        alert('error');
                         alert(json.message);
-                        $("button").fadeTo(100, 1);
+                        $('button').fadeTo(100, 1);
                     }
                 });
             })
             .error(
             function(data, status, headers, config) {
                 alert(data);
-                $("button").fadeTo(100, 1);
+                $('button').fadeTo(100, 1);
             });
-
-    }
+    };
 
     /**
      * 更新処理 :公開申請通知の編集
@@ -683,19 +686,22 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
      */
     $scope.postSendToPublishMessage = function(frameId, blockId, langId) {
         var viewFormTag = '#nc-announcements-block-setting-request-' + frameId;
-        var setFormTag = '#nc-announcements-block-setting-get-edit-form-' + frameId;
-        var getFormUrl = '/announcements/announcements_block_setting/get_edit_form/publishMessage/'
-            + frameId
-            + '/'
-            + blockId
-            + '/'
-            + Math.random();
-        var postFormUrl = '/announcements/announcements_block_setting/edit/publishMessage/'
-            + frameId
-            + '/'
-            + blockId
-            + '/'
-            + Math.random();
+        var setFormTag = '#nc-announcements-block-setting-get-edit-form-' +
+            frameId;
+        var getFormUrl = '/announcements/announcements_block_setting/' +
+            'get_edit_form/publishMessage/' +
+            frameId +
+            '/' +
+            blockId +
+            '/' +
+            Math.random();
+        var postFormUrl = '/announcements/announcements_block_setting/edit/' +
+            'publishMessage/' +
+            frameId +
+            '/' +
+            blockId +
+            '/' +
+            Math.random();
 
 
         //formの取得
@@ -704,39 +710,45 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
 
                 $(setFormTag).html(data);
                 var post_params = {
-                    'data[_Token][fields]' : $(setFormTag + " input[name='data[_Token][fields]']").val(),
-                    'data[_Token][key]' : $(setFormTag + " input[name='data[_Token][key]']").val(),
-                    '_method' : $(setFormTag + " input[name='_method']").val(),
-                    'data[_Token][unlocked]' : $(setFormTag + " input[name='data[_Token][unlocked]']").val(),
+                    'data[_Token][fields]' : $(setFormTag +
+                        ' input[name=data[_Token][fields]]').val(),
+                    'data[_Token][key]' : $(setFormTag +
+                        ' input[name=data[_Token][key]]').val(),
+                    '_method' : $(setFormTag + ' input[name=_method]').val(),
+                    'data[_Token][unlocked]' : $(setFormTag +
+                        ' input[name=data[_Token][unlocked]]').val(),
                     'data[frame_id]' : frameId,
                     'data[block_id]' : blockId,
-                    'data[is_send]' :  $(viewFormTag + " input[name='is_send']:checked").val(),
+                    'data[is_send]' : $(viewFormTag +
+                        ' input[name=is_send]:checked').val(),
                     'data[language_id]' : langId,
-                    'data[subject]' : encodeURIComponent($(viewFormTag + " input[name='subject']").val()),
-                    'data[body]' : encodeURIComponent($(viewFormTag + " textarea[name='body']").val())
+                    'data[subject]' : encodeURIComponent($(viewFormTag +
+                        ' input[name=subject]').val()),
+                    'data[body]' : encodeURIComponent($(viewFormTag +
+                        ' textarea[name=body]').val())
                 };
                 $.ajax({
                     method: 'POST',
                     url: postFormUrl,
                     data: post_params,
-                    success: function (json, status, headers, config) {
+                    success: function(json, status, headers, config) {
                         alert(json.message);
-                        $("button").fadeTo(100, 1);
+                        $('button').fadeTo(100, 1);
                     },
-                    error: function (json, status, headers, config) {
-                        alert("保存しました");
+                    error: function(json, status, headers, config) {
+                        alert('保存しました');
                         //alert(json.message);
-                        $("button").fadeTo(100, 1);
+                        $('button').fadeTo(100, 1);
                     }
                 });
             })
             .error(
             function(data, status, headers, config) {
-                alert("保存しました");
+                alert('保存しました');
                 //alert(data);
-                $("button").fadeTo(100, 1);
+                $('button').fadeTo(100, 1);
             });
-    }
+    };
 
     /**
      * 更新処理 : 記事変更通知の編集
@@ -747,67 +759,78 @@ NetCommonsApp.controller('Announcements.setting', function($scope , $http) {
      */
     $scope.postSendToUpdateMessage = function(frameId, blockId, langId) {
         var viewFormTag = '#nc-announcements-block-setting-update-' + frameId;
-        var setFormTag = '#nc-announcements-block-setting-get-edit-form-' + frameId;
-        var getFormUrl = '/announcements/announcements_block_setting/form/updateMessage/'
-            + frameId
-            + '/'
-            + blockId
-            + '/'
-            + Math.random();
-        var postFormUrl = '/announcements/announcements_block_setting/edit/updateMessage/'
-            + frameId
-            + '/'
-            + blockId
-            + '/'
-            + Math.random();
+        var setFormTag = '#nc-announcements-block-setting-get-edit-form-' +
+            frameId;
+        var getFormUrl = '/announcements/announcements_block_setting/' +
+            'form/updateMessage/' +
+            frameId +
+            '/' +
+            blockId +
+            '/' +
+            Math.random();
+        var postFormUrl = '/announcements/announcements_block_setting' +
+            '/edit/updateMessage/' +
+            frameId +
+            '/' +
+            blockId +
+            '/' +
+            Math.random();
         //formの取得
         $http({method: 'GET', url: getFormUrl})
             .success(function(data, status, headers, config) {
                 //partIdを取得 //後で切り出し
                 var partIdList = '';
-                for(i=0; i < $scope.roomParts.length; i++) {
-                    var t = viewFormTag
-                            + " input[name='part_id_"+ $scope.roomParts[i].id +"']"
-                            + ':checked'
-                        ;
-                    if($(t).val()) {
-                        partIdList = partIdList + $scope.roomParts[i].id + ",";
+                for (i = 0; i < $scope.roomParts.length; i++) {
+                    var t = viewFormTag +
+                            ' input[name=part_id_' +
+                            $scope.roomParts[i].id +
+                            ']' +
+                            ':checked';
+                    if ($(t).val()) {
+                        partIdList = partIdList + $scope.roomParts[i].id + ',';
                     }
                 }
                 //フォーム仮設置
                 $(setFormTag).html(data);
                 var post_params = {
-                    'data[_Token][fields]' : $(setFormTag + " input[name='data[_Token][fields]']").val(),
-                    'data[_Token][key]' : $(setFormTag + " input[name='data[_Token][key]']").val(),
-                    '_method' : $(setFormTag + " input[name='_method']").val(),
-                    'data[_Token][unlocked]' : $(setFormTag + " input[name='data[_Token][unlocked]']").val(),
+                    'data[_Token][fields]' : $(setFormTag +
+                        ' input[name=data[_Token][fields]]').val(),
+                    'data[_Token][key]' : $(setFormTag +
+                        ' input[name=data[_Token][key]]').val(),
+                    '_method' : $(setFormTag +
+                        ' input[name=_method]').val(),
+                    'data[_Token][unlocked]' : $(setFormTag +
+                        ' input[name=data[_Token][unlocked]]').val(),
                     'data[frame_id]' : frameId,
                     'data[block_id]' : blockId,
-                    'data[is_send]' :  $(viewFormTag + " input[name='is_send']:checked").val(),
+                    'data[is_send]' : $(viewFormTag +
+                        ' input[name=is_send]:checked').val(),
                     'data[language_id]' : langId,
                     'data[part_id]' : partIdList,
-                    'data[subject]' : encodeURIComponent($(viewFormTag + " input[name='subject']").val()),
-                    'data[body]' : encodeURIComponent($(viewFormTag + " textarea[name='body']").val())
+                    'data[subject]' : encodeURIComponent($(viewFormTag +
+                        ' input[name=subject]').val()),
+                    'data[body]' : encodeURIComponent($(viewFormTag +
+                        ' textarea[name=body]').val())
                 };
                 $.ajax({
                     method: 'POST',
                     url: postFormUrl,
                     data: post_params,
-                    success: function (json, status, headers, config) {
+                    success: function(json, status, headers, config) {
                         alert(json.message);
-                        $("button").fadeTo(100, 1);
+                        $('button').fadeTo(100, 1);
                     },
-                    error: function (json, status, headers, config) {
+                    error: function(json, status, headers, config) {
                         alert(json.message);
-                        $("button").fadeTo(100, 1);
+                        $('button').fadeTo(100, 1);
                     }
                 });
             })
             .error(
             function(data, status, headers, config) {
                 alert(data);
-                $("button").fadeTo(100, 1);
+                $('button').fadeTo(100, 1);
             });
-    }
+    };
 });
 
