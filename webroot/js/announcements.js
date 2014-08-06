@@ -240,8 +240,8 @@ NetCommonsApp.controller('Announcements.edit',
             return false;
         }
         $('#nc-announcements-' + $scope.frameId + ' button')
-        .fadeTo(100, 0.3)
-        .attr('disabled', 'disabled');
+            .fadeTo(100, 0.3)
+            .attr('disabled', 'disabled');
 
         //textの状態でpostされた場合は、格納しなおす。
         if ($scope.View.edit.text) {
@@ -265,7 +265,7 @@ NetCommonsApp.controller('Announcements.edit',
             method: 'GET',
             url: $scope.geturl + $scope.frameId + '/' + Math.random()
         })
-            .success(function(data, status, headers, config) {
+        .success(function(data, status, headers, config) {
                 //set
                 $('#nc-announcements-post-' +
                     $scope.frameId).html(data);
@@ -305,14 +305,14 @@ NetCommonsApp.controller('Announcements.edit',
                     error: function() {
                         $scope.postAlert('error', 'ERROR!');
                     }
-                });
-            })
-            .error(function(data, status, headers, config) {
+             });
+         })
+        .error(function(data, status, headers, config) {
                 //keyの取得に失敗
                 if (! data) { data = 'ERROR!'; }
                 $scope.postAlert('error', data);
                 $scope.debug = data;
-            });
+         });
         //送信ロックを解除する
         $scope.sendRock = false;
         //defaultに戻す
