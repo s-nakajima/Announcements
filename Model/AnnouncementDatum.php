@@ -15,6 +15,38 @@ App::uses('AppModel', 'Model');
 class AnnouncementDatum extends AppModel {
 
 /**
+ * validation
+ *
+ * @var array
+ */
+	public $validate = array(
+		'announcement_id' => array(
+			'rule' => array(
+				'numeric',
+				'notEmpty'
+			)
+		),
+		'status_id' => array(
+			'rule' => array(
+				'numeric',
+				'notEmpty'
+			)
+		),
+		'language_id' => array(
+			'rule' => array(
+				'numeric',
+				'notEmpty'
+			)
+		),
+		'content' => array(
+			'rule' => array(
+			)
+		),
+		'create_user_id' => 'numeric',
+		'modified_user_id' => 'numeric'
+	);
+
+/**
  * name
  *
  * @var string
