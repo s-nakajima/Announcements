@@ -267,8 +267,7 @@ NetCommonsApp.controller('Announcements.edit',
         })
         .success(function(data, status, headers, config) {
                 //set
-                $('#nc-announcements-post-' +
-                    $scope.frameId).html(data);
+                $('#nc-announcements-post-' + $scope.frameId).html(data);
                 var post_data_form = '#nc-announcements-data-' + $scope.frameId;
                 var post_params = {
                     'data[_Token][fields]' : $(post_data_form +
@@ -278,7 +277,7 @@ NetCommonsApp.controller('Announcements.edit',
                     '_method' : $(post_data_form +
                         ' input[name=_method]').val(),
                     'data[_Token][unlocked]' : $(post_data_form +
-                        ' input[name=data[_Token][unlocked]]').val(),
+                        " input[name='data[_Token][unlocked]']").val(),
                     'data[AnnouncementDatum][content]' : encodeURIComponent(
                         $scope.tinymceModel
                     ),
@@ -563,13 +562,13 @@ NetCommonsApp.controller('Announcements.setting', function($scope, $http) {
                 $(setFormTag).html(data);
                 var post_params = {
                     'data[_Token][fields]' : $(setFormTag +
-                        ' input[name=data[_Token][fields]]').val(),
+                        " input[name='data[_Token][fields]']").val(),
                     'data[_Token][key]' : $(setFormTag +
-                        ' input[name=data[_Token][key]]').val(),
+                        " input[name='data[_Token][key]']").val(),
                     '_method' : $(setFormTag +
                         ' input[name=_method]').val(),
                     'data[_Token][unlocked]' : $(setFormTag +
-                        ' input[name=data[_Token][unlocked]]').val(),
+                        " input[name='data[_Token][unlocked]']").val(),
                     'data[frame_id]' : frameId,
                     'data[block_id]' : blockId,
                     'data[part_id]' : partIdList
@@ -711,12 +710,12 @@ NetCommonsApp.controller('Announcements.setting', function($scope, $http) {
                 $(setFormTag).html(data);
                 var post_params = {
                     'data[_Token][fields]' : $(setFormTag +
-                        ' input[name=data[_Token][fields]]').val(),
+                        " input[name='data[_Token][fields]']").val(),
                     'data[_Token][key]' : $(setFormTag +
-                        ' input[name=data[_Token][key]]').val(),
+                        " input[name='data[_Token][key]']").val(),
                     '_method' : $(setFormTag + ' input[name=_method]').val(),
                     'data[_Token][unlocked]' : $(setFormTag +
-                        ' input[name=data[_Token][unlocked]]').val(),
+                        " input[name='data[_Token][unlocked]']").val(),
                     'data[frame_id]' : frameId,
                     'data[block_id]' : blockId,
                     'data[is_send]' : $(viewFormTag +
@@ -794,13 +793,13 @@ NetCommonsApp.controller('Announcements.setting', function($scope, $http) {
                 $(setFormTag).html(data);
                 var post_params = {
                     'data[_Token][fields]' : $(setFormTag +
-                        ' input[name=data[_Token][fields]]').val(),
+                        " input[name='data[_Token][fields]']").val(),
                     'data[_Token][key]' : $(setFormTag +
-                        ' input[name=data[_Token][key]]').val(),
+                        " input[name='data[_Token][key]']").val(),
                     '_method' : $(setFormTag +
                         ' input[name=_method]').val(),
                     'data[_Token][unlocked]' : $(setFormTag +
-                        ' input[name=data[_Token][unlocked]]').val(),
+                        " input[name='data[_Token][unlocked]']").val(),
                     'data[frame_id]' : frameId,
                     'data[block_id]' : blockId,
                     'data[is_send]' : $(viewFormTag +
