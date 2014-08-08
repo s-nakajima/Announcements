@@ -5,7 +5,6 @@
  * @author   Takako Miyagawa <nekoget@gmail.com>
  * @link     http://www.netcommons.org NetCommons Project
  * @license  http://www.netcommons.org/license.txt NetCommons License
- * @SuppressWarnings(PHPMD.TooManyMethods)
  */
 App::uses('AppController', 'Controller');
 App::uses('AnnouncementsAppController', 'Announcements.Controller');
@@ -18,13 +17,6 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @var bool
  */
 	private $__isSetting = false;
-
-/**
- * 非同期通信の判定結果
- *
- * @var bool
- */
-	private $__isAjax = false;
 
 /**
  * model object
@@ -73,14 +65,12 @@ class AnnouncementsController extends AnnouncementsAppController {
 		//初期値
 		$this->set('blockId', 0);
 		$this->set('isRoomAdmin', false);
-		//ユーザIDの取得と設定
-		$this->_setLoginUserId();
 		//編集権限初期値
 		$this->set('isEdit', false);
 		//ブロックの編集権限初期値
 		$this->Set('isBlockEdit', false);
-		//Ajax判定と設定値の格納
-		$this->__checkAjax();
+		//ユーザIDの取得と設定
+		$this->_setLoginUserId();
 		//言語設定
 		$this->_setLang();
 	}
@@ -89,9 +79,15 @@ class AnnouncementsController extends AnnouncementsAppController {
  * index
  *
  * @param int $frameId frames.id
+ * @param string $lang 言語設定？
  * @return CakeResponse
  */
-	public function index($frameId = 0) {
+	public function index($frameId = 0, $lang = 0) {
+		if ($lang) {
+			//言語の指定 $langが使用可能か確認する必要がある。
+			//Configure::read('Config.language', $lang)
+		}
+
 		//レイアウトきりかえ
 		$this->__setLayout();
 		$this->_setFrame($frameId);
@@ -181,7 +177,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 			$this->data,
 			$frameId,
 			$this->userId,
-			$this->__isAjax
+			$this->request->is('ajax')
 		);
 		//成功結果を返す
 		if ($rtn) {
@@ -237,18 +233,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 	}
 
 /**
- * 削除(非同期通信）
- *
- * @param string $type 情報のタイプ
- * @param int $frameId frames.id
- * @param int $blockId blocks.id
- * @param int $dataId  announcement_data.id
- * @return void
- */
-	public function delete($type, $frameId = 0, $blockId = 0, $dataId = 0) {
-	}
-
-/**
  * お知らせ投稿用のformを取得する
  *
  * @param int $frameId frames.id
@@ -268,19 +252,8 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	private function __setLayout() {
-		if ($this->__isAjax) {
-			$this->layout = false;
-		}
-	}
-
-/**
- * 非同期通設定
- *
- * @return void
- */
-	private function __checkAjax() {
 		if ($this->request->is('ajax')) {
-			$this->__isAjax = 1;
+			$this->layout = false;
 		}
 	}
 

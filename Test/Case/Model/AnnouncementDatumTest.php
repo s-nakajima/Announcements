@@ -192,7 +192,7 @@ class AnnouncementDatumTest extends CakeTestCase {
  */
 	public function testGetDataIsSetting() {
 		$blockId = 1;
-		$lang = 1;
+		$lang = 2;
 		$isSetting = 1;
 		//セッティングモードなので下書きを含む最新がとれる
 		$rtn = $this->AnnouncementDatum->getData($blockId, $lang, $isSetting);
@@ -206,7 +206,7 @@ class AnnouncementDatumTest extends CakeTestCase {
  */
 	public function testGetData() {
 		$blockId = 1;
-		$lang = 1;
+		$lang = 2;
 		$isSetting = 0;
 		$rtn = $this->AnnouncementDatum->getData($blockId, $lang, $isSetting);
 		//セッティングモードOFFなので公開情報がとれる

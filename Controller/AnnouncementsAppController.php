@@ -343,7 +343,16 @@ class AnnouncementsAppController extends AppController {
  * @return void
  */
 	protected function _setLang() {
+		//var_dump(Configure::read('Config.language'));
+		$lang = Configure::read('Config.language');
+		//$list = Configure::read('Config.languageEnabled');
 		$this->langId = 2;
+		if ($lang == 'ja') {
+			$this->langId = 2;
+		} elseif ( $lang == 'en') {
+			$this->langId = 1;
+		}
+		//array_search($lang, $list);
 		$this->set('langId', $this->langId);
 	}
 }

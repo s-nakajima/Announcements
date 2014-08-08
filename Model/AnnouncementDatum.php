@@ -38,10 +38,6 @@ class AnnouncementDatum extends AppModel {
 				'notEmpty'
 			)
 		),
-		'content' => array(
-			'rule' => array(
-			)
-		),
 		'create_user_id' => 'numeric',
 		'modified_user_id' => 'numeric'
 	);
@@ -187,15 +183,15 @@ class AnnouncementDatum extends AppModel {
 			//なければ作成
 			$announcementId = $this->__createAnnouncement($blockId, $userId);
 		}
-		//登録情報をつくる
-		$insertData = array();
-		$insertData[$this->name]['announcement_id'] = $announcementId;
-		$insertData[$this->name]['create_user_id'] = $userId;
-		$insertData[$this->name]['language_id'] = $data[$this->name]['langId'];
-		$insertData[$this->name]['status_id'] = $statusId;
-		$insertData[$this->name]['content'] = $data[$this->name]['content'];
+		//登録情報をつくる insert処理
+		$this->create();
+		$this->set('announcement_id', $announcementId);
+		$this->set('create_user_id', $userId);
+		$this->set('language_id', $data[$this->name]['langId']);
+		$this->set('status_id', $statusId);
+		$this->set('content', $data[$this->name]['content']);
 		//保存結果を返す
-		$rtn = $this->save($insertData);
+		$rtn = $this->save();
 		if ($data = $this->checkDataSave($rtn)) {
 			//master
 			$frame = $this->__Frame->findById($frameId);
@@ -211,7 +207,8 @@ class AnnouncementDatum extends AppModel {
  * @return mix array or null
  */
 	public function checkDataSave($rtn) {
-		if (isset($rtn[$this->name])
+		if (is_array($rtn)
+			&& isset($rtn[$this->name])
 			&& isset($rtn[$this->name]['id'])
 			&& $rtn[$this->name]['id']
 		) {

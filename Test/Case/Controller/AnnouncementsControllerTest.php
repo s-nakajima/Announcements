@@ -48,8 +48,16 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return   void
  */
 	public function testIndex() {
+		// frameIdなし
 		$this->testAction('/announcements/announcements/index', array('method' => 'get'));
-		$this->assertTextNotContains('ERROR', $this->view);
+		$this->assertTextNotContains('error', $this->result);
+		// frameId指定 デェフォルトの言語
+		$this->testAction('/announcements/announcements/index/1', array('method' => 'get'));
+		$this->assertTextNotContains('error', $this->result);
+		// 言語指定英語 データ無しの場合
+		Configure::write('Config.language', 'en');
+		$this->testAction('/announcements/announcements/index/1', array('method' => 'get'));
+		$this->assertTextNotContains('error', $this->result);
 	}
 
 /**
@@ -58,12 +66,12 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return   void
  */
 	public function testPostForPost() {
+		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 		$this->Controller = $this->generate('Announcements.Announcements', array(
 			'components' => array(
 				'Security'
 			)
 		));
-		$this->Controller->isAjax = true;
 		$data = array();
 		$data['AnnouncementDatum']['content'] = rawurlencode("test"); //URLエンコード
 		$data['AnnouncementDatum']['frameId'] = 1;
@@ -81,13 +89,34 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 	}
 
 /**
- * delete
+ * postへpost 例外系エラー
  *
  * @return   void
  */
-	public function testDelete() {
-		$this->testAction('/announcements/announcements/delete/1/', array('method' => 'get'));
-		$this->assertTextNotContains('ERROR', $this->view);
+	public function testPostForPostError() {
+		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
+		$this->Controller = $this->generate('Announcements.Announcements', array(
+			'components' => array(
+				'Security'
+			)
+		));
+
+		$data = array();
+		$data['AnnouncementDatum']['content'] = rawurlencode("test"); //URLエンコード
+		$data['AnnouncementDatum']['frameId'] = 1;
+		$data['AnnouncementDatum']['blockId'] = 0;
+		$data['AnnouncementDatum']['type'] = "Draft";
+		//バリデーションエラーを発生させる設定 本来は数字
+		$data['AnnouncementDatum']['langId'] = "test";
+		$data['AnnouncementDatum']['id'] = 0;
+		$this->testAction('/announcements/announcements/edit/1/',
+			array (
+				'method' => 'post',
+				'data' => $data
+			)
+		);
+		//errorになるはずだからsuccessはこない
+		$this->assertTextNotContains('success', $this->result);
 	}
 
 /**
@@ -97,10 +126,10 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  */
 	public function testGetEditForm() {
 		$this->testAction('/announcements/announcements/form/1/', array('method' => 'get'));
-		$this->assertTextNotContains('ERROR', $this->view);
+		$this->assertTextNotContains('ERROR', $this->result);
 		//add
 		$this->testAction('/announcements/announcements/add/1/', array('method' => 'get'));
-		$this->assertTextNotContains('ERROR', $this->view);
+		$this->assertTextNotContains('ERROR', $this->result);
 	}
 
 /**
@@ -110,7 +139,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  */
 	public function testEditGetError() {
 		$this->testAction('/announcements/announcements/edit/1/', array('method' => 'get'));
-		$this->assertTextNotContains('ERROR', $this->view);
+		$this->assertTextNotContains('ERROR', $this->result);
 	}
 
 /**
@@ -129,8 +158,8 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		//ajaxかどうかの判定をtrueにする。
 		//$this->Controller->request->is('ajax');
 		$this->testAction('/announcements/announcements/index/2/', array('method' => 'get'));
-		$this->assertTextNotContains('ERROR', $this->view);
-		//$_SERVER['HTTP_X_REQUESTED_WITH'] = false;
+		$this->assertTextNotContains('ERROR', $this->result);
+		$_SERVER['HTTP_X_REQUESTED_WITH'] = false;
 	}
 
 /**
@@ -147,7 +176,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		$this->Controller->isEdit = true;
 		$this->Controller->isBlockEdit = true;
 		$this->testAction('/announcements/announcements/index/2/', array('method' => 'get'));
-		$this->assertTextNotContains('ERROR', $this->view);
+		$this->assertTextNotContains('ERROR', $this->result);
 	}
 
 /**
@@ -167,7 +196,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		//ajaxかどうかの判定をtrueにする。
 		$this->Controller->request->is('ajax');
 		$this->testAction('/announcements/announcements/index/1/', array('method' => 'get'));
-		$this->assertTextNotContains('ERROR', $this->view);
+		$this->assertTextNotContains('ERROR', $this->result);
 	}
 
 /**
