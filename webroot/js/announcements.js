@@ -832,4 +832,3 @@ NetCommonsApp.controller('Announcements.setting', function($scope, $http) {
             });
     };
 });
-
