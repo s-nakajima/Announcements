@@ -1,4 +1,6 @@
-
+<?php
+ $roomPartKey = 'NetCommonsRoomPart';
+?>
 	<h3><?php echo __("記事変更通知"); ?></h3>
 	<form>
 		<h4><?php echo __("送信設定"); ?></h4>
@@ -7,11 +9,11 @@
 		<h4><?php echo __('送信先設定'); ?></h4>
 		<?php
 		foreach($partList as $key=>$item){
-		$partid = $item['AnnouncementRoomPart']["part_id"];
+		$partid = $item[$roomPartKey]["part_id"];
 		?><span style="display:block; float:left; margin-right: 10px;">
 			<input
 				type="checkbox"
-				name="part_id_<?php echo h($item['AnnouncementRoomPart']['part_id']); ?>"
+				name="part_id_<?php echo h($item[$roomPartKey]['part_id']); ?>"
 				id="nc-announcements-message-update-frame-<?php echo $frameId; ?>-part-<?php echo $partid; ?>"
 				ng-click="partChange('message-update',<?php echo $frameId; ?>,<?php echo $partid; ?>)"
 			    checked=""

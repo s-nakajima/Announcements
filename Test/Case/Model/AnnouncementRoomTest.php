@@ -7,7 +7,7 @@
  * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 
-App::uses('AnnouncementFrame', 'Announcements.Model');
+App::uses('AnnouncementRoom', 'Announcements.Model');
 
 
 /**

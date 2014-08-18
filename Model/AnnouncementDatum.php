@@ -100,6 +100,7 @@ class AnnouncementDatum extends AppModel {
 
 /**
  * status type
+ * constはarrayが扱えない....
  *
  * @var array
  */
@@ -305,6 +306,6 @@ class AnnouncementDatum extends AppModel {
 		$this->__Block = Classregistry::init("Announcements.AnnouncementBlock");
 		$this->__Announcement = Classregistry::init("Announcements.Announcement");
 		$this->__AnnouncementBlock = Classregistry::init("Announcements.AnnouncementBlock");
-		$this->__Frame = Classregistry::init("Announcements.AnnouncementFrame");
+		$this->__Frame = Classregistry::init("NetCommons.NetCommonsFrame");
 	}
 }

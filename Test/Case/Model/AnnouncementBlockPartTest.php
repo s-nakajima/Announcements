@@ -35,7 +35,7 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->AnnouncementBlockPart = ClassRegistry::init('Announcements.AnnouncementBlockPart');
-		$this->Frame = ClassRegistry::init('Announcements.AnnouncementFrame');
+		$this->Frame = ClassRegistry::init('NetCommons.NetCommonsFrame');
 	}
 
 /**

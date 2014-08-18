@@ -9,6 +9,9 @@
  */
 
 App::uses('AppModel', 'Model');
+App::uses('NetCommonsBlock', 'NetCommons.Model');
+App::uses('NetCommonsFrame', 'NetCommons.Model');
+App::uses('AnnouncementRoomPart', 'Announcements.Model');
 
 /**
  * Summary for AnnouncementBlockPart Model
@@ -39,6 +42,13 @@ class AnnouncementBlockPart extends AppModel {
  * @var class object
  */
 	private $__RoomPart;
+
+/**
+ * block
+ *
+ * @var class object
+ */
+	private $__Block;
 
 /**
  * __construct
@@ -140,20 +150,18 @@ class AnnouncementBlockPart extends AppModel {
 		$blockId = $this->getBlockIdByFrame($frame, $userId);
 		if ($blockId == 0) {
 			$block = $this->__Frame->createBlock($frameId, $userId);
-			if (isset($block['AnnouncementBlock'])
-				&& isset($block['AnnouncementBlock']['id'])
+			if (isset($block[$this->__Block->name])
+				&& isset($block[$this->__Block->name]['id'])
 			) {
-				$blockId = $block['AnnouncementBlock']['id'];
+				$blockId = $block[$this->__Block->name]['id'];
 			} else {
 				return array();
 			}
 		}
-
 		//元データの取得 : 無ければ初期値をinsert処理を実行する
 		//blockが無かった場合作成。
 		//トランザクションの開始 insert処理してるから。
 		$blockParts = $this->createBlockPart($blockId, $userId);
-
 		//part_idを配列にする。ここに格納されているものは権限が付与されたもの。
 		//可変の項目で、ここにpart_idが含まれていないものは0を格納し権限を剥奪する。
 		//$data[part_id]を配列に変換 : ,区切り
@@ -258,10 +266,8 @@ class AnnouncementBlockPart extends AppModel {
  * @return void
  */
 	private function __setModel() {
-		//$this->__Block = Classregistry::init("Announcements.AnnouncementBlock");
-		//$this->__Announcement = Classregistry::init("Announcements.Announcement");
-		//$this->__AnnouncementBlock = Classregistry::init("Announcements.AnnouncementBlock");
-		$this->__Frame = Classregistry::init("Announcements.AnnouncementFrame");
+		$this->__Frame = Classregistry::init("NetCommons.NetCommonsFrame");
 		$this->__RoomPart = Classregistry::init("Announcements.AnnouncementRoomPart");
+		$this->__Block = Classregistry::init("NetCommons.NetCommonsBlock");
 	}
 }

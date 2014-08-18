@@ -19,13 +19,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 	private $__isSetting = false;
 
 /**
- * model object
- *
- * @var null
- */
-	public $AnnouncementDatum = null;
-
-/**
  * Frame model object
  *
  * @var null
@@ -56,12 +49,11 @@ class AnnouncementsController extends AnnouncementsAppController {
 		parent::beforeFilter();
 		//未ログインでもアクセスを許可
 		$this->Auth->allow();
-		//modelのセット
-		$this->AnnouncementDatum = Classregistry::init("Announcements.AnnouncementDatum");
 		//設定値の格納 (セッティングモード判定結果）
 		$this->__isSetting = Configure::read('Pages.isSetting');
 		$this->set('isSetting', $this->__isSetting);
-		$this->Frame = Classregistry::init("Announcements.AnnouncementFrame");
+		//消す
+		$this->Frame = Classregistry::init("NetCommons.NetCommonsFrame");
 		//初期値
 		$this->set('blockId', 0);
 		$this->set('isRoomAdmin', false);
@@ -82,7 +74,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @param string $lang 言語設定？
  * @return CakeResponse
  */
-	public function index($frameId = 0, $lang = 0) {
+	public function index($frameId = 0, $lang = 'ja') {
 		if ($lang) {
 			//言語の指定 $langが使用可能か確認する必要がある。
 			//Configure::read('Config.language', $lang)
@@ -264,15 +256,15 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	private function __setPartList() {
 		//room_partの一覧を取得。setし返す。
-		$rtn = $this->AnnouncementRoomPart->getList($this->langId);
+		$rtn = $this->NetCommonsRoomPart->getList($this->langId);
 		$this->set('partList', $rtn);
 		//公開権限の可変リスト
 		$abilityName = 'publish_content';
-		$publishVariableArray = $this->AnnouncementRoomPart->getVariableListPartIds($abilityName);
+		$publishVariableArray = $this->NetCommonsRoomPart->getVariableListPartIds($abilityName);
 		$this->set('publishVariableArray', $publishVariableArray);
 		//編集権限の可変リスト
 		$abilityName = 'publish_content';
-		$editVariableArray = $this->AnnouncementRoomPart->getVariableListPartIds($abilityName);
+		$editVariableArray = $this->NetCommonsRoomPart->getVariableListPartIds($abilityName);
 		$this->set('editVariableArray', $editVariableArray);
 		return $rtn;
 	}

@@ -19,9 +19,9 @@ class AnnouncementsAppController extends AppController {
 		'Announcements.Announcement',
 		'Announcements.AnnouncementBlock',
 		'Announcements.AnnouncementDatum',
-		'Announcements.AnnouncementFrame',
-		'Announcements.AnnouncementRoomPart',
-		'Announcements.AnnouncementRoom',
+		'NetCommons.NetCommonsFrame',
+		'NetCommons.NetCommonsRoomPart',
+		'NetCommons.NetCommonsRoom',
 		'Announcements.AnnouncementBlockPart',
 		'Announcements.AnnouncementPartsRoomsUser',
 	);
@@ -140,20 +140,20 @@ class AnnouncementsAppController extends AppController {
  */
 	protected function _setFrame($frameId) {
 		//frameの情報を取得する
-		$frame = $this->AnnouncementFrame->findById($frameId);
+		$frame = $this->NetCommonsFrame->findById($frameId);
 		//frameの情報から、諸々設定値を書く王する。
-		if ($frame && isset($frame[$this->AnnouncementFrame->name]['id'])) {
+		if ($frame && isset($frame[$this->NetCommonsFrame->name]['id'])) {
 			//frames.id
-			$this->frameId = $frame[$this->AnnouncementFrame->name]['id'];
+			$this->frameId = $frame[$this->NetCommonsFrame->name]['id'];
 			$this->set('frameId', $this->frameId);
 			//rooms.id
-			$this->roomId = $frame[$this->AnnouncementFrame->name]['room_id'];
+			$this->roomId = $frame[$this->NetCommonsFrame->name]['room_id'];
 			$this->set('roomId', $this->roomId);
 			//ブロックID
-			$this->blockId = $frame[$this->AnnouncementFrame->name]['block_id'];
+			$this->blockId = $frame[$this->NetCommonsFrame->name]['block_id'];
 			$this->set('blockId', $this->blockId);
 			//ルーム管理者の認証が必要かの確認
-			$this->isNeedApproval = $this->AnnouncementRoom->checkApproval($this->__roomId);
+			$this->isNeedApproval = $this->NetCommonsRoom->checkApproval($this->__roomId);
 			$this->set('isNeedApproval', $this->isNeedApproval);
 
 			//edit_contentの権限を確認する

@@ -1,14 +1,16 @@
-
+<?php
+$roomPartKey = 'NetCommonsRoomPart';
+?>
 	<h3><?php echo __("公開権限設定"); ?></h3>
 	<p class="container">
 		<?php
 		foreach($partList as $key=>$item){
-			$part_id = $item['AnnouncementRoomPart']['part_id'];
+			$part_id = $item[$roomPartKey]['part_id'];
 			echo '<p class="container">';
-			if ($item['AnnouncementRoomPart']['publish_content'] == 1) {
+			if ($item[$roomPartKey]['publish_content'] == 1) {
 				echo '<span class="glyphicon glyphicon-ok"></span>';
 				echo h($item["LanguagesPart"]['name']) . "";
-			} elseif ($item['AnnouncementRoomPart']['publish_content'] == 0) {
+			} elseif ($item[$roomPartKey]['publish_content'] == 0) {
 				echo '<span class="glyphicon glyphicon-remove"></span>';
 				echo h($item["LanguagesPart"]['name']) . "";
 			}
@@ -17,11 +19,11 @@
 					array(
 						'type' => 'checkbox',
 						'div' => null,
-						'id' => 'nc-announcements-publish-frame-'.$frameId. "-part-" .$item['AnnouncementRoomPart']['part_id'],
-						'value' => $item['AnnouncementRoomPart']['part_id'],
-						'name' => 'part_id['. $item['AnnouncementRoomPart']['part_id'] .']',
-						//'ng-change'=>'partChange("publish", '.$frameId.','.$item['AnnouncementRoomPart']['part_id'].')',
-						'ng-click'=>'partChange("publish", '.$frameId.','.$item['AnnouncementRoomPart']['part_id'].')',
+						'id' => 'nc-announcements-publish-frame-'.$frameId. "-part-" .$item[$roomPartKey]['part_id'],
+						'value' => $item[$roomPartKey]['part_id'],
+						'name' => 'part_id['. $item[$roomPartKey]['part_id'] .']',
+						//'ng-change'=>'partChange("publish", '.$frameId.','.$item[$roomPartKey]['part_id'].')',
+						'ng-click'=>'partChange("publish", '.$frameId.','.$item[$roomPartKey]['part_id'].')',
 					)
 				);
 			} else {
