@@ -23,7 +23,7 @@ class AnnouncementsAppController extends AppController {
 		'NetCommons.NetCommonsRoomPart',
 		'NetCommons.NetCommonsRoom',
 		'Announcements.AnnouncementBlockPart',
-		'Announcements.AnnouncementPartsRoomsUser',
+		'NetCommons.NetCommonsPartsRoomsUser',
 	);
 
 /**
@@ -226,7 +226,7 @@ class AnnouncementsAppController extends AppController {
  * @SuppressWarnings(PHPMD)
  */
 	private function __checkPartSetting($roomPart, $columnName, $blockId) {
-		$RoomsUserName = $this->AnnouncementPartsRoomsUser->name;
+		$RoomsUserName = $this->NetCommonsPartsRoomsUser->name;
 		if (! $roomPart
 			|| ! isset($roomPart['RoomPart'])
 			|| ! isset($roomPart[$RoomsUserName])
@@ -320,7 +320,7 @@ class AnnouncementsAppController extends AppController {
  */
 	private function __getRoomPart() {
 		//共通処理にすべき : Modelに移動したい
-		return $this->AnnouncementPartsRoomsUser->getRoomPart($this->roomId, $this->userId);
+		return $this->NetCommonsPartsRoomsUser->getRoomPart($this->roomId, $this->userId);
 	}
 
 /**

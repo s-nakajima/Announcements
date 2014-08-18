@@ -25,7 +25,6 @@
 		'type' => 'text',
 		'name' => 'data[block_id]',
 		'value' => '',
-		//'id' => 'announcements_block_setting_blockid_parts_frame_'.$flameId."_parts_".$item['AnnouncementRoomPart']['part_id']
 	));
 
 	echo $this->Form->input('language_id' , array(

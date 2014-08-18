@@ -33,8 +33,8 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
  */
 	private function __setPartList() {
 		//room_partの一覧を取得。setし返す。
-		$rtn = $this->AnnouncementRoomPart->getList($this->langId);
-		$this->set('partList', $this->AnnouncementRoomPart->getList($this->langId));
+		$rtn = $this->NetCommonsRoomPart->getList($this->langId);
+		$this->set('partList', $this->NetCommonsRoomPart->getList($this->langId));
 		return $rtn;
 	}
 

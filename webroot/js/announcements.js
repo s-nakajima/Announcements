@@ -369,7 +369,7 @@ NetCommonsApp.controller('Announcements.edit',
         $('#nc-announcement-content-view-' + $scope.frameId).html(content);
         $(draftTag).html(content);
         $scope.updateStatus(statusId);
-        $scope.blockId = json.data.AnnouncementFrame.block_id;
+        $scope.blockId = json.data.NetCommonsFrame.block_id;
         //完了メッセージを表示
         $scope.postAlert('success' , json.message);
         //編集フォームを閉じる
