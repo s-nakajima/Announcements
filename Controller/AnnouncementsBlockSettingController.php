@@ -154,7 +154,7 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
  * @return CakeResponse
  */
 	private function __updateBlockParts($type, $frameId, $data) {
-		if ($blockPart = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $this->userId)) {
+		if ($blockPart = $this->AnnouncementBlockPart->updatePartsAbility($type, $frameId, $data, $this->userId)) {
 			//結果を返す : json
 			$result = array(
 				'status' => 'success',

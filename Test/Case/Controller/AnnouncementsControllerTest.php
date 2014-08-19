@@ -20,12 +20,20 @@ App::uses('Announcements', 'Announcements.Controller');
 class AnnouncementsControllerTest extends ControllerTestCase {
 
 /**
+ * logined
+ *
+ * @var bool
+ */
+	private $__isLogin = false;
+
+/**
  * setUp
  *
  * @return   void
  */
 	public function setUp() {
 		parent::setUp();
+		$this->createLogind(false);
 	}
 
 /**
@@ -154,18 +162,8 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return void
  */
 	public function testIndexLogin() {
-		$this->AuthGeneralController = $this->generate('Announcements.Announcements', array(
-			'components' => array(
-				'Auth' => array('user'),
-				'Session',
-			),
-		));
-		$this->controller->plugin = 'Announcements';
-		$this->controller->Auth
-			->staticExpects($this->any())
-			->method('user')
-			->will($this->returnCallback(array($this, 'authUserCallback')));
-
+		//ログイン状態
+		$this->createLogind(true);
 		$this->testAction('/announcements/announcements/index/1/ja', array('method' => 'get'));
 
 		$this->assertTextNotContains('ERROR', $this->result);
@@ -179,8 +177,8 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  */
 	public function testIndexNoSetting() {
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
-		//ログイン状態をつくった。
-		//$this->createLogind();
+		//ログイン状態
+		$this->createLogind(true);
 		Configure::write('isSetting', false);
 		$this->testAction('/announcements/announcements/index/2/ja', array('method' => 'get'));
 		$this->assertTextNotContains('ERROR', $this->result);
@@ -193,7 +191,6 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 	public function testIndexNoLogin() {
 		//ajax通信ON
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
-		//ログイン状態をつくった。
 		$this->Controller = $this->generate('Announcements.Announcements', array(
 			'components' => array(
 				'Security'
@@ -210,43 +207,19 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  *
  * @return void
  */
-	public function createLogind() {
-		/*
-		$this->Controller = $this->generate('Announcements.Announcements', array(
+	public function createLogind($isLogin) {
+		$this->__isLogin = $isLogin;
+		$this->AuthGeneralController = $this->generate('Announcements.Announcements', array(
 			'components' => array(
-				'Security',
 				'Auth' => array('user'),
-			)
+				'Session',
+			),
 		));
-		$this->Controller->Auth
+		$this->controller->plugin = 'Announcements';
+		$this->controller->Auth
 			->staticExpects($this->any())
 			->method('user')
 			->will($this->returnCallback(array($this, 'authUserCallback')));
-		$this->Controller->Auth->login(array(
-				'username' => 'admin',
-				'password' => 'admin',
-			)
-		);
-		$rtn = $this->Controller->Auth->loggedIn();
-		$this->assertTrue($rtn);
-		*/
-
-		$this->Controller = $this->generate('Announcements.Announcements', array(
-			'components' => array(
-				'Auth' => array('user')
-			)
-		));
-		$this->Controller->Auth
-			->staticExpects($this->any())
-			->method('user')
-			->will($this->returnValue(array(
-				'id' => 1,
-				'username' => 'admin',
-				'created' => '2013-05-08 00:00:00',
-				'modified' => '2013-05-08 00:00:00',
-			)));
-		$rtn = $this->Controller->Auth->loggedIn();
-		$this->assertTrue($rtn);
 	}
 
 /**
@@ -262,9 +235,17 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 			'id' => 1,
 			'username' => 'admin',
 		);
-		if (empty($key) || !isset($auth[$key])) {
-			return $auth;
+		//ログイン状態を返す
+		if ($this->__isLogin) {
+			if (empty($key) || !isset($auth[$key])) {
+				return $auth;
+			}
+			return $auth[$key];
 		}
-		return $auth[$key];
+		//ログアウトしている状態を返す
+		if (empty($key) || !isset($auth[$key])) {
+			return null;
+		}
+		return array();
 	}
 }

@@ -101,7 +101,7 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 			'part_id' => "2,3,4"
 		);
 		//1件もない状態での実行
-		$rtn = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $userId);
+		$rtn = $this->AnnouncementBlockPart->updatePartsAbility($type, $frameId, $data, $userId);
 		$this->assertEquals(true, is_array($rtn));
 	}
 
@@ -127,19 +127,6 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 	}
 
 /**
- * getList blockIdから一覧を取得する
- *
- * @return void
- */
-	public function testGetList() {
-		$this->__setData();
-		$blockId = 1;
-		$rtn = $this->AnnouncementBlockPart->getList($blockId);
-		$this->assertTrue(is_array($rtn));
-		$this->assertEquals(1, $rtn[0][$this->AnnouncementBlockPart->name]['id']);
-	}
-
-/**
  * block room 作成のテスト
  *
  * @return void
@@ -148,7 +135,7 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 		$blockId = 1000;
 		$userId = 2;
 		$rtn = $this->AnnouncementBlockPart->createBlockPart($blockId, $userId);
-		$this->assertEquals($rtn[0][$this->AnnouncementBlockPart->name]["block_id"], $blockId);
+		$this->assertEquals($rtn[1][$this->AnnouncementBlockPart->name]["block_id"], $blockId);
 	}
 
 /**
@@ -183,8 +170,7 @@ class AnnouncementBlockPartTest extends CakeTestCase {
  *
  * @return void
  */
-	public function testUpdateParts() {
-		//updateParts($type, $frameId, $data, $userId)
+	public function testUpdatePartsAbility() {
 		$type = "publish";
 		$userId = 2;
 		$frameId = 1;
@@ -194,10 +180,10 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 			'part_id' => "2,3,4"
 		);
 		//1件もない状態での実行
-		$rtn = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $userId);
+		$rtn = $this->AnnouncementBlockPart->updatePartsAbility($type, $frameId, $data, $userId);
 		$this->assertEquals(true, is_array($rtn));
 		//データがあったところからのupdate
-		$rtn = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $userId);
+		$rtn = $this->AnnouncementBlockPart->updatePartsAbility($type, $frameId, $data, $userId);
 		$this->assertEquals(true, is_array($rtn));
 	}
 
@@ -206,8 +192,7 @@ class AnnouncementBlockPartTest extends CakeTestCase {
  *
  * @return void
  */
-	public function testUpdatePartsTypeEdit() {
-		//updateParts($type, $frameId, $data, $userId)
+	public function testUpdatePartsAbilityTypeEdit() {
 		$type = "edit";
 		$userId = 1;
 		$frameId = 1;
@@ -217,18 +202,18 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 			'part_id' => "2,3,4"
 		);
 		//1件もない状態での実行
-		$rtn = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $userId);
+		$rtn = $this->AnnouncementBlockPart->updatePartsAbility($type, $frameId, $data, $userId);
 		$this->assertEquals(true, is_array($rtn));
 		//データがあったところからのupdate
-		$rtn = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $userId);
+		$rtn = $this->AnnouncementBlockPart->updatePartsAbility($type, $frameId, $data, $userId);
 		$this->assertEquals(true, is_array($rtn));
 		$data = array(
 			'frame_id' => 1,
 			'block_id' => 1,
-			'part_id' => "2" //2だけ
+			'part_id' => '2' //2だけ
 		);
 		//データがあったところからのupdate
-		$rtn = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $userId);
+		$rtn = $this->AnnouncementBlockPart->updatePartsAbility($type, $frameId, $data, $userId);
 		$this->assertEquals(true, is_array($rtn));
 	}
 
@@ -237,7 +222,7 @@ class AnnouncementBlockPartTest extends CakeTestCase {
  *
  * @return void
  */
-	public function testUpdatePartsPartIdNull() {
+	public function testUpdatePartsAbilityPartIdNull() {
 		$type = "publish";
 		$userId = 2;
 		$frameId = 1;
@@ -245,7 +230,7 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 			'frame_id' => 1,
 			'block_id' => 1,
 		);
-		$rtn = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $userId);
+		$rtn = $this->AnnouncementBlockPart->updatePartsAbility($type, $frameId, $data, $userId);
 		$this->assertEquals(array(), $rtn);
 	}
 
@@ -265,7 +250,7 @@ class AnnouncementBlockPartTest extends CakeTestCase {
  *
  * @return void
  */
-	public function testUpdatePartsNoticeFrameId() {
+	public function testUpdatePartsAbilityNoticeFrameId() {
 		$type = "publish";
 		$userId = 2;
 		$frameId = 10000000;
@@ -274,7 +259,7 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 			'block_id' => 1,
 			'part_id' => "2,3,4"
 		);
-		$rtn = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $userId);
+		$rtn = $this->AnnouncementBlockPart->updatePartsAbility($type, $frameId, $data, $userId);
 		$this->assertEquals(array(), $rtn);
 	}
 
@@ -283,7 +268,7 @@ class AnnouncementBlockPartTest extends CakeTestCase {
  *
  * @return void
  */
-	public function testUpdatePartsTypeError() {
+	public function testUpdatePartsAbilityTypeError() {
 		$type = "test";
 		$userId = 1;
 		$frameId = 1;
@@ -293,10 +278,10 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 			'part_id' => "2,3,4"
 		);
 		//1件もない状態での実行
-		$rtn = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $userId);
+		$rtn = $this->AnnouncementBlockPart->updatePartsAbility($type, $frameId, $data, $userId);
 		$this->assertEquals(array(), $rtn);
 		//データがあったところからのupdate
-		$rtn = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $userId);
+		$rtn = $this->AnnouncementBlockPart->updatePartsAbility($type, $frameId, $data, $userId);
 		$this->assertEquals(array(), $rtn);
 	}
 
@@ -315,7 +300,7 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 			'part_id' => "2"
 		);
 		//1件もない状態での実行
-		$rtn = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $userId);
+		$rtn = $this->AnnouncementBlockPart->updatePartsAbility($type, $frameId, $data, $userId);
 		//blockが新規作成された上で更新されるのでroom_partの数だけ値が戻る
 		$this->assertEquals(5, count($rtn));
 	}
@@ -326,7 +311,6 @@ class AnnouncementBlockPartTest extends CakeTestCase {
  * @return void
  */
 	public function testUpdatePartsNoBlockError() {
-		//updateParts($type, $frameId, $data, $userId)
 		$type = "publish";
 		$userId = 2;
 		$frameId = $this->__setData2();
@@ -340,7 +324,7 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 		$this->AnnouncementBlockPart->validate = array(
 			'block_id' => 'email'
 		);
-		$rtn = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $userId);
+		$rtn = $this->AnnouncementBlockPart->updatePartsAbility($type, $frameId, $data, $userId);
 		$this->assertEquals(0, count($rtn));
 	}
 
@@ -354,5 +338,57 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 		$userId = 1;
 		$rtn = $this->AnnouncementBlockPart->getBlockIdByFrame($frame, $userId);
 		$this->assertNull($rtn);
+	}
+
+/**
+ * getListPartIdArray
+ *
+ * @return void
+ */
+	public function testGetList() {
+		//データ無し
+		$blockId = 1;
+		$rtn = $this->AnnouncementBlockPart->getListPartIdArray($blockId);
+		$this->assertEquals(array(), $rtn);
+
+		//データ有り
+		$this->__setData();
+		$rtn = $this->AnnouncementBlockPart->getListPartIdArray($blockId);
+		$this->assertEquals(5, count($rtn));
+
+		//データ無し
+		$blockId = 100000000;
+		$rtn = $this->AnnouncementBlockPart->getListPartIdArray($blockId);
+		$this->assertEquals(array(), $rtn);
+	}
+
+/**
+ * updateColum
+ *
+ * @return void
+ */
+	public function testUpdateColumn() {
+		//レコードが無い
+		$partIdList = array(2, 3);
+		$columnName = "publish_content";
+		$value = 1;
+		$blockId = 1;
+		$userId = 1;
+		$rtn = $this->AnnouncementBlockPart->updateColumn($partIdList, $columnName, $value, $blockId, $userId);
+		$this->assertEquals(false, $rtn);
+
+		//レコードが有る
+		$this->__setData();
+		$rtn = $this->AnnouncementBlockPart->updateColumn($partIdList, $columnName, $value, $blockId, $userId);
+		$this->assertEquals(true, $rtn);
+
+		//レコードが有るがvalidate error
+		$partIdList = array(2, 3);
+		$columnName = "publish_content";
+		$value = 1;
+		$blockId = 1;
+		$userId = '';
+		$rtn = $this->AnnouncementBlockPart->updateColumn($partIdList, $columnName, $value, $blockId, $userId);
+		$this->assertEquals(false, $rtn);
 	}
 }

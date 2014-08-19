@@ -23,18 +23,21 @@ class AnnouncementBlockPart extends AppModel {
  *
  * @var array
  */
-	public $validate1 = array(
+	public $validate = array(
 		'create_user_id' => array(
 			'rule' => array('numeric')
 		),
 		'modified_user_id' => array(
-			'rule' => array('numeric')
+			'rule' => array('numeric'),
+			'allowEmpty' => false
 		),
 		'block_id' => array(
-			'rule' => array('numeric')
+			'rule' => array('numeric'),
+			'allowEmpty' => false
 		),
 		'part_id' => array(
-			'rule' => array('numeric')
+			'rule' => array('numeric'),
+			'allowEmpty' => false
 		)
 	);
 
@@ -84,6 +87,7 @@ class AnnouncementBlockPart extends AppModel {
 				$this->name . '.block_id' => $blockId
 			)
 		));
+
 		return $rtn;
 	}
 
@@ -152,7 +156,7 @@ class AnnouncementBlockPart extends AppModel {
  * @return array
  * @SuppressWarnings(PHPMD)
  */
-	public function updateParts($type, $frameId, $data, $userId) {
+	public function updatePartsAbility($type, $frameId, $data, $userId) {
 		$this->setDataSource('master');
 		$this->__setModel();
 		$this->__Frame->setDataSource('master');
@@ -223,13 +227,13 @@ class AnnouncementBlockPart extends AppModel {
 		$dataSource = $this->getDataSource();
 		$dataSource->begin();
 		//権限付与
-		if (! $this->update($onList, $abilityName, 1, $blockId, $userId)) {
+		if (! $this->updateColumn($onList, $abilityName, 1, $blockId, $userId)) {
 			//ロールバック
 			$dataSource->rollback();
 			return array();
 		}
 		//権限除去
-		if (! $this->update($offList, $abilityName, 0, $blockId, $userId)) {
+		if (! $this->updateColumn($offList, $abilityName, 0, $blockId, $userId)) {
 			//ロールバック
 			$dataSource->rollback();
 			return array();
@@ -243,13 +247,13 @@ class AnnouncementBlockPart extends AppModel {
  * 更新処理
  *
  * @param array $partIdList parts.id array
- * @param string $abilityName cal
+ * @param string $columnName cal
  * @param int $value value 0 or 1
  * @param int $blockId blocks.id
  * @param int $userId users.id
  * @return bool
  */
-	public function update($partIdList, $abilityName, $value, $blockId, $userId) {
+	public function updateColumn($partIdList, $columnName, $value, $blockId, $userId) {
 		foreach ($partIdList as $partId) {
 			$id = $this->getIdByBlockId($blockId, $partId);
 			if (! $id) {
@@ -258,15 +262,14 @@ class AnnouncementBlockPart extends AppModel {
 			}
 			$insertArray = array(
 				'id' => $id,
-				$abilityName => $value,
+				$columnName => $value,
 				'modified_user_id' => $userId
 			);
-			if (! $this->save($insertArray)) {
-				//ロールバック
-				return false;
+			if ($this->save($insertArray)) {
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 
 /**
