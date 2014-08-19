@@ -23,9 +23,18 @@ class AnnouncementBlockPart extends AppModel {
  *
  * @var array
  */
-	public $validate = array(
+	public $validate1 = array(
 		'create_user_id' => array(
-			'numeric'
+			'rule' => array('numeric')
+		),
+		'modified_user_id' => array(
+			'rule' => array('numeric')
+		),
+		'block_id' => array(
+			'rule' => array('numeric')
+		),
+		'part_id' => array(
+			'rule' => array('numeric')
 		)
 	);
 
@@ -79,7 +88,26 @@ class AnnouncementBlockPart extends AppModel {
 	}
 
 /**
- * blockIdとpartIdからidを取得する
+ * ブロックの設定をpart_idの配列で取得する
+ *
+ * @param int $blockId blocks.id
+ * @return array
+ */
+	public function getListPartIdArray($blockId) {
+		$list = $this->getList($blockId);
+		if (! $list) {
+			return array();
+		}
+		$rtn = array();
+		foreach ($list as $item) {
+			$partId = $item[$this->name]['part_id'];
+			$rtn[$partId] = $item[$this->name];
+		}
+		return $rtn;
+	}
+
+/**
+ * blockIdとpartIdからレコードを取得する
  *
  * @param int $blockId blocks.id
  * @param int $partId parts.id
@@ -127,8 +155,6 @@ class AnnouncementBlockPart extends AppModel {
 	public function updateParts($type, $frameId, $data, $userId) {
 		$this->setDataSource('master');
 		$this->__setModel();
-		//全てmasterを見る
-		$this->setDataSource('master');
 		$this->__Frame->setDataSource('master');
 		$this->__RoomPart->setDataSource('master');
 
@@ -140,7 +166,6 @@ class AnnouncementBlockPart extends AppModel {
 			//処理せず終了
 			return array();
 		}
-
 		//frame情報取得
 		if (! $frame = $this->__Frame->findById($frameId) ) {
 			return array();
@@ -169,12 +194,11 @@ class AnnouncementBlockPart extends AppModel {
 		$data['part_id'] = explode(',', $data['part_id']);
 
 		//可変可能なidの取得
-		if ($type == 'publish') {
+		if ($type == 'edit') {
 			$abilityName = 'edit_content';
-		} elseif ($type == 'edit') {
+		} elseif ($type == 'publish') {
 			$abilityName = 'publish_content';
 		} else {
-			//ロールバック
 			return array();
 		}
 		$partIdList = $this->__RoomPart->getVariableListPartIds($abilityName);
@@ -182,29 +206,67 @@ class AnnouncementBlockPart extends AppModel {
 		if (! is_array($blockParts)) {
 			return array();
 		}
-		foreach ($blockParts as $item) {
-			if (isset($partIdList[$item[$this->name]['part_id']]) //可変可能である事
-			) {
-				if (in_array($item[$this->name]['part_id'], $data['part_id'])) {
-					//可変であること
-					//$data['part_id']に含まれている場合は1がセットされる
-					$item[$abilityName] = 1;
-				} else {
-					//含まれない場合は0がセットされる
-					$item[$abilityName] = 0;
-				}
-				//updateに必要な情報をセット
-				unset($item[$this->name]['modified']);
-				$item[$this->name]['modified_user_id'] = $userId;
-				//更新を実行する
-				if (!$this->save($item[$this->name])) {
-					//ロールバック
-					return array();
-				}
+
+		$onList = array();
+		$offList = array();
+		//更新条件を分離
+		foreach ($partIdList as $id) {
+			if (in_array($id, $data['part_id'])) {
+				$onList[] = $id;
+			} else {
+				$offList[] = $id;
 			}
 		}
+
+		//1更新するリスト
+		//トランザクション開始
+		$dataSource = $this->getDataSource();
+		$dataSource->begin();
+		//権限付与
+		if (! $this->update($onList, $abilityName, 1, $blockId, $userId)) {
+			//ロールバック
+			$dataSource->rollback();
+			return array();
+		}
+		//権限除去
+		if (! $this->update($offList, $abilityName, 0, $blockId, $userId)) {
+			//ロールバック
+			$dataSource->rollback();
+			return array();
+		}
 		//commit
+		$dataSource->commit();
 		return $this->getList($blockId);
+	}
+
+/**
+ * 更新処理
+ *
+ * @param array $partIdList parts.id array
+ * @param string $abilityName cal
+ * @param int $value value 0 or 1
+ * @param int $blockId blocks.id
+ * @param int $userId users.id
+ * @return bool
+ */
+	public function update($partIdList, $abilityName, $value, $blockId, $userId) {
+		foreach ($partIdList as $partId) {
+			$id = $this->getIdByBlockId($blockId, $partId);
+			if (! $id) {
+				//レコードが無い
+				return false;
+			}
+			$insertArray = array(
+				'id' => $id,
+				$abilityName => $value,
+				'modified_user_id' => $userId
+			);
+			if (! $this->save($insertArray)) {
+				//ロールバック
+				return false;
+			}
+		}
+		return true;
 	}
 
 /**
@@ -267,7 +329,7 @@ class AnnouncementBlockPart extends AppModel {
  */
 	private function __setModel() {
 		$this->__Frame = Classregistry::init("NetCommons.NetCommonsFrame");
-		$this->__RoomPart = Classregistry::init("Announcements.AnnouncementRoomPart");
+		$this->__RoomPart = Classregistry::init("NetCommons.NetCommonsRoomPart");
 		$this->__Block = Classregistry::init("NetCommons.NetCommonsBlock");
 	}
 }

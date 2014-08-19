@@ -72,7 +72,6 @@ class AnnouncementBlockMessageTest extends CakeTestCase {
  * @return void
  */
 	public function testGetIdByBlockId() {
-		//ある場合
 		$blockId = 1;
 		$langId = 1;
 		$rtn = $this->AnnouncementBlockMessage->getIdByBlockId($blockId, $langId);

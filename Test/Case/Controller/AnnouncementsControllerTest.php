@@ -8,6 +8,11 @@
  */
 
 App::uses('AppController', 'Controller');
+App::uses('AuthGeneralController', 'Controller');
+App::uses('AuthComponent', 'Controller/Component');
+App::uses('AnnouncementsApp', 'Announcements.Controller');
+App::uses('Announcements', 'Announcements.Controller');
+
 
 /**
  * Summary for AnnouncementEditsController Test Case
@@ -36,7 +41,8 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		'plugin.announcements.announcement_datum',
 		'plugin.announcements.announcement',
 		'plugin.announcements.announcement_frame',
-		'plugin.announcements.Announcement_block_part',
+		'plugin.announcements.announcement_block_part',
+		'plugin.announcements.announcement_parts_rooms_user',
 		'app.room_part',
 		'app.languages_part',
 		'plugin.announcements.announcement_room'
@@ -148,16 +154,20 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return void
  */
 	public function testIndexLogin() {
-		//$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
-		//ログイン状態をつくった。
-		$this->createLogind();
-		Configure::write('isSetting', true);
-		$this->Controller->isEdit = true;
-		$this->Controller->isBlockEdit = true;
+		$this->AuthGeneralController = $this->generate('Announcements.Announcements', array(
+			'components' => array(
+				'Auth' => array('user'),
+				'Session',
+			),
+		));
+		$this->controller->plugin = 'Announcements';
+		$this->controller->Auth
+			->staticExpects($this->any())
+			->method('user')
+			->will($this->returnCallback(array($this, 'authUserCallback')));
 
-		//ajaxかどうかの判定をtrueにする。
-		//$this->Controller->request->is('ajax');
-		$this->testAction('/announcements/announcements/index/2/', array('method' => 'get'));
+		$this->testAction('/announcements/announcements/index/1/ja', array('method' => 'get'));
+
 		$this->assertTextNotContains('ERROR', $this->result);
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = false;
 	}
@@ -170,12 +180,9 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 	public function testIndexNoSetting() {
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 		//ログイン状態をつくった。
-		$this->createLogind();
-
+		//$this->createLogind();
 		Configure::write('isSetting', false);
-		$this->Controller->isEdit = true;
-		$this->Controller->isBlockEdit = true;
-		$this->testAction('/announcements/announcements/index/2/', array('method' => 'get'));
+		$this->testAction('/announcements/announcements/index/2/ja', array('method' => 'get'));
 		$this->assertTextNotContains('ERROR', $this->result);
 	}
 
@@ -192,7 +199,6 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 				'Security'
 			)
 		));
-
 		//ajaxかどうかの判定をtrueにする。
 		$this->Controller->request->is('ajax');
 		$this->testAction('/announcements/announcements/index/1/', array('method' => 'get'));
@@ -205,6 +211,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return void
  */
 	public function createLogind() {
+		/*
 		$this->Controller = $this->generate('Announcements.Announcements', array(
 			'components' => array(
 				'Security',
@@ -222,6 +229,24 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		);
 		$rtn = $this->Controller->Auth->loggedIn();
 		$this->assertTrue($rtn);
+		*/
+
+		$this->Controller = $this->generate('Announcements.Announcements', array(
+			'components' => array(
+				'Auth' => array('user')
+			)
+		));
+		$this->Controller->Auth
+			->staticExpects($this->any())
+			->method('user')
+			->will($this->returnValue(array(
+				'id' => 1,
+				'username' => 'admin',
+				'created' => '2013-05-08 00:00:00',
+				'modified' => '2013-05-08 00:00:00',
+			)));
+		$rtn = $this->Controller->Auth->loggedIn();
+		$this->assertTrue($rtn);
 	}
 
 /**
@@ -237,6 +262,9 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 			'id' => 1,
 			'username' => 'admin',
 		);
-		return $auth;
+		if (empty($key) || !isset($auth[$key])) {
+			return $auth;
+		}
+		return $auth[$key];
 	}
 }

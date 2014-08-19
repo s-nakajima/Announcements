@@ -19,20 +19,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 	private $__isSetting = false;
 
 /**
- * Frame model object
- *
- * @var null
- */
-	public $Frame = null;
-
-/**
- * Block model object
- *
- * @var null
- */
-	public $Block = null;
-
-/**
  * Announcement model object
  *
  * @var null
@@ -52,11 +38,11 @@ class AnnouncementsController extends AnnouncementsAppController {
 		//設定値の格納 (セッティングモード判定結果）
 		$this->__isSetting = Configure::read('Pages.isSetting');
 		$this->set('isSetting', $this->__isSetting);
-		//消す
-		$this->Frame = Classregistry::init("NetCommons.NetCommonsFrame");
 		//初期値
 		$this->set('blockId', 0);
 		$this->set('isRoomAdmin', false);
+		$this->set('item', array());
+		$this->set('draftItem', array());
 		//編集権限初期値
 		$this->set('isEdit', false);
 		//ブロックの編集権限初期値
@@ -65,53 +51,80 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->_setLoginUserId();
 		//言語設定
 		$this->_setLang();
+		$this->setLayout(); //レイアウトきりかえ
 	}
 
 /**
  * index
  *
  * @param int $frameId frames.id
- * @param string $lang 言語設定？
+ * @param string $lang 言語設定 2文字
  * @return CakeResponse
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  */
-	public function index($frameId = 0, $lang = 'ja') {
+	public function index($frameId = 0, $lang = '') {
 		if ($lang) {
 			//言語の指定 $langが使用可能か確認する必要がある。
 			//Configure::read('Config.language', $lang)
 		}
-
-		//レイアウトきりかえ
-		$this->__setLayout();
-		$this->_setFrame($frameId);
-		$this->__setPartList();
-
-		$this->set('item', array());
-		//blockIdの取得
-		$blockId = $this->Frame->getBlockId($frameId);
+		$this->_setFrame($frameId); //flameの確認
+		$this->setPartList(); //パートの一覧取得
 
 		//ブロックが設定されておらず、セッティングモードでもない
-		if (! $blockId && ! $this->__isSetting) {
+		if (! $this->blockId && ! $this->__isSetting) {
 			return $this->render('notice');
 		}
-
 		//編集権限が無い人 (ログイン中も含む 公開情報しかみえない）
-		if (! $this->isEdit && ! $this->isBlockEdit && ! $this->__isSetting) {
-				//blockから情報を取得 $LangId
-				return $this->__indexNologin($frameId, $blockId);
+		if (! $this->isEdit
+			&& ! $this->isBlockEdit
+			&& ! $this->__isSetting) {
+			//blockから情報を取得 $LangId
+			return $this->__indexNologin($frameId, $this->blockId);
 		}
-
 		//セッティングモードではないが、編集権限はある
 		if (! $this->__isSetting && $this->isEdit) {
-			return $this->__indexNoSetting($frameId, $blockId);
+			return $this->__indexNoSetting($frameId, $this->blockId);
 		}
+		//ブロックの編集権限あり (ルーム管理者を含む）
+		if ($this->isBlockEdit) {
+			//ブロック更新権限が有る人のみ ブロック設定初期値
+			return $this->__indexBlockEdit();
+		}
+		//セッティングモードon 編集権限のみ
+		return $this->render("Announcements/setting/index");
+	}
+
+/**
+ * セッティングモードON ブロック編集権限が有る場合
+ *
+ * @return mixed
+ */
+	private function __indexBlockEdit() {
+		if (! $this->isRoomAdmin) {
+			//セッティングモードON 編集権限がある
+			$draftData = $this->AnnouncementDatum->getData($this->blockId, $this->langId, true);
+			//セッティングモードOFF データ無し(下書きもなし）
+			$data = $this->AnnouncementDatum->getData($this->blockId, $this->langId, $this->__isSetting);
+			$this->set('draftItem', $draftData);
+			$this->set('item', $data);
+			return $this->render("Announcements/setting/index");
+		}
+
 		//セッティングモードON 編集権限がある
-		$draftData = $this->AnnouncementDatum->getData($blockId, $this->langId, true);
+		$draftData = $this->AnnouncementDatum->getData($this->blockId, $this->langId, true);
 		//セッティングモードOFF データ無し(下書きもなし）
-		$data = $this->AnnouncementDatum->getData($blockId, $this->langId, $this->__isSetting);
+		$data = $this->AnnouncementDatum->getData($this->blockId, $this->langId, $this->__isSetting);
 		$this->set('draftItem', $draftData);
 		$this->set('item', $data);
-		$this->set('frameId', $frameId);
-		$this->set('blockId', $blockId);
+
+		$blockPart = $this->AnnouncementBlockPart->getListPartIdArray($this->blockId);
+		$this->set('blockPart', $blockPart);
+		$messagePart = array();
+		$publicMessage = array();
+		$updateMessage = array();
+		$this->set('messagePart', $messagePart);
+		$this->set('publicMessage', $publicMessage);
+		$this->set('updateMessage', $updateMessage);
 		return $this->render("Announcements/setting/index");
 	}
 
@@ -159,8 +172,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public function edit($frameId = 0) {
 		$this->viewClass = 'Json';
-		//レイアウトの設定
-		$this->__setLayout();
+		$this->layout = false;
 		if (! $this->request->isPost()) {
 			return $this->__ajaxPostError();
 		}
@@ -205,7 +217,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 		//post以外の場合、エラー
 			$this->response->statusCode(400);
 			$result = array(
-				'status' => 'error',
 				'message' => __('登録できません'),
 			);
 			$this->set(compact('result'));
@@ -236,36 +247,5 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->set('frameId', $frameId);
 		$this->set('blockId', $blockId);
 		return $this->render("Announcements/setting/get_edit_form");
-	}
-
-/**
- * 非同期通信の場合、レイアウトなし設定をする。
- *
- * @return void
- */
-	private function __setLayout() {
-		if ($this->request->is('ajax')) {
-			$this->layout = false;
-		}
-	}
-
-/**
- * パートの取得
- *
- * @return array
- */
-	private function __setPartList() {
-		//room_partの一覧を取得。setし返す。
-		$rtn = $this->NetCommonsRoomPart->getList($this->langId);
-		$this->set('partList', $rtn);
-		//公開権限の可変リスト
-		$abilityName = 'publish_content';
-		$publishVariableArray = $this->NetCommonsRoomPart->getVariableListPartIds($abilityName);
-		$this->set('publishVariableArray', $publishVariableArray);
-		//編集権限の可変リスト
-		$abilityName = 'publish_content';
-		$editVariableArray = $this->NetCommonsRoomPart->getVariableListPartIds($abilityName);
-		$this->set('editVariableArray', $editVariableArray);
-		return $rtn;
 	}
 }

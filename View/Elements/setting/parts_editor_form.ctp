@@ -4,9 +4,12 @@ $roomPartKey = 'NetCommonsRoomPart';
 	<h3><?php echo __("編集権限設定");?> </h3>
 	<p class="container">
 		<?php
-
 		foreach ($partList as $key=>$item) {
 			$partId = $item[$roomPartKey]['part_id'];
+			$checked = false;
+			if ($blockPart[$partId]["edit_content"]) {
+				$checked = true;
+			}
 			echo '<p class="container">';
 			if ($item[$roomPartKey]['edit_content'] == 1) {
 				echo '<span class="glyphicon glyphicon-ok"></span>';
@@ -23,8 +26,9 @@ $roomPartKey = 'NetCommonsRoomPart';
 						'id' => 'nc-announcements-edit-frame-'.$frameId. "-part-" .$item[$roomPartKey]['part_id'],
 						'value' => $item[$roomPartKey]['part_id'],
 						'name' => 'part_id['. $item[$roomPartKey]['part_id'] .']',
-						//'ng-change'=>'partChange("edit", '.$frameId.','.$item[$roomPartKey]['part_id'].')',
+						'checked' => $checked,
 						'ng-click'=>'partChange("edit", '.$frameId.','.$item[$roomPartKey]['part_id'].')',
+						'autocomplete'=>'off'
 					)
 				);
 			} else {

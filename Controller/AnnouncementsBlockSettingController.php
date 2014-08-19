@@ -103,13 +103,30 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
  * @return CakeResponse
  */
 	private function __editUpdateMessage($frameId, $data) {
-		$result = array(
-			'status' => 'success',
-			'message' => __('保存しました'),
-		);
-		$this->set(compact('result'));
-		$this->set('_serialize', 'result');
-		return $this->render();
+		if (! $this->request->isPost()) {
+			return $this->__ajaxError(404, __('存在しません'));
+		}
+		if (! $this->_setFrame($frameId)) {
+			//frameIdがおかしい
+			return $this->__ajaxError(404, __('該当の情報が存在しません。'));
+		}
+		//データをmodelへ
+		$rtn = $this->AnnouncementBlockMessage->dataSave($frameId, $this->data, $this->userId);
+		if ($rtn) {
+			$result = array(
+				'status' => 'success',
+				'message' => __('保存しました'),
+			);
+			$this->set(compact('result'));
+			$this->set('_serialize', 'result');
+			return $this->render();
+		}
+		if ($this->AnnouncementBlockMessage->validationErrors) {
+			//バリデーションエラー
+			return $this->__ajaxError(409, __('保存に失敗しました。'));
+		}
+		//例外エラー
+		return $this->__ajaxError(500, __('保存に失敗しました。時間をおいて再度実行してください。'));
 	}
 /**
  * 公開申請通知設定の更新処理
@@ -203,7 +220,7 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
  */
 	public function form($type, $frameId, $blockId) {
 		$this->layout = false;
-		$this->__setFrame($frameId);
+		$this->_setFrame($frameId);
 		$this->__setPartList();
 		//type別にフォームを返す
 		if ($type == "editParts") {
@@ -220,17 +237,5 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 		}
 		//該当のフォームが無い
 		return $this->__ajaxError(404, __('登録できません'));
-	}
-
-/**
- * frame 取得
- *
- * @param int $frameId flames.id
- * @return mixed
- */
-	private function __setFrame($frameId) {
-		//権限の確認。edit_blockの権限がなければ404エラー
-		//_setFrame内で諸々権限の状態を格納する。
-		return $this->_setFrame($frameId);
 	}
 }

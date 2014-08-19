@@ -553,9 +553,9 @@ NetCommonsApp.controller('Announcements.setting', function($scope, $http) {
         .success(function(data, status, headers, config) {
           var partIdList = '';
           for (i = 0; i < $scope.roomParts.length; i++) {
-            var t = '#nc-announcements_publish_frame_' +
+            var t = '#nc-announcements-publish-frame-' +
                 frameId +
-                '_part_' +
+                '-part-' +
                 i +
                 ':checked';
             if ($(t).val()) {
@@ -631,9 +631,9 @@ NetCommonsApp.controller('Announcements.setting', function($scope, $http) {
           //part_idを取得
           var partIdList = '';
           for (i = 0; i < $scope.roomParts.length; i++) {
-            var t = '#nc-announcements-edit-frame_' +
+            var t = '#nc-announcements-edit-frame-' +
                 frameId +
-                '_part_' +
+                '-part-' +
                 i +
                 ':checked';
             if ($(t).val()) {

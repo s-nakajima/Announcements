@@ -17,17 +17,17 @@ class AnnouncementsAppController extends AppController {
  */
 	public $uses = array(
 		'Announcements.Announcement',
-		'Announcements.AnnouncementBlock',
 		'Announcements.AnnouncementDatum',
+		'Announcements.AnnouncementBlockPart',
+		'NetCommons.NetCommonsPartsRoomsUser',
 		'NetCommons.NetCommonsFrame',
 		'NetCommons.NetCommonsRoomPart',
 		'NetCommons.NetCommonsRoom',
-		'Announcements.AnnouncementBlockPart',
-		'NetCommons.NetCommonsPartsRoomsUser',
+		'NetCommons.NetCommonsBlock',
 	);
 
 /**
- * ccomponents
+ * components
  * @var array
  */
 	public $components = array(
@@ -285,7 +285,7 @@ class AnnouncementsAppController extends AppController {
  */
 	protected function _setLoginUserId() {
 		if ($this->Auth->loggedIn()) {
-			$this->userId = AuthComponent::user('id');
+			$this->userId = $this->Auth->user('id');
 			$this->Set('isLogin', true);
 			return $this->userId;
 		}
@@ -319,7 +319,6 @@ class AnnouncementsAppController extends AppController {
  * @return mixed
  */
 	private function __getRoomPart() {
-		//共通処理にすべき : Modelに移動したい
 		return $this->NetCommonsPartsRoomsUser->getRoomPart($this->roomId, $this->userId);
 	}
 
@@ -354,5 +353,36 @@ class AnnouncementsAppController extends AppController {
 		}
 		//array_search($lang, $list);
 		$this->set('langId', $this->langId);
+	}
+
+/**
+ * 非同期通信の場合、レイアウトなし設定をする。
+ *
+ * @return void
+ */
+	public function setLayout() {
+		if ($this->request->is('ajax')) {
+			$this->layout = false;
+		}
+	}
+
+/**
+ * パートの取得
+ *
+ * @return array
+ */
+	public function setPartList() {
+		//room_partの一覧を取得。setし返す。
+		$rtn = $this->NetCommonsRoomPart->getList($this->langId);
+		$this->set('partList', $rtn);
+		//公開権限の可変リスト
+		$abilityName = 'publish_content';
+		$publishVariableArray = $this->NetCommonsRoomPart->getVariableListPartIds($abilityName);
+		$this->set('publishVariableArray', $publishVariableArray);
+		//編集権限の可変リスト
+		$abilityName = 'publish_content';
+		$editVariableArray = $this->NetCommonsRoomPart->getVariableListPartIds($abilityName);
+		$this->set('editVariableArray', $editVariableArray);
+		return $rtn;
 	}
 }

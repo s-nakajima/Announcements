@@ -23,7 +23,7 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 	public $fixtures = array(
 		'plugin.announcements.announcement_block_part',
 		'app.room_part',
-		'plugin.announcements.announcement_frame',
+		'plugin.net_commons.net_commons_frame',
 		'plugin.announcements.announcement_block_block',
 	);
 
@@ -222,7 +222,6 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 		//データがあったところからのupdate
 		$rtn = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $userId);
 		$this->assertEquals(true, is_array($rtn));
-
 		$data = array(
 			'frame_id' => 1,
 			'block_id' => 1,
@@ -295,10 +294,10 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 		);
 		//1件もない状態での実行
 		$rtn = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $userId);
-		$this->assertEquals(true, is_array($rtn));
+		$this->assertEquals(array(), $rtn);
 		//データがあったところからのupdate
 		$rtn = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $userId);
-		$this->assertEquals(true, is_array($rtn));
+		$this->assertEquals(array(), $rtn);
 	}
 
 /**
@@ -307,7 +306,6 @@ class AnnouncementBlockPartTest extends CakeTestCase {
  * @return void
  */
 	public function testUpdatePartsNoBlock() {
-		//updateParts($type, $frameId, $data, $userId)
 		$type = "publish";
 		$userId = 2;
 		$frameId = $this->__setData2();
@@ -318,6 +316,7 @@ class AnnouncementBlockPartTest extends CakeTestCase {
 		);
 		//1件もない状態での実行
 		$rtn = $this->AnnouncementBlockPart->updateParts($type, $frameId, $data, $userId);
+		//blockが新規作成された上で更新されるのでroom_partの数だけ値が戻る
 		$this->assertEquals(5, count($rtn));
 	}
 

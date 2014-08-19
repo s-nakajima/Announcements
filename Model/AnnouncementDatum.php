@@ -85,13 +85,6 @@ class AnnouncementDatum extends AppModel {
 	private $__Announcement = null;
 
 /**
- * announcement_blocks model object
- *
- * @var null
- */
-	private $__AnnouncementBlock = null;
-
-/**
  * frames model object
  *
  * @var null
@@ -257,9 +250,6 @@ class AnnouncementDatum extends AppModel {
  * @return int | null  announsments.id
  */
 	private function __createAnnouncement($blockId, $userId) {
-		//announcement_blocksも作成する必要がある。
-		//blockの設定テーブルも作る必要が有る。
-		//現状のこれは仮実装の状態
 		$dd = array();
 		$dd['Announcement']['block_id'] = $blockId;
 		$dd['Announcement']['create_user_id'] = $userId;
@@ -303,9 +293,8 @@ class AnnouncementDatum extends AppModel {
  * @return void
  */
 	private function __setModel() {
-		$this->__Block = Classregistry::init("Announcements.AnnouncementBlock");
+		$this->__Block = Classregistry::init("NetCommons.NetCommonsBlock");
 		$this->__Announcement = Classregistry::init("Announcements.Announcement");
-		$this->__AnnouncementBlock = Classregistry::init("Announcements.AnnouncementBlock");
 		$this->__Frame = Classregistry::init("NetCommons.NetCommonsFrame");
 	}
 }

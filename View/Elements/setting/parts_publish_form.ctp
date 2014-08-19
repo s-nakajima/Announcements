@@ -5,7 +5,7 @@ $roomPartKey = 'NetCommonsRoomPart';
 	<p class="container">
 		<?php
 		foreach($partList as $key=>$item){
-			$part_id = $item[$roomPartKey]['part_id'];
+			$partId = $item[$roomPartKey]['part_id'];
 			echo '<p class="container">';
 			if ($item[$roomPartKey]['publish_content'] == 1) {
 				echo '<span class="glyphicon glyphicon-ok"></span>';
@@ -14,7 +14,11 @@ $roomPartKey = 'NetCommonsRoomPart';
 				echo '<span class="glyphicon glyphicon-remove"></span>';
 				echo h($item["LanguagesPart"]['name']) . "";
 			}
-			elseif (isset($publishVariableArray[$part_id]) && $publishVariableArray[$part_id]) {
+			elseif (isset($publishVariableArray[$partId]) && $publishVariableArray[$partId]) {
+				$checked = false;
+				if ($blockPart[$partId]["publish_content"]) {
+					$checked = true;
+				}
 				echo $this->Form->input(h($item["LanguagesPart"]['name']),
 					array(
 						'type' => 'checkbox',
@@ -22,8 +26,9 @@ $roomPartKey = 'NetCommonsRoomPart';
 						'id' => 'nc-announcements-publish-frame-'.$frameId. "-part-" .$item[$roomPartKey]['part_id'],
 						'value' => $item[$roomPartKey]['part_id'],
 						'name' => 'part_id['. $item[$roomPartKey]['part_id'] .']',
-						//'ng-change'=>'partChange("publish", '.$frameId.','.$item[$roomPartKey]['part_id'].')',
+						'checked' => $checked,
 						'ng-click'=>'partChange("publish", '.$frameId.','.$item[$roomPartKey]['part_id'].')',
+						'autocomplete'=>'off'
 					)
 				);
 			} else {
