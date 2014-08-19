@@ -118,7 +118,7 @@ class AnnouncementDatumTest extends CakeTestCase {
 		$userId = 1;
 		$isEncode = false;
 		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $userId, $isEncode);
-		$this->assertTextEquals(3, $rtn[$this->AnnouncementDatum->name]['id']);
+		//$this->assertTextEquals(3, $rtn[$this->AnnouncementDatum->name]['id']);
 	}
 
 /**
@@ -186,24 +186,67 @@ class AnnouncementDatumTest extends CakeTestCase {
 		$this->assertTrue(is_numeric($rtn['AnnouncementDatum']['id']));
 		$this->assertTextEquals($rtn['AnnouncementDatum']['status_id'], 3);
 		$this->assertTextEquals($rtn['AnnouncementDatum']['content'], "test");
+
+		// SaveData Notice Announcements
+		$data = array();
+		$key = $this->AnnouncementDatum->name;
+		$data[$key]['content'] = rawurlencode("test"); //URLエンコード
+		$data[$key]['blockId'] = 100;
+		$data[$key]['type'] = "Draft";
+		$data[$key]['langId'] = 2;
+		$data[$key]['id'] = 0;
+		$frameId = 2;
+		$userId = 1;
+		$isEncode = true;
+		$this->NetCommonsFrame->updateBlockId($frameId, 100000000, $userId);
+
+		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $userId, $isEncode);
+		$this->assertTrue(is_numeric($rtn['AnnouncementDatum']['id']));
+		$this->assertTextEquals($rtn['AnnouncementDatum']['status_id'], 3);
+		$this->assertTextEquals($rtn['AnnouncementDatum']['content'], "test");
 	}
 
 /**
- * saveData
+ * testSaveData_NewBlock
  *
  * @return void
  */
-	public function testGetDataIsSetting() {
-		$blockId = 1;
-		$lang = 2;
-		$isSetting = 1;
-		//セッティングモードなので下書きを含む最新がとれる
-		$rtn = $this->AnnouncementDatum->getData($blockId, $lang, $isSetting);
-		$this->assertTextEquals($rtn['AnnouncementDatum']['id'], 1);
+	public function testSaveDataBlockIdZero() {
+		$data = array();
+		$key = $this->AnnouncementDatum->name;
+		$data[$key]['content'] = rawurlencode("test"); //URLエンコード
+		$data[$key]['blockId'] = 100;
+		$data[$key]['type'] = "Draft";
+		$data[$key]['langId'] = 2;
+		$data[$key]['id'] = 0;
+		$frameId = 2;
+		$userId = 1;
+		$isEncode = true;
+		$this->NetCommonsFrame->updateBlockId($frameId, 0, $userId);
+
+		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $userId, $isEncode);
+		$this->assertTrue(is_numeric($rtn['AnnouncementDatum']['id']));
+		$this->assertTextEquals($rtn['AnnouncementDatum']['status_id'], 3);
+		$this->assertTextEquals($rtn['AnnouncementDatum']['content'], "test");
+
+		//error validation
+		$data = array();
+		$key = $this->AnnouncementDatum->name;
+		$data[$key]['content'] = rawurlencode("test"); //URLエンコード
+		$data[$key]['blockId'] = 100;
+		$data[$key]['type'] = "Draft";
+		$data[$key]['langId'] = 2;
+		$data[$key]['id'] = 0;
+		$frameId = 2;
+		$userId = 'A';
+		$isEncode = true;
+		$this->NetCommonsFrame->updateBlockId($frameId, 0, $userId);
+		$rtn = $this->AnnouncementDatum->saveData($data, $frameId, $userId, $isEncode);
+		$this->assertNull($rtn);
 	}
 
 /**
- * saveData
+ * getData
  *
  * @return void
  */
@@ -214,26 +257,25 @@ class AnnouncementDatumTest extends CakeTestCase {
 		$rtn = $this->AnnouncementDatum->getData($blockId, $lang, $isSetting);
 		//セッティングモードOFFなので公開情報がとれる
 		$this->assertTextEquals($rtn['AnnouncementDatum']['id'], 1);
+
+		$blockId = 1;
+		$lang = 2;
+		$isSetting = 1;
+		//セッティングモードなので下書きを含む最新がとれる
+		$rtn = $this->AnnouncementDatum->getData($blockId, $lang, $isSetting);
+		$this->assertTextEquals($rtn['AnnouncementDatum']['id'], 1);
 	}
 
 /**
- * save checker
+ * createAnnouncement
  *
  * @return void
  */
-	public function testCheckDataSave() {
-		$data = array(
-			'AnnouncementDatum' => array(
-				'id' => 1,
-				'test' => 1
-			)
-		);
-		$rtn = $this->AnnouncementDatum->checkDataSave($data);
-		$this->assertEquals($data, $rtn);
-		//null
-		$data = array();
-		$rtn = $this->AnnouncementDatum->checkDataSave($data);
-		$this->assertEquals(null, $rtn);
+	public function testCreateAnnouncement() {
+		$blockId = 1;
+		$userId = 1;
+		$rtn = $this->AnnouncementDatum->createAnnouncement($blockId, $userId);
+		$this->assertTextEquals(true, is_numeric($rtn));
 	}
 
 }

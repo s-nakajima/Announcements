@@ -39,14 +39,10 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->__isSetting = Configure::read('Pages.isSetting');
 		$this->set('isSetting', $this->__isSetting);
 		//初期値
-		$this->set('blockId', 0);
-		$this->set('isRoomAdmin', false);
 		$this->set('item', array());
 		$this->set('draftItem', array());
 		//編集権限初期値
 		$this->set('isEdit', false);
-		//ブロックの編集権限初期値
-		$this->Set('isBlockEdit', false);
 		//ユーザIDの取得と設定
 		$this->_setLoginUserId();
 		//言語設定

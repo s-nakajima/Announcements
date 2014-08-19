@@ -175,7 +175,7 @@ class AnnouncementDatum extends AppModel {
 		$announcementId = $this->__Announcement->getByBlockId($blockId);
 		if (! $announcementId || $announcementId < 1) {
 			//なければ作成
-			$announcementId = $this->__createAnnouncement($blockId, $userId);
+			$announcementId = $this->createAnnouncement($blockId, $userId);
 		}
 		//登録情報をつくる insert処理
 		$this->create();
@@ -186,28 +186,12 @@ class AnnouncementDatum extends AppModel {
 		$this->set('content', $data[$this->name]['content']);
 		//保存結果を返す
 		$rtn = $this->save();
-		if ($data = $this->checkDataSave($rtn)) {
-			//master
-			$frame = $this->__Frame->findById($frameId);
-			$rtn[$this->__Frame->name] = $frame[$this->__Frame->name];
-			return $rtn;
+		if (! $rtn) {
+			return null;
 		}
-	}
-
-/**
- * saveされたかどうかチェック
- *
- * @param array $rtn save data
- * @return mix array or null
- */
-	public function checkDataSave($rtn) {
-		if (is_array($rtn)
-			&& isset($rtn[$this->name])
-			&& isset($rtn[$this->name]['id'])
-			&& $rtn[$this->name]['id']
-		) {
-			return $rtn;
-		}
+		$frame = $this->__Frame->findById($frameId);
+		$rtn[$this->__Frame->name] = $frame[$this->__Frame->name];
+		return $rtn;
 	}
 
 /**
@@ -249,8 +233,11 @@ class AnnouncementDatum extends AppModel {
  * @param int $userId  users.id
  * @return int | null  announsments.id
  */
-	private function __createAnnouncement($blockId, $userId) {
+	public function createAnnouncement($blockId, $userId) {
 		$dd = array();
+		if (! $this->__Announcement) {
+			$this->__setModel();
+		}
 		$dd['Announcement']['block_id'] = $blockId;
 		$dd['Announcement']['create_user_id'] = $userId;
 		$rtn = $this->__Announcement->save($dd);

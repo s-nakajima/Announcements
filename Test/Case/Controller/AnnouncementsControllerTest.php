@@ -20,11 +20,21 @@ App::uses('Announcements', 'Announcements.Controller');
 class AnnouncementsControllerTest extends ControllerTestCase {
 
 /**
- * logined
+ * login flag
  *
  * @var bool
  */
 	private $__isLogin = false;
+
+/**
+ * test user
+ *
+ * @var array
+ */
+	private $__user = array(
+		'id' => 1,
+		'username' => 'admin',
+	);
 
 /**
  * setUp
@@ -33,7 +43,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  */
 	public function setUp() {
 		parent::setUp();
-		$this->createLogind(false);
+		$this->createLogIn(false);
 	}
 
 /**
@@ -72,6 +82,10 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		Configure::write('Config.language', 'en');
 		$this->testAction('/announcements/announcements/index/1', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
+
+		Configure::write('Config.language', 'ja');
+		$this->testAction('/announcements/announcements/index/1000000', array('method' => 'get'));
+		$this->assertTextEquals('', $this->result);
 	}
 
 /**
@@ -162,10 +176,13 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return void
  */
 	public function testIndexLogin() {
-		//ログイン状態
-		$this->createLogind(true);
-		$this->testAction('/announcements/announcements/index/1/ja', array('method' => 'get'));
+		$this->createLogIn(true);
+		$this->testAction('/announcements/announcements/index/1', array('method' => 'get'));
+		$this->assertTextNotContains('ERROR', $this->result);
+		$_SERVER['HTTP_X_REQUESTED_WITH'] = false;
 
+		Configure::write('isSetting', true);
+		$this->testAction('/announcements/announcements/index/2', array('method' => 'get'));
 		$this->assertTextNotContains('ERROR', $this->result);
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = false;
 	}
@@ -178,9 +195,8 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 	public function testIndexNoSetting() {
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 		//ログイン状態
-		$this->createLogind(true);
 		Configure::write('isSetting', false);
-		$this->testAction('/announcements/announcements/index/2/ja', array('method' => 'get'));
+		$this->testAction('/announcements/announcements/index/1/', array('method' => 'get'));
 		$this->assertTextNotContains('ERROR', $this->result);
 	}
 
@@ -207,7 +223,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  *
  * @return void
  */
-	public function createLogind($isLogin) {
+	public function createLogIn($isLogin) {
 		$this->__isLogin = $isLogin;
 		$this->AuthGeneralController = $this->generate('Announcements.Announcements', array(
 			'components' => array(
@@ -231,10 +247,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return   mixed
  */
 	public function authUserCallback() {
-		$auth = array(
-			'id' => 1,
-			'username' => 'admin',
-		);
+		$auth = $this->__user;
 		//ログイン状態を返す
 		if ($this->__isLogin) {
 			if (empty($key) || !isset($auth[$key])) {

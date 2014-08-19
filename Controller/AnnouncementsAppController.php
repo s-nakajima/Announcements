@@ -7,6 +7,7 @@
  * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 App::uses('AppController', 'Controller');
+App::uses('NetCommonsPluginComponent', 'NetCommons.Controller/Component');
 
 class AnnouncementsAppController extends AppController {
 
@@ -52,7 +53,8 @@ class AnnouncementsAppController extends AppController {
 			)
 		),
 		'RequestHandler',
-		'Security'
+		'Security',
+		'NetCommons.NetCommonsPlugin'
 	);
 
 /**
@@ -140,31 +142,22 @@ class AnnouncementsAppController extends AppController {
  */
 	protected function _setFrame($frameId) {
 		//frameの情報を取得する
-		$frame = $this->NetCommonsFrame->findById($frameId);
+		$frame = $this->NetCommonsPlugin->setFrameId($this, $frameId);
 		//frameの情報から、諸々設定値を書く王する。
-		if ($frame && isset($frame[$this->NetCommonsFrame->name]['id'])) {
-			//frames.id
-			$this->frameId = $frame[$this->NetCommonsFrame->name]['id'];
-			$this->set('frameId', $this->frameId);
-			//rooms.id
-			$this->roomId = $frame[$this->NetCommonsFrame->name]['room_id'];
-			$this->set('roomId', $this->roomId);
-			//ブロックID
-			$this->blockId = $frame[$this->NetCommonsFrame->name]['block_id'];
-			$this->set('blockId', $this->blockId);
-			//ルーム管理者の認証が必要かの確認
-			$this->isNeedApproval = $this->NetCommonsRoom->checkApproval($this->__roomId);
-			$this->set('isNeedApproval', $this->isNeedApproval);
+		if ($frame) {
+			$this->frameId = $this->NetCommonsPlugin->frameId;
+			$this->roomId = $this->NetCommonsPlugin->roomId;
+			$this->blockId = $this->NetCommonsPlugin->blockId;
+			$this->isNeedApproval = $this->NetCommonsPlugin->isNeedApproval;
+			$this->isRoomAdmin = $this->NetCommonsPlugin->isRoomAdmin;
+			$this->isBlockEdit = $this->NetCommonsPlugin->isBlockEdit;
 
 			//edit_contentの権限を確認する
-			$roomPart = $this->__getRoomPart();
-			$this->__setEdit($roomPart);
-			//ルーム管理者かどうか確認する。
-			$this->__setRoomAdmin($roomPart);
+			$this->__setEdit($this->NetCommonsPlugin->roomPart);
+
 			//コンテンツの公開権限を確認し、設定する。
-			$this->__setPublishContent($roomPart, $this->isNeedApproval);
-			//ブロックの編集権限を確認し設定する。
-			$this->__setEditBLock($roomPart);
+			$this->setPublishContent($this->NetCommonsPlugin->roomPart, $this->isNeedApproval);
+
 		}
 		//block別のpart設定を取得し設定する。
 		$this->__setBlockPartList();
@@ -179,7 +172,7 @@ class AnnouncementsAppController extends AppController {
  * @param bool $isNeedApproval ルーム管理者の承認が必要かどうか
  * @return bool
  */
-	private function __setPublishContent($roomPart, $isNeedApproval) {
+	public function setPublishContent($roomPart, $isNeedApproval) {
 		$this->set('isPublish', false); //初期値
 		$columnName = 'publish_content';
 		$blockId = $this->blockId;
@@ -203,20 +196,6 @@ class AnnouncementsAppController extends AppController {
 	}
 
 /**
- * ブロックの編集権限を確認し設定する。
- *
- * @param array $roomPart room_parts parts_rooms_usersのselect結果
- * @return bool
- */
-	private function __setEditBLock($roomPart) {
-		$columnName = 'edit_block';
-		$blockId = $this->blockId;
-		$this->isBlockEdit = $this->__checkPartSetting($roomPart, $columnName, $blockId);
-		$this->set('isBlockEdit', $this->isBlockEdit);
-		return $this->isBlockEdit;
-	}
-
-/**
  * 権限チェック あとでモデルに移す。
  *
  * @param array $roomPart room part
@@ -226,11 +205,10 @@ class AnnouncementsAppController extends AppController {
  * @SuppressWarnings(PHPMD)
  */
 	private function __checkPartSetting($roomPart, $columnName, $blockId) {
+		//$rtn = $this->NetCommonsPlugin->checkPartSetting($this, $roomPart, $columnName);
 		$RoomsUserName = $this->NetCommonsPartsRoomsUser->name;
 		if (! $roomPart
-			|| ! isset($roomPart['RoomPart'])
-			|| ! isset($roomPart[$RoomsUserName])
-			|| ! isset($roomPart[$RoomsUserName]['part_id'])
+			|| ! isset($roomPart['RoomPart']) || ! isset($roomPart[$RoomsUserName]) || ! isset($roomPart[$RoomsUserName]['part_id'])
 		) {
 			return false;
 		}
@@ -284,42 +262,7 @@ class AnnouncementsAppController extends AppController {
  * @return mix int or null
  */
 	protected function _setLoginUserId() {
-		if ($this->Auth->loggedIn()) {
-			$this->userId = $this->Auth->user('id');
-			$this->Set('isLogin', true);
-			return $this->userId;
-		}
-		$this->Set('isLogin', false);
-	}
-
-/**
- * ルーム管理者か判定して設定する。
- *
- * @param array $roomPart parts_rooms_usersの結果
- * @return bool
- */
-	private function __setRoomAdmin($roomPart) {
-		//初期値
-		$this->isRoomAdmin = false;
-		$this->set('isRoomAdmin', $this->isRoomAdmin);
-		if (isset($roomPart['RoomPart'])
-			&& $roomPart['RoomPart']['part_id'] == $this->_RoomAdminPartId
-		) {
-			//権限無し
-			$this->isRoomAdmin = true;
-			$this->set('isRoomAdmin', $this->isRoomAdmin);
-			return true;
-		}
-		return false;
-	}
-
-/**
- * ログインしているユーザのPartを取得する
- *
- * @return mixed
- */
-	private function __getRoomPart() {
-		return $this->NetCommonsPartsRoomsUser->getRoomPart($this->roomId, $this->userId);
+		$this->NetCommonsPlugin->getUserId($this);
 	}
 
 /**
