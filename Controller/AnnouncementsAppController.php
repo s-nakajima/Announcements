@@ -145,6 +145,13 @@ class AnnouncementsAppController extends AppController {
 	public $roomPart = array();
 
 /**
+ * セッティングモードの状態
+ *
+ * @var bool
+ */
+	public $isSetting = false;
+
+/**
  * frame 取得とそこからの諸々設定
  *
  * @param int $frameId flames.id
@@ -158,12 +165,13 @@ class AnnouncementsAppController extends AppController {
 			//edit_contentの権限を確認する
 			$this->__setEdit($this->NetCommonsPlugin->roomPart);
 			//publish_content コンテンツの公開権限を確認し、設定する。
-			//メモ : contentの権限は、プラグイン側での判断になるため、共通処理にはなっていない。
+			//contentの権限は、プラグイン側での判断になるため、共通処理にはなっていない。
 			//room_partsよりきつい制限を設ける事が出来る。
 			$this->setPublishContent();
 		}
 		//block別のpart設定を取得し設定する。
 		$this->__setBlockPartList();
+
 		//frameの情報を返す
 		return $frame;
 	}
@@ -205,7 +213,7 @@ class AnnouncementsAppController extends AppController {
  * @SuppressWarnings(PHPMD)
  */
 	private function __checkPartSetting($roomPart, $columnName, $blockId) {
-		$RoomsUserName = $this->NetCommonsPartsRoomsUser->name;
+		$RoomsUserName = "NetCommonsPartsRoomsUser";
 		$roomPartName = 'RoomPart';
 		if (! $roomPart
 			|| ! isset($roomPart[$roomPartName]) || ! isset($roomPart[$RoomsUserName]) || ! isset($roomPart[$RoomsUserName]['part_id'])
@@ -233,8 +241,8 @@ class AnnouncementsAppController extends AppController {
 
 		$partId = $roomPart[$RoomsUserName]['part_id'];
 		$blockPart = $this->AnnouncementBlockPart->findByBlockId($this->blockId, $partId);
-		if (isset($blockPart[$RoomsUserName][$columnName])
-			&& $blockPart[$RoomsUserName][$columnName] == 1
+		if (isset($blockPart["AnnouncementBlockPart"][$columnName])
+			&& $blockPart["AnnouncementBlockPart"][$columnName] == 1
 		) {
 			return true;
 		}

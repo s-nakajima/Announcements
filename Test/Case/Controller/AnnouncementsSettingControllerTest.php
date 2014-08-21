@@ -24,6 +24,16 @@ class AnnouncementsSettingControllerTest extends ControllerTestCase {
 	}
 
 /**
+ * tearDown method
+ *
+ * @return void
+ */
+	public function tearDown() {
+		unset($this->BlockPart);
+		parent::tearDown();
+	}
+
+/**
  * Fixtures
  *
  * @var array

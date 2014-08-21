@@ -178,14 +178,7 @@ class AnnouncementBlockPart extends AppModel {
 		//配列からblockのidを取得する
 		$blockId = $this->getBlockIdByFrame($frame, $userId);
 		if ($blockId == 0) {
-			$block = $this->__Frame->createBlock($frameId, $userId);
-			if (isset($block[$this->__Block->name])
-				&& isset($block[$this->__Block->name]['id'])
-			) {
-				$blockId = $block[$this->__Block->name]['id'];
-			} else {
-				return array();
-			}
+			return array();
 		}
 		//元データの取得 : 無ければ初期値をinsert処理を実行する
 		//blockが無かった場合作成。
@@ -206,11 +199,6 @@ class AnnouncementBlockPart extends AppModel {
 			return array();
 		}
 		$partIdList = $this->__RoomPart->getVariableListPartIds($abilityName);
-		//更新処理
-		if (! is_array($blockParts)) {
-			return array();
-		}
-
 		$onList = array();
 		$offList = array();
 		//更新条件を分離
@@ -228,9 +216,9 @@ class AnnouncementBlockPart extends AppModel {
 		$dataSource->begin();
 		//権限付与
 		if (! $this->updateColumn($onList, $abilityName, 1, $blockId, $userId)) {
-			//ロールバック
-			$dataSource->rollback();
-			return array();
+				//ロールバック
+				$dataSource->rollback();
+				return array();
 		}
 		//権限除去
 		if (! $this->updateColumn($offList, $abilityName, 0, $blockId, $userId)) {
@@ -256,20 +244,18 @@ class AnnouncementBlockPart extends AppModel {
 	public function updateColumn($partIdList, $columnName, $value, $blockId, $userId) {
 		foreach ($partIdList as $partId) {
 			$id = $this->getIdByBlockId($blockId, $partId);
-			if (! $id) {
-				//レコードが無い
-				return false;
-			}
-			$insertArray = array(
-				'id' => $id,
-				$columnName => $value,
-				'modified_user_id' => $userId
-			);
-			if ($this->save($insertArray)) {
-				return true;
+			if ($id) {
+				$insertArray = array(
+					'id' => $id,
+					$columnName => $value,
+					'modified_user_id' => $userId
+				);
+				if (! $this->save($insertArray)) {
+					return false;
+				}
 			}
 		}
-		return false;
+		return true;
 	}
 
 /**

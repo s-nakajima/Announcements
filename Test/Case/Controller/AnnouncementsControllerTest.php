@@ -12,7 +12,8 @@ App::uses('AuthGeneralController', 'Controller');
 App::uses('AuthComponent', 'Controller/Component');
 App::uses('AnnouncementsApp', 'Announcements.Controller');
 App::uses('Announcements', 'Announcements.Controller');
-
+App::uses('AnnouncementBlockPart', 'Announcements.Model');
+App::uses('NetCommonsFrame', 'NetCommons.Model');
 
 /**
  * Summary for AnnouncementEditsController Test Case
@@ -31,10 +32,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  *
  * @var array
  */
-	private $__user = array(
-		'id' => 1,
-		'username' => 'admin',
-	);
+	private $__user = 1;
 
 /**
  * setUp
@@ -44,6 +42,37 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->createLogIn(false);
+		$this->BlockPart = ClassRegistry::init('Announcements.AnnouncementBlockPart');
+		$this->NetCommonsFrame = ClassRegistry::init('NetCommons.NetCommonsFrame');
+
+		$type = "edit";
+		$userId = 1;
+		$frameId = 1;
+		$data = array(
+			'frame_id' => 1,
+			'block_id' => 1,
+			'part_id' => "2,3,4"
+		);
+		$rtn = $this->BlockPart->updatePartsAbility($type, $frameId, $data, $userId);
+		$this->assertTextEquals(5, count($rtn));
+		$data = array(
+			'frame_id' => 1,
+			'block_id' => 2,
+			'part_id' => "2,3,4"
+		);
+
+		$rtn = $this->BlockPart->updatePartsAbility($type, $frameId, $data, $userId);
+		$this->assertTextEquals(5, count($rtn));
+	}
+
+/**
+ * tearDown method
+ *
+ * @return void
+ */
+	public function tearDown() {
+		unset($this->BlockPart);
+		parent::tearDown();
 	}
 
 /**
@@ -73,6 +102,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  */
 	public function testIndex() {
 		// frameIdなし
+		$this->createLogIn(true, 1);
 		$this->testAction('/announcements/announcements/index', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
 		// frameId指定 デェフォルトの言語
@@ -81,11 +111,17 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		// 言語指定英語 データ無しの場合
 		Configure::write('Config.language', 'en');
 		$this->testAction('/announcements/announcements/index/1', array('method' => 'get'));
+		//$this->assertTextEquals('', $this->result);
+		$this->testAction('/announcements/announcements/index/1/ja', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
 
 		Configure::write('Config.language', 'ja');
 		$this->testAction('/announcements/announcements/index/1000000', array('method' => 'get'));
-		$this->assertTextEquals('', $this->result);
+		//$this->assertTextEquals('', $this->result);
+
+		Configure::write('Config.language', 'en');
+		$this->testAction('/announcements/announcements/index/1', array('method' => 'get'));
+		//$this->assertTextEquals('', $this->result);
 	}
 
 /**
@@ -93,7 +129,8 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  *
  * @return   void
  */
-	public function testPostForPost() {
+	public function testEditForPost() {
+		$this->createLogIn(true, 1);
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 		$this->Controller = $this->generate('Announcements.Announcements', array(
 			'components' => array(
@@ -103,6 +140,28 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		$data = array();
 		$data['AnnouncementDatum']['content'] = rawurlencode("test"); //URLエンコード
 		$data['AnnouncementDatum']['frameId'] = 1;
+		$data['AnnouncementDatum']['blockId'] = 1;
+		$data['AnnouncementDatum']['type'] = "Draft";
+		$data['AnnouncementDatum']['langId'] = 2;
+		$data['AnnouncementDatum']['id'] = 0;
+		$this->testAction('/announcements/announcements/edit/1/',
+			array (
+				'method' => 'post',
+				'data' => $data
+			)
+		);
+		$this->assertTextNotContains('ERROR', $this->view);
+
+		$this->createLogIn(true);
+		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
+		$this->Controller = $this->generate('Announcements.Announcements', array(
+			'components' => array(
+				'Security'
+			)
+		));
+		$data = array();
+		$data['AnnouncementDatum']['content'] = rawurlencode("test"); //URLエンコード
+		$data['AnnouncementDatum']['frameId'] = 300;
 		$data['AnnouncementDatum']['blockId'] = 0;
 		$data['AnnouncementDatum']['type'] = "Draft";
 		$data['AnnouncementDatum']['langId'] = 2;
@@ -123,6 +182,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  */
 	public function testPostForPostError() {
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
+		$this->createLogIn(true, 1);
 		$this->Controller = $this->generate('Announcements.Announcements', array(
 			'components' => array(
 				'Security'
@@ -143,7 +203,6 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 				'data' => $data
 			)
 		);
-		//errorになるはずだからsuccessはこない
 		$this->assertTextNotContains('success', $this->result);
 	}
 
@@ -153,20 +212,12 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return   void
  */
 	public function testGetEditForm() {
+		$this->createLogIn(true);
 		$this->testAction('/announcements/announcements/form/1/', array('method' => 'get'));
 		$this->assertTextNotContains('ERROR', $this->result);
-		//add
-		$this->testAction('/announcements/announcements/add/1/', array('method' => 'get'));
-		$this->assertTextNotContains('ERROR', $this->result);
-	}
 
-/**
- * edit error
- *
- * @return   void
- */
-	public function testEditGetError() {
-		$this->testAction('/announcements/announcements/edit/1/', array('method' => 'get'));
+		$this->createLogIn(true, 1);
+		$this->testAction('/announcements/announcements/edit/1/ja', array('method' => 'get'));
 		$this->assertTextNotContains('ERROR', $this->result);
 	}
 
@@ -176,13 +227,27 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return void
  */
 	public function testIndexLogin() {
-		$this->createLogIn(true);
-		$this->testAction('/announcements/announcements/index/1', array('method' => 'get'));
+		$this->createLogIn(true, 1);
+		Configure::write('Pages.isSetting', true);
+		$this->testAction('/announcements/announcements/index/1/ja', array('method' => 'get'));
 		$this->assertTextNotContains('ERROR', $this->result);
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = false;
 
-		Configure::write('isSetting', true);
-		$this->testAction('/announcements/announcements/index/2', array('method' => 'get'));
+		$this->createLogIn(true, 1);
+		Configure::write('Pages.isSetting', false);
+		$this->testAction('/announcements/announcements/index/1/ja', array('method' => 'get'));
+		$this->assertTextNotContains('ERROR', $this->result);
+		$_SERVER['HTTP_X_REQUESTED_WITH'] = false;
+
+		$this->createLogIn(true, 1);
+		Configure::write('Pages.isSetting', true);
+		$this->testAction('/announcements/announcements/index/1/en', array('method' => 'get'));
+		$this->assertTextNotContains('ERROR', $this->result);
+		$_SERVER['HTTP_X_REQUESTED_WITH'] = false;
+
+		$this->createLogIn(true, 1);
+		Configure::write('Pages.isSetting', false);
+		$this->testAction('/announcements/announcements/index/1/en', array('method' => 'get'));
 		$this->assertTextNotContains('ERROR', $this->result);
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = false;
 	}
@@ -194,9 +259,14 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  */
 	public function testIndexNoSetting() {
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
-		//ログイン状態
-		Configure::write('isSetting', false);
-		$this->testAction('/announcements/announcements/index/1/', array('method' => 'get'));
+		$this->createLogIn(true, 1);
+		//データ有り
+		Configure::write('Pages.isSetting', false);
+		$this->testAction('/announcements/announcements/index/1/ja', array('method' => 'get'));
+		$this->assertTextNotContains('ERROR', $this->result);
+		//データなし
+		Configure::write('Pages.isSetting', false);
+		$this->testAction('/announcements/announcements/index/100000000000000/ja', array('method' => 'get'));
 		$this->assertTextNotContains('ERROR', $this->result);
 	}
 
@@ -205,17 +275,17 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return void
  */
 	public function testIndexNoLogin() {
-		//ajax通信ON
-		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
-		$this->Controller = $this->generate('Announcements.Announcements', array(
-			'components' => array(
-				'Security'
-			)
-		));
-		//ajaxかどうかの判定をtrueにする。
-		$this->Controller->request->is('ajax');
+		$this->createLogIn(false);
+		$this->testAction('/announcements/announcements/index/1/ja', array('method' => 'get'));
+		$this->assertTrue(is_string($this->result));
+		$this->testAction('/announcements/announcements/index/50000000/ja', array('method' => 'get'));
+		$this->assertTextEquals('', $this->result);
+
+		$this->createLogIn(true);
 		$this->testAction('/announcements/announcements/index/1/', array('method' => 'get'));
-		$this->assertTextNotContains('ERROR', $this->result);
+		$this->assertTrue(is_string($this->result));
+		$this->testAction('/announcements/announcements/index/50000000/', array('method' => 'get'));
+		$this->assertTextEquals('', $this->result);
 	}
 
 /**
@@ -223,8 +293,9 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  *
  * @return void
  */
-	public function createLogIn($isLogin) {
+	public function createLogIn($isLogin, $userId = 1) {
 		$this->__isLogin = $isLogin;
+		$this->__user = $userId;
 		$this->AuthGeneralController = $this->generate('Announcements.Announcements', array(
 			'components' => array(
 				'Auth' => array('user'),
@@ -250,15 +321,8 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		$auth = $this->__user;
 		//ログイン状態を返す
 		if ($this->__isLogin) {
-			if (empty($key) || !isset($auth[$key])) {
-				return $auth;
-			}
-			return $auth[$key];
+			return $auth;
 		}
-		//ログアウトしている状態を返す
-		if (empty($key) || !isset($auth[$key])) {
-			return null;
-		}
-		return array();
+		return null;
 	}
 }

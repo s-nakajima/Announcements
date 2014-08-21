@@ -73,6 +73,14 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 		if (! $this->request->isPost()) {
 			return $this->__ajaxError(405, __("POSTのみ操作可能です。"));
 		}
+		if (! $this->_setFrame($frameId)) {
+			//frameIdがおかしい
+			return $this->__ajaxError(404, __('該当の情報が存在しません。'));
+		}
+		if (! $this->isBlockEdit) {
+			return $this->__ajaxError(403, __("権限がありません。"));
+		}
+
 		//ブロックの編集権限についてのチェック
 		//必須パラメータ
 		if (is_numeric($frameId) && $frameId > 0 && $type) {
@@ -110,6 +118,10 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 			//frameIdがおかしい
 			return $this->__ajaxError(404, __('該当の情報が存在しません。'));
 		}
+		if (! $this->isBlockEdit) {
+			return $this->__ajaxError(403, __("権限がありません。"));
+		}
+
 		//データをmodelへ
 		$rtn = $this->AnnouncementBlockMessage->dataSave($frameId, $this->data, $this->userId);
 		if ($rtn) {

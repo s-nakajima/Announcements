@@ -12,20 +12,6 @@ App::uses('AnnouncementsAppController', 'Announcements.Controller');
 class AnnouncementsController extends AnnouncementsAppController {
 
 /**
- * セッティングモードの状態
- *
- * @var bool
- */
-	public $isSetting = false;
-
-/**
- * Announcement model object
- *
- * @var null
- */
-	public $Announcement = null;
-
-/**
  * 準備
  *
  * @return void
@@ -54,32 +40,22 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  */
 	public function index($frameId = 0, $lang = '') {
-		$this->_setLang($lang);
-		$this->_setFrame($frameId); //flameの確認
-		$this->setPartList(); //パートの一覧取得
-
-		//ブロックが設定されておらず、セッティングモードでもない
-		if (! $this->blockId && ! $this->isSetting) {
+		if (! $frameId) {
 			return $this->render('notice');
 		}
-		//編集権限が無い人 (ログイン中も含む 公開情報しかみえない）
-		if (! $this->isEdit
-			&& ! $this->isBlockEdit
-			&& ! $this->isSetting) {
-			//blockから情報を取得 $LangId
+		$this->_setLang($lang);
+		$this->_setFrame($frameId);
+		$this->setPartList();
+		//ログインしていない
+		if (! $this->userId) {
+			$this->__indexNologin();
+		}
+		//権限が無い
+		if (! $this->isEdit) {
 			return $this->__indexNologin($this->frameId, $this->blockId);
 		}
-		//セッティングモードではないが、編集権限はある
-		if ($this->isEdit
-				&& ! $this->isSetting) {
-			return $this->__indexNoSetting($this->frameId, $this->blockId);
-		}
-		//ブロックの編集権限あり (ルーム管理者を含む）
-		if ($this->isEdit) {
-			return $this->__indexEdit();
-		}
-		//セッティングモードon 編集権限のみ
-		return $this->render("Announcements/setting/index");
+		//編集権限がある
+		return $this->__indexEdit();
 	}
 
 /**
@@ -88,45 +64,18 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return mixed
  */
 	private function __indexEdit() {
-		if (! $this->isRoomAdmin) {
-			//セッティングモードON 編集権限がある
-			$draftData = $this->AnnouncementDatum->getData($this->blockId, $this->langId, true);
-			//セッティングモードOFF データ無し(下書きもなし）
-			$data = $this->AnnouncementDatum->getData($this->blockId, $this->langId, $this->isSetting);
-			$this->set('draftItem', $draftData);
-			$this->set('item', $data);
-			return $this->render("Announcements/setting/index");
+		//セッティングモードではない
+		if (! $this->isSetting) {
+			return $this->__indexNoSetting();
 		}
-
-		//セッティングモードON 編集権限がある
+		//セッティングモードだ
 		$draftData = $this->AnnouncementDatum->getData($this->blockId, $this->langId, true);
-		//セッティングモードOFF データ無し(下書きもなし）
 		$data = $this->AnnouncementDatum->getData($this->blockId, $this->langId, $this->isSetting);
-		if (! $data
-			&& ! $draftData
-			&& $this->frameId
-			&& ! $this->blockId
-			&& $this->isBlockEdit
-		) {
-			//コンテンツも無く、blockもなく、でもプラグインだけが設置されている状態
-			//もうこの状態でblockを新規作成してしまう。 そうするとblockIdがないviewの状態を防げる。
-			//frameIdがあり、frames.block_idがなくedit_blockの権限がある状態
-			//frameにblockを作成する。
-			$this->Frame->createBlock($this->frameId, $this->userId);
-			//設定値を再格納
-			$this->NetCommonsPlugin->setFrameId($this->frameId);
-		}
 		$this->set('draftItem', $draftData);
 		$this->set('item', $data);
 
 		$blockPart = $this->AnnouncementBlockPart->getListPartIdArray($this->blockId);
 		$this->set('blockPart', $blockPart);
-		$messagePart = array();
-		$publicMessage = array();
-		$updateMessage = array();
-		$this->set('messagePart', $messagePart);
-		$this->set('publicMessage', $publicMessage);
-		$this->set('updateMessage', $updateMessage);
 		return $this->render("Announcements/setting/index");
 	}
 
@@ -165,12 +114,26 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return CakeResponse
  */
 	public function edit($frameId = 0) {
-		$this->_setFrame($frameId);
-		$this->viewClass = 'Json';
-		$this->layout = false;
 		if (! $this->request->isPost()) {
 			return $this->__ajaxPostError();
 		}
+		$this->_setFrame($frameId);
+		$this->viewClass = 'Json';
+		$this->layout = false;
+		/*if (! $this->isEdit) {
+			//権限エラー
+			$this->response->statusCode(403);
+			$result = array(
+				'message' => __('権限がありません。'),
+			);
+			$this->set(compact('result'));
+			$this->set('_serialize', 'result');
+			return $this->render();
+		}
+		if (! $this->BlockId) {
+			//blockの作成
+			$this->NetCommonsFrame->createBlock($this->frameId, $this->userId);
+		}*/
 		//保存
 		$rtn = $this->AnnouncementDatum->saveData(
 			$this->data,
@@ -217,17 +180,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 			$this->set(compact('result'));
 			$this->set('_serialize', 'result');
 			return $this->render();
-	}
-
-/**
- * 新規作成処理(非同期通信）
- * add
- *
- * @param int $frameId frames.id
- * @return void
- */
-	public function add($frameId) {
-		return $this->edit($frameId);
 	}
 
 /**
