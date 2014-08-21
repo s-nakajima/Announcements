@@ -58,7 +58,9 @@ class AnnouncementsAppController extends AppController {
 	);
 
 /**
- * ルーム管理者の承認が必要
+ * need Approval for room`s contents.
+ * ルーム管理者の承認が必要かどうかのルームの設定
+ * 初期値はより厳しい設定にするべきなのでtureを初期値としている。
  *
  * @var bool
  */
@@ -107,18 +109,18 @@ class AnnouncementsAppController extends AppController {
 	public $langId = 2;
 
 /**
+ * 言語
+ *
+ * @var string
+ */
+	public $lang = 'ja';
+
+/**
  * users.id
  *
  * @var int
  */
 	public $userId = 0;
-
-/**
- * ルーム管理者のpart_id
- *
- * @var int
- */
-	protected $_RoomAdminPartId = 1;
 
 /**
  * コンテンツの編集権限
@@ -135,6 +137,14 @@ class AnnouncementsAppController extends AppController {
 	public $isPublish = false;
 
 /**
+ * ルーム内での権限
+ * room_parts と parts_rooms_usersが1レコード分格納される。
+ *
+ * @ver array
+ */
+	public $roomPart = array();
+
+/**
  * frame 取得とそこからの諸々設定
  *
  * @param int $frameId flames.id
@@ -145,19 +155,12 @@ class AnnouncementsAppController extends AppController {
 		$frame = $this->NetCommonsPlugin->setFrameId($this, $frameId);
 		//frameの情報から、諸々設定値を書く王する。
 		if ($frame) {
-			$this->frameId = $this->NetCommonsPlugin->frameId;
-			$this->roomId = $this->NetCommonsPlugin->roomId;
-			$this->blockId = $this->NetCommonsPlugin->blockId;
-			$this->isNeedApproval = $this->NetCommonsPlugin->isNeedApproval;
-			$this->isRoomAdmin = $this->NetCommonsPlugin->isRoomAdmin;
-			$this->isBlockEdit = $this->NetCommonsPlugin->isBlockEdit;
-
 			//edit_contentの権限を確認する
 			$this->__setEdit($this->NetCommonsPlugin->roomPart);
-
-			//コンテンツの公開権限を確認し、設定する。
-			$this->setPublishContent($this->NetCommonsPlugin->roomPart, $this->isNeedApproval);
-
+			//publish_content コンテンツの公開権限を確認し、設定する。
+			$this->setPublishContent();
+			//メモ : contentの権限は、プラグイン側での判断になるため、共通処理にはなっていない。
+			//room_partsよりきつい制限を設ける事が出来る。
 		}
 		//block別のpart設定を取得し設定する。
 		$this->__setBlockPartList();
@@ -168,21 +171,18 @@ class AnnouncementsAppController extends AppController {
 /**
  * コンテンツの公開権限を確認し格納する。
  *
- * @param array $roomPart ルーム内でログインユーザの担当しているパートの情報
- * @param bool $isNeedApproval ルーム管理者の承認が必要かどうか
  * @return bool
  */
-	public function setPublishContent($roomPart, $isNeedApproval) {
+	public function setPublishContent() {
 		$this->set('isPublish', false); //初期値
 		$columnName = 'publish_content';
-		$blockId = $this->blockId;
-		$rtn = $this->__checkPartSetting($roomPart, $columnName, $blockId);
-		if ($isNeedApproval && $this->isRoomAdmin) {
+		$rtn = $this->__checkPartSetting($this->roomPart, $columnName, $this->blockId);
+		if ($this->isNeedApproval && $this->isRoomAdmin) {
 			//ルーム管理者の承認がひつようで、ルーム管理者
 			$this->isPublish = $rtn;
 			$this->set('isPublish', $this->isPublish);
 			return $this->isPublish;
-		} elseif ($isNeedApproval && ! $this->isRoomAdmin) {
+		} elseif ($this->isNeedApproval && ! $this->isRoomAdmin) {
 			//ルーム管理者の承認がひつようで、ルーム管理者以外 不許可
 			$this->isPublish = false;
 			$this->set('isPublish', $this->isPublish);
@@ -196,7 +196,7 @@ class AnnouncementsAppController extends AppController {
 	}
 
 /**
- * 権限チェック あとでモデルに移す。
+ * 権限チェック
  *
  * @param array $roomPart room part
  * @param string $columnName チェックしたいカラム
@@ -205,23 +205,23 @@ class AnnouncementsAppController extends AppController {
  * @SuppressWarnings(PHPMD)
  */
 	private function __checkPartSetting($roomPart, $columnName, $blockId) {
-		//$rtn = $this->NetCommonsPlugin->checkPartSetting($this, $roomPart, $columnName);
 		$RoomsUserName = $this->NetCommonsPartsRoomsUser->name;
+		$roomPartName = 'RoomPart';
 		if (! $roomPart
-			|| ! isset($roomPart['RoomPart']) || ! isset($roomPart[$RoomsUserName]) || ! isset($roomPart[$RoomsUserName]['part_id'])
+			|| ! isset($roomPart[$roomPartName]) || ! isset($roomPart[$RoomsUserName]) || ! isset($roomPart[$RoomsUserName]['part_id'])
 		) {
 			return false;
 		}
 		//roomPartから、$columnNameの値が1か0をみて、0だったらfalse 1だったらtrueを返す
 		//2だった場合は可変なので、partIdとroomIdからレコードを取り出し、設定を見る。1ならtrue 0ならfalse
-		if (isset($roomPart['RoomPart'][$columnName])
-			&& $roomPart['RoomPart'][$columnName] == 0
+		if (isset($roomPart[$roomPartName][$columnName])
+			&& $roomPart[$roomPartName][$columnName] == 0
 		) {
 			//権限無し
 			return false;
 		}
-		if (isset($roomPart['RoomPart'][$columnName])
-			&& $roomPart['RoomPart'][$columnName] == 1
+		if (isset($roomPart[$roomPartName][$columnName])
+			&& $roomPart[$roomPartName][$columnName] == 1
 		) {
 			//権限あり
 			return true;
@@ -310,7 +310,7 @@ class AnnouncementsAppController extends AppController {
 	}
 
 /**
- * パートの取得
+ * contentに対してのパートの取得
  *
  * @return array
  */

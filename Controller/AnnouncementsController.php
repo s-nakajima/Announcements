@@ -16,7 +16,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  *
  * @var bool
  */
-	private $__isSetting = false;
+	public $isSetting = false;
 
 /**
  * Announcement model object
@@ -35,9 +35,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 		parent::beforeFilter();
 		//未ログインでもアクセスを許可
 		$this->Auth->allow();
-		//設定値の格納 (セッティングモード判定結果）
-		$this->__isSetting = Configure::read('Pages.isSetting');
-		$this->set('isSetting', $this->__isSetting);
 		//初期値
 		$this->set('item', array());
 		$this->set('draftItem', array());
@@ -67,18 +64,18 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->setPartList(); //パートの一覧取得
 
 		//ブロックが設定されておらず、セッティングモードでもない
-		if (! $this->blockId && ! $this->__isSetting) {
+		if (! $this->blockId && ! $this->isSetting) {
 			return $this->render('notice');
 		}
 		//編集権限が無い人 (ログイン中も含む 公開情報しかみえない）
 		if (! $this->isEdit
 			&& ! $this->isBlockEdit
-			&& ! $this->__isSetting) {
+			&& ! $this->isSetting) {
 			//blockから情報を取得 $LangId
 			return $this->__indexNologin($frameId, $this->blockId);
 		}
 		//セッティングモードではないが、編集権限はある
-		if (! $this->__isSetting && $this->isEdit) {
+		if (! $this->isSetting && $this->isEdit) {
 			return $this->__indexNoSetting($frameId, $this->blockId);
 		}
 		//ブロックの編集権限あり (ルーム管理者を含む）
@@ -100,7 +97,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 			//セッティングモードON 編集権限がある
 			$draftData = $this->AnnouncementDatum->getData($this->blockId, $this->langId, true);
 			//セッティングモードOFF データ無し(下書きもなし）
-			$data = $this->AnnouncementDatum->getData($this->blockId, $this->langId, $this->__isSetting);
+			$data = $this->AnnouncementDatum->getData($this->blockId, $this->langId, $this->isSetting);
 			$this->set('draftItem', $draftData);
 			$this->set('item', $data);
 			return $this->render("Announcements/setting/index");
@@ -109,7 +106,21 @@ class AnnouncementsController extends AnnouncementsAppController {
 		//セッティングモードON 編集権限がある
 		$draftData = $this->AnnouncementDatum->getData($this->blockId, $this->langId, true);
 		//セッティングモードOFF データ無し(下書きもなし）
-		$data = $this->AnnouncementDatum->getData($this->blockId, $this->langId, $this->__isSetting);
+		$data = $this->AnnouncementDatum->getData($this->blockId, $this->langId, $this->isSetting);
+		if (! $data
+			&& ! $draftData
+			&& $this->frameId
+			&& ! $this->blockId
+			&& $this->isBlockEdit
+		) {
+			//コンテンツも無く、blockもなく、でもプラグインだけが設置されている状態
+			//もうこの状態でblockを新規作成してしまう。 そうするとblockIdがないviewの状態を防げる。
+			//frameIdがあり、frames.block_idがなくedit_blockの権限がある状態
+			//frameにblockを作成する。
+			$this->Frame->createBlock($this->frameId, $this->userId);
+			//設定値を再格納
+			$this->NetCommonsPlugin->setFrameId($this->frameId);
+		}
 		$this->set('draftItem', $draftData);
 		$this->set('item', $data);
 

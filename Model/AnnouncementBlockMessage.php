@@ -68,20 +68,4 @@ class AnnouncementBlockMessage extends AppModel {
 		}
 		return null;
 	}
-
-/**
- * データの更新処理
- *
- * @param int $frameId flames.id
- * @param array $data post
- * @param id $userId users.id
- * @return bool
- */
-	public function dataSave($frameId, $data, $userId) {
-		//メッセージの部分の保存
-		//送信するかどうかの保存
-		//送信先の保存
-		return true;
-	}
-
 }

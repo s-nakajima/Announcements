@@ -171,7 +171,7 @@ class AnnouncementBlockPart extends AppModel {
 			return array();
 		}
 		//frame情報取得
-		if (! $frame = $this->__Frame->findById($frameId) ) {
+		if (! $frame = $this->__Frame->findById($frameId)) {
 			return array();
 		}
 

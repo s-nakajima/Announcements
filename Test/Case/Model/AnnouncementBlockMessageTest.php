@@ -81,5 +81,4 @@ class AnnouncementBlockMessageTest extends CakeTestCase {
 		$rtn = $this->AnnouncementBlockMessage->getIdByBlockId($blockId, $langId);
 		$this->assertEquals(null, $rtn);
 	}
-
 }
