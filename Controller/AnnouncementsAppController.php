@@ -158,9 +158,9 @@ class AnnouncementsAppController extends AppController {
 			//edit_contentの権限を確認する
 			$this->__setEdit($this->NetCommonsPlugin->roomPart);
 			//publish_content コンテンツの公開権限を確認し、設定する。
-			$this->setPublishContent();
 			//メモ : contentの権限は、プラグイン側での判断になるため、共通処理にはなっていない。
 			//room_partsよりきつい制限を設ける事が出来る。
+			$this->setPublishContent();
 		}
 		//block別のpart設定を取得し設定する。
 		$this->__setBlockPartList();
@@ -230,8 +230,9 @@ class AnnouncementsAppController extends AppController {
 		if (! $blockId) {
 			return false;
 		}
+
 		$partId = $roomPart[$RoomsUserName]['part_id'];
-		$blockPart = $this->AnnouncementBlockPart->findByBlockId($blockId, $partId);
+		$blockPart = $this->AnnouncementBlockPart->findByBlockId($this->blockId, $partId);
 		if (isset($blockPart[$RoomsUserName][$columnName])
 			&& $blockPart[$RoomsUserName][$columnName] == 1
 		) {
@@ -282,11 +283,14 @@ class AnnouncementsAppController extends AppController {
 /**
  * 言語一覧の設定
  *
+ * @param string $lang language
  * @return void
  */
-	protected function _setLang() {
+	protected function _setLang($lang = "") {
 		//var_dump(Configure::read('Config.language'));
-		$lang = Configure::read('Config.language');
+		if (! $lang) {
+			$lang = Configure::read('Config.language');
+		}
 		//$list = Configure::read('Config.languageEnabled');
 		$this->langId = 2;
 		if ($lang == 'ja') {

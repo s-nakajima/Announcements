@@ -38,8 +38,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 		//初期値
 		$this->set('item', array());
 		$this->set('draftItem', array());
-		//編集権限初期値
-		$this->set('isEdit', false);
 		//ユーザIDの取得と設定
 		$this->_setLoginUserId();
 		//言語設定
@@ -56,10 +54,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  */
 	public function index($frameId = 0, $lang = '') {
-		if ($lang) {
-			//言語の指定 $langが使用可能か確認する必要がある。
-			//Configure::read('Config.language', $lang)
-		}
+		$this->_setLang($lang);
 		$this->_setFrame($frameId); //flameの確認
 		$this->setPartList(); //パートの一覧取得
 
@@ -72,16 +67,16 @@ class AnnouncementsController extends AnnouncementsAppController {
 			&& ! $this->isBlockEdit
 			&& ! $this->isSetting) {
 			//blockから情報を取得 $LangId
-			return $this->__indexNologin($frameId, $this->blockId);
+			return $this->__indexNologin($this->frameId, $this->blockId);
 		}
 		//セッティングモードではないが、編集権限はある
-		if (! $this->isSetting && $this->isEdit) {
-			return $this->__indexNoSetting($frameId, $this->blockId);
+		if ($this->isEdit
+				&& ! $this->isSetting) {
+			return $this->__indexNoSetting($this->frameId, $this->blockId);
 		}
 		//ブロックの編集権限あり (ルーム管理者を含む）
-		if ($this->isBlockEdit) {
-			//ブロック更新権限が有る人のみ ブロック設定初期値
-			return $this->__indexBlockEdit();
+		if ($this->isEdit) {
+			return $this->__indexEdit();
 		}
 		//セッティングモードon 編集権限のみ
 		return $this->render("Announcements/setting/index");
@@ -92,7 +87,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  *
  * @return mixed
  */
-	private function __indexBlockEdit() {
+	private function __indexEdit() {
 		if (! $this->isRoomAdmin) {
 			//セッティングモードON 編集権限がある
 			$draftData = $this->AnnouncementDatum->getData($this->blockId, $this->langId, true);
@@ -138,36 +133,28 @@ class AnnouncementsController extends AnnouncementsAppController {
 /**
  * index セッティングモードOFF 書き込み権限有り
  *
- * @param int $frameId frames.id
- * @param int $blockId blocks.id
  * @return CakeResponse
  */
-	private function __indexNoSetting($frameId, $blockId) {
-		$data = $this->AnnouncementDatum->getData($blockId, $this->langId, true);
+	private function __indexNoSetting() {
+		$data = $this->AnnouncementDatum->getData($this->blockId, $this->langId, true);
 		if (! $data) {
 			return $this->render("notice");
 		}
 		$this->set('item', $data);
-		$this->set('frameId', $frameId);
-		$this->set('blockId', $blockId);
 		return $this->render("Announcements/index/editor");
 	}
 
 /**
  * index 未ログイン向け処理
  *
- * @param int $frameId frames.id
- * @param int $blockId blocks.id
  * @return CakeResponse
  */
-	private function __indexNologin($frameId, $blockId) {
-		$data = $this->AnnouncementDatum->getPublishData($blockId, $this->langId);
+	private function __indexNologin() {
+		$data = $this->AnnouncementDatum->getPublishData($this->blockId, $this->langId);
 		if (! $data) {
 			return $this->render("notice");
 		}
 		$this->set('item', $data);
-		$this->set('frameId', $frameId);
-		$this->set('blockId', $blockId);
 		return $this->render("Announcements/index/default");
 	}
 
@@ -178,6 +165,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return CakeResponse
  */
 	public function edit($frameId = 0) {
+		$this->_setFrame($frameId);
 		$this->viewClass = 'Json';
 		$this->layout = false;
 		if (! $this->request->isPost()) {
@@ -186,7 +174,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		//保存
 		$rtn = $this->AnnouncementDatum->saveData(
 			$this->data,
-			$frameId,
+			$this->frameId,
 			$this->userId,
 			$this->request->is('ajax')
 		);
@@ -246,13 +234,11 @@ class AnnouncementsController extends AnnouncementsAppController {
  * お知らせ投稿用のformを取得する
  *
  * @param int $frameId frames.id
- * @param int $blockId blocks.id
  * @return void
  */
-	public function form($frameId = 0, $blockId = 0) {
+	public function form($frameId = 0) {
+		$this->_setFrame($frameId);
 		$this->layout = false;
-		$this->set('frameId', $frameId);
-		$this->set('blockId', $blockId);
 		return $this->render("Announcements/setting/get_edit_form");
 	}
 }
