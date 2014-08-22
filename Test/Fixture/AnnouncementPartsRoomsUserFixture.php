@@ -76,7 +76,17 @@ class AnnouncementPartsRoomsUserFixture extends CakeTestFixture {
 			'id' => 3,
 			'room_id' => 9,
 			'user_id' => 1,
-			'part_id' => 5,
+			'part_id' => 2,
+			'created_user_id' => 1,
+			'created' => '2014-06-02 16:18:02',
+			'modified_user_id' => 1,
+			'modified' => '2014-06-02 16:18:02'
+		),
+		array(
+			'id' => 4,
+			'room_id' => 2,
+			'user_id' => 9,
+			'part_id' => 2,
 			'created_user_id' => 1,
 			'created' => '2014-06-02 16:18:02',
 			'modified_user_id' => 1,

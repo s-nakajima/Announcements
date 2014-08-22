@@ -49,6 +49,7 @@ class AnnouncementsSettingControllerTest extends ControllerTestCase {
 		'plugin.announcements.announcement_block_part',
 		'app.room_part',
 		'app.languages_part',
+		'plugin.net_commons.net_commons_block',
 		'plugin.announcements.announcement_blockSetting',
 		'plugin.announcements.announcement_blockMessage'
 	);

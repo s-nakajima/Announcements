@@ -92,7 +92,8 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		'plugin.announcements.announcement_parts_rooms_user',
 		'app.room_part',
 		'app.languages_part',
-		'plugin.announcements.announcement_room'
+		'plugin.announcements.announcement_room',
+		'plugin.announcements.announcement_block_block'
 	);
 
 /**
@@ -154,11 +155,6 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 
 		$this->createLogIn(true, 1);
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
-		$this->Controller = $this->generate('Announcements.Announcements', array(
-			'components' => array(
-				'Security'
-			)
-		));
 		$data = array();
 		$data['AnnouncementDatum']['content'] = rawurlencode("test"); //URLエンコード
 		$data['AnnouncementDatum']['frameId'] = 300;
@@ -174,13 +170,8 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		);
 		$this->assertTextNotContains('ERROR', $this->view);
 
-		$this->createLogIn(true, 9);
+		$this->createLogIn(true, 1);
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
-		$this->Controller = $this->generate('Announcements.Announcements', array(
-			'components' => array(
-				'Security'
-			)
-		));
 		$data = array();
 		$data['AnnouncementDatum']['content'] = rawurlencode("test"); //URLエンコード
 		$data['AnnouncementDatum']['frameId'] = 1;
@@ -205,12 +196,6 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 	public function testPostForPostError() {
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 		$this->createLogIn(true, 1);
-		$this->Controller = $this->generate('Announcements.Announcements', array(
-			'components' => array(
-				'Security'
-			)
-		));
-
 		$data = array();
 		$data['AnnouncementDatum']['content'] = rawurlencode("test"); //URLエンコード
 		$data['AnnouncementDatum']['frameId'] = 1;
@@ -226,6 +211,44 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 			)
 		);
 		$this->assertTextNotContains('success', $this->result);
+
+		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
+		$this->createLogIn(true, 9);
+		$data = array();
+		$data['AnnouncementDatum']['content'] = rawurlencode("test"); //URLエンコード
+		$data['AnnouncementDatum']['frameId'] = 9;
+		$data['AnnouncementDatum']['blockId'] = 9;
+		$data['AnnouncementDatum']['type'] = "Draft";
+		//バリデーションエラーを発生させる設定 本来は数字
+		$data['AnnouncementDatum']['langId'] = "test";
+		$data['AnnouncementDatum']['id'] = 0;
+		$this->testAction('/announcements/announcements/edit/1/',
+			array (
+				'method' => 'post',
+				'data' => $data
+			)
+		);
+		$this->assertTextNotContains('success', $this->result);
+
+		$this->assertTextNotContains('success', $this->result);
+
+		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
+		$this->createLogIn(true, 9);
+		$data = array();
+		$data['AnnouncementDatum']['content'] = rawurlencode("test"); //URLエンコード
+		$data['AnnouncementDatum']['frameId'] = 9;
+		$data['AnnouncementDatum']['blockId'] = 9;
+		$data['AnnouncementDatum']['type'] = "Draft";
+		//バリデーションエラーを発生させる設定 本来は数字
+		$data['AnnouncementDatum']['langId'] = "test";
+		$data['AnnouncementDatum']['id'] = 0;
+		$this->testAction('/announcements/announcements/edit/9/',
+			array (
+				'method' => 'post',
+				'data' => $data
+			)
+		);
+		$this->assertTextContains('message', $this->result);
 	}
 
 /**

@@ -88,6 +88,19 @@ class AnnouncementFrameFixture extends CakeTestFixture {
 			'to' => '2014-08-07 10:00:00',
 			'created_user_id' => 1,
 			'created' => '2014-07-07 10:00:00',
+		),
+		array(
+			'id' => 10,
+			'room_id' => 2,
+			'box_id' => 10,
+			'plugin_id' => 1,
+			'block_id' => 10,
+			'weight' => 9,
+			'is_published' => true,
+			'from' => '2014-07-07 10:00:00',
+			'to' => '2014-08-07 10:00:00',
+			'created_user_id' => 1,
+			'created' => '2014-07-07 10:00:00',
 		)
 	);
 
