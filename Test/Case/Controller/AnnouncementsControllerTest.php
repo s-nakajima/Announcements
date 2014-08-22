@@ -152,7 +152,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		);
 		$this->assertTextNotContains('ERROR', $this->view);
 
-		$this->createLogIn(true);
+		$this->createLogIn(true, 1);
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 		$this->Controller = $this->generate('Announcements.Announcements', array(
 			'components' => array(
@@ -163,6 +163,28 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		$data['AnnouncementDatum']['content'] = rawurlencode("test"); //URLエンコード
 		$data['AnnouncementDatum']['frameId'] = 300;
 		$data['AnnouncementDatum']['blockId'] = 0;
+		$data['AnnouncementDatum']['type'] = "Draft";
+		$data['AnnouncementDatum']['langId'] = 2;
+		$data['AnnouncementDatum']['id'] = 0;
+		$this->testAction('/announcements/announcements/edit/1/',
+			array (
+				'method' => 'post',
+				'data' => $data
+			)
+		);
+		$this->assertTextNotContains('ERROR', $this->view);
+
+		$this->createLogIn(true, 9);
+		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
+		$this->Controller = $this->generate('Announcements.Announcements', array(
+			'components' => array(
+				'Security'
+			)
+		));
+		$data = array();
+		$data['AnnouncementDatum']['content'] = rawurlencode("test"); //URLエンコード
+		$data['AnnouncementDatum']['frameId'] = 1;
+		$data['AnnouncementDatum']['blockId'] = 1;
 		$data['AnnouncementDatum']['type'] = "Draft";
 		$data['AnnouncementDatum']['langId'] = 2;
 		$data['AnnouncementDatum']['id'] = 0;

@@ -60,6 +60,13 @@ class AnnouncementRoomFixture extends CakeTestFixture {
 			'need_approval' => 0,
 			'top_page_id' => 1,
 		),
+		array(
+			'id' => 9,
+			'group_id' => 9,
+			'space_id' => 9,
+			'need_approval' => 0,
+			'top_page_id' => 1,
+		),
 	);
 
 }

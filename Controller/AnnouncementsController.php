@@ -120,7 +120,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->_setFrame($frameId);
 		$this->viewClass = 'Json';
 		$this->layout = false;
-		/*if (! $this->isEdit) {
+		if (! $this->isEdit) {
 			//権限エラー
 			$this->response->statusCode(403);
 			$result = array(
@@ -133,7 +133,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		if (! $this->BlockId) {
 			//blockの作成
 			$this->NetCommonsFrame->createBlock($this->frameId, $this->userId);
-		}*/
+		}
 		//保存
 		$rtn = $this->AnnouncementDatum->saveData(
 			$this->data,

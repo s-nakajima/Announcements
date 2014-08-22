@@ -184,7 +184,7 @@ class AnnouncementsAppController extends AppController {
 	public function setPublishContent() {
 		$this->set('isPublish', false); //初期値
 		$columnName = 'publish_content';
-		$rtn = $this->__checkPartSetting($this->roomPart, $columnName, $this->blockId);
+		$rtn = $this->__checkPartSetting($this->roomPart, $columnName);
 		if ($this->isNeedApproval && $this->isRoomAdmin) {
 			//ルーム管理者の承認がひつようで、ルーム管理者
 			$this->isPublish = $rtn;
@@ -208,38 +208,27 @@ class AnnouncementsAppController extends AppController {
  *
  * @param array $roomPart room part
  * @param string $columnName チェックしたいカラム
- * @param int $blockId blocks.id
  * @return bool
  * @SuppressWarnings(PHPMD)
  */
-	private function __checkPartSetting($roomPart, $columnName, $blockId) {
+	private function __checkPartSetting($roomPart, $columnName) {
 		$RoomsUserName = "NetCommonsPartsRoomsUser";
 		$roomPartName = 'RoomPart';
 		if (! $roomPart
 			|| ! isset($roomPart[$roomPartName]) || ! isset($roomPart[$RoomsUserName]) || ! isset($roomPart[$RoomsUserName]['part_id'])
+			|| (isset($roomPart[$roomPartName][$columnName]) && $roomPart[$roomPartName][$columnName] == 0)
 		) {
 			return false;
 		}
-		//roomPartから、$columnNameの値が1か0をみて、0だったらfalse 1だったらtrueを返す
-		//2だった場合は可変なので、partIdとroomIdからレコードを取り出し、設定を見る。1ならtrue 0ならfalse
-		if (isset($roomPart[$roomPartName][$columnName])
-			&& $roomPart[$roomPartName][$columnName] == 0
-		) {
-			//権限無し
-			return false;
-		}
+
 		if (isset($roomPart[$roomPartName][$columnName])
 			&& $roomPart[$roomPartName][$columnName] == 1
 		) {
 			//権限あり
 			return true;
 		}
-		//blockがまだ作られていない場合
-		if (! $blockId) {
-			return false;
-		}
 
-		$partId = $roomPart[$RoomsUserName]['part_id'];
+		$partId = $roomPart[$roomPartName]['part_id'];
 		$blockPart = $this->AnnouncementBlockPart->findByBlockId($this->blockId, $partId);
 		if (isset($blockPart["AnnouncementBlockPart"][$columnName])
 			&& $blockPart["AnnouncementBlockPart"][$columnName] == 1
@@ -282,8 +271,7 @@ class AnnouncementsAppController extends AppController {
  */
 	private function __setEdit($roomPart) {
 		$columnName = 'edit_content';
-		$blockId = $this->blockId;
-		$this->isEdit = $this->__checkPartSetting($roomPart, $columnName, $blockId);
+		$this->isEdit = $this->__checkPartSetting($roomPart, $columnName);
 		$this->set('isEdit', $this->isEdit);
 		return $this->isEdit;
 	}
