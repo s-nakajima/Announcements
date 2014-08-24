@@ -1,4 +1,4 @@
-<div class="hidden">
+<div class='hidden'>
 <?php
 echo $this->Form->Create(null);
 

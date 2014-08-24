@@ -10,7 +10,7 @@
 /**
  * Summary for PartsRoomsUserFixture
  */
-class AnnouncementPartsRoomsUserFixture extends CakeTestFixture {
+class AnnouncementsRoomsUserFixture extends CakeTestFixture {
 
 /**
  * table
@@ -18,13 +18,6 @@ class AnnouncementPartsRoomsUserFixture extends CakeTestFixture {
  * @var string
  */
 	public $table = 'parts_rooms_users';
-
-/**
- * db config
- *
- * @var string
- */
-	public $useDbConfig = 'test';
 
 /**
  * Fields
@@ -62,36 +55,6 @@ class AnnouncementPartsRoomsUserFixture extends CakeTestFixture {
 			'modified_user_id' => 1,
 			'modified' => '2014-06-02 16:18:02'
 		),
-		array(
-			'id' => 2,
-			'room_id' => 1,
-			'user_id' => 2,
-			'part_id' => 2,
-			'created_user_id' => 1,
-			'created' => '2014-06-02 16:18:02',
-			'modified_user_id' => 1,
-			'modified' => '2014-06-02 16:18:02'
-		),
-		array(
-			'id' => 3,
-			'room_id' => 9,
-			'user_id' => 1,
-			'part_id' => 2,
-			'created_user_id' => 1,
-			'created' => '2014-06-02 16:18:02',
-			'modified_user_id' => 1,
-			'modified' => '2014-06-02 16:18:02'
-		),
-		array(
-			'id' => 4,
-			'room_id' => 2,
-			'user_id' => 9,
-			'part_id' => 2,
-			'created_user_id' => 1,
-			'created' => '2014-06-02 16:18:02',
-			'modified_user_id' => 1,
-			'modified' => '2014-06-02 16:18:02'
-		)
 	);
 
 }

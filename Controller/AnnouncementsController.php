@@ -21,41 +21,42 @@ class AnnouncementsController extends AnnouncementsAppController {
 		parent::beforeFilter();
 		//未ログインでもアクセスを許可
 		$this->Auth->allow();
-		//初期値
-		$this->set('item', array());
-		$this->set('draftItem', array());
-		//ユーザIDの取得と設定
-		$this->_setLoginUserId();
-		//言語設定
-		$this->_setLang();
-		$this->setLayout(); //レイアウトきりかえ
+		//言語ID初期値を格納
+		$this->set('langId', $this->langId);
 	}
 
 /**
  * index
  *
  * @param int $frameId frames.id
- * @param string $lang 言語設定 2文字
+ * @param string $lang language
  * @return CakeResponse
- * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  */
 	public function index($frameId = 0, $lang = '') {
+		return $this->view($frameId, $lang);
+	}
+
+/**
+ * view content detail
+ *
+ * @param int $frameId frames.id
+ * @param string $lang language
+ * @return CakeResponse
+ */
+	public function view($frameId = 0, $lang = '') {
+		$this->_contentPreparation($frameId, $lang);
+
 		if (! $frameId) {
 			return $this->render('notice');
 		}
-		$this->_setLang($lang);
-		$this->_setFrame($frameId);
-		$this->setPartList();
-		//ログインしていない
-		if (! $this->userId) {
-			$this->__indexNologin();
-		}
-		//権限が無い
-		if (! $this->isEdit) {
-			return $this->__indexNologin($this->frameId, $this->blockId);
+		//ログインしていない 編集権限がない
+		if (! CakeSession::read('Auth.User.id') ||
+			! $this->viewVars['contentEditable']
+		) {
+			return $this->__view();
 		}
 		//編集権限がある
-		return $this->__indexEdit();
+		return $this->__viewEdit();
 	}
 
 /**
@@ -63,48 +64,31 @@ class AnnouncementsController extends AnnouncementsAppController {
  *
  * @return mixed
  */
-	private function __indexEdit() {
-		//セッティングモードではない
-		if (! $this->isSetting) {
-			return $this->__indexNoSetting();
-		}
-		//セッティングモードだ
-		$draftData = $this->AnnouncementDatum->getData($this->blockId, $this->langId, true);
-		$data = $this->AnnouncementDatum->getData($this->blockId, $this->langId, $this->isSetting);
-		$this->set('draftItem', $draftData);
+	private function __viewEdit() {
+		//セッティングモード
+		$data = $this->Announcement->get($this->viewVars['blockId'], $this->langId);
 		$this->set('item', $data);
-
-		$blockPart = $this->AnnouncementBlockPart->getListPartIdArray($this->blockId);
+		if (! Configure::read('Pages.isSetting')) {
+			return $this->render("Announcements/view/editor");
+		}
+		//$blockPart = $this->AnnouncementBlockPart->getListPartIdArray($this->blockId);
+		$blockPart = array();
 		$this->set('blockPart', $blockPart);
 		return $this->render("Announcements/setting/index");
 	}
 
 /**
- * index セッティングモードOFF 書き込み権限有り
+ * index not login
  *
  * @return CakeResponse
  */
-	private function __indexNoSetting() {
-		$data = $this->AnnouncementDatum->getData($this->blockId, $this->langId, true);
+	private function __view() {
+		$data = $this->Announcement->get($this->viewVars['blockId'], $this->langId, true);
 		if (! $data) {
 			return $this->render("notice");
 		}
 		$this->set('item', $data);
-		return $this->render("Announcements/index/editor");
-	}
-
-/**
- * index 未ログイン向け処理
- *
- * @return CakeResponse
- */
-	private function __indexNologin() {
-		$data = $this->AnnouncementDatum->getPublishData($this->blockId, $this->langId);
-		if (! $data) {
-			return $this->render("notice");
-		}
-		$this->set('item', $data);
-		return $this->render("Announcements/index/default");
+		return $this->render('Announcements/view/default');
 	}
 
 /**
@@ -115,71 +99,52 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public function edit($frameId = 0) {
 		if (! $this->request->isPost()) {
-			return $this->__ajaxPostError();
+			return $this->__ajaxMessage(400, __('I failed to save'));
 		}
-		$this->_setFrame($frameId);
-		$this->viewClass = 'Json';
-		$this->layout = false;
-		if (! $this->isEdit) {
+		//準備
+		$this->_contentPreparation($frameId);
+		if (!$this->viewVars['contentEditable']) {
 			//権限エラー
-			$this->response->statusCode(403);
-			$result = array(
-				'message' => __('権限がありません。'),
-			);
-			$this->set(compact('result'));
-			$this->set('_serialize', 'result');
-			return $this->render();
+			return $this->__ajaxMessage(403, __('I failed to save'));
 		}
-		if (! $this->BlockId) {
-			//blockの作成
-			$this->NetCommonsFrame->createBlock($this->frameId, $this->userId);
-		}
+
 		//保存
-		$rtn = $this->AnnouncementDatum->saveData(
+		$rtn = $this->Announcement->saveContent(
 			$this->data,
-			$this->frameId,
-			$this->userId,
-			$this->request->is('ajax')
+			$this->viewVars['frameId'],
+			$this->viewVars['blockId'],
+			true
 		);
 		//成功結果を返す
-		if ($rtn) {
-			//urlEncode
-			$rtn['AnnouncementDatum']['content'] = rawurlencode($rtn['AnnouncementDatum']['content']);
-			$result = array(
-				'status' => 'success',
-				'message' => __('保存しました'),
-				'data' => $rtn
-			);
-			$this->set(compact('result'));
-			$this->set('_serialize', 'result');
-			return $this->render();
+		if (!$rtn) {
+			//失敗結果を返す
+			return $this->__ajaxMessage(500, __('I failed to save'), $rtn);
 		}
-		//失敗結果を返す
-		$this->response->statusCode(500);
+		$rtn['Announcement']['content'] = rawurlencode($rtn['Announcement']['content']);
+		return $this->__ajaxMessage(200, __('Saved'), $rtn);
+	}
+
+/**
+ * ajax message output
+ *
+ * @param int $code status code
+ * @param string $message message
+ * @param array $data updated content data
+ * @return CakeResponse
+ */
+	private function __ajaxMessage($code, $message, $data = "") {
+		$this->viewClass = 'Json';
+		$this->layout = false;
+		$this->view = null;
+		//post以外の場合、エラー
+		$this->response->statusCode($code);
 		$result = array(
-			'status' => 'error',
-			'message' => __('保存に失敗しました'),
-			'data' => $rtn
+			'message' => $message,
+			'data' => $data
 		);
 		$this->set(compact('result'));
 		$this->set('_serialize', 'result');
 		return $this->render();
-	}
-
-/**
- * post以外でrequestされた場合のエラー出力
- *
- * @return CakeResponse
- */
-	private function __ajaxPostError() {
-		//post以外の場合、エラー
-			$this->response->statusCode(400);
-			$result = array(
-				'message' => __('登録できません'),
-			);
-			$this->set(compact('result'));
-			$this->set('_serialize', 'result');
-			return $this->render();
 	}
 
 /**
@@ -189,8 +154,54 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	public function form($frameId = 0) {
-		$this->_setFrame($frameId);
 		$this->layout = false;
-		return $this->render("Announcements/setting/get_edit_form");
+		$this->_contentPreparation($frameId);
+		return $this->render("Announcements/setting/form");
+	}
+
+/**
+ *  Content Preparation
+ *
+ * @param int $frameId frames.id
+ * @param string $lang language
+ * @return bool
+ */
+	protected function _contentPreparation($frameId, $lang = "") {
+		$frame = $frame = $this->Frame->findById($frameId);
+		$this->set('frameId', 0);
+		$this->set('blockId', 0);
+		$this->set('roomId', 0);
+		$this->set('roomId', 0);
+		$this->set('needApproval', true);
+		$this->set('isRoomAdmin', false);
+		$this->set('blockEditable', false);
+		$this->set('blockPublishable', false);
+		$this->set('contentEditable', false);
+		$this->set('contentPublishable', false);
+
+		if ($frame &&
+			isset($frame[$this->Frame->name]['id']) &&
+			isset($frame[$this->Frame->name]['room_id'])) {
+			$frame = $frame[$this->Frame->name];
+			$this->set('frameId', $frame['id']);
+			$this->set('blockId', $frame['block_id']);
+			$this->set('roomId', $frame['room_id']);
+
+			if (CakeSession::read('Auth.User.id')) {
+				$this->set('needApproval', true);
+				$this->set('isRoomAdmin', true);
+				$this->set('blockEditable', true);
+				$this->set('blockPublishable', true);
+				$this->set('contentEditable', true);
+				$this->set('contentPublishable', true);
+			}
+
+			//パート一覧取得
+			$partList = $this->LanguagesPart->find('all',
+				array('conditions' => array(
+					$this->LanguagesPart->name . '.language_id' => $this->langId
+				)));
+			$this->set('partList', $partList);
+		}
 	}
 }

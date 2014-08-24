@@ -1,4 +1,4 @@
-<div id="nc-announcements-<?php echo $frameId; ?>" ng-controller="announcementsController">
+<div id='nc-announcements-<?php echo $frameId; ?>' ng-controller='announcementsController'>
 	<?php if ($this->action == 'index' && $blockId > 0): ?>
 	<div>
 		<?php

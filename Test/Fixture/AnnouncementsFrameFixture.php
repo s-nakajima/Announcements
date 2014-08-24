@@ -10,7 +10,7 @@
 /**
  * Summary for FrameFixture
  */
-class AnnouncementFrameFixture extends CakeTestFixture {
+class AnnouncementsFrameFixture extends CakeTestFixture {
 
 /**
  * table
@@ -68,34 +68,8 @@ class AnnouncementFrameFixture extends CakeTestFixture {
 			'room_id' => 1,
 			'box_id' => 1,
 			'plugin_id' => 1,
-			'block_id' => 1,
+			'block_id' => 2,
 			'weight' => 1,
-			'is_published' => true,
-			'from' => '2014-07-07 10:00:00',
-			'to' => '2014-08-07 10:00:00',
-			'created_user_id' => 1,
-			'created' => '2014-07-07 10:00:00',
-		),
-		array(
-			'id' => 9,
-			'room_id' => 9,
-			'box_id' => 9,
-			'plugin_id' => 9,
-			'block_id' => 9,
-			'weight' => 9,
-			'is_published' => true,
-			'from' => '2014-07-07 10:00:00',
-			'to' => '2014-08-07 10:00:00',
-			'created_user_id' => 1,
-			'created' => '2014-07-07 10:00:00',
-		),
-		array(
-			'id' => 10,
-			'room_id' => 2,
-			'box_id' => 10,
-			'plugin_id' => 1,
-			'block_id' => 10,
-			'weight' => 9,
 			'is_published' => true,
 			'from' => '2014-07-07 10:00:00',
 			'to' => '2014-08-07 10:00:00',

@@ -3,8 +3,11 @@
 * 編集 閉じる 編集 --- で発生。
 *
 * */
-NetCommonsApp.controller('Announcements.edit',
+
+
+ NetCommonsApp.controller('Announcements.edit',
     function($scope , $http, $sce, $timeout) {
+
       var pluginsUrl = '/announcements/announcements/';
       $scope.show = false;
       $scope.frameId = 0;
@@ -107,7 +110,7 @@ NetCommonsApp.controller('Announcements.edit',
        *
        * @type {boolean}
        */
-      $scope.sendRock = false;
+      $scope.DisabledPost = false;
 
       //初期値設定 ng-initで指定
       $scope.setInit = function(frameId, blockId, langId) {
@@ -145,7 +148,6 @@ NetCommonsApp.controller('Announcements.edit',
         $scope.View.default = false;
         $scope.View.edit.html = true;
         $scope.View.edit.body = true;
-        //表示内容をエディターに反映 公開とは別に最新のドラフトが会った場合そちらが表示される。
         $scope.tinymceModel = $(draftTag).html();
       };
 
@@ -236,7 +238,7 @@ NetCommonsApp.controller('Announcements.edit',
        */
       $scope.post = function(type , frameId) {
         //送信中のため、処理せず
-        if ($scope.sendRock) {
+        if ($scope.DisabledPost) {
           return false;
         }
         $('#nc-announcements-' + $scope.frameId + ' button')
@@ -249,7 +251,7 @@ NetCommonsApp.controller('Announcements.edit',
         }
 
         //送信をロックする。
-        $scope.sendRock = true;
+        $scope.DisabledPost = true;
         //idセット
         $scope.setId(frameId);
         if (
@@ -278,14 +280,14 @@ NetCommonsApp.controller('Announcements.edit',
                     ' input[name=_method]').val(),
                 'data[_Token][unlocked]' : $(post_data_form +
                     " input[name='data[_Token][unlocked]']").val(),
-                'data[AnnouncementDatum][content]' : encodeURIComponent(
+                'data[Announcement][content]' : encodeURIComponent(
                     $scope.tinymceModel
                 ),
-                'data[AnnouncementDatum][frameId]' : $scope.frameId,
-                'data[AnnouncementDatum][blockId]' : $scope.blockId,
-                'data[AnnouncementDatum][type]' : type,
-                'data[AnnouncementDatum][langId]' : $scope.langId,
-                'data[AnnouncementDatum][id]' : $scope.dataId
+                'data[Announcement][frameId]' : $scope.frameId,
+                'data[Announcement][blockId]' : $scope.blockId,
+                'data[Announcement][status]' : type,
+                'data[Announcement][langId]' : $scope.langId,
+                'data[Announcement][id]' : $scope.dataId
               };
               //post
               $.ajax({
@@ -298,7 +300,7 @@ NetCommonsApp.controller('Announcements.edit',
                 success: function(json, status, headers, config) {
                   $scope.setIndex(json);
                   $timeout(function() {
-                    $scope.updateStatus($scope.statusId);
+                    $scope.updateStatus($scope.contentsStatus);
                   }, 1000);
                 },
                 error: function() {
@@ -313,7 +315,7 @@ NetCommonsApp.controller('Announcements.edit',
               $scope.debug = data;
             });
         //送信ロックを解除する
-        $scope.sendRock = false;
+        $scope.DisabledPost = false;
         //defaultに戻す
         $('#nc-announcements-' + $scope.frameId + ' button')
             .fadeTo(3000, 1)
@@ -356,10 +358,10 @@ NetCommonsApp.controller('Announcements.edit',
       $scope.setIndex = function(json) {
         //最新
         var content = '';
-        var statusId = 0;
-        if (json.data && json.data.AnnouncementDatum.content) {
-          content = decodeURIComponent(json.data.AnnouncementDatum.content);
-          statusId = json.data.AnnouncementDatum.status_id;
+        var contentsStatus = 0;
+        if (json.data && json.data.Announcement.content) {
+          content = decodeURIComponent(json.data.Announcement.content);
+          contentsStatus = json.data.Announcement.status;
         }
         //ラベル - クリア初期値に戻す
         $scope.labelClear();
@@ -368,31 +370,31 @@ NetCommonsApp.controller('Announcements.edit',
         $scope.tinymceModel = content;
         $('#nc-announcement-content-view-' + $scope.frameId).html(content);
         $(draftTag).html(content);
-        $scope.updateStatus(statusId);
-        $scope.blockId = json.data.NetCommonsFrame.block_id;
+        $scope.updateStatus(contentsStatus);
+        //$scope.blockId = json.data.NetCommonsFrame.block_id;
         //完了メッセージを表示
         $scope.postAlert('success' , json.message);
         //編集フォームを閉じる
-        $scope.statusId = statusId;
+        $scope.contentsStatus = contentsStatus;
         $scope.closeForm($scope.frameId);
       };
 
       /**
        * status
        *
-       * @param {int} statusId
+       * @param {int} contentsStatus
        */
-      $scope.updateStatus = function(statusId) {
-        if (statusId == $scope.statusList.Draft) {
+      $scope.updateStatus = function(contentsStatus) {
+        if (contentsStatus == $scope.statusList.Draft) {
           //下書き
           $scope.label.draft = true;
-        } else if (statusId == $scope.statusList.Publish) {
+        } else if (contentsStatus == $scope.statusList.Publish) {
           //公開中 //ラベル変更
           $scope.label.publish = true;
-        } else if (statusId == $scope.statusList.PublishRequest) {
+        } else if (contentsStatus == $scope.statusList.PublishRequest) {
           //申請中 //ラベルの変更
           $scope.label.request = true;
-        } else if (statusId == $scope.statusList.Reject) {
+        } else if (contentsStatus == $scope.statusList.Reject) {
           //差し戻し
           $scope.label.reject = true;
         }
@@ -404,7 +406,8 @@ NetCommonsApp.controller('Announcements.edit',
        * @param {int} frameId
        */
       $scope.openTextEditor = function(frameId) {
-        $scope.setId(frameId);
+          alert($frameId);
+        //$scope.setId(frameId);
         $scope.textEditorModel = $scope.tinymceModel;
         $scope.View.edit.html = false;
         $scope.View.edit.text = true;
@@ -515,7 +518,7 @@ NetCommonsApp.controller('Announcements.setting', function($scope, $http) {
     } else if (type == 'updateMessage') {
       $scope.postSendToUpdateMessage(frameId, blockId, langId);
     }
-    //すべてのボタンを有効に。//ちょっと乱暴すぎるのであとで範囲指定。
+    //すべてのボタンを有効に。
     $('#nc-announcements-' +
       $scope.frameId +
       ' input').removeAttr('disabled');

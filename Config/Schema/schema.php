@@ -29,16 +29,16 @@ class AppSchema extends CakeSchema {
 	}
 
 /**
- * announcement_data
+ * announcements
  *
  * @var array
  */
-	public $announcement_data = array(
+	public $announcements = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
-		'announcement_id' => array('type' => 'integer', 'null' => false, 'default' => null),
-		'status_id' => array('type' => 'integer', 'null' => false, 'default' => '1', 'length' => 3),
+		'announcements_block.id' => array('type' => 'integer', 'null' => false, 'default' => null),
+		'status' => array('type' => 'integer', 'null' => false, 'default' => '1', 'length' => 3),
 		'language_id' => array('type' => 'integer', 'null' => false, 'default' => '1'),
-		'is_original' => array('type' => 'integer', 'null' => false, 'default' => '1', 'length' => 1),
+		'is_auto_translate' => array('type' => 'boolean', 'null' => true),
 		'translation_engine' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'content' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
@@ -52,15 +52,15 @@ class AppSchema extends CakeSchema {
 	);
 
 /**
- *  announcements
+ *  announcements blocks
  *
  * @var array
  */
-	public $announcements = array(
+	public $announcements_blocks = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 		'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'unique'),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
-		'create_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'created_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'indexes' => array(
@@ -74,13 +74,13 @@ class AppSchema extends CakeSchema {
  *
  * @var array
  */
-	public $announcement_block_setting = array(
+	public $announcement_setting = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 		'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'unique'),
-		'is_send_request' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-		'is_send_update' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'sendable_request' => array('type' => 'boolean', 'null' => true),
+		'sendable_update' => array('type' => 'boolean', 'null' => true),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
-		'create_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'created_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'indexes' => array(
@@ -94,7 +94,7 @@ class AppSchema extends CakeSchema {
  *
  * @var array
  */
-	public $announcement_block_parts = array(
+	public $announcement_parts_setting = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 		'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'unique'),
 		'part_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
@@ -102,9 +102,9 @@ class AppSchema extends CakeSchema {
 		'edit_content' => array('type' => 'integer', 'length' => 2, 'null' => false, 'default' => '0'),
 		'create_content' => array('type' => 'integer', 'length' => 2, 'null' => false, 'default' => '0'),
 		'publish_content' => array('type' => 'integer', 'length' => 2, 'null' => false, 'default' => '0'),
-		'is_send' => array('type' => 'integer', 'length' => 1, 'null' => false, 'default' => '0'),
+		'mail_sendable' => array('type' => 'boolean', 'null' => true),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
-		'create_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'created_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'indexes' => array(
@@ -118,15 +118,15 @@ class AppSchema extends CakeSchema {
  *
  * @var array
  */
-	public $announcement_block_message = array(
+	public $announcement_notification = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 		'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'unique'),
 		'language_id' => array('type' => 'integer', 'null' => false, 'default' => '1'),
-		'type_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-		'subject' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-		'body' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'notification_type' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'mail_subject' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'mail_body' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
-		'create_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'created_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'indexes' => array(

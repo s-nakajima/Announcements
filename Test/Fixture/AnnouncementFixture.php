@@ -12,8 +12,6 @@
  */
 class AnnouncementFixture extends CakeTestFixture {
 
-	public $useDbConfig = 'test';
-
 /**
  * Fields
  *
@@ -21,9 +19,14 @@ class AnnouncementFixture extends CakeTestFixture {
  */
 	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
-		'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'unique'),
+		'announcements_block_id' => array('type' => 'integer', 'null' => false, 'default' => null),
+		'status' => array('type' => 'integer', 'null' => false, 'default' => '1', 'length' => 3),
+		'language_id' => array('type' => 'integer', 'null' => false, 'default' => '1'),
+		'is_auto_translate' => array('type' => 'boolean', 'null' => true, 'default' => null),
+		'translation_engine' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'content' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
-		'create_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'created_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'indexes' => array(
@@ -38,26 +41,26 @@ class AnnouncementFixture extends CakeTestFixture {
  * @var array
  */
 	public $records = array(
-		array(
-			'block_id' => 1,
-			'created' => '2014-06-05 13:16:21',
-			'create_user_id' => 1,
-			'modified' => '2014-06-05 13:16:21',
-			'modified_user_id' => 1
+		array (
+			'id' => 1,
+			'announcements_block_id' => 1,
+			'status' => 1,
+			'language_id' => 2,
+			'is_auto_translate' => false,
+			'translation_engine' => null,
+			'content' => 'Publish Content',
+			'created_user_id' => 1,
 		),
-		array(
-			'block_id' => 100,
-			'created' => '2014-06-05 13:16:21',
-			'create_user_id' => 1,
-			'modified' => '2014-06-05 13:16:21',
-			'modified_user_id' => 1
-		),
-		array(
-			'block_id' => 0,
-			'created' => '2014-06-05 13:16:21',
-			'create_user_id' => 1,
-			'modified' => '2014-06-05 13:16:21',
-			'modified_user_id' => 1
-		),
+		array (
+			'id' => 2,
+			'announcements_block_id' => 1,
+			'status' => 2,
+			'language_id' => 2,
+			'is_auto_translate' => false,
+			'translation_engine' => null,
+			'content' => 'Publish Content',
+			'created_user_id' => 1,
+		)
 	);
+
 }
