@@ -1,5 +1,5 @@
 <?php
- $roomPartKey = 'LanguagesPart';
+$roomPartKey = 'LanguagesPart';
 ?>
 	<h3><?php echo __('Articles change notification'); ?></h3>
 	<form>
