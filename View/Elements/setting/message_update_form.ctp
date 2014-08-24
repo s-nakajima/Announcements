@@ -16,8 +16,8 @@
 				name='part_id_<?php echo h($item[$roomPartKey]['part_id']); ?>'
 				id='nc-announcements-message-update-frame-<?php echo (int) $frameId; ?>-part-<?php echo (int) $partId; ?>'
 				ng-click='partChange("message-update" ,<?php echo (int) $frameId; ?>,<?php echo (int) $partId; ?>)'
-			    checked=''
-			    value='<?php echo (int) $partId; ?>'
+				checked=''
+				value='<?php echo (int) $partId; ?>'
 			> <?php
 			echo h($item[$roomPartKey]['name']) . '</span>';
 			}

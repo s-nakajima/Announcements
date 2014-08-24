@@ -10,13 +10,13 @@ $status['Reject'] = $hidden;
 $contentStatus = 0;
 if (isset($item['Announcement']['status'])) {
 	if ($item['Announcement']['status'] == Announcement::STATUS_PUBLISH_REQUEST) {
-		$status['publishRequest'] = $show ;
+		$status['publishRequest'] = $show;
 	} elseif ($item['Announcement']['status'] == Announcement::STATUS_DRAFT) {
-		$status['Draft'] = $show ;
+		$status['Draft'] = $show;
 	} elseif ($item['Announcement']['status'] == Announcement::STATUS_REJECT) {
-		$status['Reject'] = $show ;
+		$status['Reject'] = $show;
 	} elseif ($item['Announcement']['status'] == Announcement::STATUS_PUBLISH) {
-		$status['publish'] = $show ;
+		$status['publish'] = $show;
 	}
 	$contentStatus = $item['Announcement']['status'];
 }

@@ -23,7 +23,7 @@ $roomPartKey = 'LanguagesPart';
 					array(
 						'type' => 'checkbox',
 						'div' => null,
-						'id' => 'nc-announcements-publish-frame-'.$frameId. '-part-' . $item[$roomPartKey]['part_id'],
+						'id' => 'nc-announcements-publish-frame-' . $frameId. '-part-' . $item[$roomPartKey]['part_id'],
 						'value' => $item[$roomPartKey]['part_id'],
 						'name' => 'part_id[' . $item[$roomPartKey]['part_id'] . ']',
 						'checked' => $checked,
@@ -38,7 +38,7 @@ $roomPartKey = 'LanguagesPart';
 				?></p><?php
 		}
 		?></p>
-	<div id='send_1_<?php echo $frameId; ?>' class='alert alert-warning text-center ng-hidden'  role='alert'>
+	<div id='send_1_<?php echo (int) $frameId; ?>' class='alert alert-warning text-center ng-hidden'  role='alert'>
 		保存中
 	</div>
 
@@ -47,7 +47,7 @@ $roomPartKey = 'LanguagesPart';
 	<p class='text-center' id='send_<?php echo $frameId; ?>'>
 		<button type='button' class='btn btn-default' data-dismiss='modal'><?php echo __('Cancel'); ?></button>
 		<button type='button' class='btn btn-primary'
-			ng-click='partSend('publishParts',<?php echo (int)$frameId; ?>,<?php echo (int)$blockId; ?>,<?php echo (int)$langId; ?>)'
+			ng-click='partSend('publishParts',<?php echo (int) $frameId; ?>,<?php echo (int) $blockId; ?>,<?php echo (int) $langId; ?>)'
 			><span><?php echo __('Update'); ?></span></button>
 	</p>
 
