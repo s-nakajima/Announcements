@@ -51,7 +51,9 @@ class AnnouncementPartsSettingFixture extends CakeTestFixture {
 			'create_content' => 1,
 			'publish_content' => 1,
 			'mail_sendable' => 0,
+			'created' => '2014-08-23 09:16:52',
 			'created_user_id' => 1,
+			'modified' => '2014-08-23 09:16:52',
 			'modified_user_id' => 1
 		),
 		array(
@@ -63,7 +65,9 @@ class AnnouncementPartsSettingFixture extends CakeTestFixture {
 			'create_content' => 1,
 			'publish_content' => 0,
 			'mail_sendable' => 0,
+			'created' => '2014-08-23 09:16:52',
 			'created_user_id' => 1,
+			'modified' => '2014-08-23 09:16:52',
 			'modified_user_id' => 1
 		),
 		array(
@@ -75,7 +79,9 @@ class AnnouncementPartsSettingFixture extends CakeTestFixture {
 			'create_content' => 1,
 			'publish_content' => 0,
 			'mail_sendable' => 0,
+			'created' => '2014-08-23 09:16:52',
 			'created_user_id' => 1,
+			'modified' => '2014-08-23 09:16:52',
 			'modified_user_id' => 1
 		),
 		array(
@@ -87,7 +93,9 @@ class AnnouncementPartsSettingFixture extends CakeTestFixture {
 			'create_content' => 1,
 			'publish_content' => 0,
 			'mail_sendable' => 0,
+			'created' => '2014-08-23 09:16:52',
 			'created_user_id' => 1,
+			'modified' => '2014-08-23 09:16:52',
 			'modified_user_id' => 1
 		),
 		array(
@@ -99,7 +107,9 @@ class AnnouncementPartsSettingFixture extends CakeTestFixture {
 			'create_content' => 1,
 			'publish_content' => 0,
 			'mail_sendable' => 0,
+			'created' => '2014-08-23 09:16:52',
 			'created_user_id' => 1,
+			'modified' => '2014-08-23 09:16:52',
 			'modified_user_id' => 1
 		),
 		array(
@@ -111,7 +121,9 @@ class AnnouncementPartsSettingFixture extends CakeTestFixture {
 			'create_content' => 1,
 			'publish_content' => 0,
 			'mail_sendable' => 0,
+			'created' => '2014-08-23 09:16:52',
 			'created_user_id' => 1,
+			'modified' => '2014-08-23 09:16:52',
 			'modified_user_id' => 1
 		),
 		array(
@@ -123,7 +135,9 @@ class AnnouncementPartsSettingFixture extends CakeTestFixture {
 			'create_content' => 1,
 			'publish_content' => 0,
 			'mail_sendable' => 0,
+			'created' => '2014-08-23 09:16:52',
 			'created_user_id' => 1,
+			'modified' => '2014-08-23 09:16:52',
 			'modified_user_id' => 1
 		),
 		array(
@@ -135,7 +149,9 @@ class AnnouncementPartsSettingFixture extends CakeTestFixture {
 			'create_content' => 1,
 			'publish_content' => 0,
 			'mail_sendable' => 0,
+			'created' => '2014-08-23 09:16:52',
 			'created_user_id' => 1,
+			'modified' => '2014-08-23 09:16:52',
 			'modified_user_id' => 1
 		),
 		array(
@@ -147,7 +163,9 @@ class AnnouncementPartsSettingFixture extends CakeTestFixture {
 			'create_content' => 1,
 			'publish_content' => 0,
 			'mail_sendable' => 0,
+			'created' => '2014-08-23 09:16:52',
 			'created_user_id' => 1,
+			'modified' => '2014-08-23 09:16:52',
 			'modified_user_id' => 1
 		),
 		array(
@@ -159,7 +177,9 @@ class AnnouncementPartsSettingFixture extends CakeTestFixture {
 			'create_content' => 0,
 			'publish_content' => 0,
 			'mail_sendable' => 0,
+			'created' => '2014-08-23 09:16:52',
 			'created_user_id' => 1,
+			'modified' => '2014-08-23 09:16:52',
 			'modified_user_id' => 1
 		),
 	);

@@ -49,7 +49,10 @@ class AnnouncementFixture extends CakeTestFixture {
 			'is_auto_translate' => false,
 			'translation_engine' => null,
 			'content' => 'Publish Content',
+			'created' => '2014-08-23 09:16:52',
 			'created_user_id' => 1,
+			'modified' => '2014-08-23 09:16:52',
+			'modified_user_id' => 1
 		),
 		array (
 			'id' => 2,
@@ -59,7 +62,10 @@ class AnnouncementFixture extends CakeTestFixture {
 			'is_auto_translate' => false,
 			'translation_engine' => null,
 			'content' => 'Publish Content',
+			'created' => '2014-08-23 09:16:52',
 			'created_user_id' => 1,
+			'modified' => '2014-08-23 09:16:52',
+			'modified_user_id' => 1
 		)
 	);
 
