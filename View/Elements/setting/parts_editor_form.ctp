@@ -23,11 +23,11 @@ $roomPartKey = 'LanguagesPart';
 					array(
 						'type' => 'checkbox',
 						'div' => null,
-						'id' => 'nc-announcements-edit-frame-'.$frameId. '-part-' .$item[$roomPartKey]['part_id'],
+						'id' => 'nc-announcements-edit-frame-' . $frameId . '-part-' . $item[$roomPartKey]['part_id'],
 						'value' => $item[$roomPartKey]['part_id'],
 						'name' => 'part_id['. $item[$roomPartKey]['part_id'] .']',
 						'checked' => $checked,
-						'ng-click' => 'partChange("edit", '.$frameId.','.$item[$roomPartKey]['part_id'].')',
+						'ng-click' => 'partChange("edit", ' . $frameId . ',' . $item[$roomPartKey]['part_id'] . ')',
 						'autocomplete' => 'off'
 					)
 				);
@@ -42,7 +42,7 @@ $roomPartKey = 'LanguagesPart';
 	<p class='text-center'>
 		<button type='button' class='btn btn-default' data-dismiss='modal'><?php echo __('Cancel'); ?></button>
 		<button type='button' class='btn btn-primary'
-		        ng-click='partSend("editParts",<?php echo (int) $frameId; ?>,<?php echo (int) $blockId; ?>,<?php echo (int) $langId; ?>)'
+			ng-click='partSend("editParts", <?php echo (int) $frameId; ?>,<?php echo (int) $blockId; ?>,<?php echo (int) $langId; ?>)'
 			>
 			<span><?php echo __('Update'); ?></span></button>
 	</p>
