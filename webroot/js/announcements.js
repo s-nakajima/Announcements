@@ -4,8 +4,7 @@
 *
 * */
 
-
- NetCommonsApp.controller('Announcements.edit',
+NetCommonsApp.controller('Announcements.edit',
     function($scope , $http, $sce, $timeout) {
 
       var pluginsUrl = '/announcements/announcements/';
@@ -406,8 +405,7 @@
        * @param {int} frameId
        */
       $scope.openTextEditor = function(frameId) {
-          alert($frameId);
-        //$scope.setId(frameId);
+        $scope.setId(frameId);
         $scope.textEditorModel = $scope.tinymceModel;
         $scope.View.edit.html = false;
         $scope.View.edit.text = true;
