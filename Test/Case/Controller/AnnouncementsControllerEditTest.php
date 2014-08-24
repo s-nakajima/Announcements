@@ -59,7 +59,7 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 		'plugin.announcements.announcement_setting',
 		'plugin.announcements.announcements_frame',
 		'plugin.announcements.announcements_rooms_user',
-		'plugin.boxes.box',
+		'app.box',
 	);
 
 /**
