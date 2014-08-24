@@ -49,7 +49,6 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 		'app.site_setting_value',
 		'app.page',
 		'app.block',
-		//'app.frame',
 		'app.part',
 		'app.room_part',
 		'app.languages_part',
@@ -60,6 +59,7 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 		'plugin.announcements.announcement_setting',
 		'plugin.announcements.announcements_frame',
 		'plugin.announcements.announcements_rooms_user',
+		'plugin.boxes.box',
 	);
 
 /**
