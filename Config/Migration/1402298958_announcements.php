@@ -144,22 +144,26 @@ class Announcements extends CakeMigration {
 				array (
 					'id' => 2,
 					'block_id' => 2,
-					'created_user_id' => 1
+					'created_user_id' => 1,
+					'created' => '2014-06-10 23:54:27'
 				),
 				array (
 					'id' => 3,
 					'block_id' => 3,
-					'created_user_id' => 1
+					'created_user_id' => 1,
+					'created' => '2014-06-10 23:54:27'
 				),
 				array (
 					'id' => 4,
 					'block_id' => 4,
-					'created_user_id' => 1
+					'created_user_id' => 1,
+					'created' => '2014-06-10 23:54:27'
 				),
 				array (
 					'id' => 5,
 					'block_id' => 5,
-					'created_user_id' => 1
+					'created_user_id' => 1,
+					'created' => '2014-06-10 23:54:27'
 				)
 			)
 	);
