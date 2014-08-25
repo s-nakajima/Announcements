@@ -191,6 +191,7 @@ NetCommonsApp.controller('Announcements.edit',
        */
       $scope.setId = function(frameId) {
         $scope.frameId = frameId;
+        draftTag = '#nc-announcement-content-draft-' + $scope.frameId;
         messageTag = '#nc-announcements-mss-' + $scope.frameId;
         blockSettingTag = '#nc-announcements-block-setting-' + $scope.frameId;
       };
