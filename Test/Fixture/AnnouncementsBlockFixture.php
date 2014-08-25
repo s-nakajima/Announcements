@@ -21,9 +21,9 @@ class AnnouncementsBlockFixture extends CakeTestFixture {
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 		'block_id' => array('type' => 'integer', 'null' => false, 'default' => null),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
-		'created_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'created_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
-		'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'modified_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),
@@ -39,27 +39,27 @@ class AnnouncementsBlockFixture extends CakeTestFixture {
 		array (
 			'id' => 1,
 			'block_id' => 1,
-			'created_user_id' => 1
+			'created_user' => 1
 		),
 		array (
 			'id' => 2,
 			'block_id' => 2,
-			'created_user_id' => 1
+			'created_user' => 1
 		),
 		array (
 			'id' => 3,
 			'block_id' => 3,
-			'created_user_id' => 1
+			'created_user' => 1
 		),
 		array (
 			'id' => 4,
 			'block_id' => 4,
-			'created_user_id' => 1
+			'created_user' => 1
 		),
 		array (
 			'id' => 5,
 			'block_id' => 5,
-			'created_user_id' => 1
+			'created_user' => 1
 		)
 	);
 

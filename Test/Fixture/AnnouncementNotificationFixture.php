@@ -13,13 +13,6 @@
 class AnnouncementNotificationFixture extends CakeTestFixture {
 
 /**
- * Table name
- *
- * @var string
- */
-	public $table = 'announcement_notification';
-
-/**
  * Fields
  *
  * @var array
@@ -32,9 +25,9 @@ class AnnouncementNotificationFixture extends CakeTestFixture {
 		'mail_subject' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'mail_body' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
-		'created_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'created_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
-		'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'modified_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),
@@ -55,9 +48,9 @@ class AnnouncementNotificationFixture extends CakeTestFixture {
 			'mail_subject' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'mail_body' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'created' => '2014-08-23 09:16:24',
-			'created_user_id' => 1,
+			'created_user' => 1,
 			'modified' => '2014-08-23 09:16:24',
-			'modified_user_id' => 1
+			'modified_user' => 1
 		),
 		array(
 			'id' => 2,
@@ -67,9 +60,9 @@ class AnnouncementNotificationFixture extends CakeTestFixture {
 			'mail_subject' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'mail_body' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'created' => '2014-08-23 09:16:24',
-			'created_user_id' => 2,
+			'created_user' => 2,
 			'modified' => '2014-08-23 09:16:24',
-			'modified_user_id' => 2
+			'modified_user' => 2
 		),
 		array(
 			'id' => 3,
@@ -79,9 +72,9 @@ class AnnouncementNotificationFixture extends CakeTestFixture {
 			'mail_subject' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'mail_body' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'created' => '2014-08-23 09:16:24',
-			'created_user_id' => 3,
+			'created_user' => 3,
 			'modified' => '2014-08-23 09:16:24',
-			'modified_user_id' => 3
+			'modified_user' => 3
 		),
 		array(
 			'id' => 4,
@@ -91,9 +84,9 @@ class AnnouncementNotificationFixture extends CakeTestFixture {
 			'mail_subject' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'mail_body' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'created' => '2014-08-23 09:16:24',
-			'created_user_id' => 4,
+			'created_user' => 4,
 			'modified' => '2014-08-23 09:16:24',
-			'modified_user_id' => 4
+			'modified_user' => 4
 		),
 		array(
 			'id' => 5,
@@ -103,9 +96,9 @@ class AnnouncementNotificationFixture extends CakeTestFixture {
 			'mail_subject' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'mail_body' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'created' => '2014-08-23 09:16:24',
-			'created_user_id' => 5,
+			'created_user' => 5,
 			'modified' => '2014-08-23 09:16:24',
-			'modified_user_id' => 5
+			'modified_user' => 5
 		),
 		array(
 			'id' => 6,
@@ -115,9 +108,9 @@ class AnnouncementNotificationFixture extends CakeTestFixture {
 			'mail_subject' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'mail_body' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'created' => '2014-08-23 09:16:24',
-			'created_user_id' => 6,
+			'created_user' => 6,
 			'modified' => '2014-08-23 09:16:24',
-			'modified_user_id' => 6
+			'modified_user' => 6
 		),
 		array(
 			'id' => 7,
@@ -127,9 +120,9 @@ class AnnouncementNotificationFixture extends CakeTestFixture {
 			'mail_subject' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'mail_body' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'created' => '2014-08-23 09:16:24',
-			'created_user_id' => 7,
+			'created_user' => 7,
 			'modified' => '2014-08-23 09:16:24',
-			'modified_user_id' => 7
+			'modified_user' => 7
 		),
 		array(
 			'id' => 8,
@@ -139,9 +132,9 @@ class AnnouncementNotificationFixture extends CakeTestFixture {
 			'mail_subject' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'mail_body' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'created' => '2014-08-23 09:16:24',
-			'created_user_id' => 8,
+			'created_user' => 8,
 			'modified' => '2014-08-23 09:16:24',
-			'modified_user_id' => 8
+			'modified_user' => 8
 		),
 		array(
 			'id' => 9,
@@ -151,9 +144,9 @@ class AnnouncementNotificationFixture extends CakeTestFixture {
 			'mail_subject' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'mail_body' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'created' => '2014-08-23 09:16:24',
-			'created_user_id' => 9,
+			'created_user' => 9,
 			'modified' => '2014-08-23 09:16:24',
-			'modified_user_id' => 9
+			'modified_user' => 9
 		),
 		array(
 			'id' => 10,
@@ -163,9 +156,9 @@ class AnnouncementNotificationFixture extends CakeTestFixture {
 			'mail_subject' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'mail_body' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'created' => '2014-08-23 09:16:24',
-			'created_user_id' => 10,
+			'created_user' => 10,
 			'modified' => '2014-08-23 09:16:24',
-			'modified_user_id' => 10
+			'modified_user' => 10
 		),
 	);
 

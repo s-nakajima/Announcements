@@ -34,9 +34,9 @@ class AnnouncementsFrameFixture extends CakeTestFixture {
 		'is_published' => array('type' => 'boolean', 'null' => true, 'default' => null),
 		'from' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'to' => array('type' => 'datetime', 'null' => true, 'default' => null),
-		'created_user_id' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'created_user' => array('type' => 'integer', 'null' => true, 'default' => null),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
-		'modified_user_id' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'modified_user' => array('type' => 'integer', 'null' => true, 'default' => null),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
@@ -60,7 +60,7 @@ class AnnouncementsFrameFixture extends CakeTestFixture {
 			'is_published' => true,
 			'from' => '2014-07-07 10:00:00',
 			'to' => '2014-08-07 10:00:00',
-			'created_user_id' => 1,
+			'created_user' => 1,
 			'created' => '2014-07-07 10:00:00',
 		),
 		array(
@@ -73,7 +73,7 @@ class AnnouncementsFrameFixture extends CakeTestFixture {
 			'is_published' => true,
 			'from' => '2014-07-07 10:00:00',
 			'to' => '2014-08-07 10:00:00',
-			'created_user_id' => 1,
+			'created_user' => 1,
 			'created' => '2014-07-07 10:00:00',
 		)
 	);
