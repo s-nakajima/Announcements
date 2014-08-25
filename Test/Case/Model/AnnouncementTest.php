@@ -24,36 +24,112 @@ class AnnouncementTest extends CakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.announcements.announcement',
-		'plugin.announcements.announcements_block'
+		'plugin.announcements.announcements_block',
+		'plugin.announcements.language',
+		'plugin.announcements.block',
+		'plugin.announcements.Part',
 	);
 
 /**
- * test data default
+ * 存在するユーザ
  *
- * @var array
+ * @var int
  */
-	public $testData = array(
-		'Announcement' => array(
-			array (
-				'announcements_block_id' => 1,
-				'status' => Announcement::STATUS_PUBLISH,
-				'language_id' => 1,
-				'is_auto_translation' => null,
-				'translation_engine' => null,
-				'content' => 'Content Publish',
-				'created_user_id' => 1,
-			),
-			array (
-				'announcements_block_id' => 1,
-				'status' => Announcement::STATUS_DRAFT,
-				'language_id' => 1,
-				'is_auto_translation' => null,
-				'translation_engine' => null,
-				'content' => 'Content Draft',
-				'created_user_id' => 1,
-			),
-		)
-	);
+	const EXISTING_USER_IN_ROOM = 1;
+
+/**
+ * 存在するルーム
+ *
+ * @var int
+ */
+	const EXISTING_ROOM = 1;
+
+/**
+ * 存在するblockId
+ *
+ * @var int
+ */
+	const EXISTING_BLOCK = 1;
+
+/**
+ * 存在するannouncements_block_id
+ *
+ * @var int
+ */
+	const EXISTING_ANNOUNCEMENT_BLOCK_ID = 1;
+
+/**
+ * 存在するlanguages.id
+ *
+ * @var int
+ */
+	const EXISTING_LANG_ID = 1;
+
+
+/**
+ * 存在するframe
+ *
+ * @var int
+ */
+	const EXISTING_FRAME = 1;
+
+/**
+ * 存在しないユーザ
+ *
+ * @var int
+ */
+	const NOT_EXISTING_USER = 10000;
+
+/**
+ * 存在しないルーム
+ *
+ * @var int
+ */
+	const NOT_EXISTING_ROOM = 10000;
+
+
+/**
+ * 存在しないBLOCK
+ *
+ * @var int
+ */
+	const NOT_EXISTING_BLOCK = 10000;
+
+/**
+ * 存在しないannouncements_block_id
+ *
+ * @var int
+ */
+	const NOT_EXISTING_ANNOUNCEMENT_BLOCK_ID = 10000;
+
+
+/**
+ * Announcements status publish
+ *
+ * @var int
+ */
+	const STATUS_PUBLISH = 1;
+
+/**
+ * Announcements status publish
+ *
+ * @var int
+ */
+	const STATUS_PUBLISH_REQUEST = 2;
+
+/**
+ * Announcements status Draft
+ *
+ * @var int
+ */
+	const STATUS_DRAFT = 3;
+
+/**
+ * Announcements status Reject
+ *
+ * @var int
+ */
+	const STATUS_REJECT = 4;
 
 /**
  * setUp method
@@ -63,10 +139,6 @@ class AnnouncementTest extends CakeTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->Announcement = ClassRegistry::init('Announcements.Announcement');
-		//テスト用データの作成
-		$this->Announcement->create();
-		$this->assertTrue($this->Announcement->saveAll($this->testData['Announcement']));
-		CakeSession::write('Auth.User.id', 1);
 	}
 
 /**
@@ -84,14 +156,12 @@ class AnnouncementTest extends CakeTestCase {
  *
  * @return void
  */
-	public function testGet() {
-		//ステータスに関わらず最新を取得
-		$blockId = 1;
-		$langId = 1;
-		$rtn = $this->Announcement->get($blockId, $langId);
+	public function estGet() {
+		//ステータスに関わらず最新を取得 存在する。
+		$rtn = $this->Announcement->get(self::EXISTING_BLOCK, self::EXISTING_LANG_ID);
 		$this->assertTextEquals(
 			'Content Draft',
-			$rtn['Announcement']['content']
+			$rtn[$this->Announcement->name]['content']
 		);
 	}
 
@@ -102,13 +172,10 @@ class AnnouncementTest extends CakeTestCase {
  */
 	public function testGetPublish() {
 		//公開情報を取得
-		$blockId = 1;
-		$langId = 1;
-		$publishOnly = true;
-		$rtn = $this->Announcement->get($blockId, $langId, $publishOnly);
+		$rtn = $this->Announcement->get(self::EXISTING_BLOCK, self::EXISTING_LANG_ID, true);
 		$this->assertTextEquals(
 			'Content Publish',
-			$rtn['Announcement']['content']
+			$rtn[$this->Announcement->name]['content']
 		);
 	}
 
@@ -126,6 +193,8 @@ class AnnouncementTest extends CakeTestCase {
 			'Reject' => Announcement::STATUS_REJECT
 		);
 
+		CakeSession::write('Auth.User.id', self::EXISTING_USER_IN_ROOM);
+
 		foreach ($statusArray as $key => $num) {
 			$data = array(
 				$this->Announcement->name => array(
@@ -133,7 +202,7 @@ class AnnouncementTest extends CakeTestCase {
 					'frameId' => 1,
 					'blockId' => 1,
 					'status' => $key,
-					'langId' => 2,
+					'langId' => self::EXISTING_LANG_ID,
 				)
 			);
 			$frameId = 1;
@@ -155,51 +224,20 @@ class AnnouncementTest extends CakeTestCase {
  *
  * @return void
  */
-	public function testSaveContentError() {
-		//frameIdが違う
-		$status = 'Publish';
-		$data = array(
-			$this->Announcement->name => array(
-				'content' => rawurlencode('test' . "ほげほげ"),
-				'frameId' => 1,
-				'blockId' => 1,
-				'status' => $status,
-				'langId' => 2,
-			)
-		);
-		$frameId = 2;
-		$blockId = 1;
-		$rtn = $this->Announcement->saveContent($data, $frameId, $blockId);
-		$this->assertTextEquals(
-			array(),
-			$rtn
-		);
-	}
-
-/**
- * testSaveContent method
- *
- * @return void
- */
 	public function testSaveContentErrorSave() {
-		//frameIdが違う
-		$status = 'Publish';
 		$data = array(
 			$this->Announcement->name => array(
 				'content' => rawurlencode('test' . "ほげほげ"),
-				'frameId' => 1,
-				'blockId' => 1,
-				'status' => $status,
-				'langId' => 2,
+				'frameId' => self::EXISTING_FRAME,
+				'blockId' => self::EXISTING_BLOCK,
+				'status' => 'Publish',
+				'langId' => self::EXISTING_LANG_ID,
 			)
 		);
-		$frameId = 2;
-		$blockId = 1;
-		$rtn = $this->Announcement->saveContent($data, $frameId, $blockId);
-		$this->assertTextEquals(
-			array(),
-			$rtn
-		);
+		//配列の中のframeIdと引数のframeIdが違うため、保存させない
+		$frameId = self::EXISTING_FRAME + 1;
+		$rtn = $this->Announcement->saveContent($data, $frameId, self::EXISTING_BLOCK);
+		$this->assertTextEquals(array(), $rtn);
 	}
 
 /**
@@ -213,7 +251,7 @@ class AnnouncementTest extends CakeTestCase {
 		$data = array(
 			$this->Announcement->name => array(
 				'content' => 'test' . "ほげほげ",
-				'frameId' => 1,
+				'frameId' => self::EXISTING_FRAME,
 				'blockId' => 5,
 				'status' => $status,
 				'langId' => 2,
@@ -238,10 +276,10 @@ class AnnouncementTest extends CakeTestCase {
 		$data = array(
 			$this->Announcement->name => array(
 				'content' => 'test' . "ほげほげ",
-				'frameId' => 1,
+				'frameId' => self::EXISTING_FRAME,
 				'blockId' => 'A', //validation error
 				'status' => 'Publish',
-				'langId' => 2,
+				'langId' => self::EXISTING_LANG_ID,
 			)
 		);
 		$frameId = 1;

@@ -12,11 +12,15 @@ App::uses('AnnouncementsAppController', 'Announcements.Controller');
 class AnnouncementsController extends AnnouncementsAppController {
 
 /**
- * room admin id
+ * Model name
  *
- * @var int
+ * @var array
  */
-	const ROOM_ADMIN_ID = 1;
+	public $uses = array(
+		'Announcements.Announcement',
+		'Announcements.AnnouncementPartSetting',
+		'Announcements.AnnouncementSetting'
+	);
 
 /**
  * condition that can have a public authority.
@@ -26,11 +30,11 @@ class AnnouncementsController extends AnnouncementsAppController {
 	const PUBLISHABLE_CONDITION = 'edit_content';
 
 /**
- *  langId of the default
+ * condition that can have a public authority.
  *
  * @var int
  */
-	const DEFAULT_LANGID = 2;
+	const EDITABLE_CONDITION = 'edit_content';
 
 /**
  * 準備
@@ -65,9 +69,10 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return CakeResponse
  */
 	public function view($frameId = 0, $lang = '') {
-		$this->_contentPreparation($frameId, $lang);
-		if (! $frameId) {
-			return $this->render('notice');
+		//準備失敗
+		if (! $frameId ||
+		! $this->_contentPreparation($frameId, $lang)) {
+			return $this->render(false);
 		}
 		//ログインしていない 編集権限がない
 		if (! CakeSession::read('Auth.User.id') ||
@@ -105,7 +110,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 	private function __view() {
 		$data = $this->Announcement->get($this->viewVars['blockId'], $this->langId, true);
 		if (! $data) {
-			return $this->render("notice");
+			return $this->render(false);
 		}
 		$this->set('item', $data);
 		return $this->render('Announcements/view/default');
@@ -119,13 +124,13 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public function edit($frameId = 0) {
 		if (! $this->request->isPost()) {
-			return $this->__ajaxMessage(400, __('I failed to save'));
+			return $this->_ajaxMessage(400, __('I failed to save'));
 		}
 		//準備
 		$this->_contentPreparation($frameId);
 		if (!$this->viewVars['contentEditable']) {
 			//権限エラー
-			return $this->__ajaxMessage(403, __('I failed to save'));
+			return $this->_ajaxMessage(403, __('I failed to save'));
 		}
 
 		//保存
@@ -138,33 +143,10 @@ class AnnouncementsController extends AnnouncementsAppController {
 		//成功結果を返す
 		if (!$rtn) {
 			//失敗結果を返す
-			return $this->__ajaxMessage(500, __('I failed to save'), $rtn);
+			return $this->_ajaxMessage(500, __('I failed to save'), $rtn);
 		}
 		$rtn['Announcement']['content'] = rawurlencode($rtn['Announcement']['content']);
-		return $this->__ajaxMessage(200, __('Saved'), $rtn);
-	}
-
-/**
- * ajax message output
- *
- * @param int $code status code
- * @param string $message message
- * @param array $data updated content data
- * @return CakeResponse
- */
-	private function __ajaxMessage($code, $message, $data = "") {
-		$this->viewClass = 'Json';
-		$this->layout = false;
-		$this->view = null;
-		//post以外の場合、エラー
-		$this->response->statusCode($code);
-		$result = array(
-			'message' => $message,
-			'data' => $data
-		);
-		$this->set(compact('result'));
-		$this->set('_serialize', 'result');
-		return $this->render();
+		return $this->_ajaxMessage(200, __('Saved'), $rtn);
 	}
 
 /**
@@ -179,79 +161,4 @@ class AnnouncementsController extends AnnouncementsAppController {
 		return $this->render("Announcements/setting/form");
 	}
 
-/**
- *  Content Preparation
- *
- * @param int $frameId frames.id
- * @param string $lang language
- * @return bool
- */
-	protected function _contentPreparation($frameId, $lang = "") {
-		//language id
-		//$this->langId = $this->_getLangId($lang);
-		//get frames recode
-		$frame = $frame = $this->Frame->findById($frameId);
-		$this->set('frameId', 0);
-		$this->set('blockId', 0);
-		$this->set('roomId', 0);
-		$this->set('roomId', 0);
-		$this->set('publishRoomAdminOnly', true);
-		$this->set('isRoomAdmin', false);
-		$this->set('blockEditable', false);
-		$this->set('blockPublishable', false);
-		$this->set('contentEditable', false);
-		$this->set('contentPublishable', false);
-
-		if ($frame &&
-			isset($frame[$this->Frame->name]['id']) &&
-			isset($frame[$this->Frame->name]['room_id'])) {
-			$frame = $frame[$this->Frame->name];
-			$this->set('frameId', $frame['id']);
-			$this->set('blockId', $frame['block_id']);
-			$this->set('roomId', $frame['room_id']);
-
-			//part list
-			$partList = $this->LanguagesPart->find('all',
-				array('conditions' => array(
-					$this->LanguagesPart->name . '.language_id' => $this->langId
-				)));
-			$this->set('partList', $partList);
-
-			//roomに所属していない
-			if (! CakeSession::read('Auth.User.id') &&
-				! isset($frame['room_id'])
-			) {
-				return true;
-			}
-			/*
-			$userPart = $this->PartsRoomsUser->getPart($frame['room_id']);
-			if (isset($userPart[$this->PartsRoomsUser->name]['part_id']) &&
-				$userPart[$this->PartsRoomsUser->name]['part_id'] == self::ROOM_ADMIN_ID) {
-				$this->set('isRoomAdmin', true);
-			}*/
-			$this->set('blockEditable', true);
-			$this->set('contentEditable', true);
-			$this->set('contentPublishable', true);
-			$this->set('publishRoomAdminOnly', false);
-		}
-		$this->set('blockEditable', true);
-		$this->set('contentEditable', true);
-		$this->set('contentPublishable', true);
-		$this->set('publishRoomAdminOnly', false);
-	}
-
-/**
- * get langId
- *
- * @param string $lang lang code
- * @return int
- */
-	protected function _getLangId($lang = 'jpn') {
-		$rtn = $this->Language->findByCode($lang);
-		if (isset($rtn[$this->Language->name]['id']) &&
-			$rtn[$this->Language->name]['id']) {
-			return $rtn[$this->Language->name]['id'];
-		}
-		return self::DEFAULT_LANGID;
-	}
 }

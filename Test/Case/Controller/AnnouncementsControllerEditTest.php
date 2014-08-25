@@ -47,19 +47,19 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 		'app.session',
 		'app.site_setting',
 		'app.site_setting_value',
-		'app.page',
-		'app.block',
-		'app.part',
-		'app.room_part',
-		'app.languages_part',
-		'plugin.announcements.announcements_language',
+		'plugin.announcements.page',
+		'plugin.announcements.block',
+		'plugin.announcements.part',
+		'plugin.announcements.room_part',
+		'plugin.announcements.languages_part',
+		'plugin.announcements.language',
 		'plugin.announcements.announcement',
 		'plugin.announcements.announcement_part_setting',
 		'plugin.announcements.announcements_block',
 		'plugin.announcements.announcement_setting',
-		'plugin.announcements.announcements_frame',
-		'plugin.announcements.announcements_rooms_user',
-		'app.box',
+		'plugin.announcements.frame',
+		'plugin.announcements.box',
+		'plugin.announcements.parts_rooms_user',
 	);
 
 /**
@@ -144,7 +144,7 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 		$data['Announcement']['status'] = "Draft";
 		$data['Announcement']['langId'] = 2;
 		$data['Announcement']['id'] = 0;
-		$this->testAction('/announcements/announcements/edit/' . self::ACTIVE_FRAME_ID . '/ja',
+		$this->testAction('/announcements/announcements/edit/' . self::ACTIVE_FRAME_ID . '/jpn',
 			array (
 				'method' => 'post',
 				'data' => $data

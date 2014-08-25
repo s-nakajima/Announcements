@@ -2,66 +2,107 @@
 /**
  * AnnouncementPartSetting Model
  *
+ * @property Block $Block
+ * @property Part $Part
  *
  * @author   Takako Miyagawa <nekoget@gmail.com>
  * @link     http://www.netcommons.org NetCommons Project
  * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 
-App::uses('AppModel', 'Model');
-App::uses('Frame', 'Model');
-App::uses('RoomPart', 'Model');
+App::uses('AnnouncementsAppModel', 'Announcements.Model');
 
 /**
- * Summary for AnnouncementBlockPart Model
+ * Summary for AnnouncementPartSetting Model
  */
-class AnnouncementPartSetting extends AppModel {
+class AnnouncementPartSetting extends AnnouncementsAppModel {
 
 /**
- * changeable value  room_parts
+ * Use database config
  *
- * @var array
+ * @var string
  */
-	const CHANGEABLE_PART_VALUE = 2;
+	public $useDbConfig = 'master';
 
 /**
- * cannot change value  room_parts
+ * Display field
  *
- * @var int
+ * @var string
  */
-	const CANNOT_PART_VALUE = 0;
+	public $displayField = 'id';
 
 /**
- * validate
+ * Validation rules
  *
  * @var array
  */
 	public $validate = array(
-		'created_user' => array(
-			'rule' => array('numeric')
-		),
-		'modified_user' => array(
-			'rule' => array('numeric'),
-		),
 		'block_id' => array(
-			'rule' => array(
-				'numeric',
-				'notEmpty'
-			)
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
 		),
 		'part_id' => array(
-			'rule' => array(
-				'numeric',
-				'notEmpty',
-				'required'
-			)
-		)
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+		'editable_content' => array(
+			'boolean' => array(
+				'rule' => array('boolean'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+		'publishable_content' => array(
+			'boolean' => array(
+				'rule' => array('boolean'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+		'created_user' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+		'modified_user' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
 	);
 
 /**
- * belongsTo
+ * belongsTo associations
  *
- * @var string
+ * @var array
  */
 	public $belongsTo = array(
 		'Block' => array(
@@ -77,19 +118,12 @@ class AnnouncementPartSetting extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
-		),
-		'RoomPart' => array(
-			'className' => 'RoomPart',
-			'foreignKey' => 'part_id',
-			'conditions' => 'RoomPart.part_id=Part.id',
-			'fields' => '',
-			'order' => ''
 		)
 	);
 
 /**
  * get a setting of blocks (all parts)
- *
+ * 
  * @param int $blockId blocks.id
  * @return array
  */
@@ -105,7 +139,7 @@ class AnnouncementPartSetting extends AppModel {
 
 /**
  * get recode
- *
+ * 
  * @param int $blockId blocks.id
  * @param int $partId parts.id
  * @return array
@@ -122,7 +156,7 @@ class AnnouncementPartSetting extends AppModel {
 
 /**
  * Array of part_id settings block
- *
+ * 
  * @param int $blockId blocks.id
  * @return array
  */
@@ -138,7 +172,7 @@ class AnnouncementPartSetting extends AppModel {
 
 /**
  * get id by blockId
- *
+ * 
  * @param int $blockId blocks.id
  * @param int $partId parts.id
  * @return int|null
@@ -154,28 +188,4 @@ class AnnouncementPartSetting extends AppModel {
 		return null;
 	}
 
-/**
- * part_id of changeable role
- *
- * @param string $colName room_parts column name
- * @return array
- */
-	public function changeablePartList($colName) {
-		//RoomPartから取得
-		$this->RoomPart = Classregistry::init('RoomPart');
-		$roomPartList = $this->RoomPart->find('all', array(
-			'conditions' => array(
-				$this->RoomPart->name . '.' . $colName => self::CHANGEABLE_PART_VALUE
-			),
-			'fields' => array(
-				$this->RoomPart->name . '.part_id',
-				$this->RoomPart->name . '.' . $colName,
-			)
-		));
-		$rtn = array();
-		foreach ($roomPartList as $roomPart) {
-			$rtn[] = $roomPart[$this->RoomPart->name]['part_id'];
-		}
-		return $rtn;
-	}
 }

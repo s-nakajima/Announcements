@@ -15,17 +15,87 @@ App::uses('AnnouncementPartSetting', 'Announcements.Model');
 class AnnouncementPartSettingTest extends CakeTestCase {
 
 /**
+ * 存在するユーザ
+ *
+ * @var int
+ */
+	const EXISTING_USER_IN_ROOM = 1;
+
+/**
+ * 存在するルーム
+ *
+ * @var int
+ */
+	const EXISTING_ROOM = 1;
+
+/**
+ * 存在するblockId
+ *
+ * @var int
+ */
+	const EXISTING_BLOCK = 1;
+
+/**
+ * 存在するpart
+ *
+ * @var int
+ */
+	const EXISTING_PART = 1;
+
+/**
+ * 存在するlanguage.id
+ *
+ * @var int
+ */
+	const EXISTING_LANG_ID = 1;
+
+/**
+ * 存在するannouncements_block_id
+ *
+ * @var int
+ */
+	const EXISTING_ANNOUNCEMENT_BLOCK_ID = 1;
+
+/**
+ * 存在しないユーザ
+ *
+ * @var int
+ */
+	const NOT_EXISTING_USER = 10000;
+
+/**
+ * 存在しないルーム
+ *
+ * @var int
+ */
+	const NOT_EXISTING_ROOM = 10000;
+
+/**
+ * 存在しない part
+ *
+ * @var int
+ */
+	const NOT_EXISTING_PART = 10000;
+
+/**
+ * 存在しないblockId
+ *
+ * @var int
+ */
+	const NOT_EXISTING_BLOCK = 10000;
+
+/**
  * Fixtures
  *
  * @var array
  */
 	public $fixtures = array(
 		'plugin.announcements.announcement_part_setting',
-		'app.block',
-		'app.blocks_language',
-		'app.room_part',
-		'app.part',
-		'app.languages_part',
+		'plugin.announcements.block',
+		'plugin.announcements.language',
+		'plugin.announcements.blocks_language',
+		'plugin.announcements.part',
+		'plugin.announcements.languages_part'
 	);
 
 /**
@@ -36,7 +106,6 @@ class AnnouncementPartSettingTest extends CakeTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->AnnouncementPartSetting = ClassRegistry::init('Announcements.AnnouncementPartSetting');
-		CakeSession::write('Auth.User.id', 1);
 	}
 
 /**
@@ -47,6 +116,7 @@ class AnnouncementPartSettingTest extends CakeTestCase {
 	public function tearDown() {
 		unset($this->AnnouncementPartSetting);
 		parent::tearDown();
+		CakeSession::delete('Auth.User.id');
 	}
 
 /**
@@ -55,27 +125,11 @@ class AnnouncementPartSettingTest extends CakeTestCase {
  * @return void
  */
 	public function testGetList() {
-		$blockId = 1;
-		$rtn = $this->AnnouncementPartSetting->getList($blockId);
+		$rtn = $this->AnnouncementPartSetting->getList(self::EXISTING_BLOCK);
+		$this->assertTrue(is_array($rtn));
 		$this->assertEquals(
-			$blockId,
+			self::EXISTING_BLOCK,
 			$rtn[0][$this->AnnouncementPartSetting->name]['block_id']
-		);
-	}
-
-/**
- * testFindByBlockId method
- *
- * @return void
- */
-	public function estGet() {
-		//パートの権限を取得する
-		$blockId = 1;
-		$partId = 1;
-		$rtn = $this->AnnouncementPartSetting->get($blockId, $partId);
-		$this->assertEquals(
-			$partId,
-			$rtn[$this->AnnouncementPartSetting->name]['part_id']
 		);
 	}
 
@@ -84,23 +138,19 @@ class AnnouncementPartSettingTest extends CakeTestCase {
  *
  * @return void
  */
-	public function estGetListPartIdArray() {
+	public function testGetListPartIdArray() {
 		//keyとvalueがpart_idになるブロックのパートを取得する
-		$blockId = 1;
-		$partId = 1;
-		$rtn = $this->AnnouncementPartSetting->getListPartIdArray($blockId);
+		$rtn = $this->AnnouncementPartSetting->getListPartIdArray(self::EXISTING_BLOCK);
+		$this->assertTrue(is_array($rtn));
 		$this->assertEquals(
-			$rtn[$partId]['part_id'],
-			$partId
+			$rtn[self::EXISTING_BLOCK]['part_id'],
+			self::EXISTING_PART
 		);
 
 		//ない場合
-		$blockId = 10000;
-		$rtn = $this->AnnouncementPartSetting->getListPartIdArray($blockId);
-		$this->assertEquals(
-			$rtn,
-			array()
-		);
+		$rtn = $this->AnnouncementPartSetting->getListPartIdArray(self::NOT_EXISTING_BLOCK);
+		$this->assertTrue(is_array($rtn));
+		$this->assertEquals($rtn, array());
 	}
 
 /**
@@ -109,133 +159,22 @@ class AnnouncementPartSettingTest extends CakeTestCase {
  * @return void
  */
 	public function testGetIdByBlockId() {
-		//ある場合
-		//$blockId = 1;
-		//$partId = 1;
-		//$ans = $this->AnnouncementPartSetting->get($blockId, $partId);
-		//$rtn = $this->AnnouncementPartSetting->getIdByBlockId($blockId, $partId);
-		//$this->assertEquals(
-		//	$ans[$this->AnnouncementPartSetting->name]['id'],
-		//	$rtn
-		//);
-		//ない場合
-		$blockId = 1;
-		$partId = 100000;
-		$rtn = $this->AnnouncementPartSetting->getIdByBlockId($blockId, $partId);
-		$this->assertEquals(
-			null,
-			$rtn
-		);
+		//存在しないblockの存在しないパートの設定
+		$rtn = $this->AnnouncementPartSetting->getIdByBlockId(self::NOT_EXISTING_BLOCK, self::NOT_EXISTING_PART);
+		$this->assertEquals(null, $rtn);
+
+		//存在するblocks.id 存在するparts.id
+		$rtn = $this->AnnouncementPartSetting->getIdByBlockId(self::EXISTING_BLOCK, self::EXISTING_PART);
+		$this->assertTrue(is_numeric($rtn));
+		$this->assertNotEmpty($rtn);
+
+		//存在しないblocks 存在するparts
+		$rtn = $this->AnnouncementPartSetting->getIdByBlockId(self::NOT_EXISTING_BLOCK, self::EXISTING_PART);
+		$this->assertEquals(null, $rtn);
+
+		//存在するblock 存在しないparts
+		$rtn = $this->AnnouncementPartSetting->getIdByBlockId(self::EXISTING_BLOCK, self::NOT_EXISTING_PART);
+		$this->assertEquals(null, $rtn);
 	}
 
-/**
- * changeablePartList
- *
- * @return void
- */
-	public function estChangeablePartList() {
-		$colName = 'read_content';
-		$rtn = $this->AnnouncementPartSetting->changeablePartList($colName);
-		$this->assertTrue(is_array($rtn));
-
-		$colName = 'edit_content';
-		$rtn = $this->AnnouncementPartSetting->changeablePartList($colName);
-		$this->assertTrue(is_array($rtn));
-
-		$colName = 'create_content';
-		$rtn = $this->AnnouncementPartSetting->changeablePartList($colName);
-		$this->assertTrue(is_array($rtn));
-
-		$colName = 'publish_content';
-		$rtn = $this->AnnouncementPartSetting->changeablePartList($colName);
-		$this->assertTrue(is_array($rtn));
-	}
-
-/**
- * update
- *
- * @return void
- */
-	public function estUpdate() {
-		//変更権限の付与
-		$permissionType = 'edit';
-		$frameId = 1;
-		$blockId = 1;
-		$data = array(
-			'part_id' => '2, 3, 4',
-			'frame_id' => 1
-		);
-		$rtn = $this->AnnouncementPartSetting->updateParts($permissionType, $frameId, $blockId, $data);
-		$this->assertTrue(is_array($rtn));
-
-		//利用できないpermissionType
-		$permissionType = 'test';
-		$frameId = 1;
-		$blockId = 1;
-		$data = array(
-			'part_id' => '2, 3, 4',
-			'frame_id' => 1
-		);
-		$rtn = $this->AnnouncementPartSetting->updateParts($permissionType, $frameId, $blockId, $data);
-		$this->assertTrue(is_array($rtn));
-
-		//ERROR: postされたデータにpart_idがない
-		$permissionType = 'edit';
-		$frameId = 1;
-		$blockId = 1;
-		$data = array(
-			'frame_id' => 1
-		);
-		$rtn = $this->AnnouncementPartSetting->updateParts($permissionType, $frameId, $blockId, $data);
-		$this->assertTrue(is_array($rtn));
-		$this->assertEquals(array(), $rtn);
-
-		//すでに設定があるものを更新する。
-		$permissionType = 'edit';
-		$frameId = 1;
-		$blockId = 1;
-		$data = array(
-			'part_id' => '2, 3, 4',
-			'frame_id' => 1
-		);
-		$this->assertEquals(array(), $rtn);
-		$rtn = $this->AnnouncementPartSetting->updateParts($permissionType, $frameId, $blockId, $data);
-		$this->assertTrue(is_array($rtn));
-
-		//存在した
-		$blockId = 1;
-		$this->assertTrue($this->AnnouncementPartSetting->createSetting($blockId));
-		$permissionType = 'publish';
-		$frameId = 1;
-		$blockId = 1;
-		$data = array(
-			'part_id' => '2',
-			'frame_id' => 1
-		);
-		$rtn = $this->AnnouncementPartSetting->updateParts($permissionType, $frameId, $blockId, $data);
-		$this->assertTrue(is_array($rtn));
-
-		//存在した
-		$blockId = 1;
-		$this->assertTrue($this->AnnouncementPartSetting->createSetting($blockId));
-		$permissionType = 'publish';
-		$frameId = 1;
-		$blockId = 1;
-		$data = array(
-			'part_id' => '2',
-			'frame_id' => 1
-		);
-		$rtn = $this->AnnouncementPartSetting->updateParts($permissionType, $frameId, $blockId, $data);
-		$this->assertTrue(is_array($rtn));
-
-		$permissionType = 'publish';
-		$frameId = 1;
-		$blockId = 1;
-		$data = array(
-			'part_id' => '2, 3, 4',
-			'frame_id' => 1
-		);
-		$rtn = $this->AnnouncementPartSetting->updateParts($permissionType, $frameId, $blockId, $data);
-		$this->assertTrue(is_array($rtn));
-	}
 }

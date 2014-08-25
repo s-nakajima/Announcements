@@ -41,32 +41,33 @@ class AnnouncementFixture extends CakeTestFixture {
  * @var array
  */
 	public $records = array(
-		array (
+		array(
 			'id' => 1,
 			'announcements_block_id' => 1,
 			'status' => 1,
-			'language_id' => 2,
-			'is_auto_translation' => false,
+			'language_id' => 1,
+			'is_auto_translation' => 1,
 			'translation_engine' => null,
-			'content' => 'Publish Content',
-			'created' => '2014-08-23 09:16:52',
+			'content' => 'Content Publish',
+			'created' => '2014-08-25 15:11:48',
 			'created_user' => 1,
-			'modified' => '2014-08-23 09:16:52',
+			'modified' => '2014-08-25 15:11:48',
 			'modified_user' => 1
 		),
-		array (
+		array(
 			'id' => 2,
 			'announcements_block_id' => 1,
-			'status' => 2,
-			'language_id' => 2,
-			'is_auto_translation' => false,
+			'status' => 3,
+			'language_id' => 1,
+			'is_auto_translation' => 1,
 			'translation_engine' => null,
-			'content' => 'Publish Content',
-			'created' => '2014-08-23 09:16:52',
+			'content' => 'Content Draft',
+			'created' => '2014-08-25 15:11:48',
 			'created_user' => 1,
-			'modified' => '2014-08-23 09:16:52',
+			'modified' => '2014-08-25 15:11:48',
 			'modified_user' => 1
-		)
+		),
+
 	);
 
 }

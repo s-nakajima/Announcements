@@ -1,6 +1,6 @@
 <?php
 /**
- * LanguageFixture
+ * PartsRoomsUserFixture
  *
  * @author   Takako Miyagawa <nekoget@gmail.com>
  * @link     http://www.netcommons.org NetCommons Project
@@ -8,16 +8,9 @@
  */
 
 /**
- * Summary for LanguageFixture
+ * Summary for PartsRoomsUserFixture
  */
-class AnnouncementsLanguageFixture extends CakeTestFixture {
-
-/**
- * table
- *
- * @var string
- */
-	public $table = 'languages';
+class PartsRoomsUserFixture extends CakeTestFixture {
 
 /**
  * Fields
@@ -26,9 +19,9 @@ class AnnouncementsLanguageFixture extends CakeTestFixture {
  */
 	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
-		'code' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 3, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-		'weight' => array('type' => 'integer', 'null' => true, 'default' => null),
-		'is_active' => array('type' => 'boolean', 'null' => true, 'default' => null),
+		'room_id' => array('type' => 'integer', 'null' => false, 'default' => null),
+		'user_id' => array('type' => 'integer', 'null' => false, 'default' => null),
+		'part_id' => array('type' => 'integer', 'null' => false, 'default' => null),
 		'created_user_id' => array('type' => 'integer', 'null' => true, 'default' => null),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'modified_user_id' => array('type' => 'integer', 'null' => true, 'default' => null),
@@ -46,24 +39,24 @@ class AnnouncementsLanguageFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => '1',
-			'code' => 'eng',
-			'weight' => '1',
-			'is_active' => 1,
-			'created_user_id' => null,
-			'created' => '2014-08-24 23:35:05',
-			'modified_user_id' => null,
-			'modified' => '2014-08-24 23:35:05'
+			'id' => 1,
+			'room_id' => 1,
+			'user_id' => 1,
+			'part_id' => 1,
+			'created_user_id' => 1,
+			'created' => '2014-08-25 00:59:49',
+			'modified_user_id' => 1,
+			'modified' => '2014-08-25 00:59:49'
 		),
 		array(
-			'id' => '2',
-			'code' => 'jpn',
-			'weight' => '2',
-			'is_active' => 1,
-			'created_user_id' => null,
-			'created' => '2014-08-24 23:35:05',
-			'modified_user_id' => null,
-			'modified' => '2014-08-24 23:35:05'
+			'id' => 2,
+			'room_id' => 1,
+			'user_id' => 2,
+			'part_id' => 2,
+			'created_user_id' => 1,
+			'created' => '2014-08-25 00:59:49',
+			'modified_user_id' => 1,
+			'modified' => '2014-08-25 00:59:49'
 		),
 	);
 

@@ -2,63 +2,28 @@
 /**
  * Announcement Model
  *
- * @property Block $Block
+ * @property AnnouncementsBlock $AnnouncementsBlock
  * @property Language $Language
+ * @property Block $Block
  *
- * @author      Noriko Arai <arai@nii.ac.jp>
- * @author      Takako Miyagawa <nekoget@gmail.com>
- * @link        http://www.netcommons.org NetCommons Project
- * @license     http://www.netcommons.org/license.txt NetCommons License
- * @copyright   Copyright 2014, NetCommons Project
- * @package     app.Plugin.Announcement.Model
+ * @author   Takako Miyagawa <nekoget@gmail.com>
+ * @link     http://www.netcommons.org NetCommons Project
+ * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 
-App::uses('AppModel', 'Model');
+App::uses('AnnouncementsAppModel', 'Announcements.Model');
 
 /**
  * Summary for Announcement Model
  */
-class Announcement extends AppModel {
+class Announcement extends AnnouncementsAppModel {
 
 /**
- * validation
- *
- * @var array
- */
-	public $validate = array(
-		'announcements_block_id' => array(
-			'rule' => array(
-				'numeric',
-				'notEmpty',
-				'required'
-			),
-			'allowEmpty' => false
-		),
-		'status' => array(
-			'rule' => array(
-				'numeric',
-				'notEmpty',
-				'required'
-			)
-		),
-		'language_id' => array(
-			'rule' => array(
-				'numeric',
-				'notEmpty'
-			)
-		),
-		'created_user' => 'numeric',
-		'modified_user_id' => 'numeric'
-	);
-
-/**
- * belongsTo
+ * Use database config
  *
  * @var string
  */
-	public $belongsTo = array(
-		'AnnouncementsBlock',
-	);
+	public $useDbConfig = 'master';
 
 /**
  * Announcements status publish
@@ -100,6 +65,96 @@ class Announcement extends AppModel {
 	);
 
 /**
+ * Validation rules
+ *
+ * @var array
+ */
+	public $validate = array(
+		'announcements_block_id' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+		'status' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+		'language_id' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+		'translation_engine' => array(
+			'maxLength' => array(
+				'rule' => array('maxLength', 255),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+		//'content' => array(
+			//'maxLength' => array(
+				//'rule' => array('maxLength'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			//),
+		//),
+		'modified_user' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+	);
+
+/**
+ * belongsTo associations
+ *
+ * @var array
+ */
+	public $belongsTo = array(
+		'AnnouncementsBlock' => array(
+			'className' => 'AnnouncementsBlock',
+			'foreignKey' => 'announcements_block_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'Language' => array(
+			'className' => 'Language',
+			'foreignKey' => 'language_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		)
+	);
+
+/**
  * 最新のデータを取得する
  *
  * @param int $blockId blocks.id
@@ -107,7 +162,7 @@ class Announcement extends AppModel {
  * @param bool $publishOnly get only publish status
  * @return array
  */
-	public function get($blockId, $langId, $publishOnly = "") {
+	public function get($blockId, $langId, $publishOnly = '') {
 		$conditions = array(
 			'block_id' => $blockId,
 			'language_id' => $langId,
@@ -158,7 +213,8 @@ class Announcement extends AppModel {
 			'create_user_id' => CakeSession::read('Auth.User.id'),
 			'language_id' => $data[$this->name]['langId'],
 			'status' => $status,
-			'content' => $data[$this->name]['content']
+			'content' => $data[$this->name]['content'],
+			'created_user' => CakeSession::read('Auth.User.id')
 		));
 		if (!$rtn) {
 			return array();
@@ -191,5 +247,5 @@ class Announcement extends AppModel {
 		));
 		return $this->getAnnouncementsBlockId($blockId);
 	}
-}
 
+}

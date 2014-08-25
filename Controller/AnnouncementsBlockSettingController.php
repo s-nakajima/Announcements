@@ -12,6 +12,17 @@ App::uses('AnnouncementsAppController', 'Announcements.Controller');
 class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 
 /**
+ * Model name
+ *
+ * @var array
+ */
+	public $uses = array(
+		'Announcements.Announcement',
+		'Announcements.AnnouncementPartSetting',
+		'Announcements.AnnouncementSetting'
+	);
+
+/**
  * 準備
  *
  * @return void

@@ -2,50 +2,112 @@
 /**
  * AnnouncementNotification Model
  *
+ * @property Block $Block
+ * @property Language $Language
+ *
  * @author   Takako Miyagawa <nekoget@gmail.com>
  * @link     http://www.netcommons.org NetCommons Project
  * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 
-App::uses('AppModel', 'Model');
+App::uses('AnnouncementsAppModel', 'Announcements.Model');
 
 /**
- * Summary for AnnouncementBlockMessage Model
+ * Summary for AnnouncementNotification Model
  */
-class AnnouncementNotification extends AppModel {
+class AnnouncementNotification extends AnnouncementsAppModel {
 
 /**
- * ブロックIDから設定を取得する
+ * Use database config
  *
- * @param int $blockId blocks.id
- * @param int $langId languages.id
- * @return array
+ * @var string
  */
-	public function get($blockId, $langId) {
-		$rtn = $this->find('first', array(
-			'conditions' => array(
-				$this->name . '.block_id' => $blockId,
-				$this->name . '.language_id' => $langId
-			)
-		));
-		return $rtn;
-	}
+	public $useDbConfig = 'master';
 
 /**
- * get ID from the block ID
+ * Display field
  *
- * @param int $blockId blocks.id
- * @param int $langId languages.id
- * @return array
+ * @var string
  */
-	public function getId($blockId, $langId) {
-		$block = $this->findByBlockId($blockId, $langId);
-		if ( isset($block[$this->name])
-			&& isset($block[$this->name]['id'])
-			&& $block[$this->name]['id']
-		) {
-			return $block[$this->name]['id'];
-		}
-		return null;
-	}
+	public $displayField = 'id';
+
+/**
+ * Validation rules
+ *
+ * @var array
+ */
+	public $validate = array(
+		'block_id' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+		'language_id' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+		'notification_type' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+		'created_user' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+		'modified_user' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+	);
+
+/**
+ * belongsTo associations
+ *
+ * @var array
+ */
+	public $belongsTo = array(
+		'Block' => array(
+			'className' => 'Block',
+			'foreignKey' => 'block_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'Language' => array(
+			'className' => 'Language',
+			'foreignKey' => 'language_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		)
+	);
 }
