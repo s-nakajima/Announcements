@@ -5,7 +5,6 @@
  * @author   Takako Miyagawa <nekoget@gmail.com>
  * @link     http://www.netcommons.org NetCommons Project
  * @license  http://www.netcommons.org/license.txt NetCommons License
- * @SuppressWarnings(PHPMD.TooManyMethods)
  */
 App::uses('AppController', 'Controller');
 App::uses('AnnouncementsAppController', 'Announcements.Controller');
@@ -36,25 +35,6 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 		$rtn = $this->NetCommonsRoomPart->getList($this->langId);
 		$this->set('partList', $this->NetCommonsRoomPart->getList($this->langId));
 		return $rtn;
-	}
-
-/**
- * データ取得
- * 設定なので、offset limitはない。最新の状態
- *
- * @param string $type 取得したいもの
- * @param int $frameId frames.id
- * @param int $blockId blocks.id
- * @param string $dataType データタイプ
- * @return void
- */
-	public function view($type, $frameId, $blockId, $dataType = "json") {
-		//ルーム管理者の承認が必要なルームかどうかを返す
-		//ログインしているユーザのルームパートの取得
-		//パート別の公開権限ベースを取得
-		//パート別ブロックの公開権限設定を取得
-		//パート別ブロックの編集権限ベースを取得
-		//パート別ブロックの編集権限設定を取得
 	}
 
 /**
@@ -200,50 +180,27 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 	}
 
 /**
- * 追加
- *
- * @param string $type タイプ
- * @param int $frameId flames.id
- * @return CakeResponse
- */
-	public function add($type, $frameId) {
-	}
-
-/**
- * 削除
- *
- * @param string $type type
- * @param int $frameId flames.id
- * @return CakeResponse
- */
-	public function delete($type, $frameId) {
-		//必ずpostで
-		// blockの削除
-		// 記事のみ削除 announcement_data.id
-	}
-
-/**
  * post用のformを取得する(javascript側でトークンを取得するために必要）
  *
- * @param string $type formのタイプ
+ * @param string $form formのタイプ
  * @param int $frameId frames.id
  * @param int $blockId blocks.id 存在しない場合もある。
  * @return void
  */
-	public function form($type, $frameId, $blockId) {
+	public function form($form, $frameId, $blockId) {
 		$this->layout = false;
 		$this->_setFrame($frameId);
 		$this->__setPartList();
 		//type別にフォームを返す
-		if ($type == "editParts") {
+		if ($form === "editParts") {
 			//タイプ別フォーム : 権限設定
 			return $this->render("AnnouncementsBlockSetting/get_edit_form/edit_parts");
-		} elseif ($type == "publishParts") {
+		} elseif ($form === "publishParts") {
 			return $this->render("AnnouncementsBlockSetting/get_edit_form/publish_parts");
-		} elseif ($type == "publishMessage") {
+		} elseif ($form === "publishMessage") {
 			//タイプ別フォーム：承認申請通知
 			return $this->render("AnnouncementsBlockSetting/get_edit_form/publish_message");
-		} elseif ($type == "updateMessage") {
+		} elseif ($form === "updateMessage") {
 			//タイプ別フォーム：更新通知設定
 			return $this->render("AnnouncementsBlockSetting/get_edit_form/update_message");
 		}

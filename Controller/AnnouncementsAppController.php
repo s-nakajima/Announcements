@@ -17,11 +17,13 @@ class AnnouncementsAppController extends AppController {
  */
 	public $uses = array(
 		'Announcements.Announcement',
-		'Announcements.AnnouncementPartsSetting',
+		'Announcements.AnnouncementPartSetting',
 		'Announcements.AnnouncementSetting',
-		'Announcements.RoomPart',
+		'Rooms.RoomPart',
+		'Rooms.PartsRoomsUser',
 		'Frames.Frame',
 		'LanguagesPart',
+		'Language'
 	);
 
 /**
