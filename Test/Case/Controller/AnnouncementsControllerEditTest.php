@@ -77,6 +77,7 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 		'plugin.announcements.plugin',
 		'plugin.announcements.room',
 		'plugin.announcements.user',
+		'plugin.announcements.frames_language',
 	);
 
 /**
