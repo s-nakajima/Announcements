@@ -99,17 +99,18 @@ class AppSchema extends CakeSchema {
 		'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'unique'),
 		'part_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'readable_content' => array('type' => 'boolean', 'null' => true),
+		'createable_content' => array('type' => 'boolean', 'null' => true),
 		'editable_content' => array('type' => 'boolean', 'null' => false),
 		'publishable_content' => array('type' => 'boolean', 'null' => false),
 		'mail_sendable' => array('type' => 'boolean', 'null' => true),
-		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
+		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'created_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'modified_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'indexes' => array(
-		'PRIMARY' => array('column' => 'id', 'unique' => 1)
-			),
-			'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
+			'PRIMARY' => array('column' => 'id', 'unique' => 1)
+		),
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
 	);
 
 /**
