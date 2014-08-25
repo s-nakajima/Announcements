@@ -28,7 +28,7 @@ class Announcements extends CakeMigration {
 					'announcements_block_id' => array('type' => 'integer', 'null' => false, 'default' => null),
 					'status' => array('type' => 'integer', 'null' => false, 'default' => '1', 'length' => 3),
 					'language_id' => array('type' => 'integer', 'null' => false, 'default' => '1'),
-					'is_auto_translate' => array('type' => 'boolean', 'null' => true),
+					'is_auto_translation' => array('type' => 'boolean', 'null' => true),
 					'translation_engine' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'content' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
@@ -124,7 +124,7 @@ class Announcements extends CakeMigration {
 					'announcements_block_id' => '1',
 					'status' => '1',
 					'language_id' => '2',
-					'is_auto_translate' => '1',
+					'is_auto_translation' => '1',
 					'translation_engine' => null,
 					'content' => '<div class="jumbotron">
 <h1 class="text-center">NetCommons 3!</h1>
