@@ -94,7 +94,7 @@ class AppSchema extends CakeSchema {
  *
  * @var array
  */
-	public $announcement_parts_setting = array(
+	public $announcement_part_settings = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 		'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'unique'),
 		'part_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),

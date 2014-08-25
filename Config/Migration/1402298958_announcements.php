@@ -31,7 +31,7 @@ class Announcements extends CakeMigration {
 					'is_auto_translate' => array('type' => 'boolean', 'null' => true),
 					'translation_engine' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'content' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
+					'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
 					'created_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 					'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 					'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
@@ -43,7 +43,7 @@ class Announcements extends CakeMigration {
 				'announcements_blocks' => array(
 					'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 					'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'unique'),
-					'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
+					'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
 					'created_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 					'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 					'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
@@ -57,7 +57,7 @@ class Announcements extends CakeMigration {
 					'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'unique'),
 					'sendable_request' => array('type' => 'boolean', 'null' => true),
 					'sendable_update' => array('type' => 'boolean', 'null' => true),
-					'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
+					'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
 					'created_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 					'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 					'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
@@ -66,7 +66,7 @@ class Announcements extends CakeMigration {
 					),
 					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
 				),
-				'announcement_parts_settings' => array(
+				'announcement_part_settings' => array(
 					'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 					'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'unique'),
 					'part_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
@@ -75,7 +75,7 @@ class Announcements extends CakeMigration {
 					'create_content' => array('type' => 'integer', 'length' => 2, 'null' => false, 'default' => '0'),
 					'publish_content' => array('type' => 'integer', 'length' => 2, 'null' => false, 'default' => '0'),
 					'mail_sendable' => array('type' => 'boolean', 'null' => true),
-					'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
+					'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
 					'created_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 					'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 					'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
@@ -84,14 +84,13 @@ class Announcements extends CakeMigration {
 					),
 					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
 				),
-				'announcement_notification' => array(
+				'announcement_notifications' => array(
 					'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 					'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'unique'),
 					'language_id' => array('type' => 'integer', 'null' => false, 'default' => '1'),
 					'notification_type' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 					'mail_subject' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'mail_body' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
 					'created_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 					'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 					'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
@@ -107,8 +106,8 @@ class Announcements extends CakeMigration {
 				'announcements',
 				'announcements_blocks',
 				'announcement_settings',
-				'announcement_parts_settings',
-				'announcement_notification',
+				'announcement_part_settings',
+				'announcement_notifications',
 			)
 		)
 	);
@@ -131,6 +130,7 @@ class Announcements extends CakeMigration {
 <h1 class="text-center">NetCommons 3!</h1>
 <p><a class="btn btn-primary btn-lg container" href="setting">セッティングモードで編集しよう<span class="glyphicon glyphicon-pencil">.</span></a></p>
 ようこそ NetCommons3へ！<br /> NetCommons3は国立情報学研究所が次世代情報共有基盤システムとして開発したCMSです。</div>',
+					'created' => '2014-06-10 23:54:27',
 					'created_user_id' => 1,
 				)
 			),
