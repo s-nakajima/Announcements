@@ -55,6 +55,16 @@ class UserFixture extends CakeTestFixture {
 			'modified_user_id' => null,
 			'modified' => '2014-08-24 23:42:08'
 		),
+		array(
+			'id' => 2,
+			'username' => 'admin2',
+			'password' => 'f14c95a14885415b30c8f3cd7603da0cfce5acdebaac646ee7c9b6928243e1f7871dde7eeb273de6314e431684723623490b7ce144697e00473872f01ad8b72c',
+			'role_id' => '1',
+			'created_user_id' => null,
+			'created' => '2014-08-24 23:42:08',
+			'modified_user_id' => null,
+			'modified' => '2014-08-24 23:42:08'
+		),
 	);
 
 }
