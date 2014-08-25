@@ -42,9 +42,9 @@ class AppSchema extends CakeSchema {
 		'translation_engine' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'content' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
-		'create_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'create_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
-		'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'modified_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
 		),
@@ -60,9 +60,9 @@ class AppSchema extends CakeSchema {
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 		'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'unique'),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
-		'created_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'created_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
-		'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'modified_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),
@@ -80,9 +80,9 @@ class AppSchema extends CakeSchema {
 		'sendable_request' => array('type' => 'boolean', 'null' => true),
 		'sendable_update' => array('type' => 'boolean', 'null' => true),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
-		'created_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'created_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
-		'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'modified_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),
@@ -98,15 +98,14 @@ class AppSchema extends CakeSchema {
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 		'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'unique'),
 		'part_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-		'read_content' => array('type' => 'integer', 'length' => 2, 'null' => false, 'default' => '0'),
-		'edit_content' => array('type' => 'integer', 'length' => 2, 'null' => false, 'default' => '0'),
-		'create_content' => array('type' => 'integer', 'length' => 2, 'null' => false, 'default' => '0'),
-		'publish_content' => array('type' => 'integer', 'length' => 2, 'null' => false, 'default' => '0'),
+		'readable_content' => array('type' => 'boolean', 'null' => true),
+		'editable_content' => array('type' => 'boolean', 'null' => false),
+		'publishable_content' => array('type' => 'boolean', 'null' => false),
 		'mail_sendable' => array('type' => 'boolean', 'null' => true),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
-		'created_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'created_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
-		'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'modified_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'indexes' => array(
 		'PRIMARY' => array('column' => 'id', 'unique' => 1)
 			),
@@ -126,9 +125,9 @@ class AppSchema extends CakeSchema {
 		'mail_subject' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'mail_body' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
-		'created_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'created_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
-		'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'modified_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),

@@ -32,9 +32,9 @@ class Announcements extends CakeMigration {
 					'translation_engine' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'content' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
-					'created_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+					'created_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 					'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
-					'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+					'modified_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1),
 					),
@@ -44,9 +44,9 @@ class Announcements extends CakeMigration {
 					'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 					'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'unique'),
 					'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
-					'created_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+					'created_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 					'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
-					'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+					'modified_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1)
 					),
@@ -58,9 +58,9 @@ class Announcements extends CakeMigration {
 					'sendable_request' => array('type' => 'boolean', 'null' => true),
 					'sendable_update' => array('type' => 'boolean', 'null' => true),
 					'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
-					'created_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+					'created_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 					'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
-					'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+					'modified_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1)
 					),
@@ -70,15 +70,14 @@ class Announcements extends CakeMigration {
 					'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 					'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'unique'),
 					'part_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-					'read_content' => array('type' => 'integer', 'length' => 2, 'null' => false, 'default' => '0'),
-					'edit_content' => array('type' => 'integer', 'length' => 2, 'null' => false, 'default' => '0'),
-					'create_content' => array('type' => 'integer', 'length' => 2, 'null' => false, 'default' => '0'),
-					'publish_content' => array('type' => 'integer', 'length' => 2, 'null' => false, 'default' => '0'),
+					'readable_content' => array('type' => 'boolean', 'null' => true),
+					'editable_content' => array('type' => 'boolean', 'null' => false),
+					'publishable_content' => array('type' => 'boolean', 'null' => false),
 					'mail_sendable' => array('type' => 'boolean', 'null' => true),
 					'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
-					'created_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+					'created_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 					'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
-					'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+					'modified_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1)
 					),
@@ -91,9 +90,10 @@ class Announcements extends CakeMigration {
 					'notification_type' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 					'mail_subject' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'mail_body' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'created_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+					'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
+					'created_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 					'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
-					'modified_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+					'modified_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1)
 					),
@@ -131,7 +131,7 @@ class Announcements extends CakeMigration {
 <p><a class="btn btn-primary btn-lg container" href="setting">セッティングモードで編集しよう<span class="glyphicon glyphicon-pencil">.</span></a></p>
 ようこそ NetCommons3へ！<br /> NetCommons3は国立情報学研究所が次世代情報共有基盤システムとして開発したCMSです。</div>',
 					'created' => '2014-06-10 23:54:27',
-					'created_user_id' => 1,
+					'created_user' => 1,
 				)
 			),
 			'announcements_blocks' => array(
@@ -139,30 +139,30 @@ class Announcements extends CakeMigration {
 					'id' => 1,
 					'block_id' => 1,
 					'created' => '2014-06-10 23:54:27',
-					'created_user_id' => 1
+					'created_user' => 1
 				),
 				array (
 					'id' => 2,
 					'block_id' => 2,
-					'created_user_id' => 1,
+					'created_user' => 1,
 					'created' => '2014-06-10 23:54:27'
 				),
 				array (
 					'id' => 3,
 					'block_id' => 3,
-					'created_user_id' => 1,
+					'created_user' => 1,
 					'created' => '2014-06-10 23:54:27'
 				),
 				array (
 					'id' => 4,
 					'block_id' => 4,
-					'created_user_id' => 1,
+					'created_user' => 1,
 					'created' => '2014-06-10 23:54:27'
 				),
 				array (
 					'id' => 5,
 					'block_id' => 5,
-					'created_user_id' => 1,
+					'created_user' => 1,
 					'created' => '2014-06-10 23:54:27'
 				)
 			)
