@@ -1,7 +1,7 @@
 <?php
 // room admin block setting.
 ?>
-	<div  class='modal fade' id='nc-block-setting-<?php echo (int) $frameId; ?>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
+	<div  class='modal fade' id='nc-block-setting-<?php echo (int)$frameId; ?>' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
 		<div ng-controller='Announcements.setting'>
 		<div class='modal-dialog nc-modal-lg'>
 			<div class='modal-content'>

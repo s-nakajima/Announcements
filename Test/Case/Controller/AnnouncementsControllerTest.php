@@ -32,6 +32,20 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 	const CONTENT_EDITABLE_USER_ID = 1;
 
 /**
+ * コンテンツの存在するframe
+ *
+ * @var int
+ */
+	const EXISTING_FRAME = 1;
+
+/**
+ * 存在しないframe
+ *
+ * @var int
+ */
+	const NOT_EXISTING_FRAME = 1000000;
+
+/**
  * Fixtures
  *
  * @var array
@@ -53,6 +67,9 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		'plugin.announcements.frame',
 		'plugin.announcements.parts_rooms_user',
 		'plugin.announcements.box',
+		'plugin.announcements.plugin',
+		'plugin.announcements.room',
+		'plugin.announcements.user',
 	);
 
 /**
@@ -62,6 +79,8 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  */
 	public function setUp() {
 		parent::setUp();
+		CakeSession::delete('Auth.User');
+		Configure::delete('Pages.isSetting');
 	}
 
 /**
@@ -81,100 +100,111 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return   void
  */
 	public function testView() {
-		// frameIdなし
-		/*
+		//frameIdが指定されていない
 		$this->testAction('/announcements/announcements/view', array('method' => 'get'));
-		$this->assertTextNotContains('error', $this->result);
+		$this->assertTextNotContains('announcement', $this->result);
+		$this->assertTextEquals('', $this->result);
 
-		$this->testAction('/announcements/announcements/view/1', array('method' => 'get'));
-		$this->assertTextNotContains('error', $this->result);
-
-		// 存在するframeId
-		$this->testAction('/announcements/announcements/view/1', array('method' => 'get'));
-		$this->assertTextNotContains('error', $this->result);
+		// コンテンツが存在するframeId
+		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/eng', array('method' => 'get'));
 		$this->assertTextContains('announcement', $this->result);
 		$this->assertNotNull($this->result);
 
 		// 存在しないframeId
-		$this->testAction('/announcements/announcements/view/1000000', array('method' => 'get'));
+		$this->testAction('/announcements/announcements/view/' . self::NOT_EXISTING_FRAME, array('method' => 'get'));
 		$this->assertTextEquals('', $this->result);
 
-		// 存在するframeId
-		$this->testAction('/announcements/announcements/view/1/', array('method' => 'get'));
+		// 存在するframeId しかしjpnのコンテンツは無い。
+		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/jpn', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
-		$this->assertTextContains('announcement', $this->result);
+		$this->assertTextNotContains('announcement', $this->result);
+		$this->assertTextEquals('', $this->result);
 
 		//未ログイン
 		CakeSession::delete('Auth.User.id');
-		// language ja 存在する
-		$this->testAction('/announcements/announcements/view/1/ja', array('method' => 'get'));
+		// 存在するframeId しかしjpnのコンテンツは無い。
+		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/jpn', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
+		$this->assertTextNotContains('announcement', $this->result);
+		$this->assertTextEquals('', $this->result);
+
+		//未ログイン
+		CakeSession::delete('Auth.User.id');
+		// 存在するframeId 英語コンテンツはあり。
+		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/eng', array('method' => 'get'));
+		$this->assertTextNotContains('error', $this->result);
+		$this->assertTextContains('announcement', $this->result);
 
 		//ログイン
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
-		// language ja 存在する
-		$this->testAction('/announcements/announcements/view/1/ja', array('method' => 'get'));
+		// language jpn コンテンツが存在しない
+		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/jpn', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
 
-		$this->testAction('/announcements/announcements/view/100000/ja', array('method' => 'get'));
+		$this->testAction('/announcements/announcements/view/' . self::NOT_EXISTING_FRAME . '/jpn', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
 
-		//ログインしているidが取得できない状態
+		//ログアウトしている状態
 		CakeSession::delete('Auth.User');
-		// language ja 存在する
-		$this->testAction('/announcements/announcements/view/1/ja', array('method' => 'get'));
+		// language コンテンツあり
+		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/eng', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
-		*/
+
+		//ログアウトしている状態
+		CakeSession::delete('Auth.User');
+		// コンテンツは存在しない
+		$this->testAction('/announcements/announcements/view/' . self::NOT_EXISTING_FRAME . '/eng', array('method' => 'get'));
+		$this->assertTextNotContains('error', $this->result);
+		$this->assertTextEquals('', $this->result);
 	}
 
 /**
  * view content detail setting mode on
  *
- * @return   void
+ * @return void
  */
-	public function estViewSettingMode() {
-		//ログイン
+	public function testViewSettingMode() {
+		//ログインしている // language jpn 存在する
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
-		// language ja 存在する
-		$this->testAction('/announcements/announcements/view/1/ja', array('method' => 'get'));
-		$this->assertTextNotContains('error', $this->result);
+		$this->testAction('/announcements/announcements/view/1/jpn', array('method' => 'get'));
+		$this->assertTextContains('announcement', $this->result);
 
-		//書き込み権限が有り、セッティングモードON
+		//書き込み権限が有り、セッティングモードON コンテンツあり
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
 		Configure::write('Pages.isSetting', true);
-		$this->testAction('/announcements/announcements/view/1/ja', array('method' => 'get'));
-		$this->assertTextNotContains('error', $this->result);
+		$this->testAction('/announcements/announcements/view/1/jpn', array('method' => 'get'));
+		$this->assertTextContains('Announcement', $this->result);
 
 		//書き込み権限が有り、セッティングモードOFF コンテンツが無い
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
 		Configure::write('Pages.isSetting', false);
-		$this->testAction('/announcements/announcements/view/100000/ja', array('method' => 'get'));
+		$this->testAction('/announcements/announcements/view/' . self::NOT_EXISTING_FRAME . '/jpn', array('method' => 'get'));
 		$this->assertTextNotContains('Announcement', $this->result);
 	}
 
 /**
  * view content detail setting mode on
  *
- * @return   void
+ * @return void
  */
-	public function estViewEditableUserOnSetting() {
+	public function testViewEditableUserOnSetting() {
 		//書き込み権限が有り、セッティングモードON
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
 		Configure::write('Pages.isSetting', true);
-		$this->testAction('/announcements/announcements/view/5/ja', array('method' => 'get'));
-		$this->assertTextNotContains('Announcement', $this->result);
+		$this->testAction('/announcements/announcements/view/5/jpn', array('method' => 'get'));
+		$this->assertTextContains('Announcement', $this->result);
 	}
 
 /**
  * view content detail setting mode on
  *
- * @return   void
+ * @return void
  */
-	public function estForm() {
-		//ログイン //書き込み権限が有り
+	public function testForm() {
+		//ログイン 書き込み権限が有りフレームが存在している。
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
-		// language ja 存在する
-		$this->testAction('/announcements/announcements/form/1/ja', array('method' => 'get'));
+		//language 日本語 コンテンツ存在しない
+		$this->testAction('/announcements/announcements/form/' . self::EXISTING_FRAME . '/jpn', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
 	}
 
@@ -184,9 +214,9 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return   void
  */
 	public function testIndex() {
-		$this->assertTrue(true);
-		// frameIdなし viewへそのまま処理を渡しているため、testViewと同じ結果になる。
-		//$this->testAction('/announcements/announcements/index/1', array('method' => 'get'));
-		//$this->assertTextNotContains('error', $this->result);
+		//frameIdなし viewへそのまま処理を渡しているため、testViewと同じ結果になる。
+		//未ログイン 存在しないframeId コンテンツなし
+		$this->testAction('/announcements/announcements/index/' . self::NOT_EXISTING_FRAME . '/jpn', array('method' => 'get'));
+		$this->assertTextNotContains('error', $this->result);
 	}
 }

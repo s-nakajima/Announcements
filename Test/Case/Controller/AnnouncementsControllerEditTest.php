@@ -32,11 +32,25 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 	const CONTENT_EDITABLE_USER_ID = 1;
 
 /**
- * active frameId
+ * コンテンツの存在するframe
  *
  * @var int
  */
-	const ACTIVE_FRAME_ID = 1;
+	const EXISTING_FRAME = 1;
+
+/**
+ * 存在しないframe
+ *
+ * @var int
+ */
+	const NOT_EXISTING_FRAME = 1000000;
+
+/**
+ * 存在するblock
+ *
+ * @var int
+ */
+	const EXISTING_BLOCK = 1;
 
 /**
  * Fixtures
@@ -60,6 +74,9 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 		'plugin.announcements.frame',
 		'plugin.announcements.box',
 		'plugin.announcements.parts_rooms_user',
+		'plugin.announcements.plugin',
+		'plugin.announcements.room',
+		'plugin.announcements.user',
 	);
 
 /**
@@ -69,6 +86,8 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
  */
 	public function setUp() {
 		parent::setUp();
+		CakeSession::delete('Auth.User');
+		Configure::delete('Pages.isSetting');
 	}
 
 /**
@@ -88,10 +107,9 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
  * @return   void
  */
 	public function testEditGetError() {
-		$this->assertTrue(true);
-		//get error
-		//$this->testAction('/announcements/announcements/edit/1/', array('method' => 'get'));
-		//$this->assertTextNotContains('Announcement', $this->result);
+		//getでのアクセスを許可していない
+		$this->testAction('/announcements/announcements/edit/1/', array('method' => 'get'));
+		$this->assertTextNotContains('Announcement', $this->result);
 	}
 
 /**
@@ -99,7 +117,7 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
  *
  * @return   void
  */
-	public function estEditPost() {
+	public function testEditPost() {
 		//postによる正常処理
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
@@ -129,7 +147,7 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
  *
  * @return   void
  */
-	public function estEditPostPermissionError() {
+	public function testEditPostPermissionError() {
 		//postによる正常処理
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 		$this->Controller = $this->generate('Announcements.Announcements', array(
@@ -139,12 +157,12 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 		));
 		$data = array();
 		$data['Announcement']['content'] = rawurlencode("test"); //URLエンコード
-		$data['Announcement']['frameId'] = self::ACTIVE_FRAME_ID;
-		$data['Announcement']['blockId'] = 1;
+		$data['Announcement']['frameId'] = self::EXISTING_FRAME;
+		$data['Announcement']['blockId'] = self::EXISTING_BLOCK;
 		$data['Announcement']['status'] = "Draft";
 		$data['Announcement']['langId'] = 2;
 		$data['Announcement']['id'] = 0;
-		$this->testAction('/announcements/announcements/edit/' . self::ACTIVE_FRAME_ID . '/jpn',
+		$this->testAction('/announcements/announcements/edit/' . self::EXISTING_FRAME . '/jpn',
 			array (
 				'method' => 'post',
 				'data' => $data
@@ -158,7 +176,7 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
  *
  * @return   void
  */
-	public function estEditPostParameterError() {
+	public function testEditPostParameterError() {
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 		$this->Controller = $this->generate('Announcements.Announcements', array(
@@ -169,12 +187,12 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 		//urlのframeIdとpostで渡されたframeIdが違うため失敗する。
 		$data = array();
 		$data['Announcement']['content'] = rawurlencode("test"); //URLエンコード
-		$data['Announcement']['frameId'] = 100;
-		$data['Announcement']['blockId'] = 1;
+		$data['Announcement']['frameId'] = self::NOT_EXISTING_FRAME;
+		$data['Announcement']['blockId'] = self::EXISTING_BLOCK;
 		$data['Announcement']['status'] = "Draft";
 		$data['Announcement']['langId'] = 2;
 		$data['Announcement']['id'] = 0;
-		$this->testAction('/announcements/announcements/edit/1/',
+		$this->testAction('/announcements/announcements/edit/' . self::NOT_EXISTING_FRAME,
 			array (
 				'method' => 'post',
 				'data' => $data
@@ -188,7 +206,7 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
  *
  * @return   void
  */
-	public function estEditPostDbError() {
+	public function testEditPostDbError() {
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 		$this->Controller = $this->generate('Announcements.Announcements', array(
@@ -200,17 +218,17 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 		//urlのframeIdとpostで渡されたframeIdが違うため失敗する。
 		$data = array();
 		$data['Announcement']['content'] = rawurlencode("test"); //URLエンコード
-		$data['Announcement']['frameId'] = 1;
-		$data['Announcement']['blockId'] = 1;
+		$data['Announcement']['frameId'] = self::EXISTING_FRAME;
+		$data['Announcement']['blockId'] = self::EXISTING_BLOCK;
 		$data['Announcement']['status'] = "Draft";
 		$data['Announcement']['langId'] = 2;
 		$data['Announcement']['id'] = 0;
-		$this->testAction('/announcements/announcements/edit/1/',
+		$this->testAction('/announcements/announcements/edit/' . (self::EXISTING_FRAME + 1 ),
 			array (
 				'method' => 'post',
 				'data' => $data
 			)
 		);
-		$this->assertTextContains('Announcement', $this->result);
+		$this->assertTextNotContains('Announcement', $this->result);
 	}
 }

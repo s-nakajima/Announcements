@@ -48,6 +48,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->Auth->allow();
 		//言語ID初期値を格納
 		$this->set('langId', $this->langId);
+		Configure::write( 'Config.language', 'jpn');
 	}
 
 /**

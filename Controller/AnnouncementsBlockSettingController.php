@@ -62,14 +62,14 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 		$this->viewClass = 'Json';
 		//postのみ許可
 		if (! $this->request->isPost()) {
-			return $this->__ajaxError(405, __("POSTのみ操作可能です。"));
+			return $this->__ajaxError(405, __("It can only be operated POST."));
 		}
 		if (! $this->_setFrame($frameId)) {
 			//frameIdがおかしい
-			return $this->__ajaxError(404, __('該当の情報が存在しません。'));
+			return $this->__ajaxError(404, __('Information in question does not exist.'));
 		}
 		if (! $this->isBlockEdit) {
-			return $this->__ajaxError(403, __("権限がありません。"));
+			return $this->__ajaxError(403, __("You do not have permission."));
 		}
 
 		//ブロックの編集権限についてのチェック
@@ -77,7 +77,7 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 		if (is_numeric($frameId) && $frameId > 0 && $type) {
 			if (! $this->_setFrame($frameId)) {
 				//該当のframeがない。 404
-				return $this->__ajaxError(404, __("指定されたデータは存在しません。"));
+				return $this->__ajaxError(404, __("Data that has been specified does not exist."));
 			}
 			//実行
 			if ($type == "publishMessage") {
@@ -91,7 +91,7 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 			}
 		}
 		//パラメータエラー:urlに対してなので404で返す
-		return $this->__ajaxError(404, __("指定されたデータは存在しません。"));
+		return $this->__ajaxError(404, __("Data that has been specified does not exist."));
 	}
 
 /**
@@ -103,14 +103,14 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
  */
 	private function __editUpdateMessage($frameId, $data) {
 		if (! $this->request->isPost()) {
-			return $this->__ajaxError(404, __('存在しません'));
+			return $this->__ajaxError(404, __('Data that has been specified does not exist.'));
 		}
 		if (! $this->_setFrame($frameId)) {
 			//frameIdがおかしい
-			return $this->__ajaxError(404, __('該当の情報が存在しません。'));
+			return $this->__ajaxError(404, __('Data that has been specified does not exist.'));
 		}
 		if (! $this->isBlockEdit) {
-			return $this->__ajaxError(403, __("権限がありません。"));
+			return $this->__ajaxError(403, __("You do not have permission."));
 		}
 
 		//データをmodelへ
@@ -118,7 +118,7 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 		if ($rtn) {
 			$result = array(
 				'status' => 'success',
-				'message' => __('保存しました'),
+				'message' => __('Updated'),
 			);
 			$this->set(compact('result'));
 			$this->set('_serialize', 'result');
@@ -126,10 +126,10 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 		}
 		if ($this->AnnouncementBlockMessage->validationErrors) {
 			//バリデーションエラー
-			return $this->__ajaxError(409, __('保存に失敗しました。'));
+			return $this->__ajaxError(409, __('I failed to save.'));
 		}
 		//例外エラー
-		return $this->__ajaxError(500, __('保存に失敗しました。時間をおいて再度実行してください。'));
+		return $this->__ajaxError(500, __('I failed to save. Please try again at a later time.'));
 	}
 /**
  * 公開申請通知設定の更新処理
@@ -141,7 +141,7 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 	private function __editPublishMessage($frameId, $data) {
 		$result = array(
 			'status' => 'success',
-			'message' => __('保存しました'),
+			'message' => __('Updated'),
 		);
 		$this->set(compact('result'));
 		$this->set('_serialize', 'result');
@@ -161,7 +161,7 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 			//結果を返す : json
 			$result = array(
 				'status' => 'success',
-				'message' => __('保存しました'),
+				'message' => __('Updated'),
 				'data' => $blockPart
 			);
 			$this->set(compact('result'));
@@ -169,7 +169,7 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 			return $this->render();
 		}
 		//更新失敗 500エラー
-		return $this->__ajaxError(500, __("更新に失敗しました。"));
+		return $this->__ajaxError(500, __("I failed to update."));
 	}
 
 /**
@@ -216,6 +216,6 @@ class AnnouncementsBlockSettingController extends AnnouncementsAppController {
 			return $this->render("AnnouncementsBlockSetting/get_edit_form/update_message");
 		}
 		//該当のフォームが無い
-		return $this->__ajaxError(404, __('登録できません'));
+		return $this->__ajaxError(404, __('Unable to register.'));
 	}
 }
