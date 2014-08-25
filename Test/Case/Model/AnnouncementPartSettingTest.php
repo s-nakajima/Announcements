@@ -54,7 +54,7 @@ class AnnouncementPartSettingTest extends CakeTestCase {
  *
  * @return void
  */
-	public function estGetList() {
+	public function testGetList() {
 		$blockId = 1;
 		$rtn = $this->AnnouncementPartSetting->getList($blockId);
 		$this->assertEquals(

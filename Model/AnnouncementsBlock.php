@@ -43,13 +43,6 @@ class AnnouncementsBlock extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
-		),
-		'Room' => array(
-			'className' => 'Room',
-			'foreignKey' => 'room_id',
-			'conditions' => 'Block.room_id=Room.id',
-			'fields' => '',
-			'order' => ''
 		)
 	);
 }

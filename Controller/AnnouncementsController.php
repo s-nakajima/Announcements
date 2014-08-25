@@ -223,17 +223,21 @@ class AnnouncementsController extends AnnouncementsAppController {
 			) {
 				return true;
 			}
-
+			/*
 			$userPart = $this->PartsRoomsUser->getPart($frame['room_id']);
 			if (isset($userPart[$this->PartsRoomsUser->name]['part_id']) &&
 				$userPart[$this->PartsRoomsUser->name]['part_id'] == self::ROOM_ADMIN_ID) {
 				$this->set('isRoomAdmin', true);
-			}
+			}*/
 			$this->set('blockEditable', true);
 			$this->set('contentEditable', true);
 			$this->set('contentPublishable', true);
 			$this->set('publishRoomAdminOnly', false);
 		}
+		$this->set('blockEditable', true);
+		$this->set('contentEditable', true);
+		$this->set('contentPublishable', true);
+		$this->set('publishRoomAdminOnly', false);
 	}
 
 /**

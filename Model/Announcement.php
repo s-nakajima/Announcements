@@ -48,7 +48,7 @@ class Announcement extends AppModel {
 			)
 		),
 		'created_user' => 'numeric',
-		'modified_user' => 'numeric'
+		'modified_user_id' => 'numeric'
 	);
 
 /**
