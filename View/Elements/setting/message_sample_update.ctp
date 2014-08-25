@@ -1,7 +1,7 @@
-更新がありましたので、通知致します。
+Because there was an update, will be notified.
 
-ルーム名称:{X-ROOM}
-状態 : {X-STATUS}
-投稿者:{X-USER}
-投稿日時:{X-TO_DATE}
-最新の記事の確認:{X-URL}
+Room name: {X-ROOM}
+State: {X-STATUS}
+Posted by: {X-USER}
+Posted: {X-TO_DATE}
+Confirmation of the latest articles: {X-URL}
