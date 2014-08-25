@@ -187,7 +187,7 @@ class Announcement extends AppModel {
 		$this->AnnouncementsBlock->create();
 		$this->AnnouncementsBlock->save(array(
 			'block_id' => $blockId,
-			'created_user_id' => CakeSession::read('Auth.User.id'),
+			'created_user' => CakeSession::read('Auth.User.id'),
 		));
 		return $this->getAnnouncementsBlockId($blockId);
 	}

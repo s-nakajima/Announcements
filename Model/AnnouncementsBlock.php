@@ -27,8 +27,8 @@ class AnnouncementsBlock extends AppModel {
 				'required'
 			)
 		),
-		'create_user_id' => 'numeric',
-		'modified_user_id' => 'numeric'
+		'create_user' => 'numeric',
+		'modified_user' => 'numeric'
 	);
 
 /**
