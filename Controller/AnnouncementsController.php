@@ -12,6 +12,27 @@ App::uses('AnnouncementsAppController', 'Announcements.Controller');
 class AnnouncementsController extends AnnouncementsAppController {
 
 /**
+ * room admin id
+ *
+ * @var int
+ */
+	const ROOM_ADMIN_ID = 1;
+
+/**
+ * condition that can have a public authority.
+ *
+ * @var int
+ */
+	const PUBLISHABLE_CONDITION = 'edit_content';
+
+/**
+ *  langId of the default
+ *
+ * @var int
+ */
+	const DEFAULT_LANGID = 2;
+
+/**
  * 準備
  *
  * @return void
@@ -45,7 +66,6 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public function view($frameId = 0, $lang = '') {
 		$this->_contentPreparation($frameId, $lang);
-
 		if (! $frameId) {
 			return $this->render('notice');
 		}
@@ -167,12 +187,15 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return bool
  */
 	protected function _contentPreparation($frameId, $lang = "") {
+		//language id
+		//$this->langId = $this->_getLangId($lang);
+		//get frames recode
 		$frame = $frame = $this->Frame->findById($frameId);
 		$this->set('frameId', 0);
 		$this->set('blockId', 0);
 		$this->set('roomId', 0);
 		$this->set('roomId', 0);
-		$this->set('needApproval', true);
+		$this->set('publishRoomAdminOnly', true);
 		$this->set('isRoomAdmin', false);
 		$this->set('blockEditable', false);
 		$this->set('blockPublishable', false);
@@ -187,21 +210,45 @@ class AnnouncementsController extends AnnouncementsAppController {
 			$this->set('blockId', $frame['block_id']);
 			$this->set('roomId', $frame['room_id']);
 
-			if (CakeSession::read('Auth.User.id')) {
-				$this->set('needApproval', true);
-				$this->set('isRoomAdmin', true);
-				$this->set('blockEditable', true);
-				$this->set('blockPublishable', true);
-				$this->set('contentEditable', true);
-				$this->set('contentPublishable', true);
-			}
-
-			//パート一覧取得
+			//part list
 			$partList = $this->LanguagesPart->find('all',
 				array('conditions' => array(
 					$this->LanguagesPart->name . '.language_id' => $this->langId
 				)));
 			$this->set('partList', $partList);
+
+			//roomに所属していない
+			if (! CakeSession::read('Auth.User.id') &&
+				! isset($frame['room_id'])
+			) {
+				return true;
+			}
+
+			$userPart = $this->PartsRoomsUser->getPart($frame['room_id']);
+			if (isset($userPart[$this->PartsRoomsUser->name]['part_id']) &&
+				$userPart[$this->PartsRoomsUser->name]['part_id'] == self::ROOM_ADMIN_ID) {
+				$this->set('isRoomAdmin', true);
+			}
+
+			$this->set('blockEditable', true);
+			$this->set('contentEditable', true);
+			$this->set('contentPublishable', true);
+			$this->set('publishRoomAdminOnly', false);
 		}
+	}
+
+/**
+ * get langId
+ *
+ * @param string $lang lang code
+ * @return int
+ */
+	protected function _getLangId($lang = 'jpn') {
+		$rtn = $this->Language->findByCode($lang);
+		if (isset($rtn[$this->Language->name]['id']) &&
+			$rtn[$this->Language->name]['id']) {
+			return $rtn[$this->Language->name]['id'];
+		}
+		return self::DEFAULT_LANGID;
 	}
 }
