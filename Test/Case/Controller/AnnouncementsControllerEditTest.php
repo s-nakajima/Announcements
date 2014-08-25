@@ -128,10 +128,10 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 			)
 		));
 		$data = array();
-		$data['Announcement']['content'] = rawurlencode("test"); //URLエンコード
+		$data['Announcement']['content'] = rawurlencode('test'); //URLエンコード
 		$data['Announcement']['frameId'] = 1;
 		$data['Announcement']['blockId'] = 1;
-		$data['Announcement']['status'] = "Draft";
+		$data['Announcement']['status'] = 'Draft';
 		$data['Announcement']['langId'] = 2;
 		$data['Announcement']['id'] = 0;
 		$this->testAction('/announcements/announcements/edit/1/',
@@ -157,10 +157,10 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 			)
 		));
 		$data = array();
-		$data['Announcement']['content'] = rawurlencode("test"); //URLエンコード
+		$data['Announcement']['content'] = rawurlencode('test'); //URLエンコード
 		$data['Announcement']['frameId'] = self::EXISTING_FRAME;
 		$data['Announcement']['blockId'] = self::EXISTING_BLOCK;
-		$data['Announcement']['status'] = "Draft";
+		$data['Announcement']['status'] = 'Draft';
 		$data['Announcement']['langId'] = 2;
 		$data['Announcement']['id'] = 0;
 		$this->testAction('/announcements/announcements/edit/' . self::EXISTING_FRAME . '/jpn',
@@ -187,10 +187,10 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 		));
 		//urlのframeIdとpostで渡されたframeIdが違うため失敗する。
 		$data = array();
-		$data['Announcement']['content'] = rawurlencode("test"); //URLエンコード
+		$data['Announcement']['content'] = rawurlencode('test'); //URLエンコード
 		$data['Announcement']['frameId'] = self::NOT_EXISTING_FRAME;
 		$data['Announcement']['blockId'] = self::EXISTING_BLOCK;
-		$data['Announcement']['status'] = "Draft";
+		$data['Announcement']['status'] = 'Draft';
 		$data['Announcement']['langId'] = 2;
 		$data['Announcement']['id'] = 0;
 		$this->testAction('/announcements/announcements/edit/' . self::NOT_EXISTING_FRAME,
@@ -218,10 +218,10 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 
 		//urlのframeIdとpostで渡されたframeIdが違うため失敗する。
 		$data = array();
-		$data['Announcement']['content'] = rawurlencode("test"); //URLエンコード
+		$data['Announcement']['content'] = rawurlencode('test'); //URLエンコード
 		$data['Announcement']['frameId'] = self::EXISTING_FRAME;
 		$data['Announcement']['blockId'] = self::EXISTING_BLOCK;
-		$data['Announcement']['status'] = "Draft";
+		$data['Announcement']['status'] = 'Draft';
 		$data['Announcement']['langId'] = 2;
 		$data['Announcement']['id'] = 0;
 		$this->testAction('/announcements/announcements/edit/' . (self::EXISTING_FRAME + 1 ),
