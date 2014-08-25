@@ -32,7 +32,7 @@
 
 					<!-- Tab panes -->
 					<div class='tab-content'>
-						<div class='tab-pane <?php if ($needApproval) { echo 'active'; } ?>' id='nc-announcements-block-setting-parts-editor-<?php echo (int)$frameId; ?>'><?php
+						<div class='tab-pane <?php if ($publishRoomAdminOnly) { echo 'active'; } ?>' id='nc-announcements-block-setting-parts-editor-<?php echo (int)$frameId; ?>'><?php
 							echo $this->element('Announcements.setting/parts_editor_form');
 						?></div>
 

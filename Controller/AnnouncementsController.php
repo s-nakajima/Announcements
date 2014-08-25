@@ -229,7 +229,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 				$userPart[$this->PartsRoomsUser->name]['part_id'] == self::ROOM_ADMIN_ID) {
 				$this->set('isRoomAdmin', true);
 			}
-
 			$this->set('blockEditable', true);
 			$this->set('contentEditable', true);
 			$this->set('contentPublishable', true);

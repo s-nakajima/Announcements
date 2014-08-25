@@ -30,7 +30,7 @@ class AnnouncementSettingFixture extends CakeTestFixture {
 		'sendable_request' => array('type' => 'boolean', 'null' => true, 'default' => null),
 		'sendable_update' => array('type' => 'boolean', 'null' => true, 'default' => null),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
-		'created_user_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'created_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'modified_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'indexes' => array(

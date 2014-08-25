@@ -77,6 +77,13 @@ class AnnouncementPartSetting extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		),
+		'RoomPart' => array(
+			'className' => 'RoomPart',
+			'foreignKey' => 'part_id',
+			'conditions' => 'RoomPart.part_id=Part.id',
+			'fields' => '',
+			'order' => ''
 		)
 	);
 

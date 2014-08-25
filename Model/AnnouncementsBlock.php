@@ -37,7 +37,20 @@ class AnnouncementsBlock extends AppModel {
  * @var string
  */
 	public $belongsTo = array(
-		'Block'
+		'Block' => array(
+			'className' => 'Block',
+			'foreignKey' => 'block_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'Room' => array(
+			'className' => 'Room',
+			'foreignKey' => 'room_id',
+			'conditions' => 'Block.room_id=Room.id',
+			'fields' => '',
+			'order' => ''
+		)
 	);
 }
 

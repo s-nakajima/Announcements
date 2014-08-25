@@ -13,6 +13,13 @@
 class AnnouncementPartSettingFixture extends CakeTestFixture {
 
 /**
+ * Table name
+ *
+ * @var string
+ */
+	public $table = 'announcement_part_settings';
+
+/**
  * Fields
  *
  * @var array
@@ -45,17 +52,16 @@ class AnnouncementPartSettingFixture extends CakeTestFixture {
 		array(
 			'id' => 1,
 			'block_id' => 1,
-			'part_id' => 1,
+			'part_id' => 2,
 			'readable_content' => true,
-			'editable_content' => true,
+			'editable_content' => false,
 			'createable_content' => true,
-			'publishable_content' => true,
+			'publishable_content' => false,
 			'mail_sendable' => false,
 			'created' => '2014-08-23 09:16:52',
 			'created_user' => 1,
 			'modified' => '2014-08-23 09:16:52',
-			'modified_user' => 1
-		),
+			'modified_user' => 1),
 		array(
 			'id' => 2,
 			'block_id' => 1,

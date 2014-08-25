@@ -8,12 +8,12 @@
 			)
 		);
 		echo $this->Form->input('Announcement.frameId', array(
-				'type' => 'text',
+				'type' => 'hidden',
 				'value' => h($frameId),
 			)
 		);
 		echo $this->Form->input('Announcement.blockId', array(
-				'type' => 'text',
+				'type' => 'hidden',
 				'value' => h($blockId),
 			)
 		);

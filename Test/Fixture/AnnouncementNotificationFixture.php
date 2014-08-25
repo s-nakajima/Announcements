@@ -13,6 +13,13 @@
 class AnnouncementNotificationFixture extends CakeTestFixture {
 
 /**
+ * Table name
+ *
+ * @var string
+ */
+	public $table = 'announcement_notifications';
+
+/**
  * Fields
  *
  * @var array
