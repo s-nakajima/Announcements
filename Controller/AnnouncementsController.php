@@ -48,7 +48,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->Auth->allow();
 		//言語ID初期値を格納
 		$this->set('langId', $this->langId);
-		Configure::write( 'Config.language', 'jpn');
 	}
 
 /**
@@ -70,9 +69,10 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return CakeResponse
  */
 	public function view($frameId = 0, $lang = '') {
+		Configure::write('Config.language', 'jpn');
 		//準備失敗
 		if (! $frameId ||
-		! $this->_contentPreparation($frameId, $lang)) {
+		! $this->_setFrameInitialize($frameId, $lang)) {
 			return $this->render(false);
 		}
 		//ログインしていない 編集権限がない
@@ -128,7 +128,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 			return $this->_ajaxMessage(400, __('I failed to save'));
 		}
 		//準備
-		$this->_contentPreparation($frameId);
+		$this->_setFrameInitialize($frameId);
 		if (!$this->viewVars['contentEditable']) {
 			//権限エラー
 			return $this->_ajaxMessage(403, __('I failed to save'));
@@ -158,7 +158,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public function form($frameId = 0) {
 		$this->layout = false;
-		$this->_contentPreparation($frameId);
+		$this->_setFrameInitialize($frameId);
 		return $this->render("Announcements/setting/form");
 	}
 

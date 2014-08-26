@@ -7,7 +7,7 @@
  * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 App::uses('AppController', 'Controller');
-App::uses('NetCommonsAppController', 'NetCommons.Controller');
+App::uses('NetCommonsFrameAppController', 'NetCommons.Controller');
 
-class AnnouncementsAppController extends NetCommonsAppController {
+class AnnouncementsAppController extends NetCommonsFrameAppController {
 }
