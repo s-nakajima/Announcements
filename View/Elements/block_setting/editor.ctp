@@ -48,9 +48,8 @@
 					<!-- Tab panes -->
 					<div class="tab-content">
 						<div class="tab-pane"
-							id="nc-announcements-block-setting-update-
-							<?php echo (int)$frameId; ?>
-							">
+							id="nc-announcements-block-setting-update-<?php
+							echo (int)$frameId; ?>">
 							<?php echo $this->element('Announcements.setting/message_update_form'); ?>
 						</div>
 
