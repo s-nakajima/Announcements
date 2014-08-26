@@ -42,8 +42,6 @@
 			'name' => 'data[body]',
 			'value' => '')
 	);
-
-
 	echo $this->Form->end();
 	?>
 </div>

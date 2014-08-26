@@ -1,7 +1,7 @@
 <div class="hidden">
 <?php
 echo $this->Form->Create(null);
-echo $this->Form->input('is_send' , array(
+echo $this->Form->input('is_send', array(
 		'type' => 'text',
 		'name' => 'data[is_send]',
 		'value' => '',)
