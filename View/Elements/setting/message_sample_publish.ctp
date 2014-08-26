@@ -1,3 +1,8 @@
+<?php
+/**
+ * @codeCoverageIgnore
+ */
+?>
 Since there was a request, will be notified.
 
 Room name: {X-ROOM}

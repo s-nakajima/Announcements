@@ -1,3 +1,8 @@
+<?php
+/**
+ * @codeCoverageIgnore
+ */
+?>
 In the subject and body is,
 {X-SITE_NAME}, {X-ROOM}, {X-USER}, {X-URL}, {X-TO_DATE}, {X-STATUS}
 I can use the keyword.

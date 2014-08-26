@@ -1,3 +1,8 @@
+<?php
+/**
+ * @codeCoverageIgnore
+ */
+?>
 <div
 	ng-init="Preview.html=''"
 	ng-init="View.edit.preview=false"

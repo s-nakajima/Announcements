@@ -1,3 +1,8 @@
+<?php
+/**
+ * @codeCoverageIgnore
+ */
+?>
 Because there was an update, will be notified.
 
 Room name: {X-ROOM}
