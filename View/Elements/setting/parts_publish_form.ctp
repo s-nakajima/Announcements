@@ -31,8 +31,9 @@ $roomPartKey = 'LanguagesPart';
 						'ng-click' => 'partChange("publish", ' . $frameId . ',' . $item[$roomPartKey]['part_id'] . ')',
 						'autocomplete' => 'off'
 					)
-				);
-			} else { ?><span class="glyphicon glyphicon-remove"></span><?php echo h($item[$roomPartKey]['name']); }} ?>
+				); } else {
+					?><span class="glyphicon glyphicon-remove"></span><?php echo h($item[$roomPartKey]['name']);
+				}} ?>
 	</p>
 
 	<div id='send_1_<?php echo (int)$frameId; ?>' class='alert alert-warning text-center ng-hidden' role='alert'>

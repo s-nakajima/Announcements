@@ -34,15 +34,18 @@
 		<div class="html-editor" ng-show="View.edit.html">
 			<ul class="nav nav-tabs" role="tablist">
 				<li>
-					<span class="btn btn-default" ng-click="openTextEditor(<?php echo (int)$frameId; ?>)'
-						><?php echo __('HTML'); ?></span></li>
+					<span class="btn btn-default" ng-click="openTextEditor(<?php echo (int)$frameId; ?>)">
+						<?php echo __('HTML'); ?>
+					</span>
+				</li>
 			</ul>
 			<textarea
-				id='nc-announcements-html-editor-<?php echo (int) $frameId; ?>'
-				ui-tinymce='tinymceOptions'
-				ng-model='tinymceModel'
-				class='form-control'
-				><?php if (isset($item['Announcement']['content'])) {
+				id="nc-announcements-html-editor-<?php echo (int) $frameId; ?>"
+				ui-tinymce="tinymceOptions"
+				ng-model="tinymceModel"
+				class="form-control">
+				<?php
+				if (isset($item['Announcement']['content'])) {
 					echo $item['Announcement']['content'];
 				}?></textarea>
 		</div>
@@ -52,7 +55,8 @@
 				<li class="active">
 					<span class="btn btn-default"
 						ng-click="closeTextEditor(<?php echo (int)$frameId; ?>)"
-						><?php echo __('HTML'); ?></span></li>
+						><?php echo __('HTML'); ?>
+					</span></li>
 			</ul>
 			<textarea
 				class="form-control"

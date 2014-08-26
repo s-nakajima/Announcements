@@ -10,7 +10,7 @@ $roomPartKey = 'LanguagesPart';
 		<?php
 		foreach ($partList as $key => $item) {
 			$partId = $item[$roomPartKey]['part_id'];
-		?><span style='display:block; float:left; margin-right: 10px;'>
+			?><span style='display:block; float:left; margin-right: 10px;'>
 			<input type="checkbox" name="part_id_
 			<?php echo h($item[$roomPartKey]['part_id']); ?>
 			" id="nc-announcements-message-update-frame-
@@ -22,11 +22,9 @@ $roomPartKey = 'LanguagesPart';
 			<?php echo (int)$frameId; ?>,
 			<?php echo (int)$partId; ?>)'
 			checked=""
-			value="<?php echo (int)$partId; ?>"
-		> <?php
-				echo h($item[$roomPartKey]['name']) . '</span>'; }
-			?>
-			<p style='clear:both;'></p>
+			value="<?php echo (int)$partId; ?>">
+			<?php echo h($item[$roomPartKey]['name']) . '</span>'; } ?>
+				<p style='clear:both;'></p>
 
 						<h4><?php echo __('Mail document setting'); ?></h4>
 							<div>
