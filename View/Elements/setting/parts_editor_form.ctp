@@ -17,8 +17,7 @@ $roomPartKey = 'LanguagesPart';
 			} elseif ( isset($item[$roomPartKey]['edit_content']) && $item[$roomPartKey]['edit_content'] == 0) {
 				echo '<span class="glyphicon glyphicon-remove"></span>';
 				echo h($item[$roomPartKey]['name']) . '';
-			}
-			elseif (isset($editVariableArray[$partId]) && $editVariableArray[$partId]) {
+			} elseif (isset($editVariableArray[$partId]) && $editVariableArray[$partId]) {
 				echo $this->Form->input(h($item['LanguagesPart']['name']),
 					array(
 						'type' => 'checkbox',
@@ -32,21 +31,25 @@ $roomPartKey = 'LanguagesPart';
 					)
 				);
 			} else {
-				?><span class='glyphicon glyphicon-remove'></span><?php
+				?><span class='glyphicon glyphicon-remove'></span>
+				<?php
 				echo h($item[$roomPartKey]['name']);
-			}
-			?></p><?php
+			} ?>
+			</p><?php
 		}
 		?></p>
 
 	<p class='text-center'>
-		<button type='button' class='btn btn-default' data-dismiss='modal'><?php echo __('Cancel'); ?></button>
-		<button type='button' class='btn btn-primary'
-			ng-click='partSend("editParts", <?php echo (int) $frameId; ?>,<?php echo (int) $blockId; ?>,<?php echo (int) $langId; ?>)'
-			>
-			<span><?php echo __('Update'); ?></span></button>
+		<button type="button" class="btn btn-default" data-dismiss='modal'>
+			<?php echo __('Cancel'); ?>
+		</button>
+		<button type="button" class="btn btn-primary" ng-click="partSend('editParts',
+				<?php echo (int)$frameId; ?>,
+				<?php echo (int)$blockId; ?>,
+				<?php echo (int)$langId; ?>
+				)">
+				<span><?php echo __('Update'); ?></span>
+		</button>
 	</p>
 
-	<div id='nc-announcements-setting-get-edit-form-<?php echo $frameId; ?>'>
-
-	</div>
+	<div id='nc-announcements-setting-get-edit-form-<?php echo (int)$frameId; ?>'></div>

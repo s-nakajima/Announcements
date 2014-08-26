@@ -11,16 +11,20 @@ $roomPartKey = 'LanguagesPart';
 		foreach ($partList as $key => $item) {
 			$partId = $item[$roomPartKey]['part_id'];
 		?><span style='display:block; float:left; margin-right: 10px;'>
-			<input
-				type='checkbox'
-				name='part_id_<?php echo h($item[$roomPartKey]['part_id']); ?>'
-				id='nc-announcements-message-update-frame-<?php echo (int) $frameId; ?>-part-<?php echo (int) $partId; ?>'
-				ng-click='partChange("message-update" ,<?php echo (int) $frameId; ?>,<?php echo (int) $partId; ?>)'
-				checked=''
-				value='<?php echo (int) $partId; ?>'
-			> <?php
-			echo h($item[$roomPartKey]['name']) . '</span>';
-			}
+			<input type="checkbox" name="part_id_
+			<?php echo h($item[$roomPartKey]['part_id']); ?>
+			" id="nc-announcements-message-update-frame-
+			<?php echo (int)$frameId; ?>
+			-part-
+			<?php echo (int)$partId; ?>
+			"
+			ng-click='partChange("message-update" ,
+			<?php echo (int)$frameId; ?>,
+			<?php echo (int)$partId; ?>)'
+			checked=""
+			value="<?php echo (int)$partId; ?>"
+		> <?php
+				echo h($item[$roomPartKey]['name']) . '</span>'; }
 			?>
 			<p style='clear:both;'></p>
 
@@ -38,13 +42,21 @@ $roomPartKey = 'LanguagesPart';
 								</p>
 							</div>
 	</form>
-	<pre><?php
-		//説明
-		echo $this->element('Announcements.setting/message_info'); ?></pre>
 
-	<p class='text-center'>
-		<button type='button' class='btn btn-default' data-dismiss='modal'><?php echo __('Cancel'); ?></button>
+	<pre>
+		<?php echo $this->element('Announcements.setting/message_info'); ?>
+	</pre>
+
+	<p class="text-center">
+		<button type="button" class="btn btn-default"
+				data-dismiss="modal">
+				<?php echo __('Cancel'); ?>
+		</button>
 		<button type='button' class='btn btn-primary'
-		        ng-click='partSend("updateMessage",<?php echo (int) $frameId; ?>,<?php echo (int) $blockId; ?>,<?php echo (int) $langId; ?>)'
-			><span><?php echo __('Update'); ?></span></button>
+				ng-click='partSend("updateMessage",
+				<?php echo (int)$frameId; ?>,
+				<?php echo (int)$blockId; ?>,
+				<?php echo (int)$langId; ?>)'><span>
+				<?php echo __('Update'); ?></span>
+		</button>
 	</p>

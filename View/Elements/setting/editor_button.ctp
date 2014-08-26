@@ -13,7 +13,7 @@ if (isset($item['Announcement']['status_id'])
 	$hidden['draft'] = ' hidden';
 	$hidden['reject'] = '';
 } else {
-	$hidden['draft']= '';
+	$hidden['draft'] = '';
 	$hidden['reject'] = ' hidden';
 }
 
@@ -23,20 +23,20 @@ if (isset($item['Announcement']['status_id'])
 	<button
 		class="btn btn-default announcement-editor-button-close"
 		ng-disabled="DisabledPost"
-		ng-click="closeForm(<?php echo (int) $frameId; ?>)">
+		ng-click="closeForm(<?php echo (int)$frameId; ?>)">
 		<span class="glyphicon glyphicon-remove"></span>
 		<span><?php echo __('Close'); ?></span></button>
 	<button
 		class="btn btn-default announcement-editor-button-preview "
-		id="nc-announcements-btn-preview-<?php echo (int) $frameId; ?>"
-		ng-click="showPreview(<?php echo (int) $frameId; ?>)"
+		id="nc-announcements-btn-preview-<?php echo (int)$frameId; ?>"
+		ng-click="showPreview(<?php echo (int)$frameId; ?>)"
 		ng-hide="View.edit.preview"
 		ng-disabled="DisabledPost"
 		>
 		<span class="glyphicon glyphicon-file"></span> <span><?php echo __('Preview'); ?></span></button>
 	<button
 		class="btn btn-default announcement-editor-button-preview-close"
-		ng-click="closePreview(<?php echo (int) $frameId; ?>)"
+		ng-click="closePreview(<?php echo (int)$frameId; ?>)"
 		ng-show="View.edit.preview"
 		ng-disabled="DisabledPost"
 		>
@@ -51,7 +51,7 @@ if (isset($item['Announcement']['status_id'])
 
 	<button
 		class="btn btn-default"
-		ng-click="post('Reject', <?php echo $frameId; ?>)"
+		ng-click="post('Reject', <?php echo (int)$frameId; ?>)"
 		ng-show="label.request"
 		ng-disabled="DisabledPost"
 		>

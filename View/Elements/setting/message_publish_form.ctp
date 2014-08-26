@@ -27,6 +27,6 @@
 	<p class='text-center'>
 		<button type='button' class='btn btn-default' data-dismiss='modal'><?php echo __('Cancel'); ?></button>
 		<button type='button' class='btn btn-primary'
-				ng-click='partSend("publishMessage",<?php echo (int) $frameId; ?>,<?php echo (int) $blockId; ?>)'
+				ng-click='partSend("publishMessage",<?php echo (int)$frameId; ?>,<?php echo (int) $blockId; ?>)'
 			><span><?php echo __('Update'); ?></span></button>
 	</p>

@@ -8,6 +8,7 @@ $status['publishRequest'] = $hidden;
 $status['Draft'] = $hidden;
 $status['Reject'] = $hidden;
 $contentStatus = 0;
+
 if (isset($item['Announcement']['status'])) {
 	if ($item['Announcement']['status'] === Announcement::STATUS_PUBLISH_REQUEST) {
 		$status['publishRequest'] = $show;
@@ -38,7 +39,7 @@ if (isset($item['Announcement']['status'])) {
 		class="label label-danger ng-hide"
 		><?php echo __('Published pending'); ?></span>
 	<span
-		ng-init="label.reject=<?php echo $status['Reject'];?>'
+		ng-init="label.reject=<?php echo $status['Reject'];?>"
 		ng-show="label.reject"
 		class="label label-default ng-hide"
 		><?php echo __('Reject in'); ?></span>
