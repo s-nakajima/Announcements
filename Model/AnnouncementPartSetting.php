@@ -144,7 +144,7 @@ class AnnouncementPartSetting extends AnnouncementsAppModel {
  * @param int $partId parts.id
  * @return array
  */
-	public function get($blockId, $partId) {
+	public function getSetting($blockId, $partId) {
 		$rtn = $this->find('first', array(
 			'conditions' => array(
 				$this->name . '.block_id' => $blockId,
