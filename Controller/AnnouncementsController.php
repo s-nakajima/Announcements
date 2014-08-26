@@ -46,8 +46,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 		parent::beforeFilter();
 		//未ログインでもアクセスを許可
 		$this->Auth->allow();
-		//言語ID初期値を格納
-		$this->set('langId', $this->langId);
 	}
 
 /**
@@ -69,8 +67,6 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return CakeResponse
  */
 	public function view($frameId = 0, $lang = '') {
-		Configure::write('Config.language', 'jpn');
-		//準備失敗
 		if (! $frameId ||
 		! $this->_setFrameInitialize($frameId, $lang)) {
 			return $this->render(false);
@@ -92,7 +88,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	private function __viewEdit() {
 		//セッティングモード
-		$data = $this->Announcement->get($this->viewVars['blockId'], $this->langId);
+		$data = $this->Announcement->get($this->viewVars['blockId'], $this->viewVars['langId']);
 		$this->set('item', $data);
 		if (! Configure::read('Pages.isSetting')) {
 			return $this->render("Announcements/view/editor");
@@ -109,7 +105,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return CakeResponse
  */
 	private function __view() {
-		$data = $this->Announcement->get($this->viewVars['blockId'], $this->langId, true);
+		$data = $this->Announcement->get($this->viewVars['blockId'], $this->viewVars['langId'], true);
 		if (! $data) {
 			return $this->render(false);
 		}
