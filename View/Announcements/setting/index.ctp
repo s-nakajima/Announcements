@@ -6,7 +6,7 @@
 	<?php echo (int)$langId; ?>
 	)" >
 
-	<?php echo (int)$this->element('setting/top_menu'); ?>
+	<?php echo $this->element('setting/top_menu'); ?>
 
 	<div class="alert alert-danger hidden"
 		id="nc-announcements-mss-<?php echo (int)$frameId; ?>">
@@ -18,8 +18,7 @@
 	</div>
 
 	<div class="item"
-		id="nc-announcement-content-view-
-		<?php echo (int)$frameId; ?>"
+		id="nc-announcement-content-view-<?php echo (int)$frameId; ?>"
 		ng-init="View.default=true"
 		ng-show="View.default">
 			<?php
@@ -42,8 +41,7 @@
 
 	<?php echo $this->element('setting/label'); ?>
 
-	<div id="nc-announcements-form-
-		<?php echo (int)$frameId; ?>"
+	<div id="nc-announcements-form-<?php echo (int)$frameId; ?>"
 		ng-init="View.edit.body=false"
 		ng-show="View.edit.body"
 		class="ng-hide">
