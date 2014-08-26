@@ -14,6 +14,12 @@ if (isset($item['Announcement']['status'])) {
 }
 ?>
 <p>
-	<span class="label label-info <?php echo $hidden['draft']; ?>"><?php echo __('Draft'); ?></span>
-	<span class="label label-danger <?php echo $hidden['publishRequest']; ?>"><?php echo __('Publish Requested'); ?></span>
+	<span class="label label-info <?php
+		echo $hidden['draft']; ?>"><?php
+		echo __('Draft'); ?>
+	</span>
+	<span class="label label-danger <?php
+		echo $hidden['publishRequest']; ?>"><?php
+		echo __('Publish Requested'); ?>
+	</span>
 </p>
