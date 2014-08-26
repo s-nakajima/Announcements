@@ -57,7 +57,7 @@ class Announcement extends AnnouncementsAppModel {
  *
  * @var array
  */
-	protected $_status = array(
+	private $__statusList = array(
 		'Publish' => 1,
 		'PublishRequest' => 2,
 		'Draft' => 3,
@@ -155,19 +155,19 @@ class Announcement extends AnnouncementsAppModel {
 	);
 
 /**
- * 最新のデータを取得する
+ * the latest content data
  *
  * @param int $blockId blocks.id
  * @param string $langId language_id
- * @param bool $publishOnly get only publish status
+ * @param int $all true:all false:status publish only
  * @return array
  */
-	public function get($blockId, $langId, $publishOnly = '') {
+	public function getContent($blockId, $langId, $all = 1) {
 		$conditions = array(
 			'block_id' => $blockId,
 			'language_id' => $langId,
 		);
-		if ($publishOnly) {
+		if ($all !== 1) {
 			$conditions['status'] = self::STATUS_PUBLISH;
 		}
 		return $this->find('first', array(
@@ -186,25 +186,24 @@ class Announcement extends AnnouncementsAppModel {
  * @return array
  */
 	public function saveContent($data, $frameId, $blockId, $encoded = 'encoded') {
-		//frameIdと、dataの中で指定されたものが同じかどうかのチェック
+		//frameID chaeck
 		if ($frameId != $data[$this->name]['frameId']) {
 			return array();
 		}
-		//decodeする
+		//decode
 		if ($encoded) {
 			$data[$this->name]['content'] = rawurldecode($data[$this->name]['content']);
 		}
 
-		//statusを数字に変換
-		if (isset($this->_status[$data[$this->name]['status']])) {
-			$status = intval($this->_status[$data[$this->name]['status']]);
+		//status
+		if (isset($this->__statusList[$data[$this->name]['status']])) {
+			$status = intval($this->__statusList[$data[$this->name]['status']]);
 		}
-		//masterに接続
+		//master
 		$this->AnnouncementsBlock->setDataSource('master');
 		$this->setDataSource('master');
 
-		//announcementsBlockId 取得
-		$announcementsBlockId = $this->getAnnouncementsBlockId($blockId);
+		$announcementsBlockId = $this->AnnouncementsBlock->Myid($blockId);
 
 		//保存
 		$this->create();
@@ -220,32 +219,6 @@ class Announcement extends AnnouncementsAppModel {
 			return array();
 		}
 		return $this->get($blockId, $data[$this->name]['langId']);
-	}
-
-/**
- *  get announcements_blocks.block_id by blockId
- *
- * @param int $blockId blocks.id
- * @return int || null
- */
-	public function getAnnouncementsBlockId($blockId) {
-		$col = $this->AnnouncementsBlock->name;
-		$rtn = $this->AnnouncementsBlock->find(
-			'first',
-			array(
-				'conditions' => array($col . '.block_id' => $blockId)
-			)
-		);
-		if (isset($rtn[$col]['id'])) {
-			return $rtn[$col]['id'];
-		}
-		//作成
-		$this->AnnouncementsBlock->create();
-		$this->AnnouncementsBlock->save(array(
-			'block_id' => $blockId,
-			'created_user' => CakeSession::read('Auth.User.id'),
-		));
-		return $this->getAnnouncementsBlockId($blockId);
 	}
 
 }
