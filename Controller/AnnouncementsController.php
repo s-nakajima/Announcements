@@ -121,13 +121,13 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public function edit($frameId = 0) {
 		if (! $this->request->isPost()) {
-			return $this->_ajaxMessage(400, __('I failed to save'));
+			return $this->_renderJson(400, __('I failed to save'));
 		}
 		//準備
 		$this->_setFrameInitialize($frameId);
 		if (!$this->viewVars['contentEditable']) {
 			//権限エラー
-			return $this->_ajaxMessage(403, __('I failed to save'));
+			return $this->_renderJson(403, __('I failed to save'));
 		}
 
 		//保存
@@ -140,10 +140,10 @@ class AnnouncementsController extends AnnouncementsAppController {
 		//成功結果を返す
 		if (!$rtn) {
 			//失敗結果を返す
-			return $this->_ajaxMessage(500, __('I failed to save'), $rtn);
+			return $this->_renderJson(500, __('I failed to save'), $rtn);
 		}
 		$rtn['Announcement']['content'] = rawurlencode($rtn['Announcement']['content']);
-		return $this->_ajaxMessage(200, __('Saved'), $rtn);
+		return $this->_renderJson(200, __('Saved'), $rtn);
 	}
 
 /**
