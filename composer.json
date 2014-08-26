@@ -18,7 +18,8 @@
         "mustangostang/spyc":           "dev-master",
         "satooshi/php-coveralls":       "dev-master",
         "netcommons/frames":            "dev-master",
-        "netcommons/net-commons":       "dev-master"
+        "netcommons/net-commons":       "dev-master",
+        "netcommons/rooms":             "dev-master"
     },
     "license": "NetCommons License",
     "authors": [
