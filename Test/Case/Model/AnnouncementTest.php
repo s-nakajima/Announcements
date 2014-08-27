@@ -44,35 +44,35 @@ class AnnouncementTest extends CakeTestCase {
 	);
 
 /**
- * 存在するユーザ
+ * Existing users.id
  *
  * @var int
  */
 	const EXISTING_USER_IN_ROOM = 1;
 
 /**
- * 存在するルーム
+ * Existing .rooms.id
  *
  * @var int
  */
 	const EXISTING_ROOM = 1;
 
 /**
- * 存在するblockId
+ * Existing blocks.id
  *
  * @var int
  */
 	const EXISTING_BLOCK = 1;
 
 /**
- * 存在するannouncements_block_id
+ * Existing announcements_block_id
  *
  * @var int
  */
 	const EXISTING_ANNOUNCEMENT_BLOCK_ID = 1;
 
 /**
- * 存在するlanguages.id
+ * Existing languages.id
  *
  * @var int
  */
@@ -80,21 +80,21 @@ class AnnouncementTest extends CakeTestCase {
 
 
 /**
- * 存在するframe
+ * Existing frame.id
  *
  * @var int
  */
 	const EXISTING_FRAME = 1;
 
 /**
- * 存在しないユーザ
+ * Not existing users.id
  *
  * @var int
  */
 	const NOT_EXISTING_USER = 10000;
 
 /**
- * 存在しないルーム
+ * Not existing rooms.id
  *
  * @var int
  */
@@ -102,14 +102,14 @@ class AnnouncementTest extends CakeTestCase {
 
 
 /**
- * 存在しないBLOCK
+ * Not existing blocks.id
  *
  * @var int
  */
 	const NOT_EXISTING_BLOCK = 10000;
 
 /**
- * 存在しないannouncements_block_id
+ * Not existing announcements_block_id
  *
  * @var int
  */
@@ -197,8 +197,8 @@ class AnnouncementTest extends CakeTestCase {
  * @return void
  */
 	public function testSaveContent() {
-		//ステータスごとのお知らせ保存
-		$statusArray = array(
+		//contents status list
+		$contentStatusArray = array(
 			'Publish',
 			'PublishRequest',
 			'Draft',
@@ -207,19 +207,18 @@ class AnnouncementTest extends CakeTestCase {
 
 		CakeSession::write('Auth.User.id', self::EXISTING_USER_IN_ROOM);
 
-		foreach ($statusArray as $key) {
+		foreach ($contentStatusArray as $contentStatus) {
 			$data = array(
 				$this->Announcement->name => array(
-					'content' => rawurlencode('<b>test</b>' . $key),
-					'frameId' => 1,
-					'blockId' => 1,
-					'status' => $key,
+					'content' => rawurlencode('<b>test</b>' . $contentStatus),
+					'frameId' => self::EXISTING_FRAME,
+					'blockId' => self::EXISTING_BLOCK,
+					'status' => $contentStatus,
 					'langId' => self::EXISTING_LANG_ID,
 				)
 			);
-			$frameId = 1;
-			$blockId = 1;
-			$rtn = $this->Announcement->saveContent($data, $frameId, $blockId);
+
+			$rtn = $this->Announcement->saveContent($data, self::EXISTING_FRAME, self::EXISTING_BLOCK);
 			$this->assertTextEquals(
 				rawurldecode($data[$this->Announcement->name]['content']),
 				$rtn[$this->Announcement->name]['content']
@@ -260,14 +259,12 @@ class AnnouncementTest extends CakeTestCase {
 			$this->Announcement->name => array(
 				'content' => 'test',
 				'frameId' => self::EXISTING_FRAME,
-				'blockId' => 5,
+				'blockId' => self::NOT_EXISTING_BLOCK,
 				'status' => $status,
 				'langId' => 2,
 			)
 		);
-		$frameId = 1;
-		$blockId = 5;
-		$rtn = $this->Announcement->saveContent($data, $frameId, $blockId, false);
+		$rtn = $this->Announcement->saveContent($data, self::EXISTING_FRAME, self::NOT_EXISTING_BLOCK, false);
 		$this->assertTextEquals(
 			Announcement::STATUS_PUBLISH,
 			$rtn[$this->Announcement->name]['status']
@@ -290,9 +287,7 @@ class AnnouncementTest extends CakeTestCase {
 				'langId' => self::EXISTING_LANG_ID,
 			)
 		);
-		$frameId = 1;
-		$blockId = 4;
-		$rtn = $this->Announcement->saveContent($data, $frameId, $blockId, false);
+		$rtn = $this->Announcement->saveContent($data, self::EXISTING_FRAME, self::EXISTING_BLOCK, false);
 		$this->assertTextEquals(
 			$data[$this->Announcement->name]['content'],
 			$rtn[$this->Announcement->name]['content']
@@ -307,16 +302,14 @@ class AnnouncementTest extends CakeTestCase {
 	public function testSaveContentErrorValidationLangId() {
 		$data = array(
 			$this->Announcement->name => array(
-				'content' => 'test' . "ほげほげ",
-				'frameId' => 1,
-				'blockId' => 1, //validation error
+				'content' => 'test',
+				'frameId' => self::EXISTING_FRAME,
+				'blockId' => self::EXISTING_BLOCK,
 				'status' => 'Publish',
 				'langId' => "ja", //Announcement validation error
 			)
 		);
-		$frameId = 1;
-		$blockId = 1;
-		$rtn = $this->Announcement->saveContent($data, $frameId, $blockId, false);
+		$rtn = $this->Announcement->saveContent($data, self::EXISTING_FRAME, self::EXISTING_BLOCK, false);
 		$this->assertTextEquals(
 			array(),
 			$rtn

@@ -15,7 +15,7 @@ App::uses('AnnouncementsBlock', 'Announcements.Model');
 class AnnouncementsBlockTest extends CakeTestCase {
 
 /**
- * 存在するユーザ
+ * Existing users.id
  *
  * @var int
  */

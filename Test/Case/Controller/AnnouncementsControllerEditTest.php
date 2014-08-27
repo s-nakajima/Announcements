@@ -32,21 +32,21 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 	const CONTENT_EDITABLE_USER_ID = 1;
 
 /**
- * コンテンツの存在するframe
+ * Existing frames.id
  *
  * @var int
  */
 	const EXISTING_FRAME = 1;
 
 /**
- * 存在しないframe
+ * Not existing frames.id
  *
  * @var int
  */
 	const NOT_EXISTING_FRAME = 1000000;
 
 /**
- * 存在するblock
+ * Existing blocks.id
  *
  * @var int
  */

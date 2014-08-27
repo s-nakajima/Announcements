@@ -15,42 +15,42 @@ App::uses('AnnouncementSetting', 'Announcements.Model');
 class AnnouncementSettingTest extends CakeTestCase {
 
 /**
- * 存在するユーザ
+ * Existing users.id
  *
  * @var int
  */
 	const EXISTING_USER_IN_ROOM = 1;
 
 /**
- * 存在するルーム
+ * Existing rooms.id
  *
  * @var int
  */
 	const EXISTING_ROOM = 1;
 
 /**
- * 存在するblockId
+ * Existing blocks.id
  *
  * @var int
  */
 	const EXISTING_BLOCK = 1;
 
 /**
- * 存在するannouncements_block_id
+ * Existing announcements_block_id
  *
  * @var int
  */
 	const EXISTING_ANNOUNCEMENT_BLOCK_ID = 1;
 
 /**
- * 存在しないユーザ
+ * Not existing users.id
  *
  * @var int
  */
 	const NOT_EXISTING_USER = 10000;
 
 /**
- * 存在しないルーム
+ * Not existing rooms.id
  *
  * @var int
  */
