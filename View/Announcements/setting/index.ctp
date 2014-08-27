@@ -55,8 +55,7 @@
 				</li>
 			</ul>
 			<textarea
-				id="nc-announcements-html-editor-
-				<?php echo (int)$frameId; ?>"
+				id="nc-announcements-html-editor-<?php echo (int)$frameId; ?>"
 				ui-tinymce="tinymceOptions"
 				ng-model="tinymceModel"
 				class="form-control">
