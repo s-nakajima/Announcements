@@ -15,28 +15,28 @@ App::uses('AnnouncementNotification', 'Announcements.Model');
 class AnnouncementNotificationTest extends CakeTestCase {
 
 /**
- *  存在するユーザ
+ *  Existing users.id
  *
  *  @var int
  */
 	const EXISTING_USER_IN_ROOM = 1;
 
 /**
- *  存在するルーム
+ *  Existing rooms.id
  *
  *  @var int
  */
 	const EXISTING_ROOM = 1;
 
 /**
- *  存在しないユーザ
+ *  Not Existing users.id
  *
  *  @var int
  */
 	const NOT_EXISTING_USER = 10000;
 
 /**
- *  存在しないルーム
+ *  Not Existing rooms.id
  *
  *  @var int
  */

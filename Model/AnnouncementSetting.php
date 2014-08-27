@@ -79,7 +79,7 @@ class AnnouncementSetting extends AnnouncementsAppModel {
 	);
 
 /**
- * ブロックIDから設定を取得する
+ * get id from blocks.id
  *
  * @param int $blockId blocks.id
  * @return array
@@ -94,10 +94,10 @@ class AnnouncementSetting extends AnnouncementsAppModel {
 	}
 
 /**
- * ブロックIDからテーブルのIDを取得する
+ * get id of the table from blocks.id
  *
  * @param int $blockId blocks.id
- * @return array
+ * @return null
  */
 	public function getIdByBlockId($blockId) {
 		$block = $this->findByBlockId($blockId);

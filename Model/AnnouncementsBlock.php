@@ -112,7 +112,7 @@ class AnnouncementsBlock extends AnnouncementsAppModel {
  *
  * @param int $frameId frames.id
  * @param int $blockId blocks.id
- * @return int || null
+ * @return int|null
  */
 	public function getAnnouncementsBlockId($frameId, $blockId) {
 		if (! $blockId) {
@@ -143,7 +143,7 @@ class AnnouncementsBlock extends AnnouncementsAppModel {
  * create
  *
  * @param int $blockId blocks.int
- * @return null | int
+ * @return int|null
  */
 	public function createByBlock($blockId) {
 		$this->create();

@@ -15,70 +15,70 @@ App::uses('AnnouncementPartSetting', 'Announcements.Model');
 class AnnouncementPartSettingTest extends CakeTestCase {
 
 /**
- * 存在するユーザ
+ * Existing users.id
  *
  * @var int
  */
 	const EXISTING_USER_IN_ROOM = 1;
 
 /**
- * 存在するルーム
+ * Existing rooms.id
  *
  * @var int
  */
 	const EXISTING_ROOM = 1;
 
 /**
- * 存在するblockId
+ * Existing blocks.id
  *
  * @var int
  */
 	const EXISTING_BLOCK = 1;
 
 /**
- * 存在するpart
+ * Existing part.id
  *
  * @var int
  */
 	const EXISTING_PART = 1;
 
 /**
- * 存在するlanguage.id
+ * Existing language.id
  *
  * @var int
  */
 	const EXISTING_LANG_ID = 1;
 
 /**
- * 存在するannouncements_block_id
+ * Existing announcements_block_id
  *
  * @var int
  */
 	const EXISTING_ANNOUNCEMENT_BLOCK_ID = 1;
 
 /**
- * 存在しないユーザ
+ *  Not existed  users.id
  *
  * @var int
  */
 	const NOT_EXISTING_USER = 10000;
 
 /**
- * 存在しないルーム
+ * Not existed rooms.id
  *
  * @var int
  */
 	const NOT_EXISTING_ROOM = 10000;
 
 /**
- * 存在しない part
+ * Not existed parts.id
  *
  * @var int
  */
 	const NOT_EXISTING_PART = 10000;
 
 /**
- * 存在しないblockId
+ * Not existed blocks.id
  *
  * @var int
  */
@@ -139,15 +139,13 @@ class AnnouncementPartSettingTest extends CakeTestCase {
  * @return void
  */
 	public function testGetListPartIdArray() {
-		//keyとvalueがpart_idになるブロックのパートを取得する
 		$rtn = $this->AnnouncementPartSetting->getListPartIdArray(self::EXISTING_BLOCK);
 		$this->assertTrue(is_array($rtn));
 		$this->assertEquals(
 			$rtn[self::EXISTING_BLOCK]['part_id'],
 			self::EXISTING_PART
 		);
-
-		//ない場合
+		//Block that do not exist.
 		$rtn = $this->AnnouncementPartSetting->getListPartIdArray(self::NOT_EXISTING_BLOCK);
 		$this->assertTrue(is_array($rtn));
 		$this->assertEquals($rtn, array());
@@ -159,20 +157,20 @@ class AnnouncementPartSettingTest extends CakeTestCase {
  * @return void
  */
 	public function testGetIdByBlockId() {
-		//存在しないblockの存在しないパートの設定
+		//Block that do not exist. Part that do not exist.
 		$rtn = $this->AnnouncementPartSetting->getIdByBlockId(self::NOT_EXISTING_BLOCK, self::NOT_EXISTING_PART);
 		$this->assertEquals(null, $rtn);
 
-		//存在するblocks.id 存在するparts.id
+		//Block and Part that do not exist.
 		$rtn = $this->AnnouncementPartSetting->getIdByBlockId(self::EXISTING_BLOCK, self::EXISTING_PART);
 		$this->assertTrue(is_numeric($rtn));
 		$this->assertNotEmpty($rtn);
 
-		//存在しないblocks 存在するparts
+		//Block that do not exist. Part that exist.
 		$rtn = $this->AnnouncementPartSetting->getIdByBlockId(self::NOT_EXISTING_BLOCK, self::EXISTING_PART);
 		$this->assertEquals(null, $rtn);
 
-		//存在するblock 存在しないparts
+		//Block that exist. Part do not exist.
 		$rtn = $this->AnnouncementPartSetting->getIdByBlockId(self::EXISTING_BLOCK, self::NOT_EXISTING_PART);
 		$this->assertEquals(null, $rtn);
 	}
