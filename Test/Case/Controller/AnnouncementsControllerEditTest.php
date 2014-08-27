@@ -113,32 +113,51 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 	}
 
 /**
- * edit post
+ * edit post all status
  *
  * @return   void
  */
 	public function testEditPost() {
-		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
-		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
-		$this->Controller = $this->generate('Announcements.Announcements', array(
-			'components' => array(
-				'Security'
-			)
-		));
-		$data = array();
-		$data['Announcement']['content'] = rawurlencode('test'); //URLエンコード
-		$data['Announcement']['frameId'] = 1;
-		$data['Announcement']['blockId'] = 1;
-		$data['Announcement']['status'] = 'Draft';
-		$data['Announcement']['langId'] = 2;
-		$data['Announcement']['id'] = 0;
-		$this->testAction('/announcements/announcements/edit/1/',
-			array (
-				'method' => 'post',
-				'data' => $data
-			)
+		$contentStatusArray = array(
+			'Publish',
+			'PublishRequest',
+			'Draft',
+			'Reject'
 		);
-		$this->assertTextContains('Announcement', $this->result);
+
+		foreach ($contentStatusArray as $contentStatus) {
+			CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
+			$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
+			$this->Controller = $this->generate('Announcements.Announcements', array(
+				'components' => array(
+					'Security'
+				)
+			));
+			$data = array();
+			$data['Announcement']['content'] = rawurlencode('test ' . $contentStatus); //URLエンコード
+			$data['Announcement']['frameId'] = 1;
+			$data['Announcement']['blockId'] = 1;
+			$data['Announcement']['status'] = $contentStatus;
+			$data['Announcement']['langId'] = 2;
+			$data['Announcement']['id'] = 0;
+			$this->testAction('/announcements/announcements/edit/1/',
+				array (
+					'method' => 'post',
+					'data' => $data
+				)
+			);
+			$this->assertTextContains('Announcement', $this->result);
+			//view
+			Configure::write('Pages.isSetting', false);
+			$this->testAction('/announcements/announcements/view/' . $data['Announcement']['frameId'] . '/jpn', array('method' => 'post'));
+			$this->assertNotNull($this->result);
+			$this->assertTextContains($contentStatus, $this->result);
+			//settingmode
+			Configure::write('Pages.isSetting', true);
+			$this->testAction('/announcements/announcements/view/' . $data['Announcement']['frameId'] . '/jpn', array('method' => 'post'));
+			$this->assertNotNull($this->result);
+			$this->assertTextContains($contentStatus, $this->result);
+		}
 	}
 
 /**
@@ -201,11 +220,11 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 	}
 
 /**
- * edit post db errors
+ * edit post url errors
  *
  * @return   void
  */
-	public function testEditPostDbError() {
+	public function testEditPostURLError() {
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 		$this->Controller = $this->generate('Announcements.Announcements', array(
@@ -221,7 +240,8 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 		$data['Announcement']['status'] = 'Draft';
 		$data['Announcement']['langId'] = 2;
 		$data['Announcement']['id'] = 0;
-		$this->testAction('/announcements/announcements/edit/' . (self::EXISTING_FRAME + 1 ),
+		$errorFrameId = self::EXISTING_FRAME + 1;
+		$this->testAction('/announcements/announcements/edit/' . $errorFrameId,
 			array (
 				'method' => 'post',
 				'data' => $data

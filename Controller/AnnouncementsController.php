@@ -131,11 +131,10 @@ class AnnouncementsController extends AnnouncementsAppController {
 			//権限エラー
 			return $this->_renderJson(403, __('I failed to save'));
 		}
-
 		//保存
 		$rtn = $this->Announcement->saveContent(
 			$this->data,
-			$this->viewVars['frameId'],
+			$frameId,
 			$this->viewVars['blockId'],
 			true
 		);
