@@ -32,14 +32,14 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 	const CONTENT_EDITABLE_USER_ID = 1;
 
 /**
- * コンテンツの存在するframe
+ * Existing frames.id
  *
  * @var int
  */
 	const EXISTING_FRAME = 1;
 
 /**
- * 存在しないframe
+ * Not existing frames.id
  *
  * @var int
  */
@@ -108,50 +108,54 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 
 		// Correct URL content is displayed
 		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/eng', array('method' => 'get'));
+		$this->assertNotEmpty($this->result);
 		$this->assertTextContains('announcement', $this->result);
-		$this->assertNotNull($this->result);
 
-		// 存在しないframeId
+		// Not Existing frames.id
 		$this->testAction('/announcements/announcements/view/' . self::NOT_EXISTING_FRAME, array('method' => 'get'));
-		$this->assertTextEquals('', $this->result);
+		$this->assertEmpty($this->result);
 
-		// 存在するframeId しかしjpnのコンテンツは無い。
+		// Existing frames.id  empty Contents.
 		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/jpn', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
 		$this->assertTextNotContains('announcement', $this->result);
-		$this->assertTextEquals('', $this->result);
+		$this->assertEmpty($this->result);
 
 		CakeSession::delete('Auth.User.id');
-		// 存在するframeId しかしjpnのコンテンツは無い。
+		// Existing frames.id. empty Contents
 		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/jpn', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
 		$this->assertTextNotContains('announcement', $this->result);
-		$this->assertTextEquals('', $this->result);
+		$this->assertEmpty($this->result);
 
-		//未ログイン
+		//Not logged in.
 		CakeSession::delete('Auth.User.id');
 		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/eng', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
 		$this->assertTextContains('announcement', $this->result);
 
-		//ログイン
+		//Logged. Existing Contents
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
 		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/jpn', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
+		$this->assertNotEmpty($this->result);
 
+		//Logged. Not existing Contents
 		$this->testAction('/announcements/announcements/view/' . self::NOT_EXISTING_FRAME . '/jpn', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
+		$this->assertEmpty($this->result);
 
-		//ログアウトしている状態
+		//Not logged. Not existing Contents
 		CakeSession::delete('Auth.User');
 		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/eng', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
+		$this->assertTextContains('nc-announcement', $this->result);
 
-		//ログアウトしている状態
+		//Not logged. Not existing Contents
 		CakeSession::delete('Auth.User');
 		$this->testAction('/announcements/announcements/view/' . self::NOT_EXISTING_FRAME . '/eng', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
-		$this->assertTextEquals('', $this->result);
+		$this->assertEmpty($this->result);
 	}
 
 /**
@@ -199,7 +203,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 	public function testForm() {
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
 		//Content does not exist
-		$this->testAction('/announcements/announcements/form/' . self::EXISTING_FRAME . '/jpn', array('method' => 'get'));
+		$this->testAction('/announcements/announcements/form/' . self::EXISTING_FRAME . '/', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
 	}
 

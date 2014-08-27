@@ -108,7 +108,7 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
  * @return   void
  */
 	public function testEditGetError() {
-		$this->testAction('/announcements/announcements/edit/1/', array('method' => 'get'));
+		$this->testAction('/announcements/announcements/edit/' . self::EXISTING_BLOCK . '/', array('method' => 'get'));
 		$this->assertTextNotContains('Announcement', $this->result);
 	}
 
@@ -135,12 +135,12 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 			));
 			$data = array();
 			$data['Announcement']['content'] = rawurlencode('test ' . $contentStatus); //URLエンコード
-			$data['Announcement']['frameId'] = 1;
-			$data['Announcement']['blockId'] = 1;
+			$data['Announcement']['frameId'] = self::EXISTING_FRAME;
+			$data['Announcement']['blockId'] = self::EXISTING_BLOCK;
 			$data['Announcement']['status'] = $contentStatus;
 			$data['Announcement']['langId'] = 2;
 			$data['Announcement']['id'] = 0;
-			$this->testAction('/announcements/announcements/edit/1/',
+			$this->testAction('/announcements/announcements/edit/' . self::EXISTING_FRAME . '/',
 				array (
 					'method' => 'post',
 					'data' => $data
@@ -149,7 +149,7 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 			$this->assertTextContains('Announcement', $this->result);
 			//view
 			Configure::write('Pages.isSetting', false);
-			$this->testAction('/announcements/announcements/view/' . $data['Announcement']['frameId'] . '/jpn', array('method' => 'post'));
+			$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/jpn', array('method' => 'post'));
 			$this->assertNotNull($this->result);
 			$this->assertTextContains($contentStatus, $this->result);
 			//setting mode
@@ -174,7 +174,7 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 			)
 		));
 		$data = array();
-		$data['Announcement']['content'] = rawurlencode('test'); //URLエンコード
+		$data['Announcement']['content'] = rawurlencode('test');
 		$data['Announcement']['frameId'] = self::EXISTING_FRAME;
 		$data['Announcement']['blockId'] = self::EXISTING_BLOCK;
 		$data['Announcement']['status'] = 'Draft';
@@ -204,7 +204,7 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 			)
 		));
 		$data = array();
-		$data['Announcement']['content'] = rawurlencode('test'); //URLエンコード
+		$data['Announcement']['content'] = rawurlencode('test');
 		$data['Announcement']['frameId'] = self::NOT_EXISTING_FRAME;
 		$data['Announcement']['blockId'] = self::EXISTING_BLOCK;
 		$data['Announcement']['status'] = 'Draft';
