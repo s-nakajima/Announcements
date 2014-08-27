@@ -84,9 +84,8 @@ class AnnouncementsBlockTest extends CakeTestCase {
 
 		$frameId = 5;
 		$blockId = 0;
-		$announcementsBlockId = null;
 		$rtn = $this->AnnouncementsBlock->getAnnouncementsBlockId($frameId, $blockId);
-		$this->assertEquals($rtn, $announcementsBlockId);
+		$this->assertTrue(is_numeric($rtn));
 	}
 
 	public function testCreateByBlock() {
