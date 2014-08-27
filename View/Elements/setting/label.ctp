@@ -31,13 +31,13 @@ if (isset($item['Announcement']['status'])) {
 	<span
 		ng-init="label.draft=<?php echo $status['Draft'];?>"
 		ng-show="label.draft"
-		class="label label-info ng-hide'
+		class="label label-info ng-hide"
 		><?php echo __('Draft'); ?></span>
 	<span
 		ng-init="label.request=<?php echo $status['publishRequest'];?>"
 		ng-show="label.request"
 		class="label label-danger ng-hide"
-		><?php echo __('Published pending'); ?></span>
+		><?php echo __('Waiting Publish'); ?></span>
 	<span
 		ng-init="label.reject=<?php echo $status['Reject'];?>"
 		ng-show="label.reject"
