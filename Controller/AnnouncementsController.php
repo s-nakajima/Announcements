@@ -19,7 +19,9 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public $uses = array(
 		'Announcements.Announcement',
 		'Announcements.AnnouncementPartSetting',
-		'Announcements.AnnouncementSetting'
+		'Announcements.AnnouncementSetting',
+		'Announcements.AnnouncementsBlock',
+
 	);
 
 /**
@@ -88,7 +90,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	private function __viewEdit() {
 		//セッティングモード
-		$data = $this->Announcement->get($this->viewVars['blockId'], $this->viewVars['langId']);
+		$data = $this->Announcement->getContent($this->viewVars['blockId'], $this->viewVars['langId'], 1);
 		$this->set('item', $data);
 		if (! Configure::read('Pages.isSetting')) {
 			return $this->render("Announcements/view/editor");
@@ -105,7 +107,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return CakeResponse
  */
 	private function __view() {
-		$data = $this->Announcement->get($this->viewVars['blockId'], $this->viewVars['langId'], true);
+		$data = $this->Announcement->getContent($this->viewVars['blockId'], $this->viewVars['langId']);
 		if (! $data) {
 			return $this->render(false);
 		}
