@@ -1,3 +1,8 @@
+<?php
+/**
+ * @codeCoverageIgnore
+ */
+?>
 <div ng-controller="Announcements.setting">
 	<div class="modal fade"
 		id="nc-block-setting-
