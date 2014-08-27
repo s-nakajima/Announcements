@@ -9,8 +9,8 @@ $roomPartKey = 'LanguagesPart';
 	<p class="container">
 		<?php
 				/**
-				* @codeCoverageIgnore
-				*/
+				 * @codeCoverageIgnore
+				 */
 				foreach ($partList as $key => $item) {
 				$partId = $item[$roomPartKey]['part_id'];
 				$checked = false;
