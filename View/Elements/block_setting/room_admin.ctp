@@ -1,3 +1,8 @@
+<?php
+/**
+ * @codeCoverageIgnore
+ */
+?>
 <div class="modal fade"
 	id="nc-block-setting-
 	<?php echo (int)$frameId; ?>"
