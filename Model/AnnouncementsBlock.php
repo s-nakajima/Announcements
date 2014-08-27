@@ -114,7 +114,7 @@ class AnnouncementsBlock extends AnnouncementsAppModel {
  * @param int $blockId blocks.id
  * @return int || null
  */
-	public function myId($frameId, $blockId) {
+	public function getAnnouncementsBlockId($frameId, $blockId) {
 		if (! $blockId) {
 			//master
 			$this->Frame->setDataSource('master');

@@ -135,10 +135,10 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 			));
 			$data = array();
 			$data['Announcement']['content'] = rawurlencode('test ' . $contentStatus); //URLエンコード
-			$data['Announcement']['frameId'] = '1';
-			$data['Announcement']['blockId'] = '1';
+			$data['Announcement']['frameId'] = 1;
+			$data['Announcement']['blockId'] = 1;
 			$data['Announcement']['status'] = $contentStatus;
-			$data['Announcement']['langId'] = '2';
+			$data['Announcement']['langId'] = 2;
 			$data['Announcement']['id'] = 0;
 			$this->testAction('/announcements/announcements/edit/1/',
 				array (

@@ -73,24 +73,31 @@ class AnnouncementsBlockTest extends CakeTestCase {
  *
  * @return void
  */
-	public function testMyid() {
+	public function testGetAnnouncementsBlockId() {
+		CakeSession::write('Auth.User.id', self::EXISTING_USER);
 		$frameId = 1;
 		$blockId = 1;
-		$id = 1;
-		$rtn = $this->AnnouncementsBlock->myId($frameId, $blockId);
+		$announcementsBlockId = 1;
+		$rtn = $this->AnnouncementsBlock->getAnnouncementsBlockId($frameId, $blockId);
 		$this->assertTrue(is_numeric($rtn));
-		$this->assertEquals($rtn, $id);
+		$this->assertEquals($rtn, $announcementsBlockId);
 
 		$frameId = 5;
 		$blockId = 0;
-		$rtn = $this->AnnouncementsBlock->myId($frameId, $blockId);
-		$this->assertNull($rtn);
+		$announcementsBlockId = null;
+		$rtn = $this->AnnouncementsBlock->getAnnouncementsBlockId($frameId, $blockId);
+		$this->assertEquals($rtn, $announcementsBlockId);
+	}
 
+	public function testCreateByBlock() {
 		CakeSession::write('Auth.User.id', self::EXISTING_USER);
-		$frameId = 5;
-		$blockId = 0;
-		$rtn = $this->AnnouncementsBlock->myId($frameId, $blockId);
+		$blockId = 5;
+		$rtn = $rtn = $this->AnnouncementsBlock->createByBlock($blockId);
 		$this->assertTrue(is_numeric($rtn));
+
+		$blockId = 'A'; //validation error
+		$rtn = $rtn = $this->AnnouncementsBlock->createByBlock($blockId);
+		$this->assertNull($rtn);
 	}
 
 }

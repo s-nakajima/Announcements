@@ -12,6 +12,14 @@ App::uses('AnnouncementsAppController', 'Announcements.Controller');
 class AnnouncementsController extends AnnouncementsAppController {
 
 /**
+ * components
+ * @var array
+ */
+	public $components = array(
+		'Security',
+	);
+
+/**
  * Model name
  *
  * @var array
@@ -21,22 +29,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		'Announcements.AnnouncementPartSetting',
 		'Announcements.AnnouncementSetting',
 		'Announcements.AnnouncementsBlock',
-
 	);
-
-/**
- * condition that can have a public authority.
- *
- * @var int
- */
-	const PUBLISHABLE_CONDITION = 'edit_content';
-
-/**
- * condition that can have a public authority.
- *
- * @var int
- */
-	const EDITABLE_CONDITION = 'edit_content';
 
 /**
  * 準備
@@ -70,7 +63,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public function view($frameId = 0, $lang = '') {
 		if (! $frameId ||
-		! $this->_setFrameInitialize($frameId, $lang)) {
+		! $this->_initializeFrame($frameId, $lang)) {
 			return $this->render(false);
 		}
 		//ログインしていない 編集権限がない
@@ -126,8 +119,8 @@ class AnnouncementsController extends AnnouncementsAppController {
 			return $this->_renderJson(400, __('I failed to save'));
 		}
 		//準備
-		$this->_setFrameInitialize($frameId);
-		if (!$this->viewVars['contentEditable']) {
+		$this->_initializeFrame($frameId);
+		if (! $this->viewVars['contentEditable']) {
 			//権限エラー
 			return $this->_renderJson(403, __('I failed to save'));
 		}
@@ -155,7 +148,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public function form($frameId = 0) {
 		$this->layout = false;
-		$this->_setFrameInitialize($frameId);
+		$this->_initializeFrame($frameId);
 		return $this->render("Announcements/setting/form");
 	}
 

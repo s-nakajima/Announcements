@@ -204,7 +204,7 @@ class Announcement extends AnnouncementsAppModel {
 		//master
 		$this->AnnouncementsBlock->setDataSource('master');
 		$this->setDataSource('master');
-		$announcementsBlockId = $this->AnnouncementsBlock->myId($frameId, $blockId);
+		$announcementsBlockId = $this->AnnouncementsBlock->getAnnouncementsBlockId($frameId, $blockId);
 
 		$this->create();
 		$rtn = $this->save(array(
