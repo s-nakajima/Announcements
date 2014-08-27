@@ -178,7 +178,7 @@ class AnnouncementPartSetting extends AnnouncementsAppModel {
  * @return int|null
  */
 	public function getIdByBlockId($blockId, $partId) {
-		$block = $this->get($blockId, $partId);
+		$block = $this->getSetting($blockId, $partId);
 		if ($block &&
 			isset($block[$this->name]['id']) &&
 			$block[$this->name]['id']

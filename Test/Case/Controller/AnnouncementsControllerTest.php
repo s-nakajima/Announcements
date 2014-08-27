@@ -131,14 +131,12 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 
 		//未ログイン
 		CakeSession::delete('Auth.User.id');
-		// 存在するframeId 英語コンテンツはあり。
 		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/eng', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
 		$this->assertTextContains('announcement', $this->result);
 
 		//ログイン
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
-		// language jpn コンテンツが存在しない
 		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/jpn', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
 
@@ -147,13 +145,11 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 
 		//ログアウトしている状態
 		CakeSession::delete('Auth.User');
-		// language コンテンツあり
 		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/eng', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
 
 		//ログアウトしている状態
 		CakeSession::delete('Auth.User');
-		// コンテンツは存在しない
 		$this->testAction('/announcements/announcements/view/' . self::NOT_EXISTING_FRAME . '/eng', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
 		$this->assertTextEquals('', $this->result);
@@ -165,18 +161,18 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return void
  */
 	public function testViewSettingMode() {
-		//ログインしている // language jpn 存在する
+		//Content exists
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
 		$this->testAction('/announcements/announcements/view/1/jpn', array('method' => 'get'));
 		$this->assertTextContains('announcement', $this->result);
 
-		//書き込み権限が有り、セッティングモードON コンテンツあり
+		//Content exists
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
 		Configure::write('Pages.isSetting', true);
 		$this->testAction('/announcements/announcements/view/1/jpn', array('method' => 'get'));
 		$this->assertTextContains('Announcement', $this->result);
 
-		//書き込み権限が有り、セッティングモードOFF コンテンツが無い
+		//Content does not exist
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
 		Configure::write('Pages.isSetting', false);
 		$this->testAction('/announcements/announcements/view/' . self::NOT_EXISTING_FRAME . '/jpn', array('method' => 'get'));
@@ -189,7 +185,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return void
  */
 	public function testViewEditableUserOnSetting() {
-		//書き込み権限が有り、セッティングモードON
+		//Content does not exist
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
 		Configure::write('Pages.isSetting', true);
 		$this->testAction('/announcements/announcements/view/5/jpn', array('method' => 'get'));
@@ -202,9 +198,8 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return void
  */
 	public function testForm() {
-		//ログイン 書き込み権限が有りフレームが存在している。
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
-		//language 日本語 コンテンツ存在しない
+		//Content does not exist
 		$this->testAction('/announcements/announcements/form/' . self::EXISTING_FRAME . '/jpn', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
 	}
@@ -215,8 +210,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return   void
  */
 	public function testIndex() {
-		//frameIdなし viewへそのまま処理を渡しているため、testViewと同じ結果になる。
-		//未ログイン 存在しないframeId コンテンツなし
+		//same /announcements/announcements/view/
 		$this->testAction('/announcements/announcements/index/' . self::NOT_EXISTING_FRAME . '/jpn', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
 	}

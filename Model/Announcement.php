@@ -139,7 +139,7 @@ class Announcement extends AnnouncementsAppModel {
  */
 	public $belongsTo = array(
 		'AnnouncementsBlock' => array(
-			'className' => 'AnnouncementsBlock',
+			'className' => 'Announcements.AnnouncementsBlock',
 			'foreignKey' => 'announcements_block_id',
 			'conditions' => '',
 			'fields' => '',
@@ -159,16 +159,17 @@ class Announcement extends AnnouncementsAppModel {
  *
  * @param int $blockId blocks.id
  * @param string $langId language_id
- * @param int $all true:all false:status publish only
+ * @param int $all  status publish only
  * @return array
  */
-	public function getContent($blockId, $langId, $all = 1) {
+	public function getContent($blockId, $langId, $all = 0) {
 		$conditions = array(
 			'block_id' => $blockId,
 			'language_id' => $langId,
+			'status' => self::STATUS_PUBLISH
 		);
-		if ($all !== 1) {
-			$conditions['status'] = self::STATUS_PUBLISH;
+		if ($all) {
+			unset($conditions['status']);
 		}
 		return $this->find('first', array(
 			'conditions' => $conditions,
@@ -202,10 +203,8 @@ class Announcement extends AnnouncementsAppModel {
 		//master
 		$this->AnnouncementsBlock->setDataSource('master');
 		$this->setDataSource('master');
+		$announcementsBlockId = $this->AnnouncementsBlock->myId($frameId, $blockId);
 
-		$announcementsBlockId = $this->AnnouncementsBlock->Myid($blockId);
-
-		//保存
 		$this->create();
 		$rtn = $this->save(array(
 			'announcements_block_id' => $announcementsBlockId,
@@ -218,7 +217,7 @@ class Announcement extends AnnouncementsAppModel {
 		if (!$rtn) {
 			return array();
 		}
-		return $this->get($blockId, $data[$this->name]['langId']);
+		return $this->getContent($blockId, $data[$this->name]['langId'], 1);
 	}
 
 }

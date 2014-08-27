@@ -67,14 +67,6 @@ class AnnouncementsBlockFixture extends CakeTestFixture {
 			'created_user' => 1,
 			'modified' => '2014-08-23 09:16:52',
 			'modified_user' => 1
-		),
-		array (
-			'id' => 5,
-			'block_id' => 5,
-			'created' => '2014-08-23 09:16:52',
-			'created_user' => 1,
-			'modified' => '2014-08-23 09:16:52',
-			'modified_user' => 1
 		)
 	);
 

@@ -108,7 +108,6 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
  * @return   void
  */
 	public function testEditGetError() {
-		//getでのアクセスを許可していない
 		$this->testAction('/announcements/announcements/edit/1/', array('method' => 'get'));
 		$this->assertTextNotContains('Announcement', $this->result);
 	}
@@ -118,8 +117,7 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
  *
  * @return   void
  */
-	public function testEditPost() {
-		//postによる正常処理
+	public function estEditPost() {
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 		$this->Controller = $this->generate('Announcements.Announcements', array(
@@ -149,7 +147,7 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
  * @return   void
  */
 	public function testEditPostPermissionError() {
-		//postによる正常処理
+		//The normal processing by post
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 		$this->Controller = $this->generate('Announcements.Announcements', array(
 			'components' => array(
@@ -177,7 +175,8 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
  *
  * @return   void
  */
-	public function testEditPostParameterError() {
+	public function estEditPostParameterError() {
+		//frameId of url is different.
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 		$this->Controller = $this->generate('Announcements.Announcements', array(
@@ -185,7 +184,6 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 				'Security'
 			)
 		));
-		//urlのframeIdとpostで渡されたframeIdが違うため失敗する。
 		$data = array();
 		$data['Announcement']['content'] = rawurlencode('test'); //URLエンコード
 		$data['Announcement']['frameId'] = self::NOT_EXISTING_FRAME;
@@ -207,7 +205,7 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
  *
  * @return   void
  */
-	public function testEditPostDbError() {
+	public function estEditPostDbError() {
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 		$this->Controller = $this->generate('Announcements.Announcements', array(
@@ -215,8 +213,7 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 				'Security'
 			)
 		));
-
-		//urlのframeIdとpostで渡されたframeIdが違うため失敗する。
+		//frameId of url is different.
 		$data = array();
 		$data['Announcement']['content'] = rawurlencode('test'); //URLエンコード
 		$data['Announcement']['frameId'] = self::EXISTING_FRAME;

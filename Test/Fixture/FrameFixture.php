@@ -115,7 +115,7 @@ class FrameFixture extends CakeTestFixture {
 			'room_id' => '1',
 			'box_id' => '5',
 			'plugin_id' => '1',
-			'block_id' => '5',
+			'block_id' => '0',
 			'weight' => '1',
 			'is_published' => 1,
 			'from' => null,

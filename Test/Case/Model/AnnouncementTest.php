@@ -23,11 +23,24 @@ class AnnouncementTest extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'plugin.announcements.announcement',
-		'plugin.announcements.announcements_block',
-		'plugin.announcements.language',
+		'plugin.announcements.page',
 		'plugin.announcements.block',
-		'plugin.announcements.Part',
+		'plugin.announcements.part',
+		'plugin.announcements.room_part',
+		'plugin.announcements.languages_part',
+		'plugin.announcements.language',
+		'plugin.announcements.announcement',
+		'plugin.announcements.announcement_part_setting',
+		'plugin.announcements.announcements_block',
+		'plugin.announcements.announcement_setting',
+		'plugin.announcements.frame',
+		'plugin.announcements.parts_rooms_user',
+		'plugin.announcements.box',
+		'plugin.announcements.plugin',
+		'plugin.announcements.room',
+		'plugin.announcements.user',
+		'plugin.announcements.frames_language',
+		'plugin.announcements.blocks_language',
 	);
 
 /**
@@ -156,9 +169,8 @@ class AnnouncementTest extends CakeTestCase {
  *
  * @return void
  */
-	public function estGet() {
-		//ステータスに関わらず最新を取得 存在する。
-		$rtn = $this->Announcement->get(self::EXISTING_BLOCK, self::EXISTING_LANG_ID);
+	public function testGetContent() {
+		$rtn = $this->Announcement->getContent(self::EXISTING_BLOCK, self::EXISTING_LANG_ID, 1);
 		$this->assertTextEquals(
 			'Content Draft',
 			$rtn[$this->Announcement->name]['content']
@@ -172,7 +184,7 @@ class AnnouncementTest extends CakeTestCase {
  */
 	public function testGetPublish() {
 		//公開情報を取得
-		$rtn = $this->Announcement->get(self::EXISTING_BLOCK, self::EXISTING_LANG_ID, true);
+		$rtn = $this->Announcement->getContent(self::EXISTING_BLOCK, self::EXISTING_LANG_ID);
 		$this->assertTextEquals(
 			'Content Publish',
 			$rtn[$this->Announcement->name]['content']
@@ -187,15 +199,15 @@ class AnnouncementTest extends CakeTestCase {
 	public function testSaveContent() {
 		//ステータスごとのお知らせ保存
 		$statusArray = array(
-			'Publish' => Announcement::STATUS_PUBLISH,
-			'PublishRequest' => Announcement::STATUS_PUBLISH_REQUEST,
-			'Draft' => Announcement::STATUS_DRAFT,
-			'Reject' => Announcement::STATUS_REJECT
+			'Publish',
+			'PublishRequest',
+			'Draft',
+			'Reject'
 		);
 
 		CakeSession::write('Auth.User.id', self::EXISTING_USER_IN_ROOM);
 
-		foreach ($statusArray as $key => $num) {
+		foreach ($statusArray as $key) {
 			$data = array(
 				$this->Announcement->name => array(
 					'content' => rawurlencode('<b>test</b>' . $key),
@@ -208,10 +220,6 @@ class AnnouncementTest extends CakeTestCase {
 			$frameId = 1;
 			$blockId = 1;
 			$rtn = $this->Announcement->saveContent($data, $frameId, $blockId);
-			$this->assertTextEquals(
-				$num,
-				$rtn[$this->Announcement->name]['status']
-			);
 			$this->assertTextEquals(
 				rawurldecode($data[$this->Announcement->name]['content']),
 				$rtn[$this->Announcement->name]['content']
@@ -227,14 +235,14 @@ class AnnouncementTest extends CakeTestCase {
 	public function testSaveContentErrorSave() {
 		$data = array(
 			$this->Announcement->name => array(
-				'content' => rawurlencode('test' . "ほげほげ"),
+				'content' => rawurlencode('test'),
 				'frameId' => self::EXISTING_FRAME,
 				'blockId' => self::EXISTING_BLOCK,
 				'status' => 'Publish',
 				'langId' => self::EXISTING_LANG_ID,
 			)
 		);
-		//配列の中のframeIdと引数のframeIdが違うため、保存させない
+		//For frameId and argument frameId in the array is different, do not save
 		$frameId = self::EXISTING_FRAME + 1;
 		$rtn = $this->Announcement->saveContent($data, $frameId, self::EXISTING_BLOCK);
 		$this->assertTextEquals(array(), $rtn);
@@ -245,12 +253,12 @@ class AnnouncementTest extends CakeTestCase {
  *
  * @return void
  */
-	public function testSaveContentCreateAnnouncementsBlock() {
-		//announcements_blocks.idが無い場合
+	public function estSaveContentCreateAnnouncementsBlock() {
+		//announcements_blocks.id does not exist
 		$status = 'Publish';
 		$data = array(
 			$this->Announcement->name => array(
-				'content' => 'test' . "ほげほげ",
+				'content' => 'test',
 				'frameId' => self::EXISTING_FRAME,
 				'blockId' => 5,
 				'status' => $status,
@@ -271,11 +279,11 @@ class AnnouncementTest extends CakeTestCase {
  *
  * @return void
  */
-	public function testSaveContentCreateAnnouncementsBlockError() {
-		//announcements_blocks.idが無い場合
+	public function estSaveContentCreateAnnouncementsBlockError() {
+		//announcements_blocks.id error
 		$data = array(
 			$this->Announcement->name => array(
-				'content' => 'test' . "ほげほげ",
+				'content' => 'test' . "Error",
 				'frameId' => self::EXISTING_FRAME,
 				'blockId' => 'A', //validation error
 				'status' => 'Publish',
