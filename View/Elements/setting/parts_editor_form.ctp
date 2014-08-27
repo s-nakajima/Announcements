@@ -1,4 +1,9 @@
 <?php
+/**
+ * @codeCoverageIgnore
+ */
+?>
+<?php
 $roomPartKey = 'LanguagesPart';
 ?>
 	<h3><?php echo __('Editorial control Settings');?> </h3>
