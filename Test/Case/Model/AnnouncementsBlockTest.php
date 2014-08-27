@@ -15,6 +15,13 @@ App::uses('AnnouncementsBlock', 'Announcements.Model');
 class AnnouncementsBlockTest extends CakeTestCase {
 
 /**
+ * 存在するユーザ
+ *
+ * @var int
+ */
+	const EXISTING_USER = 1;
+
+/**
  * Fixtures
  *
  * @var array
@@ -67,7 +74,22 @@ class AnnouncementsBlockTest extends CakeTestCase {
  * @return void
  */
 	public function testMyid() {
-		$rtn = $this->AnnouncementsBlock->myId(1, 1);
+		$frameId = 1;
+		$blockId = 1;
+		$id = 1;
+		$rtn = $this->AnnouncementsBlock->myId($frameId, $blockId);
+		$this->assertTrue(is_numeric($rtn));
+		$this->assertEquals($rtn, $id);
+
+		$frameId = 5;
+		$blockId = 0;
+		$rtn = $this->AnnouncementsBlock->myId($frameId, $blockId);
+		$this->assertNull($rtn);
+
+		CakeSession::write('Auth.User.id', self::EXISTING_USER);
+		$frameId = 5;
+		$blockId = 0;
+		$rtn = $this->AnnouncementsBlock->myId($frameId, $blockId);
 		$this->assertTrue(is_numeric($rtn));
 	}
 

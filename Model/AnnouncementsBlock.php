@@ -136,15 +136,27 @@ class AnnouncementsBlock extends AnnouncementsAppModel {
 		if (isset($rtn[$this->name]['id'])) {
 			return $rtn[$this->name]['id'];
 		}
+		return $this->createByBlock($blockId);
+	}
+
+/**
+ * create
+ *
+ * @param int $blockId blocks.int
+ * @return null | int
+ */
+	public function createByBlock($blockId) {
+		$this->create();
+		$this->setDataSource('master');
 		$this->create();
 		$rtn = $this->save(array(
 			'block_id' => $blockId,
 			'created_user' => CakeSession::read('Auth.User.id'),
 		));
-		if (! $rtn) {
-			return null;
+		if (isset($rtn[$this->name]['id'])) {
+			return $rtn[$this->name]['id'];
 		}
-		return $this->AnnouncementsBlockId($blockId);
+		return null;
 	}
 
 }

@@ -117,7 +117,7 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
  *
  * @return   void
  */
-	public function estEditPost() {
+	public function testEditPost() {
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 		$this->Controller = $this->generate('Announcements.Announcements', array(
@@ -175,7 +175,7 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
  *
  * @return   void
  */
-	public function estEditPostParameterError() {
+	public function testEditPostParameterError() {
 		//frameId of url is different.
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
@@ -205,7 +205,7 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
  *
  * @return   void
  */
-	public function estEditPostDbError() {
+	public function testEditPostDbError() {
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 		$this->Controller = $this->generate('Announcements.Announcements', array(

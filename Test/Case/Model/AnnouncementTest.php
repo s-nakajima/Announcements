@@ -253,7 +253,7 @@ class AnnouncementTest extends CakeTestCase {
  *
  * @return void
  */
-	public function estSaveContentCreateAnnouncementsBlock() {
+	public function testSaveContentCreateAnnouncementsBlock() {
 		//announcements_blocks.id does not exist
 		$status = 'Publish';
 		$data = array(
@@ -266,7 +266,7 @@ class AnnouncementTest extends CakeTestCase {
 			)
 		);
 		$frameId = 1;
-		$blockId = 6;
+		$blockId = 5;
 		$rtn = $this->Announcement->saveContent($data, $frameId, $blockId, false);
 		$this->assertTextEquals(
 			Announcement::STATUS_PUBLISH,
@@ -279,7 +279,7 @@ class AnnouncementTest extends CakeTestCase {
  *
  * @return void
  */
-	public function estSaveContentCreateAnnouncementsBlockError() {
+	public function testSaveContentCreateAnnouncementsBlockError() {
 		//announcements_blocks.id error
 		$data = array(
 			$this->Announcement->name => array(
@@ -291,7 +291,7 @@ class AnnouncementTest extends CakeTestCase {
 			)
 		);
 		$frameId = 1;
-		$blockId = 10;
+		$blockId = 4;
 		$rtn = $this->Announcement->saveContent($data, $frameId, $blockId, false);
 		$this->assertTextEquals(
 			$data[$this->Announcement->name]['content'],

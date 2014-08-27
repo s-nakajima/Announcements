@@ -101,12 +101,12 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return   void
  */
 	public function testView() {
-		//frameIdが指定されていない
+		//there is no frameId
 		$this->testAction('/announcements/announcements/view', array('method' => 'get'));
 		$this->assertTextNotContains('announcement', $this->result);
 		$this->assertTextEquals('', $this->result);
 
-		// コンテンツが存在するframeId
+		// Correct URL content is displayed
 		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/eng', array('method' => 'get'));
 		$this->assertTextContains('announcement', $this->result);
 		$this->assertNotNull($this->result);
@@ -121,7 +121,6 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		$this->assertTextNotContains('announcement', $this->result);
 		$this->assertTextEquals('', $this->result);
 
-		//未ログイン
 		CakeSession::delete('Auth.User.id');
 		// 存在するframeId しかしjpnのコンテンツは無い。
 		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/jpn', array('method' => 'get'));
