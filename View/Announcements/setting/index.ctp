@@ -94,7 +94,4 @@
 //block setting
 if ($isRoomAdmin) {
 	echo $this->element('block_setting/room_admin');
-} else {
-	echo $this->element('block_setting/editor');
 }
-
