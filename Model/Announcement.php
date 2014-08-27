@@ -189,7 +189,7 @@ class Announcement extends AnnouncementsAppModel {
 	public function saveContent($data, $frameId, $blockId, $encoded = 'encoded') {
 		//frameID chaeck
 		if (! isset($data[$this->name]['frameId']) ||
-			$frameId !== $data[$this->name]['frameId']) {
+			(int)$frameId !== (int)$data[$this->name]['frameId']) {
 			return array();
 		}
 		//decode
