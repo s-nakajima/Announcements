@@ -80,7 +80,7 @@ class AnnouncementsBlock extends AnnouncementsAppModel {
 		'Frame' => array(
 			'className' => 'Frames.Frame',
 			'foreignKey' => 'block_id',
-			'conditions' => 'Frame.block_id=Block.id',
+			'conditions' => '',
 			'fields' => '',
 			'order' => ''
 		)
@@ -121,7 +121,6 @@ class AnnouncementsBlock extends AnnouncementsAppModel {
 			$this->Block->setDataSource('master');
 			$this->setDataSource('master');
 			$rtn = $this->Frame->findById($frameId);
-
 			$blockId = $rtn[$this->Frame->name]['block_id'];
 			if (! $blockId) {
 				$blockId = $this->Block->addBlock($frameId);
