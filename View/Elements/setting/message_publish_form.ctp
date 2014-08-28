@@ -22,9 +22,7 @@
 		</div>
 	</form>
 
-	<pre>
-		<?php echo $this->element('Announcements.setting/message_info'); ?>
-	</pre>
+	<pre><?php echo $this->element('Announcements.setting/message_info'); ?></pre>
 
 	<p class="text-center">
 		<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo __d('announcements', 'Cancel'); ?></button>
