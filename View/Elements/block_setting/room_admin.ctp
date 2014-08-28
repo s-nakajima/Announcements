@@ -4,8 +4,7 @@
  */
 ?>
 <div class="modal fade"
-	id="nc-block-setting-
-	<?php echo (int)$frameId; ?>"
+	id="nc-block-setting-<?php echo (int)$frameId; ?>"
 	tabindex="-1"
 	role="dialog"
 	aria-labelledby="myModalLabel"
@@ -21,39 +20,36 @@
 						<span class="sr-only">Close</span>
 					</button>
 					<h3 class="modal-title" id="myModalLabel">
-						<?php echo __('Announcements Plugin'); ?>
-						<?php echo __('Block setting'); ?>
+						<?php echo __d('announcements', 'Announcements Plugin'); ?>
+						<?php echo __d('announcements', 'Block setting'); ?>
 					</h3>
 				</div>
 				<div class="modal-body">
 					<!-- Nav tabs -->
 					<ul class="nav nav-tabs" role="tablist">
 						<li class="active">
-							<a href="#nc-announcements-block-setting-parts-publish-
-								<?php echo (int)$frameId; ?>"
+							<a href="#nc-announcements-block-setting-parts-publish-<?php echo (int)$frameId; ?>"
 								role="tab"
 								data-toggle="tab">
-								<?php echo __('Publication control Settings'); ?>
+								<?php echo __d('announcements', 'Publication control Settings'); ?>
 							</a>
 						</li>
-						<li><a href="#nc-announcements-block-setting-parts-editor-
-								<?php echo (int)$frameId; ?>"
+						<li><a href="#nc-announcements-block-setting-parts-editor-<?php echo (int)$frameId; ?>"
 								role="tab"
 								data-toggle="tab">
-								<?php echo __('Editorial control Settings'); ?>
+								<?php echo __d('announcements', 'Editorial control Settings'); ?>
 							</a>
 						</li>
-						<li><a href="#nc-announcements-block-setting-update-
-							<?php echo (int)$frameId; ?>"
+						<li><a href="#nc-announcements-block-setting-update-<?php echo (int)$frameId; ?>"
 								role="tab"
 								data-toggle="tab">
-								<?php echo __('Articles change notification'); ?>
+								<?php echo __d('announcements', 'Articles change notification'); ?>
 							</a>
 						</li>
 						<li><a href="#nc-announcements-block-setting-request-<?php echo (int)$frameId; ?>"
 								role="tab"
 								data-toggle="tab">
-								<?php echo __('Request Notification settings'); ?>
+								<?php echo __d('announcements', 'Request Notification settings'); ?>
 							</a>
 						</li>
 					</ul>

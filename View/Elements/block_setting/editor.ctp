@@ -24,8 +24,8 @@
 						<span class="sr-only">Close</span>
 					</button>
 					<h3 class="modal-title" id="myModalLabel">
-						<?php echo __('Announcements Plugin'); ?>
-						<?php echo __('Block setting'); ?>
+						<?php echo __d('announcements', 'Announcements Plugin'); ?>
+						<?php echo __d('announcements', 'Block setting'); ?>
 					</h3>
 				</div>
 				<div class="modal-body">
@@ -37,14 +37,14 @@
 								role="tab"
 								data-toggle="tab"
 								>
-								<?php echo __('Articles change notification setting'); ?>
+								<?php echo __d('announcements', 'Articles change notification setting'); ?>
 							</a>
 						</li>
 						<li><a href="#nc-announcements-block-setting-request-
 								<?php echo (int)$frameId; ?>"
 								role="tab"
 								data-toggle="ab">
-								<?php echo __('Publication request notification settings'); ?>
+								<?php echo __d('announcements', 'Publication request notification settings'); ?>
 							</a>
 						</li>
 					</ul>

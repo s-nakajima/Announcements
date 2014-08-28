@@ -1,7 +1,7 @@
 <?php
 $roomPartKey = 'LanguagesPart';
 ?>
-	<h3><?php echo __('Publication control Settings'); ?></h3>
+	<h3><?php echo __d('announcements', 'Publication control Settings'); ?></h3>
 
 	<p class='container'>
 		<?php
@@ -44,17 +44,17 @@ $roomPartKey = 'LanguagesPart';
 	</div>
 
 	<p class='text-center' id='send_<?php echo (int)$frameId; ?>'>
-		<button type='button' class='btn btn-default' data-dismiss='modal'><?php echo __('Cancel'); ?></button>
+		<button type='button' class='btn btn-default' data-dismiss='modal'><?php echo __d('announcements', 'Cancel'); ?></button>
 		<button type="button" class="btn btn-primary"
 				ng-click="partSend('publishParts',
 				<?php echo (int)$frameId; ?>,
 				<?php echo (int)$blockId; ?>,
 				<?php echo (int)$langId; ?>)">
 			<span>
-				<?php echo __('Update'); ?>
+				<?php echo __d('announcements', 'Update'); ?>
 			</span>
 		</button>
 	</p>
 	<div id='send_2_<?php echo (int)$frameId; ?>' class='alert alert-success text-center ng-hidden' role='alert'>
-		<?php echo __('Saved'); ?>
+		<?php echo __d('announcements', 'Saved'); ?>
 	</div>

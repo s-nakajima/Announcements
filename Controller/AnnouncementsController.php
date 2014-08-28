@@ -86,12 +86,12 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$data = $this->Announcement->getContent($this->viewVars['blockId'], $this->viewVars['langId'], 1);
 		$this->set('item', $data);
 		if (! Configure::read('Pages.isSetting')) {
-			return $this->render("Announcements/view/editor");
+			return $this->render('Announcements/view/editor');
 		}
 		//$blockPart = $this->AnnouncementBlockPart->getListPartIdArray($this->blockId);
 		$blockPart = array();
 		$this->set('blockPart', $blockPart);
-		return $this->render("Announcements/setting/index");
+		return $this->render('Announcements/setting/index');
 	}
 
 /**
@@ -116,13 +116,13 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public function edit($frameId = 0) {
 		if (! $this->request->isPost()) {
-			return $this->_renderJson(400, __('I failed to save'));
+			return $this->_renderJson(400, __d('announcements', 'I failed to save'));
 		}
 		//準備
 		$this->_initializeFrame($frameId);
 		if (! $this->viewVars['contentEditable']) {
 			//権限エラー
-			return $this->_renderJson(403, __('I failed to save'));
+			return $this->_renderJson(403, __d('announcements', 'I failed to save'));
 		}
 		//保存
 		$rtn = $this->Announcement->saveContent(
@@ -134,10 +134,10 @@ class AnnouncementsController extends AnnouncementsAppController {
 		//成功結果を返す
 		if (!$rtn) {
 			//失敗結果を返す
-			return $this->_renderJson(500, __('I failed to save'), $rtn);
+			return $this->_renderJson(500, __d('announcements', 'I failed to save'), $rtn);
 		}
 		$rtn['Announcement']['content'] = rawurlencode($rtn['Announcement']['content']);
-		return $this->_renderJson(200, __('Saved'), $rtn);
+		return $this->_renderJson(200, __d('announcements', 'Saved'), $rtn);
 	}
 
 /**
@@ -149,7 +149,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public function form($frameId = 0) {
 		$this->layout = false;
 		$this->_initializeFrame($frameId);
-		return $this->render("Announcements/setting/form");
+		return $this->render('Announcements/setting/form');
 	}
 
 }

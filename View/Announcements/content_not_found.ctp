@@ -6,6 +6,6 @@
 		?>
 	</div>
 	<?php endif; ?>
-	<?php echo __('Content not found.'); /* TestCode セッティングモードのON、OFFでメッセージを表示するかどうか判断するべき。セッティングモード未実装につき未実装 */ ?>
+	<?php echo __d('announcements', 'Content not found.'); /* TestCode セッティングモードのON、OFFでメッセージを表示するかどうか判断するべき。セッティングモード未実装につき未実装 */ ?>
 	<?php echo $this->element('include'); ?>
 </div>

@@ -1,11 +1,11 @@
 # LANGUAGE translation of CakePHP Application
-# Copyright Ryuji Masukawa <masukawa@nii.ac.jp>
+# Copyright YEAR NAME <EMAIL@ADDRESS>
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2014-05-27 06:21+0000\n"
+"POT-Creation-Date: 2014-08-28 06:02+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,100 +14,198 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: /View/Announcements/block_setting.ctp:13
-msgid "Announcement Title"
+#: /var/www/app/Controller/AnnouncementsBlockSettingController.php:65
+msgid "It can only be operated POST."
 msgstr ""
 
-#: /View/Announcements/block_setting.ctp:21
-msgid "Authority to post articles"
+#: /var/www/app/Controller/AnnouncementsBlockSettingController.php:69
+msgid "Information in question does not exist."
 msgstr ""
 
-#: /View/Announcements/block_setting.ctp:24;69
-msgid "Room manager"
+#: /var/www/app/Controller/AnnouncementsBlockSettingController.php:72;113
+msgid "You do not have permission."
 msgstr ""
 
-#: /View/Announcements/block_setting.ctp:25;70
-msgid "Managing editor"
+#: /var/www/app/Controller/AnnouncementsBlockSettingController.php:80;94;106;110
+msgid "Data that has been specified does not exist."
 msgstr ""
 
-#: /View/Announcements/block_setting.ctp:26;71
-msgid "Editor"
+#: /var/www/app/Controller/AnnouncementsBlockSettingController.php:121;144;164
+msgid "Updated"
 msgstr ""
 
-#: /View/Announcements/block_setting.ctp:27;72
-msgid "General"
+#: /var/www/app/Controller/AnnouncementsBlockSettingController.php:129
+msgid "I failed to save."
 msgstr ""
 
-#: /View/Announcements/block_setting.ctp:32
-msgid "Post approval setting"
+#: /var/www/app/Controller/AnnouncementsBlockSettingController.php:132
+msgid "I failed to save. Please try again at a later time."
 msgstr ""
 
-#: /View/Announcements/block_setting.ctp:38
-msgid "Need room manager approval"
+#: /var/www/app/Controller/AnnouncementsBlockSettingController.php:172
+msgid "I failed to update."
 msgstr ""
 
-#: /View/Announcements/block_setting.ctp:38
-msgid "Automatic approval"
+#: /var/www/app/Controller/AnnouncementsBlockSettingController.php:219
+msgid "Unable to register."
 msgstr ""
 
-#: /View/Announcements/block_setting.ctp:51
-msgid "Deliver e-mail when submitted?"
+#: /var/www/app/Controller/AnnouncementsController.php:119;125;137
+msgid "I failed to save"
 msgstr ""
 
-#: /View/Announcements/block_setting.ctp:57
-msgid "Yes"
+#: /var/www/app/Controller/AnnouncementsController.php:140
+#: /var/www/app/View/Elements/setting/parts_publish_form.ctp:59
+msgid "Saved"
 msgstr ""
 
-#: /View/Announcements/block_setting.ctp:57
-msgid "No"
+#: /var/www/app/View/Announcements/content_not_found.ctp:9
+msgid "Content not found."
 msgstr ""
 
-#: /View/Announcements/block_setting.ctp:66
-msgid "Notify whom? :"
+#: /var/www/app/View/Announcements/setting/index.ctp:53;74
+msgid "HTML"
 msgstr ""
 
-#: /View/Announcements/block_setting.ctp:73
-msgid "Visitor"
+#: /var/www/app/View/Elements/block_setting/editor.ctp:27
+#: /var/www/app/View/Elements/block_setting/room_admin.ctp:24
+msgid "Announcements Plugin"
 msgstr ""
 
-#: /View/Announcements/block_setting.ctp:76
-msgid "E-mail Subject:"
+#: /var/www/app/View/Elements/block_setting/editor.ctp:28
+#: /var/www/app/View/Elements/block_setting/room_admin.ctp:25
+#: /var/www/app/View/Elements/setting/top_menu.ctp:10
+msgid "Block setting"
 msgstr ""
 
-#: /View/Announcements/block_setting.ctp:80
-msgid "Message："
+#: /var/www/app/View/Elements/block_setting/editor.ctp:40
+msgid "Articles change notification setting"
 msgstr ""
 
-#: /View/Announcements/block_setting.ctp:84
-msgid "You may use the following keywords in the title and content of the message, {X-SITE_NAME}, {X-ROOM}, {X-ANNOUNCEMENT_NAME}, {X-USER}, {X-TO_DATE}, {X-BODY}, {X-URL}<br><br>Each keyword will be translated to site name, room name, announcement title, creator, timestamp, article and url"
+#: /var/www/app/View/Elements/block_setting/editor.ctp:47
+#: /var/www/app/View/Elements/setting/message_publish_form.ctp:1
+msgid "Publication request notification settings"
 msgstr ""
 
-#: /View/Announcements/content_not_found.ctp:8
-#: /View/Announcements/index.ctp:7
-msgid "Edit"
+#: /var/www/app/View/Elements/block_setting/room_admin.ctp:36
+#: /var/www/app/View/Elements/setting/parts_publish_form.ctp:4
+msgid "Publication control Settings"
 msgstr ""
 
-#: /View/Announcements/edit.ctp:15
-msgid "Content"
+#: /var/www/app/View/Elements/block_setting/room_admin.ctp:43
+#: /var/www/app/View/Elements/setting/parts_editor_form.ctp:8
+msgid "Editorial control Settings"
 msgstr ""
 
-#: /View/Announcements/edit.ctp:33
-msgid "Cancel"
+#: /var/www/app/View/Elements/block_setting/room_admin.ctp:50
+#: /var/www/app/View/Elements/setting/message_update_form.ctp:2
+msgid "Articles change notification"
 msgstr ""
 
-#: /View/Announcements/edit.ctp:36
+#: /var/www/app/View/Elements/block_setting/room_admin.ctp:56
+msgid "Request Notification settings"
+msgstr ""
+
+#: /var/www/app/View/Elements/index/label_not_setting.ctp:19
+#: /var/www/app/View/Elements/setting/editor_button.ctp:50
+#: /var/www/app/View/Elements/setting/label.ctp:35
 msgid "Draft"
 msgstr ""
 
-#: /View/Announcements/edit.ctp:39
-msgid "Ok"
+#: /var/www/app/View/Elements/index/label_not_setting.ctp:23
+msgid "Publish Requested"
 msgstr ""
 
-#: /View/Elements/draft_label.ctp:3
-msgid "Draft in"
+#: /var/www/app/View/Elements/setting/editor_button.ctp:28
+msgid "Close"
 msgstr ""
 
-#: /View/Elements/edit_block_link.ctp:4
-msgid "Block setting"
+#: /var/www/app/View/Elements/setting/editor_button.ctp:36
+#: /var/www/app/View/Elements/setting/label.ctp:48
+msgid "Preview"
+msgstr ""
+
+#: /var/www/app/View/Elements/setting/editor_button.ctp:43
+msgid "Close Preview"
+msgstr ""
+
+#: /var/www/app/View/Elements/setting/editor_button.ctp:58
+msgid "Reject"
+msgstr ""
+
+#: /var/www/app/View/Elements/setting/editor_button.ctp:66
+msgid "Publish Request"
+msgstr ""
+
+#: /var/www/app/View/Elements/setting/editor_button.ctp:73
+#: /var/www/app/View/Elements/setting/top_menu.ctp:25
+msgid "Publish"
+msgstr ""
+
+#: /var/www/app/View/Elements/setting/label.ctp:30
+msgid "Published"
+msgstr ""
+
+#: /var/www/app/View/Elements/setting/label.ctp:40
+msgid "Waiting Publish"
+msgstr ""
+
+#: /var/www/app/View/Elements/setting/label.ctp:45
+msgid "Reject in"
+msgstr ""
+
+#: /var/www/app/View/Elements/setting/message_publish_form.ctp:4
+msgid "Mail Notification settings"
+msgstr ""
+
+#: /var/www/app/View/Elements/setting/message_publish_form.ctp:5
+#: /var/www/app/View/Elements/setting/message_update_form.ctp:5
+msgid "Send"
+msgstr ""
+
+#: /var/www/app/View/Elements/setting/message_publish_form.ctp:6
+#: /var/www/app/View/Elements/setting/message_update_form.ctp:6
+msgid "Do not send"
+msgstr ""
+
+#: /var/www/app/View/Elements/setting/message_publish_form.ctp:8
+#: /var/www/app/View/Elements/setting/message_update_form.ctp:30
+msgid "Mail document setting"
+msgstr ""
+
+#: /var/www/app/View/Elements/setting/message_publish_form.ctp:11
+#: /var/www/app/View/Elements/setting/message_update_form.ctp:33
+msgid "Mail Title"
+msgstr ""
+
+#: /var/www/app/View/Elements/setting/message_publish_form.ctp:15
+#: /var/www/app/View/Elements/setting/message_update_form.ctp:37
+msgid "Mail Body"
+msgstr ""
+
+#: /var/www/app/View/Elements/setting/message_publish_form.ctp:30
+#: /var/www/app/View/Elements/setting/message_update_form.ctp:52
+#: /var/www/app/View/Elements/setting/parts_editor_form.ctp:56
+#: /var/www/app/View/Elements/setting/parts_publish_form.ctp:47
+msgid "Cancel"
+msgstr ""
+
+#: /var/www/app/View/Elements/setting/message_publish_form.ctp:36
+#: /var/www/app/View/Elements/setting/message_update_form.ctp:59
+#: /var/www/app/View/Elements/setting/parts_editor_form.ctp:65
+#: /var/www/app/View/Elements/setting/parts_publish_form.ctp:54
+msgid "Update"
+msgstr ""
+
+#: /var/www/app/View/Elements/setting/message_update_form.ctp:4
+msgid "Notification settings"
+msgstr ""
+
+#: /var/www/app/View/Elements/setting/message_update_form.ctp:7
+msgid "Mail destination setting"
+msgstr ""
+
+#: /var/www/app/View/Elements/setting/top_menu.ctp:17
+msgid "Edit"
 msgstr ""
 

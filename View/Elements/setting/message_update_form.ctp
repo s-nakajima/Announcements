@@ -1,10 +1,10 @@
 <?php $roomPartKey = 'LanguagesPart'; ?>
-	<h3><?php echo __('Articles change notification'); ?></h3>
+	<h3><?php echo __d('announcements', 'Articles change notification'); ?></h3>
 	<form>
-		<h4><?php echo __('Notification settings'); ?></h4>
-		<input type="radio" name="is_send" value="1" checked> <?php echo __('Send'); ?>
-		<input type="radio" name="is_send" value="0"> <?php echo __('Do not send'); ?>
-		<h4><?php echo __('Destination setting'); ?></h4>
+		<h4><?php echo __d('announcements', 'Notification settings'); ?></h4>
+		<input type="radio" name="is_send" value="1" checked> <?php echo __d('announcements', 'Send'); ?>
+		<input type="radio" name="is_send" value="0"> <?php echo __d('announcements', 'Do not send'); ?>
+		<h4><?php echo __d('announcements', 'Mail destination setting'); ?></h4>
 			<?php
 			foreach ($partList as $key => $item) {
 				$partId = $item[$roomPartKey]['part_id'];
@@ -27,14 +27,14 @@
 			} ?>
 				<p style='clear:both;'></p>
 
-				<h4><?php echo __('Mail document setting'); ?></h4>
+				<h4><?php echo __d('announcements', 'Mail document setting'); ?></h4>
 			<div>
 				<p>
-					<?php echo __('Mail Title'); ?> :
+					<?php echo __d('announcements', 'Mail Title'); ?> :
 					<input type='text' class='form-control' name='subject'>
 				</p>
 				<p>
-					<?php echo __('Mail Body'); ?> :
+					<?php echo __d('announcements', 'Mail Body'); ?> :
 					<textarea class='form-control' rows='10' name='body'><?php
 						echo $this->element('Announcements.setting/message_sample_update'); ?>
 					</textarea>
@@ -49,13 +49,13 @@
 	<p class="text-center">
 		<button type="button" class="btn btn-default"
 				data-dismiss="modal">
-				<?php echo __('Cancel'); ?>
+				<?php echo __d('announcements', 'Cancel'); ?>
 		</button>
 		<button type='button' class='btn btn-primary'
 				ng-click='partSend("updateMessage",
 					<?php echo (int)$frameId; ?>,
 					<?php echo (int)$blockId; ?>,
 					<?php echo (int)$langId; ?>)'>
-			<span><?php echo __('Update'); ?></span>
+			<span><?php echo __d('announcements', 'Update'); ?></span>
 		</button>
 	</p>

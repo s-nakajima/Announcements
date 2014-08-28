@@ -50,7 +50,7 @@
 				<li>
 					<span class="btn btn-default"
 						ng-click="openTextEditor(<?php echo (int)$frameId; ?>)">
-						<?php echo __('HTML'); ?>
+						<?php echo __d('announcements', 'HTML'); ?>
 					</span>
 				</li>
 			</ul>
@@ -71,7 +71,7 @@
 				<li class="active">
 					<span class="btn btn-default"
 						ng-click="closeTextEditor(<?php echo (int)$frameId; ?>)">
-						<?php echo __('HTML'); ?>
+						<?php echo __d('announcements', 'HTML'); ?>
 					</span>
 				</li>
 			</ul>

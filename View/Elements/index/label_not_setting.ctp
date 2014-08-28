@@ -16,10 +16,10 @@ if (isset($item['Announcement']['status'])) {
 <p>
 	<span class="label label-info <?php
 		echo $hidden['draft']; ?>"><?php
-		echo __('Draft'); ?>
+		echo __d('announcements', 'Draft'); ?>
 	</span>
 	<span class="label label-danger <?php
 		echo $hidden['publishRequest']; ?>"><?php
-		echo __('Publish Requested'); ?>
+		echo __d('announcements', 'Publish Requested'); ?>
 	</span>
 </p>

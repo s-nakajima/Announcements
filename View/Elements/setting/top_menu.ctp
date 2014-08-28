@@ -7,14 +7,14 @@
 		<button class='btn btn-default'
 			ng-click='openBlockSetting(<?php echo (int)$frameId; ?>)'
 			ng-disabled='sendLock'
-		><span class='glyphicon glyphicon-cog'> <?php echo __('Block setting'); ?></span></button>
+		><span class='glyphicon glyphicon-cog'> <?php echo __d('announcements', 'Block setting'); ?></span></button>
 	<?php } ?>
 
 	<?php if ($contentEditable) { ?>
 		<button class='btn btn-primary'
 			ng-click='getEditor(<?php echo (int)$frameId; ?>)'
 			ng-disabled='sendLock'
-			><span class='glyphicon glyphicon-pencil'> <?php echo __('Edit'); ?></span></button>
+			><span class='glyphicon glyphicon-pencil'> <?php echo __d('announcements', 'Edit'); ?></span></button>
 	<?php } ?>
 
 	<?php if ($contentPublishable) { ?>
@@ -22,6 +22,6 @@
 			ng-show='label.request'
 			ng-click='post("Publish", <?php echo (int)$frameId; ?>)'
 			ng-disabled='sendLock'
-			><span class='glyphicon glyphicon-share-alt'> <?php echo __('Publish'); ?></span></button>
+			><span class='glyphicon glyphicon-share-alt'> <?php echo __d('announcements', 'Publish'); ?></span></button>
 	<?php } ?>
 </p>

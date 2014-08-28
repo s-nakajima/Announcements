@@ -1,119 +1,211 @@
 # LANGUAGE translation of CakePHP Application
-# Ryuji Masukawa <masukawa@nii.ac.jp>
+# Copyright YEAR NAME <EMAIL@ADDRESS>
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2014-05-27 06:21+0000\n"
-"PO-Revision-Date: 2014-05-28 20:40+0900\n"
-"Last-Translator: Ryuji Masukawa <masukawa@nii.ac.jp>\n"
-"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"Project-Id-Version: NetCommons3\n"
+"POT-Creation-Date: 2014-08-28 06:02+0000\n"
+"PO-Revision-Date: 2014-08-28 15:24+0900\n"
+"Last-Translator: \n"
+"Language-Team: NetCommons3 <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.5.4\n"
+"Language: jpn\n"
+"X-Generator: Poedit 1.6.8\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
-#: /View/Announcements/block_setting.ctp:8
-msgid "Announcement block setting"
-msgstr "お知らせブロック設定"
+#: /var/www/app/Controller/AnnouncementsBlockSettingController.php:65
+msgid "It can only be operated POST."
+msgstr "POSTのみ許可されています。"
 
-#: /View/Announcements/block_setting.ctp:13
-msgid "Announcement Title"
-msgstr "お知らせタイトル"
+#: /var/www/app/Controller/AnnouncementsBlockSettingController.php:69
+msgid "Information in question does not exist."
+msgstr "情報が存在しません。"
 
-#: /View/Announcements/block_setting.ctp:21
-msgid "Authority to post articles"
-msgstr "記事投稿権限"
+#: /var/www/app/Controller/AnnouncementsBlockSettingController.php:72;113
+msgid "You do not have permission."
+msgstr "権限がありません。"
 
-#: /View/Announcements/block_setting.ctp:24;69
-msgid "Room manager"
-msgstr "ルーム管理者"
+#: /var/www/app/Controller/AnnouncementsBlockSettingController.php:80;94;106;110
+msgid "Data that has been specified does not exist."
+msgstr "指定されたデータが存在しません。"
 
-#: /View/Announcements/block_setting.ctp:25;70
-msgid "Managing editor"
-msgstr "編集長"
+#: /var/www/app/Controller/AnnouncementsBlockSettingController.php:121;144;164
+msgid "Updated"
+msgstr "更新しました。"
 
-#: /View/Announcements/block_setting.ctp:26;71
-msgid "Editor"
-msgstr "編集者"
+#: /var/www/app/Controller/AnnouncementsBlockSettingController.php:129
+msgid "I failed to save."
+msgstr "保存に失敗しました。"
 
-#: /View/Announcements/block_setting.ctp:27;72
-msgid "General"
-msgstr "一般"
+#: /var/www/app/Controller/AnnouncementsBlockSettingController.php:132
+msgid "I failed to save. Please try again at a later time."
+msgstr "保存に失敗しました。時間をおいてから再度実行ください。"
 
-#: /View/Announcements/block_setting.ctp:32
-msgid "Post approval setting"
-msgstr "投稿の承認設定"
+#: /var/www/app/Controller/AnnouncementsBlockSettingController.php:172
+msgid "I failed to update."
+msgstr "更新に失敗しました。"
 
-#: /View/Announcements/block_setting.ctp:38
-msgid "Need room manager approval"
-msgstr "ルーム管理者の承認が必要"
+#: /var/www/app/Controller/AnnouncementsBlockSettingController.php:219
+msgid "Unable to register."
+msgstr "登録できません。"
 
-#: /View/Announcements/block_setting.ctp:38
-msgid "Automatic approval"
-msgstr "自動的に承認する"
+#: /var/www/app/Controller/AnnouncementsController.php:119;125;137
+msgid "I failed to save"
+msgstr "保存に失敗しました。"
 
-#: /View/Announcements/block_setting.ctp:51
-msgid "Deliver e-mail when submitted?"
-msgstr "メール配信設定"
+#: /var/www/app/Controller/AnnouncementsController.php:140
+#: /var/www/app/View/Elements/setting/parts_publish_form.ctp:59
+msgid "Saved"
+msgstr "保存しました。"
 
-#: /View/Announcements/block_setting.ctp:57
-msgid "Yes"
-msgstr "投稿をメールで通知する"
+#: /var/www/app/View/Announcements/content_not_found.ctp:9
+msgid "Content not found."
+msgstr "コンテンツが見つかりません。"
 
-#: /View/Announcements/block_setting.ctp:57
-msgid "No"
-msgstr "投稿をメールで通知しない"
+#: /var/www/app/View/Announcements/setting/index.ctp:53;74
+msgid "HTML"
+msgstr "HTML"
 
-#: /View/Announcements/block_setting.ctp:66
-msgid "Notify whom? :"
-msgstr "通知する権限:"
+#: /var/www/app/View/Elements/block_setting/editor.ctp:27
+#: /var/www/app/View/Elements/block_setting/room_admin.ctp:24
+msgid "Announcements Plugin"
+msgstr "お知らせ 機能"
 
-#: /View/Announcements/block_setting.ctp:73
-msgid "Visitor"
-msgstr "参観者"
+#: /var/www/app/View/Elements/block_setting/editor.ctp:28
+#: /var/www/app/View/Elements/block_setting/room_admin.ctp:25
+#: /var/www/app/View/Elements/setting/top_menu.ctp:10
+msgid "Block setting"
+msgstr "ブロック設定"
 
-#: /View/Announcements/block_setting.ctp:76
-msgid "E-mail Subject:"
-msgstr "件名:"
+#: /var/www/app/View/Elements/block_setting/editor.ctp:40
+msgid "Articles change notification setting"
+msgstr "変更通知設定"
 
-#: /View/Announcements/block_setting.ctp:80
-msgid "Message："
-msgstr "内容:"
+#: /var/www/app/View/Elements/block_setting/editor.ctp:47
+#: /var/www/app/View/Elements/setting/message_publish_form.ctp:1
+msgid "Publication request notification settings"
+msgstr "公開申請通知設定"
 
-#: /View/Announcements/block_setting.ctp:84
-msgid ""
-"You may use the following keywords in the title and content of the message, "
-"{X-SITE_NAME}, {X-ROOM}, {X-ANNOUNCEMENT_NAME}, {X-USER}, {X-TO_DATE}, {X-"
-"BODY}, {X-URL}<br><br>Each keyword will be translated to site name, room "
-"name, announcement title, creator, timestamp, article and url"
-msgstr ""
-"件名と本文には、{X-SITE_NAME}、{X-ROOM}、{X-ANNOUNCEMENT_NAME}、{X-USER}、{X-"
-"TO_DATE}、{X-BODY}、{X-URL}というキーワードを使えます。<br><br>それぞれのキー"
-"ワードは、サイト名称、ルーム名称、お知らせタイトル、投稿者ハンドル名称、投稿"
-"日時、記事本文、投稿内容のURLに変換されて送信されます。 "
+#: /var/www/app/View/Elements/block_setting/room_admin.ctp:36
+#: /var/www/app/View/Elements/setting/parts_publish_form.ctp:4
+msgid "Publication control Settings"
+msgstr "公開権限設定"
 
-#: /View/Announcements/content_not_found.ctp:8 /View/Announcements/index.ctp:7
-msgid "Edit"
-msgstr "編集"
+#: /var/www/app/View/Elements/block_setting/room_admin.ctp:43
+#: /var/www/app/View/Elements/setting/parts_editor_form.ctp:8
+msgid "Editorial control Settings"
+msgstr "編集権限設定"
 
-#: /View/Announcements/edit.ctp:15
-msgid "Content"
-msgstr "内容"
+#: /var/www/app/View/Elements/block_setting/room_admin.ctp:50
+#: /var/www/app/View/Elements/setting/message_update_form.ctp:2
+msgid "Articles change notification"
+msgstr "変更通知設定の変更"
 
-#: /View/Announcements/edit.ctp:33
-msgid "Cancel"
-msgstr "キャンセル"
+#: /var/www/app/View/Elements/block_setting/room_admin.ctp:56
+msgid "Request Notification settings"
+msgstr "申請通知の設定"
 
-#: /View/Announcements/edit.ctp:36
+#: /var/www/app/View/Elements/index/label_not_setting.ctp:19
+#: /var/www/app/View/Elements/setting/editor_button.ctp:50
+#: /var/www/app/View/Elements/setting/label.ctp:35
 msgid "Draft"
 msgstr "下書き"
 
-#: /View/Announcements/edit.ctp:39
-msgid "Ok"
-msgstr "決定"
+#: /var/www/app/View/Elements/index/label_not_setting.ctp:23
+msgid "Publish Requested"
+msgstr "公開申請"
 
-#: /View/Elements/draft_label.ctp:3
-msgid "Draft in"
-msgstr "下書き中"
+#: /var/www/app/View/Elements/setting/editor_button.ctp:28
+msgid "Close"
+msgstr "閉じる"
+
+#: /var/www/app/View/Elements/setting/editor_button.ctp:36
+#: /var/www/app/View/Elements/setting/label.ctp:48
+msgid "Preview"
+msgstr "プレビュー"
+
+#: /var/www/app/View/Elements/setting/editor_button.ctp:43
+msgid "Close Preview"
+msgstr "プレビューを閉じる"
+
+#: /var/www/app/View/Elements/setting/editor_button.ctp:58
+msgid "Reject"
+msgstr "差し戻し済"
+
+#: /var/www/app/View/Elements/setting/editor_button.ctp:66
+msgid "Publish Request"
+msgstr "公開申請"
+
+#: /var/www/app/View/Elements/setting/editor_button.ctp:73
+#: /var/www/app/View/Elements/setting/top_menu.ctp:25
+msgid "Publish"
+msgstr "公開"
+
+#: /var/www/app/View/Elements/setting/label.ctp:30
+msgid "Published"
+msgstr "公開中"
+
+#: /var/www/app/View/Elements/setting/label.ctp:40
+msgid "Waiting Publish"
+msgstr "公開申請中"
+
+#: /var/www/app/View/Elements/setting/label.ctp:45
+msgid "Reject in"
+msgstr "差し戻し"
+
+#: /var/www/app/View/Elements/setting/message_publish_form.ctp:4
+msgid "Mail Notification settings"
+msgstr "メール通知設定"
+
+#: /var/www/app/View/Elements/setting/message_publish_form.ctp:5
+#: /var/www/app/View/Elements/setting/message_update_form.ctp:5
+msgid "Send"
+msgstr "送信"
+
+#: /var/www/app/View/Elements/setting/message_publish_form.ctp:6
+#: /var/www/app/View/Elements/setting/message_update_form.ctp:6
+msgid "Do not send"
+msgstr "送信しない"
+
+#: /var/www/app/View/Elements/setting/message_publish_form.ctp:8
+#: /var/www/app/View/Elements/setting/message_update_form.ctp:30
+msgid "Mail document setting"
+msgstr "メール文書設定"
+
+#: /var/www/app/View/Elements/setting/message_publish_form.ctp:11
+#: /var/www/app/View/Elements/setting/message_update_form.ctp:33
+msgid "Mail Title"
+msgstr "メールタイトル"
+
+#: /var/www/app/View/Elements/setting/message_publish_form.ctp:15
+#: /var/www/app/View/Elements/setting/message_update_form.ctp:37
+msgid "Mail Body"
+msgstr "メール本文"
+
+#: /var/www/app/View/Elements/setting/message_publish_form.ctp:30
+#: /var/www/app/View/Elements/setting/message_update_form.ctp:52
+#: /var/www/app/View/Elements/setting/parts_editor_form.ctp:56
+#: /var/www/app/View/Elements/setting/parts_publish_form.ctp:47
+msgid "Cancel"
+msgstr "キャンセル"
+
+#: /var/www/app/View/Elements/setting/message_publish_form.ctp:36
+#: /var/www/app/View/Elements/setting/message_update_form.ctp:59
+#: /var/www/app/View/Elements/setting/parts_editor_form.ctp:65
+#: /var/www/app/View/Elements/setting/parts_publish_form.ctp:54
+msgid "Update"
+msgstr "更新"
+
+#: /var/www/app/View/Elements/setting/message_update_form.ctp:4
+msgid "Notification settings"
+msgstr "通知設定"
+
+#: /var/www/app/View/Elements/setting/message_update_form.ctp:7
+msgid "Mail destination setting"
+msgstr "送信先設定"
+
+#: /var/www/app/View/Elements/setting/top_menu.ctp:17
+msgid "Edit"
+msgstr "編集"

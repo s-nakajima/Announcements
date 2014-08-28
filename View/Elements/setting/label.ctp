@@ -27,23 +27,23 @@ if (isset($item['Announcement']['status'])) {
 		ng-init="label.publish='<?php echo $status['publish'];?>'"
 		ng-show="label.publish"
 		class="label label-info ng-hide"
-		><?php echo __('Published'); ?></span>
+		><?php echo __d('announcements', 'Published'); ?></span>
 	<span
 		ng-init="label.draft=<?php echo $status['Draft'];?>"
 		ng-show="label.draft"
 		class="label label-info ng-hide"
-		><?php echo __('Draft'); ?></span>
+		><?php echo __d('announcements', 'Draft'); ?></span>
 	<span
 		ng-init="label.request=<?php echo $status['publishRequest'];?>"
 		ng-show="label.request"
 		class="label label-danger ng-hide"
-		><?php echo __('Waiting Publish'); ?></span>
+		><?php echo __d('announcements', 'Waiting Publish'); ?></span>
 	<span
 		ng-init="label.reject=<?php echo $status['Reject'];?>"
 		ng-show="label.reject"
 		class="label label-default ng-hide"
-		><?php echo __('Reject in'); ?></span>
+		><?php echo __d('announcements', 'Reject in'); ?></span>
 	<span class="label label-danger"
 	      ng-show="View.edit.preview"
-	><?php echo __('Preview'); ?></span>
+	><?php echo __d('announcements', 'Preview'); ?></span>
 </p>

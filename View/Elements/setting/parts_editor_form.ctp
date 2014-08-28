@@ -5,7 +5,7 @@
 
 $roomPartKey = 'LanguagesPart';
 ?>
-	<h3><?php echo __('Editorial control Settings');?> </h3>
+	<h3><?php echo __d('announcements', 'Editorial control Settings');?> </h3>
 	<p class="container">
 		<?php
 				/**
@@ -53,7 +53,7 @@ $roomPartKey = 'LanguagesPart';
 	</p>
 	<p class="text-center">
 		<button type="button" class="btn btn-default" data-dismiss="modal">
-			<?php echo __('Cancel'); ?>
+			<?php echo __d('announcements', 'Cancel'); ?>
 		</button>
 		<button type="button"
 				class="btn btn-primary"
@@ -62,7 +62,7 @@ $roomPartKey = 'LanguagesPart';
 					<?php echo (int)$blockId; ?>,
 					<?php echo (int)$langId; ?>
 				)">
-				<span><?php echo __('Update'); ?></span>
+				<span><?php echo __d('announcements', 'Update'); ?></span>
 		</button>
 	</p>
 
