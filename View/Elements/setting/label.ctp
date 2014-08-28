@@ -43,7 +43,7 @@ if (isset($item['Announcement']['status'])) {
 		ng-show="label.reject"
 		class="label label-default ng-hide"
 		><?php echo __d('announcements', 'Reject in'); ?></span>
-	<span class="label label-danger"
+	<span class="label label-danger ng-hide"
 	      ng-show="View.edit.preview"
 	><?php echo __d('announcements', 'Preview'); ?></span>
 </p>
