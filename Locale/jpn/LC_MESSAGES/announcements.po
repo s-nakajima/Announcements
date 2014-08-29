@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NetCommons3\n"
 "POT-Creation-Date: 2014-08-28 06:02+0000\n"
-"PO-Revision-Date: 2014-08-28 15:24+0900\n"
+"PO-Revision-Date: 2014-08-29 15:33+0900\n"
 "Last-Translator: \n"
 "Language-Team: NetCommons3 <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -132,7 +132,7 @@ msgstr "プレビューを閉じる"
 
 #: /var/www/app/View/Elements/setting/editor_button.ctp:58
 msgid "Reject"
-msgstr "差し戻し済"
+msgstr "差し戻し"
 
 #: /var/www/app/View/Elements/setting/editor_button.ctp:66
 msgid "Publish Request"
@@ -153,7 +153,7 @@ msgstr "公開申請中"
 
 #: /var/www/app/View/Elements/setting/label.ctp:45
 msgid "Reject in"
-msgstr "差し戻し"
+msgstr "差し戻し済"
 
 #: /var/www/app/View/Elements/setting/message_publish_form.ctp:4
 msgid "Mail Notification settings"
