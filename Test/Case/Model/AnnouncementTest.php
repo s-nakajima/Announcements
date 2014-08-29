@@ -169,8 +169,8 @@ class AnnouncementTest extends CakeTestCase {
  *
  * @return void
  */
-	public function testGetContent() {
-		$rtn = $this->Announcement->getContent(self::EXISTING_BLOCK, self::EXISTING_LANG_ID, 1);
+	public function testGetLatestContent() {
+		$rtn = $this->Announcement->getLatestContent(self::EXISTING_BLOCK, self::EXISTING_LANG_ID);
 		$this->assertTextEquals(
 			'Content Draft',
 			$rtn[$this->Announcement->name]['content']
@@ -184,7 +184,7 @@ class AnnouncementTest extends CakeTestCase {
  */
 	public function testGetPublish() {
 		//公開情報を取得
-		$rtn = $this->Announcement->getContent(self::EXISTING_BLOCK, self::EXISTING_LANG_ID);
+		$rtn = $this->Announcement->getPublishContent(self::EXISTING_BLOCK, self::EXISTING_LANG_ID);
 		$this->assertTextEquals(
 			'Content Publish',
 			$rtn[$this->Announcement->name]['content']

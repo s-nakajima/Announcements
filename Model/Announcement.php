@@ -159,22 +159,36 @@ class Announcement extends AnnouncementsAppModel {
  *
  * @param int $blockId blocks.id
  * @param string $langId language_id
- * @param int $all  status publish only
  * @return array
  */
-	public function getContent($blockId, $langId, $all = 0) {
-		$conditions = array(
-			'block_id' => $blockId,
-			'language_id' => $langId,
-			'status' => self::STATUS_PUBLISH
-		);
-		if ($all) {
-			unset($conditions['status']);
-		}
+	public function getLatestContent($blockId, $langId) {
 		return $this->find('first', array(
-			'conditions' => $conditions,
-			'order' => $this->name . '.id DESC',
-		));
+				'conditions' => array(
+					'block_id' => $blockId,
+					'language_id' => $langId,
+				),
+				'order' => $this->name . '.id DESC',
+			)
+		);
+	}
+
+/**
+ * the latest publish content data
+ *
+ * @param int $blockId blocks.id
+ * @param string $langId language_id
+ * @return array
+ */
+	public function getPublishContent($blockId, $langId) {
+		return $this->find('first', array(
+				'conditions' => array(
+					'block_id' => $blockId,
+					'language_id' => $langId,
+					'status' => self::STATUS_PUBLISH
+				),
+				'order' => $this->name . '.id DESC',
+			)
+		);
 	}
 
 /**
@@ -218,7 +232,7 @@ class Announcement extends AnnouncementsAppModel {
 		if (!$rtn) {
 			return array();
 		}
-		return $this->getContent($blockId, $data[$this->name]['langId'], 1);
+		return $this->getLatestContent($blockId, $data[$this->name]['langId']);
 	}
 
 }
