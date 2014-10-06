@@ -95,7 +95,6 @@ class AnnouncementPartSettingTest extends CakeTestCase {
 		'plugin.announcements.language',
 		'plugin.announcements.blocks_language',
 		'plugin.announcements.part',
-		'plugin.announcements.languages_part'
 	);
 
 /**

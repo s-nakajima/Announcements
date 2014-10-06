@@ -27,7 +27,6 @@ class AnnouncementTest extends CakeTestCase {
 		'plugin.announcements.block',
 		'plugin.announcements.part',
 		'plugin.announcements.room_part',
-		'plugin.announcements.languages_part',
 		'plugin.announcements.language',
 		'plugin.announcements.announcement',
 		'plugin.announcements.announcement_part_setting',
