@@ -60,12 +60,10 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 	public $fixtures = array(
 		'app.session',
 		'app.site_setting',
-		'app.site_setting_value',
 		'plugin.announcements.page',
 		'plugin.announcements.block',
 		'plugin.announcements.part',
 		'plugin.announcements.room_part',
-		'plugin.announcements.languages_part',
 		'plugin.announcements.language',
 		'plugin.announcements.announcement',
 		'plugin.announcements.announcement_part_setting',
