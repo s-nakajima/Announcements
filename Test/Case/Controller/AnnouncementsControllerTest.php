@@ -116,14 +116,14 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		$this->assertEmpty($this->result);
 
 		// Existing frames.id  empty Contents.
-		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/jpn', array('method' => 'get'));
+		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/ja', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
 		$this->assertTextNotContains('announcement', $this->result);
 		$this->assertEmpty($this->result);
 
 		CakeSession::delete('Auth.User.id');
 		// Existing frames.id. empty Contents
-		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/jpn', array('method' => 'get'));
+		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/ja', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
 		$this->assertTextNotContains('announcement', $this->result);
 		$this->assertEmpty($this->result);
@@ -136,12 +136,12 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 
 		//Logged. Existing Contents
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
-		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/jpn', array('method' => 'get'));
+		$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/ja', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
 		$this->assertNotEmpty($this->result);
 
 		//Logged. Not existing Contents
-		$this->testAction('/announcements/announcements/view/' . self::NOT_EXISTING_FRAME . '/jpn', array('method' => 'get'));
+		$this->testAction('/announcements/announcements/view/' . self::NOT_EXISTING_FRAME . '/ja', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
 		$this->assertEmpty($this->result);
 
@@ -166,19 +166,19 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 	public function testViewSettingMode() {
 		//Content exists
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
-		$this->testAction('/announcements/announcements/view/1/jpn', array('method' => 'get'));
+		$this->testAction('/announcements/announcements/view/1/ja', array('method' => 'get'));
 		$this->assertTextContains('announcement', $this->result);
 
 		//Content exists
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
 		Configure::write('Pages.isSetting', true);
-		$this->testAction('/announcements/announcements/view/1/jpn', array('method' => 'get'));
+		$this->testAction('/announcements/announcements/view/1/ja', array('method' => 'get'));
 		$this->assertTextContains('Announcement', $this->result);
 
 		//Content does not exist
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
 		Configure::write('Pages.isSetting', false);
-		$this->testAction('/announcements/announcements/view/' . self::NOT_EXISTING_FRAME . '/jpn', array('method' => 'get'));
+		$this->testAction('/announcements/announcements/view/' . self::NOT_EXISTING_FRAME . '/ja', array('method' => 'get'));
 		$this->assertTextNotContains('Announcement', $this->result);
 	}
 
@@ -191,7 +191,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		//Content does not exist
 		CakeSession::write('Auth.User.id', self::CONTENT_EDITABLE_USER_ID);
 		Configure::write('Pages.isSetting', true);
-		$this->testAction('/announcements/announcements/view/5/jpn', array('method' => 'get'));
+		$this->testAction('/announcements/announcements/view/5/ja', array('method' => 'get'));
 		$this->assertTextContains('Announcement', $this->result);
 	}
 
@@ -214,7 +214,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  */
 	public function testIndex() {
 		//same /announcements/announcements/view/
-		$this->testAction('/announcements/announcements/index/' . self::NOT_EXISTING_FRAME . '/jpn', array('method' => 'get'));
+		$this->testAction('/announcements/announcements/index/' . self::NOT_EXISTING_FRAME . '/ja', array('method' => 'get'));
 		$this->assertTextNotContains('error', $this->result);
 	}
 }

@@ -149,12 +149,12 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 			$this->assertTextContains('Announcement', $this->result);
 			//view
 			Configure::write('Pages.isSetting', false);
-			$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/jpn', array('method' => 'post'));
+			$this->testAction('/announcements/announcements/view/' . self::EXISTING_FRAME . '/ja', array('method' => 'post'));
 			$this->assertNotNull($this->result);
 			$this->assertTextContains($contentStatus, $this->result);
 			//setting mode
 			Configure::write('Pages.isSetting', true);
-			$this->testAction('/announcements/announcements/view/' . $data['Announcement']['frameId'] . '/jpn', array('method' => 'post'));
+			$this->testAction('/announcements/announcements/view/' . $data['Announcement']['frameId'] . '/ja', array('method' => 'post'));
 			$this->assertNotNull($this->result);
 			$this->assertTextContains($contentStatus, $this->result);
 		}
@@ -180,7 +180,7 @@ class AnnouncementsControllerEditTest extends ControllerTestCase {
 		$data['Announcement']['status'] = 'Draft';
 		$data['Announcement']['langId'] = 2;
 		$data['Announcement']['id'] = 0;
-		$this->testAction('/announcements/announcements/edit/' . self::EXISTING_FRAME . '/jpn',
+		$this->testAction('/announcements/announcements/edit/' . self::EXISTING_FRAME . '/ja',
 			array (
 				'method' => 'post',
 				'data' => $data
