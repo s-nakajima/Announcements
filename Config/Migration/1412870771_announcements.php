@@ -31,18 +31,15 @@ class Annoucements extends CakeMigration {
  */
 	public $migration = array(
 		'up' => array(
-			'create_table' => array(
-			),
 			'create_field' => array(
 				'announcements' => array(
 					'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'after' => 'id'),
 					'key' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'announcement content key | お知らせコンテンツキー | Hash値 | ', 'charset' => 'utf8', 'after' => 'block_id'),
 					'is_auto_translated' => array('type' => 'boolean', 'null' => false, 'default' => '0', 'comment' => 'translation type. 0:original , 1:auto translation | 翻訳タイプ  0:オリジナル、1:自動翻訳 |  | ', 'after' => 'content'),
-					'created_user' => array('type' => 'integer', 'null' => true, 'default' => '0', 'comment' => 'created user | 作成者 | users.id | ', 'after' => 'translation_engine'),
 				),
 			),
 			'drop_field' => array(
-				'announcements' => array('announcements_block.id', 'language_id', 'is_auto_translation', 'create_user',),
+				'announcements' => array('announcements_block_id', 'language_id', 'is_auto_translation',),
 			),
 			'alter_field' => array(
 				'announcements' => array(
@@ -50,18 +47,17 @@ class Annoucements extends CakeMigration {
 					'status' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 4, 'comment' => 'public status, 1: public, 2: public pending, 3: draft during 4: remand | 公開状況  1:公開中、2:公開申請中、3:下書き中、4:差し戻し |  | '),
 					'content' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'content | コンテンツ |  | ', 'charset' => 'utf8'),
 					'translation_engine' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'translation engine | 翻訳エンジン |  | ', 'charset' => 'utf8'),
+					'created_user' => array('type' => 'integer', 'null' => true, 'default' => '0', 'comment' => 'created user | 作成者 | users.id | ', 'after' => 'translation_engine'),
 					'created' => array('type' => 'datetime', 'null' => true, 'default' => null, 'comment' => 'created datetime | 作成日時 |  | '),
 					'modified_user' => array('type' => 'integer', 'null' => true, 'default' => '0', 'comment' => 'modified user | 更新者 | users.id | '),
 					'modified' => array('type' => 'datetime', 'null' => true, 'default' => null, 'comment' => 'modified datetime | 更新日時 |  | '),
 				),
 			),
 			'drop_table' => array(
-				'announcements_blocks', 'announcement_setting', 'announcement_part_settings', 'announcement_notification'
+				'announcements_blocks', 'announcement_settings', 'announcement_part_settings', 'announcement_notifications'
 			),
 		),
 		'down' => array(
-			'drop_table' => array(
-			),
 			'drop_field' => array(
 				'announcements' => array('block_id', 'key', 'is_auto_translated', 'created_user',),
 			),
