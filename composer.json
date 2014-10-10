@@ -1,6 +1,6 @@
 {
     "name": "netcommons/announcements",
-    "description": "AnnouncementsPlugin for Cakephp",
+    "description": "Announcements for NetCommons Plugin",
     "homepage": "http://www.netcommons.org/",
     "extra": {
         "installer-paths": {
@@ -17,9 +17,9 @@
     "require-dev": {
         "mustangostang/spyc":           "dev-master",
         "satooshi/php-coveralls":       "dev-master",
-        "netcommons/frames":            "dev-master",
         "netcommons/net-commons":       "dev-master",
-        "netcommons/rooms":             "dev-master"
+        "netcommons/frames":            "dev-master",
+        "netcommons/users":             "dev-master"
     },
     "license": "NetCommons License",
     "authors": [
@@ -29,8 +29,9 @@
         }
     ],
     "type":        "cakephp-plugin",
-    "keywords":    ["cakephp", "announcement"],
+    "keywords":    ["cakephp", "announcements"],
     "config": {
         "vendor-dir": "vendors"
     }
 }
+

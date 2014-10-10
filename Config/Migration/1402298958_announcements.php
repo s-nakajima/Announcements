@@ -128,7 +128,7 @@ class Announcements extends CakeMigration {
 					'is_auto_translation' => '1',
 					'translation_engine' => null,
 					'content' => '<div class="jumbotron">
-<h1 class="text-center">NetCommons 3!</h1>
+<h2 class="text-center">NetCommons 3!</h2>
 <p><a class="btn btn-primary btn-lg container" href="setting">セッティングモードで編集しよう<span class="glyphicon glyphicon-pencil">.</span></a></p>
 ようこそ NetCommons3へ！<br /> NetCommons3は国立情報学研究所が次世代情報共有基盤システムとして開発したCMSです。</div>',
 					'created' => '2014-06-10 23:54:27',
