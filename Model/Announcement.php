@@ -102,7 +102,7 @@ class Announcement extends AnnouncementsAppModel {
 			'block_id' => $blockId,
 		);
 		if (! $contentEditable) {
-			$conditions['status'] = NetCommonsFrameComponent::STATUS_PUBLISH;
+			$conditions['status'] = NetCommonsBlockComponent::STATUS_PUBLISH;
 		}
 
 		return $this->find('first', array(

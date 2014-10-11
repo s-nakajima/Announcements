@@ -34,8 +34,9 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @var array
  */
 	public $components = array(
+		'NetCommons.NetCommonsBlock', //use Announcement model
 		'NetCommons.NetCommonsFrame',
-		'NetCommons.NetCommonsBlock',
+		'NetCommons.NetCommonsRoomRole',
 	);
 
 /**
@@ -67,10 +68,17 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return CakeResponse A response object containing the rendered view.
  */
 	public function view($frameId = 0) {
+		//Frameのデータをviewにセット
 		$result = $this->NetCommonsFrame->setView($this, $frameId);
 		if (! $result) {
 			return $this->render(false);
 		}
+		//Roleのデータをviewにセット
+		$result = $this->NetCommonsRoomRole->setView($this);
+		if (! $result) {
+			return $this->render(false);
+		}
+
 var_dump($this->viewVars);
 
 		$announcement = $this->Announcement->get(
