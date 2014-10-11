@@ -24,14 +24,19 @@ class AnnouncementsController extends AnnouncementsAppController {
  *
  * @var array
  */
-	//public $uses = array();
+	public $uses = array(
+		'Announcements.Announcement',
+	);
 
 /**
  * use component
  *
  * @var array
  */
-	//public $components = array();
+	public $components = array(
+		'NetCommons.NetCommonsFrame',
+		'NetCommons.NetCommonsBlock',
+	);
 
 /**
  * beforeFilter
@@ -40,6 +45,8 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public function beforeFilter() {
 		parent::beforeFilter();
+
+		//未ログインでもアクセスを許可
 		$this->Auth->allow();
 	}
 
@@ -47,21 +54,32 @@ class AnnouncementsController extends AnnouncementsAppController {
  * index method
  *
  * @param int $frameId frames.id
- * @param string $lang ex)"en" or "ja" etc.
  * @return CakeResponse A response object containing the rendered view.
  */
-	public function index($frameId = 0, $lang = '') {
-		return $this->render('Announcements/index');
+	public function index($frameId = 0) {
+		return $this->view($frameId);
 	}
 
 /**
  * view method
  *
  * @param int $frameId frames.id
- * @param string $lang ex)"en" or "ja" etc.
  * @return CakeResponse A response object containing the rendered view.
  */
-	public function view($frameId = 0, $lang = '') {
+	public function view($frameId = 0) {
+		$result = $this->NetCommonsFrame->setView($this, $frameId);
+		if (! $result) {
+			return $this->render(false);
+		}
+var_dump($this->viewVars);
+
+		$announcement = $this->Announcement->get(
+				$this->viewVars['blockId'],
+				$this->viewVars['contentEditable']
+			);
+
+		$this->set('announcement', $announcement);
+
 		return $this->render('Announcements/view');
 	}
 
@@ -69,10 +87,9 @@ class AnnouncementsController extends AnnouncementsAppController {
  * form method
  *
  * @param int $frameId frames.id
- * @param int $languageId languages.id
  * @return CakeResponse A response object containing the rendered view.
  */
-	public function form($frameId = 0, $languageId = 0) {
+	public function form($frameId = 0) {
 		return $this->render('Announcements/form');
 	}
 

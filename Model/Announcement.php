@@ -30,7 +30,7 @@ class Announcement extends AnnouncementsAppModel {
 		'block_id' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
+				'message' => 'Invalid request.',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
@@ -40,27 +40,31 @@ class Announcement extends AnnouncementsAppModel {
 		'key' => array(
 			'notEmpty' => array(
 				'rule' => array('notEmpty'),
-				//'message' => 'Your custom message here',
+				'message' => 'Invalid request.',
 				//'allowEmpty' => false,
 				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				'last' => true, // Stop validation after this rule
+				'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
 		'status' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
+				'message' => 'Invalid request.',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
+			'range' => array(
+				'rule' => array('range', 0, 5),
+				'message' => 'Invalid request.',
+			),
 		),
 		'is_auto_translated' => array(
 			'boolean' => array(
 				'rule' => array('boolean'),
-				//'message' => 'Your custom message here',
+				'message' => 'Invalid request.',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
@@ -85,4 +89,27 @@ class Announcement extends AnnouncementsAppModel {
 			'order' => ''
 		)
 	);
+
+/**
+ * get content data
+ *
+ * @param int $blockId blocks.id
+ * @param boolean $contentEditable true can edit the content, false not can edit the content.
+ * @return array
+ */
+	public function get($blockId, $contentEditable) {
+		$conditions = array(
+			'block_id' => $blockId,
+		);
+		if (! $contentEditable) {
+			$conditions['status'] = NetCommonsFrameComponent::STATUS_PUBLISH;
+		}
+
+		return $this->find('first', array(
+				'conditions' => $conditions,
+				'order' => $this->name . '.id DESC',
+			)
+		);
+	}
+
 }

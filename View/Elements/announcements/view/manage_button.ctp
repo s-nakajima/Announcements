@@ -1,6 +1,6 @@
 <?php
 /**
- * announcements view template
+ * announcements manage_button elements
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -10,10 +10,13 @@
  */
 ?>
 
-<?php
-	//管理ボタン
-	echo $this->element('announcements/view/manage_button');
-
-	//本文
-	echo $this->element('announcements/view/content');
+<?php if ($contentEditable) : ?>
+	<p class="text-right">
+		<button class="btn btn-primary"
+				tooltip="<?php echo __d('announcements', 'Manage'); ?>">
+			<span class="glyphicon glyphicon-cog">
+			</span>
+		</button>
+	</p>
+<?php endif; ?>
 

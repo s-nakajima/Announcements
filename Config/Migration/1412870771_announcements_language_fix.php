@@ -10,12 +10,12 @@
  */
 
 /**
- * AccessCounters CakeMigration
+ * Migration CakeMigration
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Config\Migration
  */
-class Annoucements extends CakeMigration {
+class AnnouncementsLanguageFix extends CakeMigration {
 
 /**
  * Migration description
@@ -159,7 +159,7 @@ class Annoucements extends CakeMigration {
 				'key' => 'announcments_1',
 				'is_auto_translated' => '0',
 				'content' => '<div class="jumbotron">
-<h2 class="text-center">NetCommons 3!</h2>
+<h1 class="text-center">NetCommons 3!</h1>
 <p><a class="btn btn-primary btn-lg container" href="setting">セッティングモードで編集しよう<span class="glyphicon glyphicon-pencil">.</span></a></p>
 ようこそ NetCommons3へ！<br /> NetCommons3は国立情報学研究所が次世代情報共有基盤システムとして開発したCMSです。</div>',
 			)

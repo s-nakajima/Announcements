@@ -10,7 +10,6 @@
  */
 
 App::uses('AppController', 'Controller');
-//App::uses('NetCommonsFrameAppController', 'NetCommons.Controller');
 
 /**
  * AnnouncementsApp Controller
