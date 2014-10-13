@@ -31,10 +31,10 @@ class Announcement extends AnnouncementsAppModel {
 			'numeric' => array(
 				'rule' => array('numeric'),
 				'message' => 'Invalid request.',
-				//'allowEmpty' => false,
+				'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
 		'key' => array(
@@ -97,19 +97,75 @@ class Announcement extends AnnouncementsAppModel {
  * @param boolean $contentEditable true can edit the content, false not can edit the content.
  * @return array
  */
-	public function get($blockId, $contentEditable) {
+	public function getAnnouncement($blockId, $contentEditable) {
 		$conditions = array(
 			'block_id' => $blockId,
 		);
 		if (! $contentEditable) {
-			$conditions['status'] = NetCommonsBlockComponent::STATUS_PUBLISH;
+			$conditions['status'] = NetCommonsBlockComponent::STATUS_PUBLISHED;
 		}
 
 		return $this->find('first', array(
 				'conditions' => $conditions,
-				'order' => $this->name . '.id DESC',
+				'order' => 'Announcement' . '.id DESC',
 			)
 		);
 	}
 
+/**
+ * save announcement
+ *
+ * @param array $data received post data
+ * @return mixed array Notepad, false error
+ */
+	public function saveAnnouncement($data) {
+		$models = array(
+			'Frame' => 'Frames.Frame',
+			'Block' => 'Blocks.Block',
+		);
+		foreach ($models as $model => $class) {
+			$this->$model = ClassRegistry::init($class);
+			$this->$model->setDataSource('master');
+		}
+
+		//frame関連のセット
+		$frame = $this->Frame->findById($data['Announcement']['frame_id']);
+		if (! $frame) {
+			return false;
+		}
+		$blockId = (isset($frame['Block']['id']) ? (int)$frame['Block']['id'] : 0);
+
+		//DBへの登録
+		$dataSource = $this->getDataSource();
+		$dataSource->begin();
+		try {
+			if (! $blockId) {
+				//blocksテーブル登録
+				$block = array();
+				$block['Block']['room_id'] = $frame['Frame']['room_id'];
+				$block['Block']['language_id'] = $frame['Frame']['language_id'];
+				$block = $this->Block->save($block);
+				$blockId = (int)$block['Block']['id'];
+
+				//framesテーブル更新
+				$frame['Frame']['block_id'] = $blockId;
+				$this->Frame->save($frame);
+			}
+
+			//announcementsテーブル登録
+			$announcement['Announcement'] = $data['Announcement'];
+			$announcement['Announcement']['block_id'] = $blockId;
+			$announcement['Announcement']['created_user'] = CakeSession::read('Auth.User.id');
+
+			//保存結果を返す
+			$this->save($announcement);
+			$dataSource->commit();
+			return true;
+
+		} catch (Exception $ex) {
+			CakeLog::error($ex->getTraceAsString());
+			$dataSource->rollback();
+			return false;
+		}
+	}
 }

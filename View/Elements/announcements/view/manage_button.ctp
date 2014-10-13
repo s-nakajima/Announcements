@@ -13,9 +13,10 @@
 <?php if ($contentEditable) : ?>
 	<p class="text-right">
 		<button class="btn btn-primary"
-				tooltip="<?php echo __d('announcements', 'Manage'); ?>">
-			<span class="glyphicon glyphicon-cog">
-			</span>
+				tooltip="<?php echo __d('announcements', 'Manage'); ?>"
+				ng-click="showManage()">
+
+			<span class="glyphicon glyphicon-cog"> </span>
 		</button>
 	</p>
 <?php endif; ?>

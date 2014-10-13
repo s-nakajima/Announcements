@@ -1,6 +1,6 @@
 <?php
 /**
- * Announcements Controller
+ * Announcement edit Controller
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -12,12 +12,12 @@
 App::uses('AnnouncementsAppController', 'Announcements.Controller');
 
 /**
- * Announcements Controller
+ * Announcement edit Controller
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Controller
  */
-class AnnouncementsController extends AnnouncementsAppController {
+class AnnouncementEditController extends AnnouncementsAppController {
 
 /**
  * use model
@@ -34,7 +34,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @var array
  */
 	public $components = array(
-		'NetCommons.NetCommonsBlock', //use Announcement model
+		'NetCommons.NetCommonsBlock', //use Announcement model or view
 		'NetCommons.NetCommonsFrame',
 		'NetCommons.NetCommonsRoomRole',
 	);
@@ -49,17 +49,24 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->Auth->allow();
 
 		$frameId = (isset($this->params['pass'][0]) ? (int)$this->params['pass'][0] : 0);
-		//Frameのデータをviewにセット
-		if (! $this->NetCommonsFrame->setView($this, $frameId)) {
-			$this->response->statusCode(400);
-			return;
-		}
+
 		//Roleのデータをviewにセット
 		if (! $this->NetCommonsRoomRole->setView($this)) {
 			$this->response->statusCode(400);
 			return;
 		}
 
+		//編集権限チェック
+		if (! $this->viewVars['contentEditable']) {
+			$this->response->statusCode(403);
+			return;
+		}
+
+		//Frameのデータをviewにセット
+		if (! $this->NetCommonsFrame->setView($this, $frameId)) {
+			$this->response->statusCode(400);
+			return;
+		}
 	}
 
 /**
@@ -89,33 +96,46 @@ class AnnouncementsController extends AnnouncementsAppController {
 				$this->viewVars['contentEditable']
 			);
 
-		if (! $announcement) {
-			$announcement = $this->Announcement->create();
-			$announcement['Announcement']['content'] = '';
-		}
-
-		//Announcementデータをviewにセット
 		$this->set('announcement', $announcement);
 
-		return $this->render('Announcements/view');
+		return $this->render('AnnouncementEdit/view', false);
 	}
 
 /**
- * show manage method
+ * form method
  *
  * @param int $frameId frames.id
  * @return CakeResponse A response object containing the rendered view.
  */
-	public function manage($frameId = 0) {
+	public function form($frameId = 0) {
+		$this->view($frameId);
+		return $this->render('AnnouncementEdit/form', false);
+	}
+
+/**
+ * post method
+ *
+ * @param int $frameId frames.id
+ * @return string JSON that indicates success
+ */
+	public function post($frameId = 0) {
 		if ($this->response->statusCode() !== 200) {
-			return $this->render(false);
+			$statusCode = $this->response->statusCode();
+			$message = __d('announcements', 'Save failed.');
+			return $this->NetCommonsFrame->renderJson($this, $statusCode, $message);
 		}
-		//編集権限チェック
-		if (! $this->viewVars['contentEditable']) {
-			$this->response->statusCode(403);
-			return $this->render(false);
+		if (! $this->request->isPost()) {
+			$message = __d('announcements', 'Save failed.');
+			return $this->NetCommonsFrame->renderJson($this, 400, $message);
 		}
 
-		return $this->render('Announcements/manage', false);
+		//保存
+		if ($this->Announcement->saveAnnouncement($this->data)) {
+			$message = __d('announcements', 'Success saved.');
+			return $this->NetCommonsFrame->renderJson($this, 200, $message);
+		} else {
+			$message = __d('announcements', 'Save failed.');
+			return $this->NetCommonsFrame->renderJson($this, 400, $message);
+		}
 	}
 }
