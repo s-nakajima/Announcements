@@ -39,7 +39,7 @@ class AnnouncementsLanguageFix extends CakeMigration {
 				),
 			),
 			'drop_field' => array(
-				'announcements' => array('announcements_block_id', 'language_id', 'is_auto_translation',),
+				'announcements' => array('announcements_block_id', 'language_id', 'is_auto_translation'),
 			),
 			'alter_field' => array(
 				'announcements' => array(
@@ -59,7 +59,7 @@ class AnnouncementsLanguageFix extends CakeMigration {
 		),
 		'down' => array(
 			'drop_field' => array(
-				'announcements' => array('block_id', 'key', 'is_auto_translated', 'created_user',),
+				'announcements' => array('block_id', 'key', 'is_auto_translated', 'created_user'),
 			),
 			'create_field' => array(
 				'announcements' => array(

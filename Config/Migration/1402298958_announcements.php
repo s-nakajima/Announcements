@@ -2,9 +2,16 @@
 /**
  * Announcements Migration
  *
- * @author   Takako Miyagawa <nekoget@gmail.com>
- * @link     http://www.netcommons.org NetCommons Project
- * @license  http://www.netcommons.org/license.txt NetCommons License
+ * @author Takako Miyagawa <nekoget@gmail.com>
+ * @link http://www.netcommons.org NetCommons Project
+ * @license http://www.netcommons.org/license.txt NetCommons License
+ */
+
+/**
+ * Announcements Migration
+ *
+ * @author Takako Miyagawa <nekoget@gmail.com>
+ * @package NetCommons\Announcements\Config\Migration
  */
 class Announcements extends CakeMigration {
 

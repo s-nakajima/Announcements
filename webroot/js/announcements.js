@@ -56,31 +56,32 @@ NetCommonsApp.controller('Announcements',
 
         //管理ダイアログの取得
         NetCommonsApp.run(function($templateCache) {
-            $http.get(url)
-              .success(function(data) {
-                 $templateCache.put(url, data);
-                })
-              .error(function() {
-                  return false;
-                });
-          });
+          $http.get(url)
+            .success(function(data) {
+                $templateCache.put(url, data);
+              })
+            .error(function() {
+                return false;
+              });
+        });
 
         //ダイアログの表示
         dialogs.create(url, 'Announcements.edit',
-                      {frameId: $scope.frameId,
-                        announcement: $scope.announcement,
-                        tinymceOptions: $scope.tinymceOptions},
-                      {keyboard: false, backdrop: 'static'})
+            {frameId: $scope.frameId,
+              announcement: $scope.announcement,
+              tinymceOptions: $scope.tinymceOptions},
+            {keyboard: false, backdrop: 'static'})
           .result.then(
                 function(announcement) {
-                    $scope.announcement = announcement;
-                 },
+                  $scope.announcement = announcement;
+                },
                 function() {
-                    $scope.name = 'You decided not to enter in your name, that makes me sad.';
-                  }
+                  $scope.name = 'You decided not to enter in your name.';
+                }
             );
       };
-});
+    });
+
 
 /**
  * Announcements.edit Javascript
@@ -130,7 +131,8 @@ NetCommonsApp.controller('Announcements.edit',
       //$scope.tinymceOptions = {
       //  //mode: 'exact',
       //  menubar: ' ',
-      //  plugins: 'preview textcolor advlist autolink charmap code link fullscreen autoresize',
+      //  plugins: 'preview textcolor advlist autolink charmap code' +
+      //            ' link fullscreen autoresize',
       //  toolbar: 'preview | fullscreen | undo redo  |' +
       //      ' forecolor |' +
       //      ' styleselect |' +
@@ -142,29 +144,29 @@ NetCommonsApp.controller('Announcements.edit',
       //  //autoresize_min_height: 300
       //};
 
-    /**
-     * dialog cancel
-     *
-     * @return {void}
-     */
-	  $scope.cancel = function(){
-	    $modalInstance.dismiss('canceled');
-	  };
+      /**
+       * dialog cancel
+       *
+       * @return {void}
+       */
+      $scope.cancel = function() {
+        $modalInstance.dismiss('canceled');
+      };
 
-    /**
-     * dialog save
-     *
-     * @param {number} status
-     * - 1: Publish
-     * - 2: Approve
-     * - 3: Draft
-     * - 4: Disapprove
-     * @return {void}
-     */
-	  $scope.save = function(status){
-       $http.get($scope.PLUGIN_FORM_URL +
-                $scope.frameId + '/' + Math.random())
-          .success(function(data) {
+      /**
+       * dialog save
+       *
+       * @param {number} status
+       * - 1: Publish
+       * - 2: Approve
+       * - 3: Draft
+       * - 4: Disapprove
+       * @return {void}
+       */
+      $scope.save = function(status) {
+        $http.get($scope.PLUGIN_FORM_URL +
+                  $scope.frameId + '/' + Math.random())
+            .success(function(data) {
               //フォームエレメント生成
               var form = $('<div>').html(data);
 
@@ -183,7 +185,7 @@ NetCommonsApp.controller('Announcements.edit',
               //登録情報をPOST
               $scope.post(formSerialize);
             })
-          .error(function(data, status) {
+            .error(function(data, status) {
               //keyの取得に失敗
               if (! data) {
                 data = {message: 'Bad Request', status: status};
@@ -191,25 +193,24 @@ NetCommonsApp.controller('Announcements.edit',
               //todo:後でメッセージ処理追加
             });
 
-      $modalInstance.close($scope.announcement);
-	  };
+        $modalInstance.close($scope.announcement);
+      };
 
-    /**
-     * send post
-     *
-     * @param {Object.<string>} postParams
-     * @return {void}
-     */
-    $scope.post = function(postParams) {
+      /**
+       * send post
+       *
+       * @param {Object.<string>} postParams
+       * @return {void}
+       */
+      $scope.post = function(postParams) {
         $http.post($scope.PLUGIN_POST_URL +
-                  $scope.frameId + '/' + Math.random(),
-                  $.param(postParams),
-                  {headers: {
-                      'Content-Type': 'application/x-www-form-urlencoded'}})
+            $scope.frameId + '/' + Math.random(),
+            $.param(postParams),
+            {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
           .success(function(data) {
-               //$scope.notepad = data.data;
-               //$scope.showResult('success', data.message);
-               console.log(data);
+              //$scope.notepad = data.data;
+              //$scope.showResult('success', data.message);
+              console.log(data);
             })
           .error(function(data, status, headers) {
               //if (! data.message) {
@@ -219,6 +220,6 @@ NetCommonsApp.controller('Announcements.edit',
               //}
               console.log(data);
             });
-    };
+      };
 
-	});
+    });

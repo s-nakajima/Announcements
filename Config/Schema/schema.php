@@ -43,6 +43,11 @@ class AnnouncementsSchema extends CakeSchema {
 	public function after($event = array()) {
 	}
 
+/**
+ * Announcements table
+ *
+ * @var array
+ */
 	public $announcements = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary', 'comment' => 'ID |  |  | '),
 		'block_id' => array('type' => 'integer', 'null' => false, 'default' => null),

@@ -29,4 +29,32 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 		'site_setting'
 	);
 
+/**
+ * setUp
+ *
+ * @return void
+ */
+	public function setUp() {
+		parent::setUp();
+	}
+
+/**
+ * tearDown method
+ *
+ * @return void
+ */
+	public function tearDown() {
+		parent::tearDown();
+	}
+
+/**
+ * index
+ *
+ * @return void
+ */
+	public function testIndex() {
+		//$this->testAction('/net_commons/net_commons/index', array('method' => 'get'));
+		$this->assertTrue(true);
+	}
+
 }

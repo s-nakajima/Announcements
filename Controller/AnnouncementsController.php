@@ -59,7 +59,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 			$this->response->statusCode(400);
 			return;
 		}
-
 	}
 
 /**
