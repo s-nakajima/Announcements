@@ -13,22 +13,30 @@
 <?php //echo $this->Html->script('/announcements/js/announcements.js', array('inline' => false)); ?>
 
 <?php if ($contentEditable) : ?>
-	<div id="nc-announcements-<?php echo (int)$frameId; ?>"
-		 ng-controller="Announcements"
-		 ng-init="initialize(<?php echo (int)$frameId; ?>,
-								<?php echo h(json_encode($announcement)); ?>)">
+<div id="nc-announcements-<?php echo (int)$frameId; ?>"
+	 ng-controller="Announcements"
+	 ng-init="initialize(<?php echo (int)$frameId; ?>,
+							<?php echo h(json_encode($announcement)); ?>)">
 
 <?php else : ?>
-	<div>
+<div>
 
 <?php endif; ?>
 
-	<?php
-	//管理ボタン
-	echo $this->element('announcements/view/manage_button');
+	<?php if ($contentEditable) : ?>
+		<p class="text-right">
+			<button class="btn btn-primary"
+					tooltip="<?php echo __d('announcements', 'Manage'); ?>"
+					ng-click="showManage()">
 
-	//本文
-	echo $this->element('announcements/view/content');
-	?>
+				<span class="glyphicon glyphicon-cog"> </span>
+			</button>
+		</p>
+	<?php endif; ?>
 
+	<?php if (isset($announcement['Announcement']['content'])) : ?>
+		<div>
+			<?php echo $announcement['Announcement']['content']; ?>
+		</div>
+	<?php endif; ?>
 </div>

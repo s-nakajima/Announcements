@@ -10,10 +10,22 @@
  */
 ?>
 
-<?php
-	//管理ボタン
-	echo $this->element('announcements/view/manage_nav');
-?>
+<div class="modal-header">
+	<button class="close" type="button"
+			tooltip="<?php echo __d('announcements', 'Close'); ?>"
+			ng-click="cancel()">
+		<span class="glyphicon glyphicon-remove small"></span>
+	</button>
+
+	<ul class="nav nav-pills">
+		<li class="active">
+			<a href="#nc-announcements-edit-<?php echo $frameId; ?>"
+					role="tab" data-toggle="tab" onclick="return false;">
+				<?php echo __d('announcements', 'Announcement edit'); ?>
+			</a>
+		</li>
+	</ul>
+</div>
 
 <div class="modal-body">
 	<div class="tab-content">
