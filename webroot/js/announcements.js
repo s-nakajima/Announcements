@@ -56,7 +56,7 @@ NetCommonsApp.controller('Announcements',
 
         //管理ダイアログの取得
         NetCommonsApp.run(function($templateCache) {
-            $http({method: 'GET', url: url})
+            $http.get(url)
               .success(function(data) {
                  $templateCache.put(url, data);
                 })
@@ -179,15 +179,9 @@ NetCommonsApp.controller('Announcements.edit',
               //postパラメータ生成
               var formSerialize = $(form).find('form').serializeArray();
               console.log(formSerialize);
-              var length = formSerialize.length;
-              var postParams = {};
-              for (var i = 0; i < length; i++) {
-                postParams[formSerialize[i]['name']] =
-                                         formSerialize[i]['value'];
-              }
 
               //登録情報をPOST
-              $scope.post(postParams);
+              $scope.post(formSerialize);
             })
           .error(function(data, status) {
               //keyの取得に失敗
@@ -207,13 +201,11 @@ NetCommonsApp.controller('Announcements.edit',
      * @return {void}
      */
     $scope.post = function(postParams) {
-        var headerParams =
-                    {'Content-Type': 'application/x-www-form-urlencoded'};
-
         $http.post($scope.PLUGIN_POST_URL +
                   $scope.frameId + '/' + Math.random(),
                   $.param(postParams),
-                  {headers: headerParams})
+                  {headers: {
+                      'Content-Type': 'application/x-www-form-urlencoded'}})
           .success(function(data) {
                //$scope.notepad = data.data;
                //$scope.showResult('success', data.message);
