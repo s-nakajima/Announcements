@@ -52,7 +52,7 @@ NetCommonsApp.controller('Announcements',
        */
       $scope.showManage = function() {
         //管理ダイアログ取得のURL
-        var url = $scope.PLUGIN_MANAGE_URL + $scope.frameId
+        var url = $scope.PLUGIN_MANAGE_URL + $scope.frameId;
 
         //管理ダイアログの取得
         NetCommonsApp.run(function($templateCache) {
@@ -86,7 +86,7 @@ NetCommonsApp.controller('Announcements',
  * Announcements.edit Javascript
  *
  * @param {string} Controller name
- * @param {function(scope, http, modalInstance, dialogs)} Controller
+ * @param {function(scope, http, sce, modalInstance, dialogs)} Controller
  */
 NetCommonsApp.controller('Announcements.edit',
                          function($scope, $http, $sce, $modalInstance, data) {
