@@ -17,7 +17,7 @@ echo $this->Form->input('Announcement.content', array(
 		)
 	);
 
-echo $this->Form->input('Announcement.frame_id', array(
+echo $this->Form->input('Frame.frame_id', array(
 			'type' => 'hidden',
 			'value' => (int)$frameId,
 		)

@@ -10,6 +10,9 @@
  */
 
 App::uses('AnnouncementsController', 'Announcements.Controller');
+App::uses('NetCommonsFrameComponent', 'NetCommons.Controller/Component');
+App::uses('NetCommonsBlockComponent', 'NetCommons.Controller/Component');
+App::uses('NetCommonsRoomRoleComponent', 'NetCommons.Controller/Component');
 
 /**
  * AnnouncementsController Test Case

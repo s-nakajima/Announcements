@@ -115,10 +115,10 @@ class Announcement extends AnnouncementsAppModel {
 /**
  * save announcement
  *
- * @param array $data received post data
- * @return mixed array Notepad, false error
+ * @param array $postData received post data
+ * @return bool true success, false error
  */
-	public function saveAnnouncement($data) {
+	public function saveAnnouncement($postData) {
 		$models = array(
 			'Frame' => 'Frames.Frame',
 			'Block' => 'Blocks.Block',
@@ -127,38 +127,37 @@ class Announcement extends AnnouncementsAppModel {
 			$this->$model = ClassRegistry::init($class);
 			$this->$model->setDataSource('master');
 		}
+		var_dump(ClassRegistry::mapKeys());
+		$block = ClassRegistry::getObject('Block');
+		error_log(print_r($block, true), 3, LOGS . '/debug222.log');
 
 		//frame関連のセット
-		$frame = $this->Frame->findById($data['Announcement']['frame_id']);
+		$frame = $this->Frame->findById($postData['Frame']['frame_id']);
 		if (! $frame) {
 			return false;
 		}
-		$blockId = (isset($frame['Block']['id']) ? (int)$frame['Block']['id'] : 0);
+		if (! $frame['Frame']['block_id']) {
+			//announcementsテーブルのkey生成
+			$postData['Announcement']['key'] = hash('sha256', 'announcement_' . microtime());
+		}
 
 		//DBへの登録
 		$dataSource = $this->getDataSource();
 		$dataSource->begin();
 		try {
+			$blockId = $this->__saveBlock($frame);
 			if (! $blockId) {
-				//blocksテーブル登録
-				$block = array();
-				$block['Block']['room_id'] = $frame['Frame']['room_id'];
-				$block['Block']['language_id'] = $frame['Frame']['language_id'];
-				$block = $this->Block->save($block);
-				$blockId = (int)$block['Block']['id'];
-
-				//framesテーブル更新
-				$frame['Frame']['block_id'] = $blockId;
-				$this->Frame->save($frame);
+				throw new CakeException(__d('cake_dev', 'Error __saveBlock method in Model %s', $this->alias));
 			}
 
 			//announcementsテーブル登録
-			$announcement['Announcement'] = $data['Announcement'];
+			$announcement['Announcement'] = $postData['Announcement'];
 			$announcement['Announcement']['block_id'] = $blockId;
 			$announcement['Announcement']['created_user'] = CakeSession::read('Auth.User.id');
-
-			//保存結果を返す
-			$this->save($announcement);
+			if (! $this->save($announcement)) {
+				//throw new InternalErrorException();
+				throw new CakeException(__d('cake_dev', 'Error in Model %s', $this->alias));
+			}
 			$dataSource->commit();
 			return true;
 
@@ -167,5 +166,33 @@ class Announcement extends AnnouncementsAppModel {
 			$dataSource->rollback();
 			return false;
 		}
+	}
+
+/**
+ * save block
+ *
+ * @param array $frame frame data
+ * @return mixed int blocks.id, false error
+ */
+	private function __saveBlock($frame) {
+		if (! $frame['Frame']['block_id']) {
+			//blocksテーブル登録
+			$block = array();
+			$block['Block']['room_id'] = $frame['Frame']['room_id'];
+			$block['Block']['language_id'] = $frame['Frame']['language_id'];
+			$block = $this->Block->save($block);
+			//if (! $block) {
+			//	return false;
+			//}
+			$blockId = (int)$block['Block']['id'];
+
+			//framesテーブル更新
+			$frame['Frame']['block_id'] = $blockId;
+			//if (! $this->Frame->save($frame)) {
+			//	return false;
+			//}
+		}
+
+		return (int)$frame['Frame']['block_id'];
 	}
 }
