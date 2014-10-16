@@ -117,6 +117,7 @@ class Announcement extends AnnouncementsAppModel {
  *
  * @param array $postData received post data
  * @return bool true success, false error
+ * @throws CakeException
  */
 	public function saveAnnouncement($postData) {
 		$models = array(
@@ -127,9 +128,6 @@ class Announcement extends AnnouncementsAppModel {
 			$this->$model = ClassRegistry::init($class);
 			$this->$model->setDataSource('master');
 		}
-		var_dump(ClassRegistry::mapKeys());
-		$block = ClassRegistry::getObject('Block');
-		error_log(print_r($block, true), 3, LOGS . '/debug222.log');
 
 		//frame関連のセット
 		$frame = $this->Frame->findById($postData['Frame']['frame_id']);

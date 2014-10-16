@@ -45,12 +45,11 @@ class AnnouncementTest extends CakeTestCase {
 		parent::setUp();
 		$this->Announcement = ClassRegistry::init('Announcements.Announcement');
 		$this->Block = ClassRegistry::init('Blocks.Block');
-//		$this->Block = $this->getMockForModel('Blocks.Block', array('save'));
-//		$this->Block->expects($this->once())
-//				->method('save')
-//				->will($this->returnValue(false));
-//		ClassRegistry::addObject('block');
-
+		//$this->Block = $this->getMockForModel('Blocks.Block', array('save'));
+		//$this->Block->expects($this->once())
+		//		->method('save')
+		//		->will($this->returnValue(false));
+		//ClassRegistry::addObject('block');
 	}
 
 /**
@@ -62,16 +61,6 @@ class AnnouncementTest extends CakeTestCase {
 		unset($this->Announcement);
 		ClassRegistry::removeObject('Blocks.Block');
 		parent::tearDown();
-	}
-
-/**
- * blockErrorCallback
- *
- * @return bool false only
- */
-	public function blockErrorCallback($option = array()) {
-		var_dump("111111");
-		return false;
 	}
 
 /**
@@ -342,109 +331,6 @@ class AnnouncementTest extends CakeTestCase {
 		$contentEditable = true;
 		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
 
-		$expected = array(
-			'Announcement' => array(
-				'id' => '2',
-				'block_id' => '1',
-				'key' => 'announcement_1',
-				'status' => '3',
-				'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-				'is_auto_translated' => true,
-				'translation_engine' => 'Lorem ipsum dolor sit amet',
-			),
-			'Block' => array(
-				'id' => '1',
-				'language_id' => '2',
-				'room_id' => '1',
-				'key' => 'block_1',
-				'name' => '',
-			)
-		);
-
-		$this->__assertGetAnnouncement($expected, $result);
-	}
-
-/**
- * saveAnnouncement error method test for rollback
- *
- * @return void
- */
-	public function testSaveAnnouncementBlockErrorForRollback() {
-//		//強制的にエラー発生させる
-//		$dataSource = $this->Announcement->getDataSource();
-//		$sql = $dataSource->alterSchema(array(
-//			'blocks' => array('drop' => array('room_id' => array()))));
-//		$dataSource->execute($sql);
-//		$this->setExpectedException('PDOException');
-
-//		ClassRegistry::removeObject('Block');
-//
-//		$stub = $this->getMock('Block');
-//
-//		$stub->method('save')->will($this->returnValue(false));
-//
-//		$ret = $stub->save();
-//		var_dump($ret);
-
-		var_dump('testSaveAnnouncementBlockErrorForRollback');
-		error_log(print_r('testSaveAnnouncementBlockErrorForRollback', true), 3, LOGS . '/debug222.log');
-		ClassRegistry::removeObject('Block');
-		$this->Block = $this->getMockForModel('Blocks.Block', array('save'));
-		$this->Block->expects($this->once())
-				->method('save')
-				->will($this->returnValue(false));
-		ClassRegistry::addObject('Block', $this->Block);
-		var_dump(ClassRegistry::mapKeys());
-
-		$block = ClassRegistry::getObject('Block');
-		error_log(print_r($block, true), 3, LOGS . '/debug222.log');
-
-//
-//////		//$this->Announcement->Block = $this->getMock('Blocks');
-////////var_dump(ClassRegistry::keys());
-////////var_dump(get_class_methods(ClassRegistry::getObject('block')));
-//////		//unset($this->Block);
-//		ClassRegistry::removeObject('Block');
-////////var_dump(ClassRegistry::getObject('Blocks.Block'));
-//		ClassRegistry::config('Block', array('ds' => 'test'));
-//
-////		$this->Block = $this->getMockBuilder('Block')
-////                     ->disableOriginalConstructor()
-////					 ->setMethods(array('save'))
-////                     ->getMock('Block');
-//////
-//		$this->Block->expects($this->any())
-//			->method('save')
-//			->will($this->returnValue(false));
-//			//->will($this->returnCallback(array($this, 'blockErrorCallback')));
-////////
-////////		ClassRegistry::removeObject('block');
-//		ClassRegistry::addObject('Block', $this->Block);
-////////		var_dump(ClassRegistry::mapKeys());
-////////var_dump(get_class_methods(ClassRegistry::getObject('block')));
-
-
-		//登録処理
-		$postData = array(
-			'Announcement' => array(
-				'block_id' => 1,
-				'key' => 'announcement_1',
-				'status' => 1,
-				'content' => 'change data',
-			),
-			'Frame' => array(
-				'frame_id' => '1'
-			)
-		);
-		$result = $this->Announcement->saveAnnouncement($postData);
-var_dump($result);
-		$this->assertFalse($result, 'saveAnnouncement');
-
-		//データ確認
-		$blockId = 1;
-		$contentEditable = true;
-		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
-var_dump($result);
 		$expected = array(
 			'Announcement' => array(
 				'id' => '2',
