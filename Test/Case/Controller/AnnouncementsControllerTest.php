@@ -9,7 +9,6 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('Language', 'app.Model');
 App::uses('AnnouncementsController', 'Announcements.Controller');
 App::uses('NetCommonsFrameComponent', 'NetCommons.Controller/Component');
 App::uses('NetCommonsBlockComponent', 'NetCommons.Controller/Component');
@@ -88,6 +87,9 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 				'Session',
 				'Security',
 				'RequestHandler',
+				'NetCommons.NetCommonsBlock', //use Announcement model
+				'NetCommons.NetCommonsFrame',
+				'NetCommons.NetCommonsRoomRole',
 			),
 		));
 
