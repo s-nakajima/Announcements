@@ -20,7 +20,9 @@
         "netcommons/net-commons":       "dev-master",
         "netcommons/frames":            "dev-master",
         "netcommons/pages":             "dev-master",
-        "netcommons/users":             "dev-master"
+        "netcommons/users":             "dev-master",
+        "netcommons/rooms":             "dev-master",
+        "netcommons/roles":             "dev-master"
     },
     "license": "NetCommons License",
     "authors": [

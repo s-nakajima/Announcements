@@ -68,11 +68,11 @@ NetCommonsApp.controller('Announcements',
         //console.log($scope.announcement);
 
         $modal.open({
-            templateUrl: $scope.PLUGIN_MANAGE_URL + $scope.frameId,
-            controller: 'Announcements.edit',
-            backdrop: 'static',
-            scope: $scope
-          });
+          templateUrl: $scope.PLUGIN_MANAGE_URL + $scope.frameId,
+          controller: 'Announcements.edit',
+          backdrop: 'static',
+          scope: $scope
+        });
 
         ////ダイアログの表示
         //dialogs.create(url, 'Announcements.edit',
@@ -190,7 +190,7 @@ NetCommonsApp.controller('Announcements.edit',
        */
       $scope.post = function(postParams) {
         $http.post($scope.PLUGIN_POST_URL +
-            $scope.frameId + '/' + Math.random(),
+            $scope.frameId + '/' + Math.random() + '.json',
             $.param(postParams),
             {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
           .success(function(data) {

@@ -18,9 +18,6 @@
 		 ng-init="initialize(<?php echo (int)$frameId; ?>,
 								<?php echo h(json_encode($announcement)); ?>)">
 
-<?php else : ?>
-		<div>
-
 <?php endif; ?>
 
 	<?php if ($contentEditable) : ?>
@@ -34,9 +31,12 @@
 		</p>
 	<?php endif; ?>
 
-	<?php if (isset($announcement['Announcement']['content'])) : ?>
+	<?php if ($announcement['Announcement']['content'] !== '') : ?>
 		<div>
 			<?php echo $announcement['Announcement']['content']; ?>
 		</div>
 	<?php endif; ?>
-</div>
+
+<?php if ($contentEditable) : ?>
+	</div>
+<?php endif;

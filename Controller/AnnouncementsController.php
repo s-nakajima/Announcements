@@ -43,6 +43,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * beforeFilter
  *
  * @return void
+ * @throws BadRequestException
  */
 	public function beforeFilter() {
 		parent::beforeFilter();
@@ -51,13 +52,11 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$frameId = (isset($this->params['pass'][0]) ? (int)$this->params['pass'][0] : 0);
 		//Frameのデータをviewにセット
 		if (! $this->NetCommonsFrame->setView($this, $frameId)) {
-			$this->response->statusCode(400);
-			return;
+			throw new BadRequestException();
 		}
 		//Roleのデータをviewにセット
 		if (! $this->NetCommonsRoomRole->setView($this)) {
-			$this->response->statusCode(400);
-			return;
+			throw new BadRequestException();
 		}
 	}
 
@@ -78,10 +77,6 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return CakeResponse A response object containing the rendered view.
  */
 	public function view($frameId = 0) {
-		if ($this->response->statusCode() !== 200) {
-			return $this->render(false);
-		}
-
 		//Announcementデータを取得
 		$announcement = $this->Announcement->getAnnouncement(
 				$this->viewVars['blockId'],
@@ -104,15 +99,12 @@ class AnnouncementsController extends AnnouncementsAppController {
  *
  * @param int $frameId frames.id
  * @return CakeResponse A response object containing the rendered view.
+ * @throws ForbiddenException
  */
 	public function manage($frameId = 0) {
-		if ($this->response->statusCode() !== 200) {
-			return $this->render(false);
-		}
 		//編集権限チェック
 		if (! $this->viewVars['contentEditable']) {
-			$this->response->statusCode(403);
-			return $this->render(false);
+			throw new ForbiddenException();
 		}
 
 		return $this->render('Announcements/manage', false);

@@ -43,6 +43,8 @@ class AnnouncementEditController extends AnnouncementsAppController {
  * beforeFilter
  *
  * @return void
+ * @throws BadRequestException
+ * @throws ForbiddenException
  */
 	public function beforeFilter() {
 		parent::beforeFilter();
@@ -52,20 +54,17 @@ class AnnouncementEditController extends AnnouncementsAppController {
 
 		//Roleのデータをviewにセット
 		if (! $this->NetCommonsRoomRole->setView($this)) {
-			$this->response->statusCode(400);
-			return;
+			throw new BadRequestException();
 		}
 
 		//編集権限チェック
 		if (! $this->viewVars['contentEditable']) {
-			$this->response->statusCode(403);
-			return;
+			throw new ForbiddenException();
 		}
 
 		//Frameのデータをviewにセット
 		if (! $this->NetCommonsFrame->setView($this, $frameId)) {
-			$this->response->statusCode(400);
-			return;
+			throw new BadRequestException();
 		}
 	}
 
@@ -86,10 +85,6 @@ class AnnouncementEditController extends AnnouncementsAppController {
  * @return CakeResponse A response object containing the rendered view.
  */
 	public function view($frameId = 0) {
-		if ($this->response->statusCode() !== 200) {
-			return $this->render(false);
-		}
-
 		//Announcementデータを取得
 		$announcement = $this->Announcement->getAnnouncement(
 				$this->viewVars['blockId'],
@@ -117,25 +112,24 @@ class AnnouncementEditController extends AnnouncementsAppController {
  *
  * @param int $frameId frames.id
  * @return string JSON that indicates success
+ * @throws MethodNotAllowedException
+ * @throws BadRequestException
  */
 	public function post($frameId = 0) {
-		if ($this->response->statusCode() !== 200) {
-			$statusCode = $this->response->statusCode();
-			$message = __d('announcements', 'Save failed.');
-			return $this->NetCommonsFrame->renderJson($this, $statusCode, $message);
-		}
 		if (! $this->request->isPost()) {
-			$message = __d('announcements', 'Save failed.');
-			return $this->NetCommonsFrame->renderJson($this, 400, $message);
+			throw new MethodNotAllowedException();
 		}
 
 		//保存
 		if ($this->Announcement->saveAnnouncement($this->data)) {
-			$message = __d('announcements', 'Success saved.');
-			return $this->NetCommonsFrame->renderJson($this, 200, $message);
+			$result = array(
+				'message' => __d('announcements', 'Success saved.'),
+			);
+			$this->set(compact('result'));
+			$this->set('_serialize', 'result');
+			return $this->render(false);
 		} else {
-			$message = __d('announcements', 'Save failed.');
-			return $this->NetCommonsFrame->renderJson($this, 400, $message);
+			throw new BadRequestException(__d('announcements', 'Save failed.'));
 		}
 	}
 }
