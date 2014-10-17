@@ -9,6 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
+App::uses('Language', 'Model');
 App::uses('AnnouncementsController', 'Announcements.Controller');
 App::uses('NetCommonsFrameComponent', 'NetCommons.Controller/Component');
 App::uses('NetCommonsBlockComponent', 'NetCommons.Controller/Component');
