@@ -12,7 +12,7 @@
  */
 //NetCommonsApp.requires.push('dialogs.main');
 NetCommonsApp.controller('Announcements',
-                         function($scope, $http, $sce, dialogs) {
+                         function($scope, $http, $sce, dialogs, $modal) {
 
       /**
        * Announcements plugin view url
@@ -51,34 +51,43 @@ NetCommonsApp.controller('Announcements',
        * @return {void}
        */
       $scope.showManage = function() {
-        //管理ダイアログ取得のURL
-        var url = $scope.PLUGIN_MANAGE_URL + $scope.frameId;
+        ////管理ダイアログ取得のURL
+        //var url = $scope.PLUGIN_MANAGE_URL + $scope.frameId;
+        //
+        ////管理ダイアログの取得
+        //NetCommonsApp.run(function($templateCache) {
+        //  $http.get(url)
+        //    .success(function(data) {
+        //        $templateCache.put(url, data);
+        //      })
+        //    .error(function() {
+        //        return false;
+        //      });
+        //});
 
-        //管理ダイアログの取得
-        NetCommonsApp.run(function($templateCache) {
-          $http.get(url)
-            .success(function(data) {
-                $templateCache.put(url, data);
-              })
-            .error(function() {
-                return false;
-              });
-        });
+        //console.log($scope.announcement);
 
-        //ダイアログの表示
-        dialogs.create(url, 'Announcements.edit',
-            {frameId: $scope.frameId,
-              announcement: $scope.announcement,
-              tinymceOptions: $scope.tinymceOptions},
-            {keyboard: false, backdrop: 'static'})
-          .result.then(
-                function(announcement) {
-                  $scope.announcement = announcement;
-                },
-                function() {
-                  $scope.name = 'You decided not to enter in your name.';
-                }
-            );
+        $modal.open({
+            templateUrl: $scope.PLUGIN_MANAGE_URL + $scope.frameId,
+            controller: 'Announcements.edit',
+            backdrop: 'static',
+            scope: $scope
+          });
+
+        ////ダイアログの表示
+        //dialogs.create(url, 'Announcements.edit',
+        //    {frameId: $scope.frameId,
+        //      announcement: $scope.announcement,
+        //      tinymceOptions: $scope.tinymceOptions},
+        //    {keyboard: false, backdrop: 'static'})
+        //  .result.then(
+        //        function(announcement) {
+        //          $scope.announcement = announcement;
+        //        },
+        //        function() {
+        //          $scope.name = 'You decided not to enter in your name.';
+        //        }
+        //    );
       };
     });
 
@@ -90,7 +99,7 @@ NetCommonsApp.controller('Announcements',
  * @param {function(scope, http, sce, modalInstance, dialogs)} Controller
  */
 NetCommonsApp.controller('Announcements.edit',
-                         function($scope, $http, $sce, $modalInstance, data) {
+                         function($scope, $http, $sce, $modalInstance) {
 
       /**
        * Announcements plugin edit form url
@@ -105,27 +114,6 @@ NetCommonsApp.controller('Announcements.edit',
        * @const
        */
       $scope.PLUGIN_POST_URL = '/announcements/announcement_edit/post/';
-
-      /**
-       * frame id
-       *
-       * @type {number}
-       */
-      $scope.frameId = data.frameId;
-
-      /**
-       * Announcement
-       *
-       * @type {Object.<string>}
-       */
-      $scope.announcement = data.announcement;
-
-      /**
-       * Wysiwyg tinymce options
-       *
-       * @type {Object.<string>}
-       */
-      $scope.tinymceOptions = data.tinymceOptions;
 
       ////todo: 後で消す
       //$scope.tinymceOptions = {
@@ -192,8 +180,6 @@ NetCommonsApp.controller('Announcements.edit',
               }
               //todo:後でメッセージ処理追加
             });
-
-        $modalInstance.close($scope.announcement);
       };
 
       /**
@@ -210,6 +196,9 @@ NetCommonsApp.controller('Announcements.edit',
           .success(function(data) {
               //$scope.notepad = data.data;
               //$scope.showResult('success', data.message);
+
+              //$modalInstance.close($scope);
+              $modalInstance.close();
               console.log(data);
             })
           .error(function(data, status, headers) {
