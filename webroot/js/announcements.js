@@ -51,43 +51,18 @@ NetCommonsApp.controller('Announcements',
        * @return {void}
        */
       $scope.showManage = function() {
-        ////管理ダイアログ取得のURL
-        //var url = $scope.PLUGIN_MANAGE_URL + $scope.frameId;
-        //
-        ////管理ダイアログの取得
-        //NetCommonsApp.run(function($templateCache) {
-        //  $http.get(url)
-        //    .success(function(data) {
-        //        $templateCache.put(url, data);
-        //      })
-        //    .error(function() {
-        //        return false;
-        //      });
-        //});
-
-        //console.log($scope.announcement);
-
         $modal.open({
           templateUrl: $scope.PLUGIN_MANAGE_URL + $scope.frameId,
           controller: 'Announcements.edit',
           backdrop: 'static',
           scope: $scope
-        });
-
-        ////ダイアログの表示
-        //dialogs.create(url, 'Announcements.edit',
-        //    {frameId: $scope.frameId,
-        //      announcement: $scope.announcement,
-        //      tinymceOptions: $scope.tinymceOptions},
-        //    {keyboard: false, backdrop: 'static'})
-        //  .result.then(
-        //        function(announcement) {
-        //          $scope.announcement = announcement;
-        //        },
-        //        function() {
-        //          $scope.name = 'You decided not to enter in your name.';
-        //        }
-        //    );
+        }).
+        result.then(
+          function(result) {
+            console.log($scope.announcement.Announcement.status);
+          },
+          function(reason) {}
+        );
       };
     });
 
@@ -153,13 +128,14 @@ NetCommonsApp.controller('Announcements.edit',
        */
       $scope.save = function(status) {
         $http.get($scope.PLUGIN_FORM_URL +
-                  $scope.frameId + '/' + Math.random())
+                  $scope.frameId + '/' + Math.random() + '.json')
             .success(function(data) {
               //フォームエレメント生成
               var form = $('<div>').html(data);
 
               //postフォームに値セット
               var findElement = 'select[name="data[Announcement][status]"]';
+              $scope.announcement.Announcement.status = status;
               $(form).find(findElement).val(status);
 
               var findElement = 'textarea[name="data[Announcement][content]"]';
@@ -173,8 +149,11 @@ NetCommonsApp.controller('Announcements.edit',
               //登録情報をPOST
               $scope.post(formSerialize);
             })
-            .error(function(data, status) {
+            .error(function(data, status, headers) {
               //keyの取得に失敗
+              console.log(data);
+              console.log(status);
+              console.log(headers);
               if (! data) {
                 data = {message: 'Bad Request', status: status};
               }
@@ -208,6 +187,8 @@ NetCommonsApp.controller('Announcements.edit',
               //  $scope.showResult('error', data.message);
               //}
               console.log(data);
+              console.log(status);
+              console.log(headers);
             });
       };
 

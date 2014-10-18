@@ -32,9 +32,15 @@
 	<?php endif; ?>
 
 	<?php if ($announcement['Announcement']['content'] !== '') : ?>
-		<div>
+		<p>
 			<?php echo $announcement['Announcement']['content']; ?>
-		</div>
+		</p>
+	<?php endif; ?>
+
+	<?php if ($contentEditable) : ?>
+		<p>
+			<?php echo $this->element('Announcements/status_label'); ?>
+		</p>
 	<?php endif; ?>
 
 <?php if ($contentEditable) : ?>

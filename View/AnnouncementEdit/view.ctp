@@ -27,13 +27,13 @@
 	<?php if (isset($announcement['Announcements']) && $contentPublishable &&
 				$announcement['Announcements']['status'] === NetCommonsBlockComponent::STATUS_APPROVED) : ?>
 		<button type="button" class="btn btn-default"
-				ng-click="save(<?php echo NetCommonsBlockComponent::STATUS_DISAPPROVED ?>)">
+				ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_DISAPPROVED ?>')">
 			<?php echo __d('announcements', 'Disapproval'); ?>
 		</button>
 
 	<?php else : ?>
 		<button type="button" class="btn btn-default"
-				ng-click="save(<?php echo NetCommonsBlockComponent::STATUS_DRAFTED ?>)">
+				ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_DRAFTED ?>')">
 			<?php echo __d('announcements', 'Temporary'); ?>
 		</button>
 
@@ -41,13 +41,13 @@
 
 	<?php if ($contentPublishable) : ?>
 		<button type="button" class="btn btn-primary"
-				ng-click="save(<?php echo NetCommonsBlockComponent::STATUS_PUBLISHED ?>)">
+				ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_PUBLISHED ?>')">
 			<?php echo __d('announcements', 'Save'); ?>
 		</button>
 
 	<?php else : ?>
 		<button type="button" class="btn btn-primary"
-				ng-click="save(<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>)">
+				ng-click="save'('<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>')">
 			<?php echo __d('announcements', 'Save'); ?>
 		</button>
 
