@@ -57,7 +57,6 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  */
 	public function setUp() {
 		parent::setUp();
-		//$this->Language = ClassRegistry::init('Language');
 	}
 
 /**
@@ -66,73 +65,21 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return void
  */
 	public function tearDown() {
-		if ($this->Controller) {
-			$this->Controller->Auth->logout();
-			unset($this->Controller);
-			CakeSession::write('Auth.User.id', null);
-		}
-
 		parent::tearDown();
 	}
 
 /**
- * login
+ * testBeforeFilterByNoSetFrameId method
  *
  * @return void
  */
-	public function login() {
-		//ログイン処理
-		$this->Controller = $this->generate('Announcements.Announcements', array(
-			'components' => array(
-				'Auth' => array('user'),
-				'Session',
-				'Security',
-				'RequestHandler',
-			),
-		));
-
-		$this->Controller->Auth
-			->staticExpects($this->any())
-			->method('user')
-			->will($this->returnCallback(array($this, 'userCallback')));
-
-		$this->Controller->Auth->login(array(
-				'username' => 'admin',
-				'password' => 'admin',
-			)
-		);
-		CakeSession::write('Auth.User.id', 1);
-
-		$this->assertTrue($this->Controller->Auth->loggedIn(), 'login');
-	}
-
-/**
- * authUserCallback
- *
- * @author Shohei Nakajima <nakajimashouhei@gmail.com>
- * @return array user
- */
-	public function userCallback() {
-		$user = array(
-			'id' => 1,
-			'username' => 'admin',
-			'role_key' => 'system_administrator',
-		);
-		return $user;
-	}
-
-/**
- * index for no set frame id
- *
- * @return void
- */
-	public function testBeforeFilterForNoSetFrameId() {
-		$this->setExpectedException('BadRequestException');
+	public function testBeforeFilterByNoSetFrameId() {
+		$this->setExpectedException('ForbiddenException');
 		$this->testAction('/announcements/announcements/index', array('method' => 'get'));
 	}
 
 /**
- * index
+ * testIndex method
  *
  * @return void
  */
@@ -144,17 +91,17 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 	}
 
 /**
- * index for no set block id
+ * testIndexByNoSetBlockId method
  *
  * @return void
  */
-	public function testIndexForNoSetBlockId() {
+	public function testIndexByNoSetBlockId() {
 		$this->testAction('/announcements/announcements/index/2', array('method' => 'get'));
 		$this->assertEmpty(trim($this->view));
 	}
 
 /**
- * view
+ * testView method
  *
  * @return void
  */
@@ -166,38 +113,22 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 	}
 
 /**
- * view for no set block id
+ * testViewByNoSetBlockId method
  *
  * @return void
  */
-	public function testViewForNoSetBlockId() {
+	public function testViewByNoSetBlockId() {
 		$this->testAction('/announcements/announcements/view/2', array('method' => 'get'));
 		$this->assertEmpty(trim($this->view));
 	}
 
 /**
- * manage for no login
+ * testManageByNoLogin method
  *
  * @return void
  */
-	public function testManageForNoLogin() {
+	public function testManageByNoLogin() {
 		$this->setExpectedException('ForbiddenException');
 		$this->testAction('/announcements/announcements/manage/1', array('method' => 'get'));
-	}
-
-/**
- * manage for no login
- *
- * @return void
- */
-	public function testManageForLogin() {
-		$this->login();
-
-		$this->testAction('/announcements/announcements/manage/1', array('method' => 'get'));
-
-		//タブ
-		$this->assertTextContains('href="#nc-announcements-edit-1"', $this->view);
-		$this->assertTextContains('id="nc-announcements-edit-1"', $this->view);
-		$this->assertTextContains('role="tab" data-toggle="tab"', $this->view);
 	}
 }

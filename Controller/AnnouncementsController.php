@@ -43,7 +43,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * beforeFilter
  *
  * @return void
- * @throws BadRequestException
+ * @throws ForbiddenException
  */
 	public function beforeFilter() {
 		parent::beforeFilter();
@@ -52,11 +52,11 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$frameId = (isset($this->params['pass'][0]) ? (int)$this->params['pass'][0] : 0);
 		//Frameのデータをviewにセット
 		if (! $this->NetCommonsFrame->setView($this, $frameId)) {
-			throw new BadRequestException();
+			throw new ForbiddenException();
 		}
 		//Roleのデータをviewにセット
 		if (! $this->NetCommonsRoomRole->setView($this)) {
-			throw new BadRequestException();
+			throw new ForbiddenException();
 		}
 	}
 

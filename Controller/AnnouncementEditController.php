@@ -43,7 +43,6 @@ class AnnouncementEditController extends AnnouncementsAppController {
  * beforeFilter
  *
  * @return void
- * @throws BadRequestException
  * @throws ForbiddenException
  */
 	public function beforeFilter() {
@@ -54,7 +53,7 @@ class AnnouncementEditController extends AnnouncementsAppController {
 
 		//Roleのデータをviewにセット
 		if (! $this->NetCommonsRoomRole->setView($this)) {
-			throw new BadRequestException();
+			throw new ForbiddenException();
 		}
 
 		//編集権限チェック
@@ -64,7 +63,7 @@ class AnnouncementEditController extends AnnouncementsAppController {
 
 		//Frameのデータをviewにセット
 		if (! $this->NetCommonsFrame->setView($this, $frameId)) {
-			throw new BadRequestException();
+			throw new ForbiddenException();
 		}
 	}
 
@@ -113,7 +112,7 @@ class AnnouncementEditController extends AnnouncementsAppController {
  * @param int $frameId frames.id
  * @return string JSON that indicates success
  * @throws MethodNotAllowedException
- * @throws BadRequestException
+ * @throws ForbiddenException
  */
 	public function post($frameId = 0) {
 		if (! $this->request->isPost()) {
@@ -129,7 +128,7 @@ class AnnouncementEditController extends AnnouncementsAppController {
 			$this->set('_serialize', 'result');
 			return $this->render(false);
 		} else {
-			throw new BadRequestException(__d('announcements', 'Save failed.'));
+			throw new ForbiddenException(__d('announcements', 'Save failed.'));
 		}
 	}
 }

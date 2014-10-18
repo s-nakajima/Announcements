@@ -46,7 +46,7 @@ class AnnouncementTest extends CakeTestCase {
 		//$this->Language = ClassRegistry::init('Language');
 		$this->Announcement = ClassRegistry::init('Announcements.Announcement');
 		//$this->Block = ClassRegistry::init('Blocks.Block');
-		//$this->Block = $this->getMockForModel('Blocks.Block', array('save'));
+		//$this->Block = $this->getMockByModel('Blocks.Block', array('save'));
 		//$this->Block->expects($this->once())
 		//		->method('save')
 		//		->will($this->returnValue(false));
@@ -65,7 +65,7 @@ class AnnouncementTest extends CakeTestCase {
 	}
 
 /**
- * assert annnoucement data
+ * __assertGetAnnouncement method
  *
  * @param array $expected correct data
  * @param array $result result data
@@ -99,7 +99,7 @@ class AnnouncementTest extends CakeTestCase {
 	}
 
 /**
- * getAnnouncement method test
+ * testGetAnnouncement method
  *
  * @return void
  */
@@ -131,11 +131,11 @@ class AnnouncementTest extends CakeTestCase {
 	}
 
 /**
- * getAnnouncement method test for no content editable
+ * testGetAnnouncementByNoEditable method
  *
  * @return void
  */
-	public function testGetAnnouncementForNoEditable() {
+	public function testGetAnnouncementByNoEditable() {
 		$blockId = 1;
 		$contentEditable = false;
 		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
@@ -163,7 +163,7 @@ class AnnouncementTest extends CakeTestCase {
 	}
 
 /**
- * saveAnnouncement method test
+ * testSaveAnnouncement method
  *
  * @return void
  */
@@ -209,11 +209,11 @@ class AnnouncementTest extends CakeTestCase {
 	}
 
 /**
- * saveAnnouncement method test for error frame id
+ * testSaveAnnouncementByErrorFrameId method
  *
  * @return void
  */
-	public function testSaveAnnouncementForErrorFrameId() {
+	public function testSaveAnnouncementByErrorFrameId() {
 		$postData = array(
 			'Announcement' => array(
 				'block_id' => '1',
@@ -255,11 +255,11 @@ class AnnouncementTest extends CakeTestCase {
 	}
 
 /**
- * saveAnnouncement method test for no block id
+ * testSaveAnnouncementByNoBlockId method
  *
  * @return void
  */
-	public function testSaveAnnouncementForNoBlockId() {
+	public function testSaveAnnouncementByNoBlockId() {
 		$this->Block = ClassRegistry::init('Blocks.Block');
 
 		$postData = array(
@@ -307,11 +307,11 @@ class AnnouncementTest extends CakeTestCase {
 	}
 
 /**
- * saveAnnouncement error method test for rollback
+ * testSaveAnnouncementRollbackByError method
  *
  * @return void
  */
-	public function testSaveAnnouncementErrorForRollback() {
+	public function testSaveAnnouncementRollbackByError() {
 		//登録処理
 		$postData = array(
 			'Announcement' => array(

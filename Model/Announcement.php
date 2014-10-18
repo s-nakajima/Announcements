@@ -117,7 +117,7 @@ class Announcement extends AnnouncementsAppModel {
  *
  * @param array $postData received post data
  * @return bool true success, false error
- * @throws CakeException
+ * @throws ForbiddenException
  */
 	public function saveAnnouncement($postData) {
 		$models = array(
@@ -144,17 +144,13 @@ class Announcement extends AnnouncementsAppModel {
 		$dataSource->begin();
 		try {
 			$blockId = $this->__saveBlock($frame);
-			if (! $blockId) {
-				throw new CakeException(__d('cake_dev', 'Error __saveBlock method in Model %s', $this->alias));
-			}
 
 			//announcementsテーブル登録
 			$announcement['Announcement'] = $postData['Announcement'];
 			$announcement['Announcement']['block_id'] = $blockId;
 			$announcement['Announcement']['created_user'] = CakeSession::read('Auth.User.id');
 			if (! $this->save($announcement)) {
-				//throw new InternalErrorException();
-				throw new CakeException(__d('cake_dev', 'Error in Model %s', $this->alias));
+				throw new ForbiddenException(serialize($this->validationErrors));
 			}
 			$dataSource->commit();
 			return true;
@@ -170,7 +166,9 @@ class Announcement extends AnnouncementsAppModel {
  * save block
  *
  * @param array $frame frame data
- * @return mixed int blocks.id, false error
+ * @return int blocks.id
+ * @throws ForbiddenException
+ *
  */
 	private function __saveBlock($frame) {
 		if (! $frame['Frame']['block_id']) {
@@ -179,16 +177,16 @@ class Announcement extends AnnouncementsAppModel {
 			$block['Block']['room_id'] = $frame['Frame']['room_id'];
 			$block['Block']['language_id'] = $frame['Frame']['language_id'];
 			$block = $this->Block->save($block);
-			//if (! $block) {
-			//	return false;
-			//}
+			if (! $block) {
+				throw new ForbiddenException(serialize($this->Block->validationErrors));
+			}
 			$blockId = (int)$block['Block']['id'];
 
 			//framesテーブル更新
 			$frame['Frame']['block_id'] = $blockId;
-			//if (! $this->Frame->save($frame)) {
-			//	return false;
-			//}
+			if (! $this->Frame->save($frame)) {
+				throw new ForbiddenException(serialize($this->Frame->validationErrors));
+			}
 		}
 
 		return (int)$frame['Frame']['block_id'];
