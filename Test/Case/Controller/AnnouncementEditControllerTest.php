@@ -87,9 +87,6 @@ class AnnouncementEditControllerTest extends ControllerTestCase {
 				'Session',
 				'Security',
 				'RequestHandler',
-				'NetCommons.NetCommonsBlock', //use Announcement model
-				'NetCommons.NetCommonsFrame',
-				'NetCommons.NetCommonsRoomRole',
 			),
 		));
 
@@ -254,7 +251,7 @@ class AnnouncementEditControllerTest extends ControllerTestCase {
 		);
 
 		$this->setExpectedException('BadRequestException');
-		$result = $this->testAction('/announcements/announcement_edit/post/1.json',
+		$this->testAction('/announcements/announcement_edit/post/1.json',
 			array(
 				'method' => 'post',
 				'data' => $postData

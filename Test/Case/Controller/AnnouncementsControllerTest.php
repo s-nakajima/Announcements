@@ -57,6 +57,7 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  */
 	public function setUp() {
 		parent::setUp();
+		//$this->Language = ClassRegistry::init('Language');
 	}
 
 /**
@@ -87,9 +88,6 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 				'Session',
 				'Security',
 				'RequestHandler',
-				'NetCommons.NetCommonsBlock', //use Announcement model
-				'NetCommons.NetCommonsFrame',
-				'NetCommons.NetCommonsRoomRole',
 			),
 		));
 
