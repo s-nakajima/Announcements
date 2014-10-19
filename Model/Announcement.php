@@ -105,11 +105,22 @@ class Announcement extends AnnouncementsAppModel {
 			$conditions['status'] = NetCommonsBlockComponent::STATUS_PUBLISHED;
 		}
 
-		return $this->find('first', array(
+		$announcement = $this->find('first', array(
 				'conditions' => $conditions,
 				'order' => 'Announcement' . '.id DESC',
 			)
 		);
+
+		if (! $announcement) {
+			$announcement = $this->create();
+			$announcement['Announcement']['content'] = '';
+			$announcement['Announcement']['status'] = '0';
+			$announcement['Announcement']['block_id'] = '0';
+			$announcement['Announcement']['key'] = '';
+			$announcement['Announcement']['id'] = '0';
+		}
+
+		return $announcement;
 	}
 
 /**

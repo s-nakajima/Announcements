@@ -49,6 +49,8 @@ class AnnouncementEditController extends AnnouncementsAppController {
 		parent::beforeFilter();
 		$this->Auth->allow();
 
+		//var_dump($this->params, $this->data);
+
 		$frameId = (isset($this->params['pass'][0]) ? (int)$this->params['pass'][0] : 0);
 
 		//Roleのデータをviewにセット
@@ -121,9 +123,16 @@ class AnnouncementEditController extends AnnouncementsAppController {
 
 		//保存
 		if ($this->Announcement->saveAnnouncement($this->data)) {
+			$announcement = $this->Announcement->getAnnouncement(
+					$this->viewVars['blockId'],
+					$this->viewVars['contentEditable']
+				);
+
 			$result = array(
 				'message' => __d('announcements', 'Success saved.'),
+				'announcement' => $announcement,
 			);
+
 			$this->set(compact('result'));
 			$this->set('_serialize', 'result');
 			return $this->render(false);
@@ -131,4 +140,19 @@ class AnnouncementEditController extends AnnouncementsAppController {
 			throw new ForbiddenException(__d('announcements', 'Save failed.'));
 		}
 	}
+
+
+/**
+ * edit method
+ *
+ * @param int $frameId frames.id
+ * @return string JSON that indicates success
+ * @throws MethodNotAllowedException
+ * @throws ForbiddenException
+ */
+	public function edit($frameId = 0) {
+		var_dump($this->params, $this->data, $frameId);
+		return $this->render('AnnouncementEdit/edit');
+	}
+
 }

@@ -22,18 +22,11 @@ NetCommonsApp.controller('Announcements',
       $scope.PLUGIN_INDEX_URL = '/announcements/announcements/';
 
       /**
-       * Announcements plugin manage url
+       * Announcements edit url
        *
        * @const
        */
       $scope.PLUGIN_EDIT_URL = '/announcements/announcement_edit/';
-
-      /**
-       * Announcements plugin manage url
-       *
-       * @const
-       */
-      $scope.PLUGIN_DISPALAY_CHANGE_URL = '/announcements/announcement_display_change/';
 
       /**
        * Announcement
@@ -53,25 +46,13 @@ NetCommonsApp.controller('Announcements',
       };
 
       /**
-       * Initialize
+       * Show manage dialog
        *
        * @return {void}
        */
-      $scope.changeTab = function(tab) {
-        var templateUrl = '';
-        var controller = '';
-        switch (tab) {
-          case 'edit':
-            templateUrl = $scope.PLUGIN_EDIT_URL + 'view/' + $scope.frameId;
-            controller = 'Announcements.edit';
-            break;
-          case 'displayChange':
-            templateUrl = $scope.PLUGIN_DISPALAY_CHANGE_URL + 'view/' + $scope.frameId;
-            controller = 'Announcements.displayChange';
-            break;
-           default:
-            return;
-        }
+      $scope.showManage = function() {
+        var templateUrl = $scope.PLUGIN_EDIT_URL + 'view/' + $scope.frameId;
+        var controller = 'Announcements.edit';
 
         $modal.open({
           templateUrl: templateUrl,
@@ -80,54 +61,13 @@ NetCommonsApp.controller('Announcements',
           scope: $scope
         }).result.then(
           function(result) {
-            console.log($scope.announcement.Announcement.status);
+            console.log(result);
+
+            $scope.announcement = result.announcement;
+            console.log($scope.announcement);
           },
           function(reason) {}
         );
-      };
-
-      /**
-       * Show manage dialog
-       *
-       * @return {void}
-       */
-      $scope.showManage = function() {
-        $scope.changeTab('edit');
-      };
-    });
-
-
-/**
- * Announcements.edit Javascript
- *
- * @param {string} Controller name
- * @param {function(scope, http, sce, modalInstance, dialogs)} Controller
- */
-NetCommonsApp.controller('Announcements.displayChange',
-                         function($scope, $http, $sce, $modalInstance) {
-
-      /**
-       * dialog cancel
-       *
-       * @return {void}
-       */
-      $scope.cancel = function() {
-        $modalInstance.dismiss('canceled');
-      };
-
-      /**
-       * dialog save
-       *
-       * @param {number} status
-       * - 1: Publish
-       * - 2: Approve
-       * - 3: Draft
-       * - 4: Disapprove
-       * @return {void}
-       */
-      $scope.save = function() {
-        console.log('Announcements.displayChange.save');
-        $modalInstance.close();
       };
     });
 
@@ -140,6 +80,8 @@ NetCommonsApp.controller('Announcements.displayChange',
  */
 NetCommonsApp.controller('Announcements.edit',
                          function($scope, $http, $sce, $modalInstance) {
+
+      $scope.sending = false;
 
       ////todo: 後で消す
       //$scope.tinymceOptions = {
@@ -157,6 +99,28 @@ NetCommonsApp.controller('Announcements.edit',
       //  autoresize_min_height: 300//,
       //  //autoresize_min_height: 300
       //};
+
+       $scope.edit = {
+         _method: 'POST'
+       }
+
+       $scope.edit.data = {
+          Announcement: {
+            content: $scope.announcement.Announcement.content,
+            status: $scope.announcement.Announcement.status,
+            block_id: $scope.announcement.Announcement.block_id,
+            key: $scope.announcement.Announcement.key,
+            id: $scope.announcement.Announcement.id
+          },
+          Frame: {
+            frame_id: $scope.frameId
+          },
+          _Token: {
+            key: '',
+            fields: '',
+            unlocked: ''
+          }
+        };
 
       /**
        * dialog cancel
@@ -178,27 +142,29 @@ NetCommonsApp.controller('Announcements.edit',
        * @return {void}
        */
       $scope.save = function(status) {
+        $scope.sending = true;
+
         $http.get($scope.PLUGIN_EDIT_URL + 'form/' +
                   $scope.frameId + '/' + Math.random() + '.json')
             .success(function(data) {
               //フォームエレメント生成
               var form = $('<div>').html(data);
 
-              //postフォームに値セット
-              var findElement = 'select[name="data[Announcement][status]"]';
-              $scope.announcement.Announcement.status = status;
-              $(form).find(findElement).val(status);
+              //セキュリティキーセット
+              $scope.edit.data._Token.key =
+                    $(form).find('input[name="data[_Token][key]"]').val();
+              $scope.edit.data._Token.fields =
+                    $(form).find('input[name="data[_Token][fields]"]').val();
+              $scope.edit.data._Token.unlocked =
+                    $(form).find('input[name="data[_Token][unlocked]"]').val();
 
-              var findElement = 'textarea[name="data[Announcement][content]"]';
-              var content = $scope.announcement.Announcement.content;
-              $(form).find(findElement).val(content);
+              //ステータスセット
+              $scope.edit.data.Announcement.status = status;
 
-              //postパラメータ生成
-              var formSerialize = $(form).find('form').serializeArray();
-              console.log(formSerialize);
+              console.log($scope.edit);
 
               //登録情報をPOST
-              $scope.post(formSerialize);
+              $scope.sendPost($scope.edit);
             })
             .error(function(data, status, headers) {
               //keyの取得に失敗
@@ -218,18 +184,17 @@ NetCommonsApp.controller('Announcements.edit',
        * @param {Object.<string>} postParams
        * @return {void}
        */
-      $scope.post = function(postParams) {
-        $http.post($scope.PLUGIN_POST_URL + 'post/' +
+      $scope.sendPost = function(postParams) {
+        //$http.post($scope.PLUGIN_EDIT_URL + Math.random() + '.json',
+        $http.post($scope.PLUGIN_EDIT_URL + 'post/' +
             $scope.frameId + '/' + Math.random() + '.json',
+            //$.param(postParams))
+            //{data: postParams})
+            //postParams)
             $.param(postParams),
             {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
           .success(function(data) {
-              //$scope.notepad = data.data;
-              //$scope.showResult('success', data.message);
-
-              //$modalInstance.close($scope);
-              $modalInstance.close();
-              console.log(data);
+              $modalInstance.close(data);
             })
           .error(function(data, status, headers) {
               //if (! data.message) {

@@ -10,55 +10,26 @@
  */
 ?>
 
-<?php echo $this->element('manage_tab_header', array('tab' => 'edit')); ?>
+<?php echo $this->element('AnnouncementEdit/tab_header'); ?>
 
 <div class="modal-body">
 	<div class="tab-content">
 		<div id="nc-announcements-edit-<?php echo $frameId; ?>"
 				class="tab-pane active">
 			<p>
-				<textarea required
-						ui-tinymce="tinymceOptions"
-						ng-model="announcement.Announcement.content">
+				<form action="/announcements/announcement_edit/view/<?php echo $frameId; ?>/"
+					  id="AnnouncementFormForm<?php echo $frameId; ?>">
 
-				</textarea>
+					<textarea required
+							ui-tinymce="tinymceOptions"
+							ng-model="edit.data.Announcement.content">
+					</textarea>
+
+					<?php echo $this->element('AnnouncementEdit/common_form'); ?>
+				</form>
 			</p>
 
-			<p class="text-center">
-				<button type="button" class="btn btn-default" ng-click="cancel()">
-					<span class="glyphicon glyphicon-remove"></span>
-					<?php echo __d('announcements', 'Close'); ?>
-				</button>
-
-				<?php if (isset($announcement['Announcements']) && $contentPublishable &&
-							$announcement['Announcements']['status'] === NetCommonsBlockComponent::STATUS_APPROVED) : ?>
-					<button type="button" class="btn btn-default"
-							ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_DISAPPROVED ?>')">
-						<?php echo __d('announcements', 'Disapproval'); ?>
-					</button>
-
-				<?php else : ?>
-					<button type="button" class="btn btn-default"
-							ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_DRAFTED ?>')">
-						<?php echo __d('announcements', 'Temporary'); ?>
-					</button>
-
-				<?php endif; ?>
-
-				<?php if ($contentPublishable) : ?>
-					<button type="button" class="btn btn-primary"
-							ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_PUBLISHED ?>')">
-						<?php echo __d('announcements', 'Save'); ?>
-					</button>
-
-				<?php else : ?>
-					<button type="button" class="btn btn-primary"
-							ng-click="save'('<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>')">
-						<?php echo __d('announcements', 'Save'); ?>
-					</button>
-
-				<?php endif; ?>
-			</p>
+			<?php echo $this->element('AnnouncementEdit/button'); ?>
 		</div>
 	</div>
 </div>

@@ -50,7 +50,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->Auth->allow();
 
 		$frameId = (isset($this->params['pass'][0]) ? (int)$this->params['pass'][0] : 0);
-	var_dump($frameId);
 		//Frameのデータをviewにセット
 		if (! $this->NetCommonsFrame->setView($this, $frameId)) {
 			throw new ForbiddenException('NetCommonsFrame');
@@ -83,11 +82,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 				$this->viewVars['blockId'],
 				$this->viewVars['contentEditable']
 			);
-
-		if (! $announcement) {
-			$announcement = $this->Announcement->create();
-			$announcement['Announcement']['content'] = '';
-		}
 
 		//Announcementデータをviewにセット
 		$this->set('announcement', $announcement);

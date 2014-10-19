@@ -18,8 +18,8 @@
 	</button>
 
 	<ul class="nav nav-pills">
-		<li <?php echo ($tab === 'edit' ? 'class="active"' : ''); ?>>
-			<a href="#" <?php echo ($tab === 'edit' ? 'ng-click="changeTab(); cancel();"' : ''); ?>>
+		<li class="active">
+			<a href="#" ng-click="changeTab(); cancel();">
 				<?php echo __d('announcements', 'Announcement edit'); ?>
 			</a>
 		</li>
