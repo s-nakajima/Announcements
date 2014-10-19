@@ -26,7 +26,14 @@ NetCommonsApp.controller('Announcements',
        *
        * @const
        */
-      $scope.PLUGIN_MANAGE_URL = '/announcements/announcements/manage/';
+      $scope.PLUGIN_EDIT_URL = '/announcements/announcement_edit/';
+
+      /**
+       * Announcements plugin manage url
+       *
+       * @const
+       */
+      $scope.PLUGIN_DISPALAY_CHANGE_URL = '/announcements/announcement_display_change/';
 
       /**
        * Announcement
@@ -46,23 +53,81 @@ NetCommonsApp.controller('Announcements',
       };
 
       /**
-       * Show manage dialog
+       * Initialize
        *
        * @return {void}
        */
-      $scope.showManage = function() {
+      $scope.changeTab = function(tab) {
+        var templateUrl = '';
+        var controller = '';
+        switch (tab) {
+          case 'edit':
+            templateUrl = $scope.PLUGIN_EDIT_URL + 'view/' + $scope.frameId;
+            controller = 'Announcements.edit';
+            break;
+          case 'displayChange':
+            templateUrl = $scope.PLUGIN_DISPALAY_CHANGE_URL + 'view/' + $scope.frameId;
+            controller = 'Announcements.displayChange';
+            break;
+           default:
+            return;
+        }
+
         $modal.open({
-          templateUrl: $scope.PLUGIN_MANAGE_URL + $scope.frameId,
-          controller: 'Announcements.edit',
+          templateUrl: templateUrl,
+          controller: controller,
           backdrop: 'static',
           scope: $scope
-        }).
-        result.then(
+        }).result.then(
           function(result) {
             console.log($scope.announcement.Announcement.status);
           },
           function(reason) {}
         );
+      };
+
+      /**
+       * Show manage dialog
+       *
+       * @return {void}
+       */
+      $scope.showManage = function() {
+        $scope.changeTab('edit');
+      };
+    });
+
+
+/**
+ * Announcements.edit Javascript
+ *
+ * @param {string} Controller name
+ * @param {function(scope, http, sce, modalInstance, dialogs)} Controller
+ */
+NetCommonsApp.controller('Announcements.displayChange',
+                         function($scope, $http, $sce, $modalInstance) {
+
+      /**
+       * dialog cancel
+       *
+       * @return {void}
+       */
+      $scope.cancel = function() {
+        $modalInstance.dismiss('canceled');
+      };
+
+      /**
+       * dialog save
+       *
+       * @param {number} status
+       * - 1: Publish
+       * - 2: Approve
+       * - 3: Draft
+       * - 4: Disapprove
+       * @return {void}
+       */
+      $scope.save = function() {
+        console.log('Announcements.displayChange.save');
+        $modalInstance.close();
       };
     });
 
@@ -75,20 +140,6 @@ NetCommonsApp.controller('Announcements',
  */
 NetCommonsApp.controller('Announcements.edit',
                          function($scope, $http, $sce, $modalInstance) {
-
-      /**
-       * Announcements plugin edit form url
-       *
-       * @const
-       */
-      $scope.PLUGIN_FORM_URL = '/announcements/announcement_edit/form/';
-
-      /**
-       * Announcements plugin edit form url
-       *
-       * @const
-       */
-      $scope.PLUGIN_POST_URL = '/announcements/announcement_edit/post/';
 
       ////todo: 後で消す
       //$scope.tinymceOptions = {
@@ -127,7 +178,7 @@ NetCommonsApp.controller('Announcements.edit',
        * @return {void}
        */
       $scope.save = function(status) {
-        $http.get($scope.PLUGIN_FORM_URL +
+        $http.get($scope.PLUGIN_EDIT_URL + 'form/' +
                   $scope.frameId + '/' + Math.random() + '.json')
             .success(function(data) {
               //フォームエレメント生成
@@ -168,7 +219,7 @@ NetCommonsApp.controller('Announcements.edit',
        * @return {void}
        */
       $scope.post = function(postParams) {
-        $http.post($scope.PLUGIN_POST_URL +
+        $http.post($scope.PLUGIN_POST_URL + 'post/' +
             $scope.frameId + '/' + Math.random() + '.json',
             $.param(postParams),
             {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})

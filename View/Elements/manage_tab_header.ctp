@@ -1,6 +1,6 @@
 <?php
 /**
- * announcements manage template
+ * announcements manage tab header template element
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -18,22 +18,15 @@
 	</button>
 
 	<ul class="nav nav-pills">
-		<li class="active">
-			<a href="#nc-announcements-edit-<?php echo $frameId; ?>"
-					role="tab" data-toggle="tab" onclick="return false;">
+		<li <?php echo ($tab === 'edit' ? 'class="active"' : ''); ?>>
+			<a href="#" ng-click="cancel(); changeTab('edit');">
 				<?php echo __d('announcements', 'Announcement edit'); ?>
+			</a>
+		</li>
+		<li <?php echo ($tab === 'displayChange' ? 'class="active"' : ''); ?>>
+			<a href="#" ng-click="cancel(); changeTab('displayChange');">
+				<?php echo __d('announcements', 'Display change'); ?>
 			</a>
 		</li>
 	</ul>
 </div>
-
-<div class="modal-body">
-	<div class="tab-content">
-		<div id="nc-announcements-edit-<?php echo $frameId; ?>"
-				class="tab-pane active">
-
-			<?php echo $this->requestAction('/announcements/announcement_edit/view/' . $frameId, array('return')); ?>
-		</div>
-	</div>
-</div>
-

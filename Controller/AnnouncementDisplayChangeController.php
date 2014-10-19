@@ -1,6 +1,6 @@
 <?php
 /**
- * Announcements Controller
+ * Announcement edit Controller
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -12,12 +12,12 @@
 App::uses('AnnouncementsAppController', 'Announcements.Controller');
 
 /**
- * Announcements Controller
+ * Announcement edit Controller
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Controller
  */
-class AnnouncementsController extends AnnouncementsAppController {
+class AnnouncementDisplayChangeController extends AnnouncementsAppController {
 
 /**
  * use model
@@ -34,7 +34,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @var array
  */
 	public $components = array(
-		'NetCommons.NetCommonsBlock', //use Announcement model
+		'NetCommons.NetCommonsBlock', //use Announcement model or view
 		'NetCommons.NetCommonsFrame',
 		'NetCommons.NetCommonsRoomRole',
 	);
@@ -50,14 +50,20 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->Auth->allow();
 
 		$frameId = (isset($this->params['pass'][0]) ? (int)$this->params['pass'][0] : 0);
-	var_dump($frameId);
-		//Frameのデータをviewにセット
-		if (! $this->NetCommonsFrame->setView($this, $frameId)) {
-			throw new ForbiddenException('NetCommonsFrame');
-		}
+
 		//Roleのデータをviewにセット
 		if (! $this->NetCommonsRoomRole->setView($this)) {
-			throw new ForbiddenException('NetCommonsRoomRole');
+			throw new ForbiddenException();
+		}
+
+		//編集権限チェック
+		if (! $this->viewVars['contentEditable']) {
+			throw new ForbiddenException();
+		}
+
+		//Frameのデータをviewにセット
+		if (! $this->NetCommonsFrame->setView($this, $frameId)) {
+			throw new ForbiddenException();
 		}
 	}
 
@@ -84,14 +90,40 @@ class AnnouncementsController extends AnnouncementsAppController {
 				$this->viewVars['contentEditable']
 			);
 
-		if (! $announcement) {
-			$announcement = $this->Announcement->create();
-			$announcement['Announcement']['content'] = '';
-		}
-
-		//Announcementデータをviewにセット
 		$this->set('announcement', $announcement);
 
-		return $this->render('Announcements/view');
+		return $this->render('AnnouncementDisplayChange/view', false);
+	}
+
+/**
+ * form method
+ *
+ * @param int $frameId frames.id
+ * @return CakeResponse A response object containing the rendered view.
+ */
+	public function form($frameId = 0) {
+		$this->view($frameId);
+		return $this->render('AnnouncementDisplayChange/form', false);
+	}
+
+/**
+ * post method
+ *
+ * @param int $frameId frames.id
+ * @return string JSON that indicates success
+ * @throws MethodNotAllowedException
+ * @throws ForbiddenException
+ */
+	public function post($frameId = 0) {
+		if (! $this->request->isPost()) {
+			throw new MethodNotAllowedException();
+		}
+
+		$result = array(
+			'message' => __d('announcements', 'Success AnnouncementDisplayChangeController saved.'),
+		);
+		$this->set(compact('result'));
+		$this->set('_serialize', 'result');
+		return $this->render(false);
 	}
 }

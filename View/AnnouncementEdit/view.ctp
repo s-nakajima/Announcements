@@ -10,47 +10,55 @@
  */
 ?>
 
-<p>
-	<textarea required
-			ui-tinymce="tinymceOptions"
-			ng-model="announcement.Announcement.content">
+<?php echo $this->element('manage_tab_header', array('tab' => 'edit')); ?>
 
-	</textarea>
-</p>
+<div class="modal-body">
+	<div class="tab-content">
+		<div id="nc-announcements-edit-<?php echo $frameId; ?>"
+				class="tab-pane active">
+			<p>
+				<textarea required
+						ui-tinymce="tinymceOptions"
+						ng-model="announcement.Announcement.content">
 
-<p class="text-center">
-	<button type="button" class="btn btn-default" ng-click="cancel()">
-		<span class="glyphicon glyphicon-remove"></span>
-		<?php echo __d('announcements', 'Close'); ?>
-	</button>
+				</textarea>
+			</p>
 
-	<?php if (isset($announcement['Announcements']) && $contentPublishable &&
-				$announcement['Announcements']['status'] === NetCommonsBlockComponent::STATUS_APPROVED) : ?>
-		<button type="button" class="btn btn-default"
-				ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_DISAPPROVED ?>')">
-			<?php echo __d('announcements', 'Disapproval'); ?>
-		</button>
+			<p class="text-center">
+				<button type="button" class="btn btn-default" ng-click="cancel()">
+					<span class="glyphicon glyphicon-remove"></span>
+					<?php echo __d('announcements', 'Close'); ?>
+				</button>
 
-	<?php else : ?>
-		<button type="button" class="btn btn-default"
-				ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_DRAFTED ?>')">
-			<?php echo __d('announcements', 'Temporary'); ?>
-		</button>
+				<?php if (isset($announcement['Announcements']) && $contentPublishable &&
+							$announcement['Announcements']['status'] === NetCommonsBlockComponent::STATUS_APPROVED) : ?>
+					<button type="button" class="btn btn-default"
+							ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_DISAPPROVED ?>')">
+						<?php echo __d('announcements', 'Disapproval'); ?>
+					</button>
 
-	<?php endif; ?>
+				<?php else : ?>
+					<button type="button" class="btn btn-default"
+							ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_DRAFTED ?>')">
+						<?php echo __d('announcements', 'Temporary'); ?>
+					</button>
 
-	<?php if ($contentPublishable) : ?>
-		<button type="button" class="btn btn-primary"
-				ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_PUBLISHED ?>')">
-			<?php echo __d('announcements', 'Save'); ?>
-		</button>
+				<?php endif; ?>
 
-	<?php else : ?>
-		<button type="button" class="btn btn-primary"
-				ng-click="save'('<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>')">
-			<?php echo __d('announcements', 'Save'); ?>
-		</button>
+				<?php if ($contentPublishable) : ?>
+					<button type="button" class="btn btn-primary"
+							ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_PUBLISHED ?>')">
+						<?php echo __d('announcements', 'Save'); ?>
+					</button>
 
-	<?php endif; ?>
-</p>
+				<?php else : ?>
+					<button type="button" class="btn btn-primary"
+							ng-click="save'('<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>')">
+						<?php echo __d('announcements', 'Save'); ?>
+					</button>
 
+				<?php endif; ?>
+			</p>
+		</div>
+	</div>
+</div>
