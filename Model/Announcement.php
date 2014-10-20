@@ -94,7 +94,7 @@ class Announcement extends AnnouncementsAppModel {
  * get content data
  *
  * @param int $blockId blocks.id
- * @param boolean $contentEditable true can edit the content, false not can edit the content.
+ * @param bool $contentEditable true can edit the content, false not can edit the content.
  * @return array
  */
 	public function getAnnouncement($blockId, $contentEditable) {
