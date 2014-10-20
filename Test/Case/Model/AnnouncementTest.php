@@ -45,7 +45,7 @@ class AnnouncementTest extends CakeTestCase {
 		parent::setUp();
 		//$this->Language = ClassRegistry::init('Language');
 		$this->Announcement = ClassRegistry::init('Announcements.Announcement');
-		//$this->Block = ClassRegistry::init('Blocks.Block');
+		$this->Block = ClassRegistry::init('Blocks.Block');
 		//$this->Block = $this->getMockByModel('Blocks.Block', array('save'));
 		//$this->Block->expects($this->once())
 		//		->method('save')
@@ -60,7 +60,7 @@ class AnnouncementTest extends CakeTestCase {
  */
 	public function tearDown() {
 		unset($this->Announcement);
-		//unset($this->Block);
+		unset($this->Block);
 		parent::tearDown();
 	}
 
@@ -78,24 +78,28 @@ class AnnouncementTest extends CakeTestCase {
 			'modified_user',
 			'modified'
 		);
+
+		//Announcementデータのテスト
 		foreach ($unsets as $key) {
 			if (array_key_exists($key, $result['Announcement'])) {
 				unset($result['Announcement'][$key]);
 			}
 		}
-		foreach ($unsets as $key) {
-			if (array_key_exists($key, $result['Block'])) {
-				unset($result['Block'][$key]);
-			}
-		}
 
-		//Announcementデータのテスト
 		$this->assertArrayHasKey('Announcement', $result, 'Error ArrayHasKey Announcement');
 		$this->assertEquals($expected['Announcement'], $result['Announcement'], 'Error Equals Announcement');
 
 		//Blockデータのテスト
-		$this->assertArrayHasKey('Block', $result, 'Error ArrayHasKey Block');
-		$this->assertEquals($expected['Block'], $result['Block'], 'Error Equals Block');
+		if (isset($expected['Block'])) {
+			foreach ($unsets as $key) {
+				if (array_key_exists($key, $result['Block'])) {
+					unset($result['Block'][$key]);
+				}
+			}
+
+			$this->assertArrayHasKey('Block', $result, 'Error ArrayHasKey Block');
+			$this->assertEquals($expected['Block'], $result['Block'], 'Error Equals Block');
+		}
 	}
 
 /**
@@ -157,6 +161,31 @@ class AnnouncementTest extends CakeTestCase {
 				'key' => 'block_1',
 				'name' => '',
 			)
+		);
+
+		$this->__assertGetAnnouncement($expected, $result);
+	}
+
+/**
+ * testGetAnnouncementByNoBlockId method
+ *
+ * @return void
+ */
+	public function testGetAnnouncementByNoBlockId() {
+		$blockId = 0;
+		$contentEditable = false;
+		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
+
+		$expected = array(
+			'Announcement' => array(
+				'block_id' => '0',
+				'key' => '',
+				'status' => '0',
+				'content' => '',
+				'is_auto_translated' => '0',
+				'key' => '',
+				'id' => '0'
+			),
 		);
 
 		$this->__assertGetAnnouncement($expected, $result);

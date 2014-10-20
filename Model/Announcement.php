@@ -145,7 +145,8 @@ class Announcement extends AnnouncementsAppModel {
 		if (! $frame) {
 			return false;
 		}
-		if (! $frame['Frame']['block_id']) {
+		if (! isset($frame['Frame']['block_id']) ||
+				$frame['Frame']['block_id'] === '0') {
 			//announcementsテーブルのkey生成
 			$postData['Announcement']['key'] = hash('sha256', 'announcement_' . microtime());
 		}
@@ -182,7 +183,8 @@ class Announcement extends AnnouncementsAppModel {
  *
  */
 	private function __saveBlock($frame) {
-		if (! $frame['Frame']['block_id']) {
+		if (! isset($frame['Frame']['block_id']) ||
+				$frame['Frame']['block_id'] === '0') {
 			//blocksテーブル登録
 			$block = array();
 			$block['Block']['room_id'] = $frame['Frame']['room_id'];
