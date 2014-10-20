@@ -13,20 +13,20 @@
 <p class="text-center">
 	<button type="button" class="btn btn-default" ng-click="cancel()" ng-disabled="sending">
 		<span class="glyphicon glyphicon-remove"></span>
-		<?php echo __d('announcements', 'Close'); ?>
+		<?php echo __d('net_commons', 'Close'); ?>
 	</button>
 
 	<?php if (isset($announcement['Announcements']) && $contentPublishable &&
 				$announcement['Announcements']['status'] === NetCommonsBlockComponent::STATUS_APPROVED) : ?>
 		<button type="button" class="btn btn-default" ng-disabled="sending"
 				ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_DISAPPROVED ?>')">
-			<?php echo __d('announcements', 'Disapproval'); ?>
+			<?php echo __d('net_commons', 'Disapproval'); ?>
 		</button>
 
 	<?php else : ?>
 		<button type="button" class="btn btn-default" ng-disabled="sending"
 				ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_DRAFTED ?>')">
-			<?php echo __d('announcements', 'Temporary'); ?>
+			<?php echo __d('net_commons', 'Draft'); ?>
 		</button>
 
 	<?php endif; ?>
@@ -34,13 +34,13 @@
 	<?php if ($contentPublishable) : ?>
 		<button type="button" class="btn btn-primary" ng-disabled="sending"
 				ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_PUBLISHED ?>')">
-			<?php echo __d('announcements', 'Save'); ?>
+			<?php echo __d('net_commons', 'Publish'); ?>
 		</button>
 
 	<?php else : ?>
 		<button type="button" class="btn btn-primary" ng-disabled="sending"
 				ng-click="save'('<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>')">
-			<?php echo __d('announcements', 'Save'); ?>
+			<?php echo __d('net_commons', 'Approval'); ?>
 		</button>
 
 	<?php endif; ?>

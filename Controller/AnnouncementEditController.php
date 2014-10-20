@@ -127,7 +127,7 @@ class AnnouncementEditController extends AnnouncementsAppController {
 				);
 
 			$result = array(
-				'name' => __d('announcements', 'Success saved.'),
+				'name' => __d('net_commons', 'Successfully finished.'),
 				'announcement' => $announcement,
 			);
 
@@ -135,7 +135,7 @@ class AnnouncementEditController extends AnnouncementsAppController {
 			$this->set('_serialize', 'result');
 			return $this->render(false);
 		} else {
-			throw new ForbiddenException(__d('announcements', 'Save failed.'));
+			throw new ForbiddenException(__d('net_commons', 'Failed to register data.'));
 		}
 	}
 }

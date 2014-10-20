@@ -224,7 +224,7 @@ class AnnouncementEditControllerLoginUserTest extends ControllerTestCase {
 		$this->assertEquals('result', $this->vars['_serialize']);
 
 		$result = array_shift($this->vars['result']);
-		$this->assertEquals('Success saved.', $result);
+		$this->assertEquals(__d('net_commons', 'Successfully finished.'), $result);
 
 		$this->assertArrayHasKey('announcement', $this->vars['result']);
 	}

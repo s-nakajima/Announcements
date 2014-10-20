@@ -12,14 +12,14 @@
 
 <div class="modal-header">
 	<button class="close" type="button"
-			tooltip="<?php echo __d('announcements', 'Close'); ?>"
+			tooltip="<?php echo __d('net_commons', 'Close'); ?>"
 			ng-click="cancel()">
 		<span class="glyphicon glyphicon-remove small"></span>
 	</button>
 
 	<ul class="nav nav-pills">
 		<li class="active">
-			<a href="#" ng-click="changeTab(); cancel();">
+			<a href="#" ng-click="showManage(); cancel();">
 				<?php echo __d('announcements', 'Announcement edit'); ?>
 			</a>
 		</li>

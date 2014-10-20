@@ -20,7 +20,7 @@
 
 		<p class="text-right">
 			<button class="btn btn-primary"
-					tooltip="<?php echo __d('announcements', 'Manage'); ?>"
+					tooltip="<?php echo __d('net_commons', 'Manage'); ?>"
 					ng-click="showManage()">
 
 				<span class="glyphicon glyphicon-cog"> </span>
