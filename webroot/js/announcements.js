@@ -211,3 +211,116 @@ NetCommonsApp.controller('Announcements.edit',
       };
 
     });
+
+
+/**
+ * Announcements.publish Javascript
+ *
+ * @param {string} Controller name
+ * @param {function(scope, http)} Controller
+ */
+NetCommonsApp.controller('Announcements.publish',
+                         function($scope, $http) {
+
+      /**
+       * sending
+       *
+       * @type {string}
+       */
+      $scope.sending = false;
+
+      /**
+       * edit _method
+       *
+       * @type {Object.<string>}
+       */
+      $scope.edit = {
+        _method: 'POST'
+      };
+
+      /**
+       * edit data
+       *
+       * @type {Object.<string>}
+       */
+      $scope.edit.data = {
+        Announcement: {
+          content: $scope.announcement.Announcement.content,
+          status: $scope.announcement.Announcement.status,
+          block_id: $scope.announcement.Announcement.block_id,
+          key: $scope.announcement.Announcement.key,
+          id: $scope.announcement.Announcement.id
+        },
+        Frame: {
+          frame_id: $scope.frameId
+        },
+        _Token: {
+          key: '',
+          fields: '',
+          unlocked: ''
+        }
+      };
+
+      /**
+       * publish
+       *
+       * @param {number} status
+       * - 1: Publish
+       * @return {void}
+       */
+      $scope.save = function(status) {
+        if (status !== $scope.STATUS_PUBLISHED) {
+          return false;
+        }
+        $scope.sending = true;
+
+        $http.get($scope.PLUGIN_EDIT_URL + 'form/' +
+                  $scope.frameId + '/' + Math.random() + '.json')
+            .success(function(data) {
+              //フォームエレメント生成
+              var form = $('<div>').html(data);
+
+              //セキュリティキーセット
+              $scope.edit.data._Token.key =
+                  $(form).find('input[name="data[_Token][key]"]').val();
+              $scope.edit.data._Token.fields =
+                  $(form).find('input[name="data[_Token][fields]"]').val();
+              $scope.edit.data._Token.unlocked =
+                  $(form).find('input[name="data[_Token][unlocked]"]').val();
+
+              //ステータスセット
+              $scope.edit.data.Announcement.status = status;
+
+              //登録情報をPOST
+              $scope.sendPost($scope.edit);
+            })
+            .error(function(data, status) {
+              //keyの取得に失敗
+              $scope.flash.danger(status + ' ' + data.name);
+              $scope.sending = false;
+            });
+      };
+
+      /**
+       * send post
+       *
+       * @param {Object.<string>} postParams
+       * @return {void}
+       */
+      $scope.sendPost = function(postParams) {
+        $http.post($scope.PLUGIN_EDIT_URL + 'edit/' +
+            $scope.frameId + '/' + Math.random() + '.json',
+            $.param(postParams),
+            {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+          .success(function(data) {
+              angular.copy(data.announcement, $scope.announcement);
+              $scope.flash.success(data.name);
+              $scope.sending = false;
+            })
+          .error(function(data, status) {
+              $scope.flash.danger(status + ' ' + data.name);
+              $scope.sending = false;
+            });
+      };
+
+    });

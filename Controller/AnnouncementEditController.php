@@ -119,8 +119,11 @@ class AnnouncementEditController extends AnnouncementsAppController {
 			throw new MethodNotAllowedException();
 		}
 
+		$postData = $this->data;
+		unset($postData['Announcement']['id']);
+
 		//保存
-		if ($this->Announcement->saveAnnouncement($this->data)) {
+		if ($this->Announcement->saveAnnouncement($postData)) {
 			$announcement = $this->Announcement->getAnnouncement(
 					$this->viewVars['blockId'],
 					$this->viewVars['contentEditable']

@@ -19,6 +19,17 @@
 								<?php echo h(json_encode($announcement)); ?>)">
 
 		<p class="text-right">
+			<?php if ($contentPublishable &&
+						$announcement['Announcement']['status'] === NetCommonsBlockComponent::STATUS_APPROVED) : ?>
+				<button type="button" class="btn btn-danger"
+						ng-disabled="sending"
+						ng-controller="Announcements.publish"
+						ng-hide="(announcement.Announcement.status !== '<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>')"
+						ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_PUBLISHED ?>')">
+					<?php echo __d('net_commons', 'Publish'); ?>
+				</button>
+			<?php endif; ?>
+
 			<button class="btn btn-primary"
 					tooltip="<?php echo __d('net_commons', 'Manage'); ?>"
 					ng-click="showManage()">
