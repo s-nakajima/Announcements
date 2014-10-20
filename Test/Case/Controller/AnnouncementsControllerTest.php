@@ -66,8 +66,8 @@ class AnnouncementsControllerTest extends ControllerTestCase {
  * @return void
  */
 	public function tearDown() {
-			Configure::write('Config.language', null);
-	parent::tearDown();
+		Configure::write('Config.language', null);
+		parent::tearDown();
 	}
 
 /**
