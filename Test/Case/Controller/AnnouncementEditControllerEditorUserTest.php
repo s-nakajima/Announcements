@@ -23,6 +23,13 @@ App::uses('NetCommonsRoomRoleComponent', 'NetCommons.Controller/Component');
 class AnnouncementEditControllerEditorUserTest extends ControllerTestCase {
 
 /**
+ * Automatically mock controllers that aren't mocked
+ *
+ * @var bool
+ */
+	public $autoMock = false;
+
+/**
  * mock controller object
  *
  * @var Controller
