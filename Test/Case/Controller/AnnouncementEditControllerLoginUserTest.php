@@ -141,11 +141,11 @@ class AnnouncementEditControllerLoginUserTest extends ControllerTestCase {
 		//お知らせ編集
 		$this->assertTextContains('<textarea', $this->view);
 		$this->assertTextContains('ui-tinymce="tinymceOptions"', $this->view);
-		$this->assertTextContains('ng-model="announcement.Announcement.content"', $this->view);
+		$this->assertTextContains('ng-model="edit.data.Announcement.content"', $this->view);
 
 		$this->assertTextContains('ng-click="cancel()"', $this->view);
-		$this->assertTextContains('ng-click="save(3)"', $this->view);
-		$this->assertTextContains('ng-click="save(1)"', $this->view);
+		$this->assertTextContains('ng-click="save(\'3\')"', $this->view);
+		$this->assertTextContains('ng-click="save(\'1\')"', $this->view);
 	}
 
 /**
@@ -159,11 +159,11 @@ class AnnouncementEditControllerLoginUserTest extends ControllerTestCase {
 		//お知らせ編集
 		$this->assertTextContains('<textarea', $this->view);
 		$this->assertTextContains('ui-tinymce="tinymceOptions"', $this->view);
-		$this->assertTextContains('ng-model="announcement.Announcement.content"', $this->view);
+		$this->assertTextContains('ng-model="edit.data.Announcement.content"', $this->view);
 
 		$this->assertTextContains('ng-click="cancel()"', $this->view);
-		$this->assertTextContains('ng-click="save(3)"', $this->view);
-		$this->assertTextContains('ng-click="save(1)"', $this->view);
+		$this->assertTextContains('ng-click="save(\'3\')"', $this->view);
+		$this->assertTextContains('ng-click="save(\'1\')"', $this->view);
 	}
 
 /**
@@ -174,7 +174,7 @@ class AnnouncementEditControllerLoginUserTest extends ControllerTestCase {
 	public function testForm() {
 		$this->testAction('/announcements/announcement_edit/form/1', array('method' => 'get'));
 
-		//登録前のBym取得
+		//登録前のForm取得
 		$this->assertTextContains('<form action="', $this->view);
 		$this->assertTextContains('/announcements/announcement_edit/form/1', $this->view);
 		$this->assertTextContains('name="data[Announcement][content]"', $this->view);
@@ -191,7 +191,7 @@ class AnnouncementEditControllerLoginUserTest extends ControllerTestCase {
  */
 	public function testPostByRequestGet() {
 		$this->setExpectedException('MethodNotAllowedException');
-		$this->testAction('/announcements/announcement_edit/post/1', array('method' => 'get'));
+		$this->testAction('/announcements/announcement_edit/edit/1', array('method' => 'get'));
 	}
 
 /**
@@ -212,7 +212,7 @@ class AnnouncementEditControllerLoginUserTest extends ControllerTestCase {
 			)
 		);
 
-		$this->testAction('/announcements/announcement_edit/post/1.json',
+		$this->testAction('/announcements/announcement_edit/edit/1.json',
 			array(
 				'method' => 'post',
 				'data' => $postData
@@ -220,7 +220,11 @@ class AnnouncementEditControllerLoginUserTest extends ControllerTestCase {
 		);
 
 		$this->assertEquals('result', $this->vars['_serialize']);
-		$this->assertEquals(array('message' => 'Success saved.'), $this->vars['result']);
+
+		$result = array_shift($this->vars['result']);
+		$this->assertEquals('Success saved.', $result);
+
+		$this->assertArrayHasKey('announcement', $this->vars['result']);
 	}
 
 /**
@@ -242,7 +246,7 @@ class AnnouncementEditControllerLoginUserTest extends ControllerTestCase {
 		);
 
 		$this->setExpectedException('ForbiddenException');
-		$this->testAction('/announcements/announcement_edit/post/1.json',
+		$this->testAction('/announcements/announcement_edit/edit/1.json',
 			array(
 				'method' => 'post',
 				'data' => $postData

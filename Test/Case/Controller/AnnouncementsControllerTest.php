@@ -91,16 +91,6 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 	}
 
 /**
- * testIndexByNoSetBlockId method
- *
- * @return void
- */
-	public function testIndexByNoSetBlockId() {
-		$this->testAction('/announcements/announcements/index/2', array('method' => 'get'));
-		$this->assertEmpty(trim($this->view));
-	}
-
-/**
  * testView method
  *
  * @return void
@@ -120,15 +110,5 @@ class AnnouncementsControllerTest extends ControllerTestCase {
 	public function testViewByNoSetBlockId() {
 		$this->testAction('/announcements/announcements/view/2', array('method' => 'get'));
 		$this->assertEmpty(trim($this->view));
-	}
-
-/**
- * testManageByNoLogin method
- *
- * @return void
- */
-	public function testManageByNoLogin() {
-		$this->setExpectedException('ForbiddenException');
-		$this->testAction('/announcements/announcements/manage/1', array('method' => 'get'));
 	}
 }

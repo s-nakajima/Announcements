@@ -22,11 +22,11 @@ NetCommonsApp.controller('Announcements',
       $scope.PLUGIN_INDEX_URL = '/announcements/announcements/';
 
       /**
-       * Announcements plugin manage url
+       * Announcements edit url
        *
        * @const
        */
-      $scope.PLUGIN_MANAGE_URL = '/announcements/announcements/manage/';
+      $scope.PLUGIN_EDIT_URL = '/announcements/announcement_edit/';
 
       /**
        * Announcement
@@ -51,43 +51,22 @@ NetCommonsApp.controller('Announcements',
        * @return {void}
        */
       $scope.showManage = function() {
-        ////管理ダイアログ取得のURL
-        //var url = $scope.PLUGIN_MANAGE_URL + $scope.frameId;
-        //
-        ////管理ダイアログの取得
-        //NetCommonsApp.run(function($templateCache) {
-        //  $http.get(url)
-        //    .success(function(data) {
-        //        $templateCache.put(url, data);
-        //      })
-        //    .error(function() {
-        //        return false;
-        //      });
-        //});
-
-        //console.log($scope.announcement);
+        var templateUrl = $scope.PLUGIN_EDIT_URL + 'view/' + $scope.frameId;
+        var controller = 'Announcements.edit';
 
         $modal.open({
-          templateUrl: $scope.PLUGIN_MANAGE_URL + $scope.frameId,
-          controller: 'Announcements.edit',
+          templateUrl: templateUrl,
+          controller: controller,
           backdrop: 'static',
           scope: $scope
-        });
-
-        ////ダイアログの表示
-        //dialogs.create(url, 'Announcements.edit',
-        //    {frameId: $scope.frameId,
-        //      announcement: $scope.announcement,
-        //      tinymceOptions: $scope.tinymceOptions},
-        //    {keyboard: false, backdrop: 'static'})
-        //  .result.then(
-        //        function(announcement) {
-        //          $scope.announcement = announcement;
-        //        },
-        //        function() {
-        //          $scope.name = 'You decided not to enter in your name.';
-        //        }
-        //    );
+        }).result.then(
+            function(announcement) {
+              $scope.announcement = announcement;
+            },
+            function(reason) {
+              $scope.flash.close();
+            }
+        );
       };
     });
 
@@ -96,24 +75,17 @@ NetCommonsApp.controller('Announcements',
  * Announcements.edit Javascript
  *
  * @param {string} Controller name
- * @param {function(scope, http, sce, modalInstance, dialogs)} Controller
+ * @param {function(scope, http, modalInstance)} Controller
  */
 NetCommonsApp.controller('Announcements.edit',
-                         function($scope, $http, $sce, $modalInstance) {
+                         function($scope, $http, $modalInstance) {
 
       /**
-       * Announcements plugin edit form url
+       * sending
        *
-       * @const
+       * @type {string}
        */
-      $scope.PLUGIN_FORM_URL = '/announcements/announcement_edit/form/';
-
-      /**
-       * Announcements plugin edit form url
-       *
-       * @const
-       */
-      $scope.PLUGIN_POST_URL = '/announcements/announcement_edit/post/';
+      $scope.sending = false;
 
       ////todo: 後で消す
       //$scope.tinymceOptions = {
@@ -131,6 +103,38 @@ NetCommonsApp.controller('Announcements.edit',
       //  autoresize_min_height: 300//,
       //  //autoresize_min_height: 300
       //};
+
+      /**
+       * edit _method
+       *
+       * @type {Object.<string>}
+       */
+      $scope.edit = {
+        _method: 'POST'
+      };
+
+      /**
+       * edit data
+       *
+       * @type {Object.<string>}
+       */
+      $scope.edit.data = {
+        Announcement: {
+          content: $scope.announcement.Announcement.content,
+          status: $scope.announcement.Announcement.status,
+          block_id: $scope.announcement.Announcement.block_id,
+          key: $scope.announcement.Announcement.key,
+          id: $scope.announcement.Announcement.id
+        },
+        Frame: {
+          frame_id: $scope.frameId
+        },
+        _Token: {
+          key: '',
+          fields: '',
+          unlocked: ''
+        }
+      };
 
       /**
        * dialog cancel
@@ -152,33 +156,32 @@ NetCommonsApp.controller('Announcements.edit',
        * @return {void}
        */
       $scope.save = function(status) {
-        $http.get($scope.PLUGIN_FORM_URL +
-                  $scope.frameId + '/' + Math.random())
+        $scope.sending = true;
+
+        $http.get($scope.PLUGIN_EDIT_URL + 'form/' +
+                  $scope.frameId + '/' + Math.random() + '.json')
             .success(function(data) {
               //フォームエレメント生成
               var form = $('<div>').html(data);
 
-              //postフォームに値セット
-              var findElement = 'select[name="data[Announcement][status]"]';
-              $(form).find(findElement).val(status);
+              //セキュリティキーセット
+              $scope.edit.data._Token.key =
+                  $(form).find('input[name="data[_Token][key]"]').val();
+              $scope.edit.data._Token.fields =
+                  $(form).find('input[name="data[_Token][fields]"]').val();
+              $scope.edit.data._Token.unlocked =
+                  $(form).find('input[name="data[_Token][unlocked]"]').val();
 
-              var findElement = 'textarea[name="data[Announcement][content]"]';
-              var content = $scope.announcement.Announcement.content;
-              $(form).find(findElement).val(content);
-
-              //postパラメータ生成
-              var formSerialize = $(form).find('form').serializeArray();
-              console.log(formSerialize);
+              //ステータスセット
+              $scope.edit.data.Announcement.status = status;
 
               //登録情報をPOST
-              $scope.post(formSerialize);
+              $scope.sendPost($scope.edit);
             })
             .error(function(data, status) {
               //keyの取得に失敗
-              if (! data) {
-                data = {message: 'Bad Request', status: status};
-              }
-              //todo:後でメッセージ処理追加
+              $scope.flash.danger(status + ' ' + data.name);
+              $scope.sending = false;
             });
       };
 
@@ -188,26 +191,22 @@ NetCommonsApp.controller('Announcements.edit',
        * @param {Object.<string>} postParams
        * @return {void}
        */
-      $scope.post = function(postParams) {
-        $http.post($scope.PLUGIN_POST_URL +
+      $scope.sendPost = function(postParams) {
+        //$http.post($scope.PLUGIN_EDIT_URL + Math.random() + '.json',
+        $http.post($scope.PLUGIN_EDIT_URL + 'edit/' +
             $scope.frameId + '/' + Math.random() + '.json',
+            //$.param(postParams))
+            //{data: postParams})
+            //postParams)
             $.param(postParams),
             {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
           .success(function(data) {
-              //$scope.notepad = data.data;
-              //$scope.showResult('success', data.message);
-
-              //$modalInstance.close($scope);
-              $modalInstance.close();
-              console.log(data);
+              $scope.flash.success(data.name);
+              $modalInstance.close(data.announcement);
             })
-          .error(function(data, status, headers) {
-              //if (! data.message) {
-              //  $scope.showResult('error', headers);
-              //} else {
-              //  $scope.showResult('error', data.message);
-              //}
-              console.log(data);
+          .error(function(data, status) {
+              $scope.flash.danger(status + ' ' + data.name);
+              $scope.sending = false;
             });
       };
 

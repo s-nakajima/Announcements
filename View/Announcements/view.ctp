@@ -18,9 +18,6 @@
 		 ng-init="initialize(<?php echo (int)$frameId; ?>,
 								<?php echo h(json_encode($announcement)); ?>)">
 
-<?php endif; ?>
-
-	<?php if ($contentEditable) : ?>
 		<p class="text-right">
 			<button class="btn btn-primary"
 					tooltip="<?php echo __d('announcements', 'Manage'); ?>"
@@ -29,14 +26,23 @@
 				<span class="glyphicon glyphicon-cog"> </span>
 			</button>
 		</p>
-	<?php endif; ?>
 
+		<?php if ($announcement['Announcement']['content'] !== '') : ?>
+			<div ng-bind-html="announcement.Announcement.content">
+				<?php echo $announcement['Announcement']['content']; ?>
+			</div>
+		<?php endif; ?>
+
+		<p class="text-left">
+			<?php echo $this->element('Announcements/status_label'); ?>
+		</p>
+	</div>
+
+<?php else : ?>
 	<?php if ($announcement['Announcement']['content'] !== '') : ?>
 		<div>
 			<?php echo $announcement['Announcement']['content']; ?>
 		</div>
 	<?php endif; ?>
 
-<?php if ($contentEditable) : ?>
-	</div>
 <?php endif;

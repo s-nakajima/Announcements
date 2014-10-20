@@ -1,6 +1,6 @@
 <?php
 /**
- * AnnouncementsControllerLoginUser Test Case
+ * AnnouncementEditControllerLoginUser Test Case
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -15,17 +15,17 @@ App::uses('NetCommonsBlockComponent', 'NetCommons.Controller/Component');
 App::uses('NetCommonsRoomRoleComponent', 'NetCommons.Controller/Component');
 
 /**
- * AnnouncementsControllerLoginUser Test Case
+ * AnnouncementEditControllerLoginUser Test Case
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Controller
  */
-class AnnouncementsControllerLoginUserTest extends ControllerTestCase {
+class AnnouncementEditControllerEditorUserTest extends ControllerTestCase {
 
 /**
  * mock controller object
  *
- * @var null
+ * @var Controller
  */
 	public $Controller = null;
 
@@ -71,13 +71,13 @@ class AnnouncementsControllerLoginUserTest extends ControllerTestCase {
 	}
 
 /**
- * login method
+ * login　method
  *
  * @return void
  */
 	public function login() {
 		//ログイン処理
-		$this->Controller = $this->generate('Announcements.Announcements', array(
+		$this->Controller = $this->generate('Announcements.AnnouncementEdit', array(
 			'components' => array(
 				'Auth' => array('user'),
 				'Session',
@@ -92,8 +92,9 @@ class AnnouncementsControllerLoginUserTest extends ControllerTestCase {
 			->will($this->returnCallback(array($this, 'authUserCallback')));
 
 		$this->Controller->Auth->login(array(
-				'username' => 'admin',
-				'password' => 'admin',
+				'username' => 'editor',
+				'password' => 'editor',
+				'role_key' => 'editor',
 			)
 		);
 		$this->assertTrue($this->Controller->Auth->loggedIn(), 'login');
@@ -121,25 +122,29 @@ class AnnouncementsControllerLoginUserTest extends ControllerTestCase {
  */
 	public function authUserCallback() {
 		$user = array(
-			'id' => 1,
-			'username' => 'admin',
-			'role_key' => 'system_administrator',
+			'id' => 3,
+			'username' => 'editor',
+			'role_key' => 'editor',
 		);
 		CakeSession::write('Auth.User', $user);
 		return $user;
 	}
 
 /**
- * testManage method
+ * testForm method
  *
  * @return void
  */
-	public function testManage() {
-		$this->testAction('/announcements/announcements/manage/1', array('method' => 'get'));
+	public function testForm() {
+		$this->testAction('/announcements/announcement_edit/form/1', array('method' => 'get'));
 
-		//タブ
-		$this->assertTextContains('href="#nc-announcements-edit-1"', $this->view);
-		$this->assertTextContains('id="nc-announcements-edit-1"', $this->view);
-		$this->assertTextContains('role="tab" data-toggle="tab"', $this->view);
+		//登録前のForm取得
+		$this->assertTextContains('<form action="', $this->view);
+		$this->assertTextContains('/announcements/announcement_edit/form/1', $this->view);
+		$this->assertTextContains('name="data[Announcement][content]"', $this->view);
+		$this->assertTextContains('type="hidden" name="data[Frame][frame_id]"', $this->view);
+		$this->assertTextContains('type="hidden" name="data[Announcement][block_id]"', $this->view);
+		$this->assertTextContains('select name="data[Announcement][status]"', $this->view);
+		$this->assertTextContains('type="hidden" name="data[Announcement][key]"', $this->view);
 	}
 }

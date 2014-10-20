@@ -114,16 +114,23 @@ class AnnouncementEditController extends AnnouncementsAppController {
  * @throws MethodNotAllowedException
  * @throws ForbiddenException
  */
-	public function post($frameId = 0) {
+	public function edit($frameId = 0) {
 		if (! $this->request->isPost()) {
 			throw new MethodNotAllowedException();
 		}
 
 		//保存
 		if ($this->Announcement->saveAnnouncement($this->data)) {
+			$announcement = $this->Announcement->getAnnouncement(
+					$this->viewVars['blockId'],
+					$this->viewVars['contentEditable']
+				);
+
 			$result = array(
-				'message' => __d('announcements', 'Success saved.'),
+				'name' => __d('announcements', 'Success saved.'),
+				'announcement' => $announcement,
 			);
+
 			$this->set(compact('result'));
 			$this->set('_serialize', 'result');
 			return $this->render(false);

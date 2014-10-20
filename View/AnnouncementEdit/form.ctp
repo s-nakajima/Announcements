@@ -17,18 +17,6 @@ echo $this->Form->input('Announcement.content', array(
 		)
 	);
 
-echo $this->Form->input('Frame.frame_id', array(
-			'type' => 'hidden',
-			'value' => (int)$frameId,
-		)
-	);
-
-echo $this->Form->input('Announcement.block_id', array(
-			'type' => 'hidden',
-			'value' => (int)$blockId,
-		)
-	);
-
 if ($contentPublishable) {
 	$options = array(
 		NetCommonsBlockComponent::STATUS_PUBLISHED,
@@ -47,21 +35,6 @@ echo $this->Form->input('Announcement.status', array(
 		)
 	);
 
-if (isset($announcement['Announcement']['key'])) {
-	echo $this->Form->input('Announcement.key', array(
-				'type' => 'hidden',
-				'value' => $announcement['Announcement']['key'],
-			)
-		);
-}
-if (isset($announcement['Announcement']['id']) &&
-		$announcement['Announcement']['status'] === NetCommonsBlockComponent::STATUS_DRAFTED) {
-
-	echo $this->Form->input('Announcement.id', array(
-				'type' => 'hidden',
-				'value' => (int)$announcement['Announcement']['id'],
-			)
-		);
-}
+echo $this->element('AnnouncementEdit/common_form');
 
 echo $this->Form->end();

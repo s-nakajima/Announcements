@@ -105,11 +105,22 @@ class Announcement extends AnnouncementsAppModel {
 			$conditions['status'] = NetCommonsBlockComponent::STATUS_PUBLISHED;
 		}
 
-		return $this->find('first', array(
+		$announcement = $this->find('first', array(
 				'conditions' => $conditions,
 				'order' => 'Announcement' . '.id DESC',
 			)
 		);
+
+		if (! $announcement) {
+			$announcement = $this->create();
+			$announcement['Announcement']['content'] = '';
+			$announcement['Announcement']['status'] = '0';
+			$announcement['Announcement']['block_id'] = '0';
+			$announcement['Announcement']['key'] = '';
+			$announcement['Announcement']['id'] = '0';
+		}
+
+		return $announcement;
 	}
 
 /**
@@ -134,7 +145,8 @@ class Announcement extends AnnouncementsAppModel {
 		if (! $frame) {
 			return false;
 		}
-		if (! $frame['Frame']['block_id']) {
+		if (! isset($frame['Frame']['block_id']) ||
+				$frame['Frame']['block_id'] === '0') {
 			//announcementsテーブルのkey生成
 			$postData['Announcement']['key'] = hash('sha256', 'announcement_' . microtime());
 		}
@@ -171,7 +183,8 @@ class Announcement extends AnnouncementsAppModel {
  *
  */
 	private function __saveBlock($frame) {
-		if (! $frame['Frame']['block_id']) {
+		if (! isset($frame['Frame']['block_id']) ||
+				$frame['Frame']['block_id'] === '0') {
 			//blocksテーブル登録
 			$block = array();
 			$block['Block']['room_id'] = $frame['Frame']['room_id'];
