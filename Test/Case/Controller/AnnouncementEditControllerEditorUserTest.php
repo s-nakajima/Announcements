@@ -23,13 +23,6 @@ App::uses('NetCommonsRoomRoleComponent', 'NetCommons.Controller/Component');
 class AnnouncementEditControllerEditorUserTest extends ControllerTestCase {
 
 /**
- * Automatically mock controllers that aren't mocked
- *
- * @var bool
- */
-	public $autoMock = false;
-
-/**
  * mock controller object
  *
  * @var Controller
@@ -64,6 +57,7 @@ class AnnouncementEditControllerEditorUserTest extends ControllerTestCase {
  */
 	public function setUp() {
 		parent::setUp();
+		Configure::write('Config.language', 'ja');
 		$this->login();
 	}
 
@@ -74,6 +68,7 @@ class AnnouncementEditControllerEditorUserTest extends ControllerTestCase {
  */
 	public function tearDown() {
 		$this->logout();
+		Configure::write('Config.language', null);
 		parent::tearDown();
 	}
 

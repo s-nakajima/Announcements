@@ -57,6 +57,7 @@ class AnnouncementEditControllerTest extends ControllerTestCase {
  */
 	public function setUp() {
 		parent::setUp();
+		Configure::write('Config.language', 'ja');
 	}
 
 /**
@@ -65,6 +66,7 @@ class AnnouncementEditControllerTest extends ControllerTestCase {
  * @return void
  */
 	public function tearDown() {
+		Configure::write('Config.language', null);
 		parent::tearDown();
 	}
 

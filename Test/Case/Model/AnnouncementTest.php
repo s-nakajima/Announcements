@@ -46,7 +46,6 @@ class AnnouncementTest extends CakeTestCase {
 		//$this->Language = ClassRegistry::init('Language');
 		$this->Announcement = ClassRegistry::init('Announcements.Announcement');
 		$this->Block = ClassRegistry::init('Blocks.Block');
-		$this->Language = ClassRegistry::init('Language');
 		//$this->Block = $this->getMockByModel('Blocks.Block', array('save'));
 		//$this->Block->expects($this->once())
 		//		->method('save')
@@ -62,7 +61,6 @@ class AnnouncementTest extends CakeTestCase {
 	public function tearDown() {
 		unset($this->Announcement);
 		unset($this->Block);
-		unset($this->Language);
 		parent::tearDown();
 	}
 
