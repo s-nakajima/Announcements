@@ -161,11 +161,12 @@ class Announcement extends AnnouncementsAppModel {
 			$announcement['Announcement'] = $postData['Announcement'];
 			$announcement['Announcement']['block_id'] = $blockId;
 			$announcement['Announcement']['created_user'] = CakeSession::read('Auth.User.id');
-			if (! $this->save($announcement)) {
+			$announcement = $this->save($announcement);
+			if (! $announcement) {
 				throw new ForbiddenException(serialize($this->validationErrors));
 			}
 			$dataSource->commit();
-			return true;
+			return $announcement;
 
 		} catch (Exception $ex) {
 			CakeLog::error($ex->getTraceAsString());

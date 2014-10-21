@@ -60,9 +60,7 @@ NetCommonsApp.controller('Announcements',
           backdrop: 'static',
           scope: $scope
         }).result.then(
-            function(announcement) {
-              $scope.announcement = announcement;
-            },
+            function(result) {},
             function(reason) {
               $scope.flash.close();
             }
@@ -201,8 +199,9 @@ NetCommonsApp.controller('Announcements.edit',
             $.param(postParams),
             {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
           .success(function(data) {
+              angular.copy(data.announcement, $scope.announcement);
               $scope.flash.success(data.name);
-              $modalInstance.close(data.announcement);
+              $modalInstance.close();
             })
           .error(function(data, status) {
               $scope.flash.danger(status + ' ' + data.name);

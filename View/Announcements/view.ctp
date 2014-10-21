@@ -38,11 +38,9 @@
 			</button>
 		</p>
 
-		<?php if ($announcement['Announcement']['content'] !== '') : ?>
-			<div ng-bind-html="announcement.Announcement.content">
-				<?php echo $announcement['Announcement']['content']; ?>
-			</div>
-		<?php endif; ?>
+		<div ng-bind-html="announcement.Announcement.content">
+			<?php echo $announcement['Announcement']['content']; ?>
+		</div>
 
 		<p class="text-left">
 			<?php echo $this->element('Announcements/status_label'); ?>

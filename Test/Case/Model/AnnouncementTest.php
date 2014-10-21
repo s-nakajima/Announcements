@@ -209,7 +209,7 @@ class AnnouncementTest extends CakeTestCase {
 			)
 		);
 		$result = $this->Announcement->saveAnnouncement($postData);
-		$this->assertTrue($result, 'saveAnnouncement');
+		$this->assertArrayHasKey('Announcement', $result, 'Error saveAnnouncement');
 
 		$blockId = 1;
 		$contentEditable = true;
@@ -301,7 +301,7 @@ class AnnouncementTest extends CakeTestCase {
 			)
 		);
 		$result = $this->Announcement->saveAnnouncement($postData);
-		$this->assertTrue($result, 'saveAnnouncement');
+		$this->assertArrayHasKey('Announcement', $result, 'Error saveAnnouncement');
 
 		$blockId = 2;
 		$contentEditable = true;
