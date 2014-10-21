@@ -26,7 +26,9 @@
 						ng-controller="Announcements.publish"
 						ng-hide="(announcement.Announcement.status !== '<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>')"
 						ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_PUBLISHED ?>')">
-					<?php echo __d('net_commons', 'Publish'); ?>
+
+					<span class="glyphicon glyphicon-globe"></span>
+					<?php //echo __d('net_commons', 'Accept'); ?>
 				</button>
 			<?php endif; ?>
 
