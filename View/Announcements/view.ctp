@@ -22,6 +22,7 @@
 			<?php if ($contentPublishable &&
 						$announcement['Announcement']['status'] === NetCommonsBlockComponent::STATUS_APPROVED) : ?>
 				<button type="button" class="btn btn-danger"
+						tooltip="<?php echo __d('net_commons', 'Accept'); ?>"
 						ng-disabled="sending"
 						ng-controller="Announcements.publish"
 						ng-hide="(announcement.Announcement.status !== '<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>')"
