@@ -141,7 +141,7 @@ class Announcement extends AnnouncementsAppModel {
 		}
 
 		//frame関連のセット
-		$frame = $this->Frame->findById($postData['Frame']['frame_id']);
+		$frame = $this->Frame->findById($postData['Frame']['id']);
 		if (! $frame) {
 			return false;
 		}

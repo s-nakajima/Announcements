@@ -49,8 +49,6 @@ class AnnouncementEditController extends AnnouncementsAppController {
 		parent::beforeFilter();
 		$this->Auth->allow();
 
-		$frameId = (isset($this->params['pass'][0]) ? (int)$this->params['pass'][0] : 0);
-
 		//Roleのデータをviewにセット
 		if (! $this->NetCommonsRoomRole->setView($this)) {
 			throw new ForbiddenException();
@@ -58,11 +56,6 @@ class AnnouncementEditController extends AnnouncementsAppController {
 
 		//編集権限チェック
 		if (! $this->viewVars['contentEditable']) {
-			throw new ForbiddenException();
-		}
-
-		//Frameのデータをviewにセット
-		if (! $this->NetCommonsFrame->setView($this, $frameId)) {
 			throw new ForbiddenException();
 		}
 	}
@@ -82,8 +75,14 @@ class AnnouncementEditController extends AnnouncementsAppController {
  *
  * @param int $frameId frames.id
  * @return CakeResponse A response object containing the rendered view.
+ * @throws ForbiddenException
  */
 	public function view($frameId = 0) {
+		//Frameのデータをviewにセット
+		if (! $this->NetCommonsFrame->setView($this, $frameId)) {
+			throw new ForbiddenException();
+		}
+
 		//Announcementデータを取得
 		$announcement = $this->Announcement->getAnnouncement(
 				$this->viewVars['blockId'],
@@ -109,12 +108,11 @@ class AnnouncementEditController extends AnnouncementsAppController {
 /**
  * post method
  *
- * @param int $frameId frames.id
  * @return string JSON that indicates success
  * @throws MethodNotAllowedException
  * @throws ForbiddenException
  */
-	public function edit($frameId = 0) {
+	public function edit() {
 		if (! $this->request->isPost()) {
 			throw new MethodNotAllowedException();
 		}
@@ -122,7 +120,13 @@ class AnnouncementEditController extends AnnouncementsAppController {
 		$postData = $this->data;
 		unset($postData['Announcement']['id']);
 
-		//保存
+		$frameId = (isset($postData['Frame']['id']) ? (int)$postData['Frame']['id'] : 0);
+		//Frameのデータをviewにセット
+		if (! $this->NetCommonsFrame->setView($this, $frameId)) {
+			throw new ForbiddenException();
+		}
+
+		//登録
 		$result = $this->Announcement->saveAnnouncement($postData);
 		if (! $result) {
 			throw new ForbiddenException(__d('net_commons', 'Failed to register data.'));

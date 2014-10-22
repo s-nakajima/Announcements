@@ -51,7 +51,8 @@ NetCommonsApp.controller('Announcements',
        * @return {void}
        */
       $scope.showManage = function() {
-        var templateUrl = $scope.PLUGIN_EDIT_URL + 'view/' + $scope.frameId;
+        var templateUrl = $scope.PLUGIN_EDIT_URL +
+                              'view/' + $scope.frameId + '.json';
         var controller = 'Announcements.edit';
 
         $modal.open({
@@ -62,7 +63,13 @@ NetCommonsApp.controller('Announcements',
         }).result.then(
             function(result) {},
             function(reason) {
-              $scope.flash.close();
+              if (typeof reason.data === 'object') {
+                //openによるエラー
+                $scope.flash.danger(reason.status + ' ' + reason.data.name);
+              } else {
+                //キャンセル
+                $scope.flash.close();
+              }
             }
         );
       };
@@ -119,7 +126,7 @@ NetCommonsApp.controller('Announcements.edit',
           id: $scope.announcement.Announcement.id
         },
         Frame: {
-          frame_id: $scope.frameId
+          id: $scope.frameId
         },
         _Token: {
           key: '',
@@ -184,12 +191,7 @@ NetCommonsApp.controller('Announcements.edit',
        * @return {void}
        */
       $scope.sendPost = function(postParams) {
-        //$http.post($scope.PLUGIN_EDIT_URL + Math.random() + '.json',
-        $http.post($scope.PLUGIN_EDIT_URL + 'edit/' +
-            $scope.frameId + '/' + Math.random() + '.json',
-            //$.param(postParams))
-            //{data: postParams})
-            //postParams)
+        $http.post($scope.PLUGIN_EDIT_URL + 'edit/' + Math.random() + '.json',
             $.param(postParams),
             {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
           .success(function(data) {
@@ -245,7 +247,7 @@ NetCommonsApp.controller('Announcements.publish',
           id: $scope.announcement.Announcement.id
         },
         Frame: {
-          frame_id: $scope.frameId
+          id: $scope.frameId
         },
         _Token: {
           key: '',
@@ -301,8 +303,7 @@ NetCommonsApp.controller('Announcements.publish',
        * @return {void}
        */
       $scope.sendPost = function(postParams) {
-        $http.post($scope.PLUGIN_EDIT_URL + 'edit/' +
-            $scope.frameId + '/' + Math.random() + '.json',
+        $http.post($scope.PLUGIN_EDIT_URL + 'edit/' + Math.random() + '.json',
             $.param(postParams),
             {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
           .success(function(data) {

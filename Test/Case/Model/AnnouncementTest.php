@@ -205,7 +205,7 @@ class AnnouncementTest extends CakeTestCase {
 				'content' => 'change data',
 			),
 			'Frame' => array(
-				'frame_id' => '1'
+				'id' => '1'
 			)
 		);
 		$result = $this->Announcement->saveAnnouncement($postData);
@@ -251,7 +251,7 @@ class AnnouncementTest extends CakeTestCase {
 				'content' => 'change data',
 			),
 			'Frame' => array(
-				'frame_id' => '10'
+				'id' => '10'
 			)
 		);
 		$result = $this->Announcement->saveAnnouncement($postData);
@@ -297,7 +297,7 @@ class AnnouncementTest extends CakeTestCase {
 				'content' => 'add data',
 			),
 			'Frame' => array(
-				'frame_id' => '2'
+				'id' => '2'
 			)
 		);
 		$result = $this->Announcement->saveAnnouncement($postData);
@@ -350,7 +350,7 @@ class AnnouncementTest extends CakeTestCase {
 				'content' => 'change data',
 			),
 			'Frame' => array(
-				'frame_id' => '1'
+				'id' => '1'
 			)
 		);
 		$result = $this->Announcement->saveAnnouncement($postData);

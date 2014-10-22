@@ -144,7 +144,7 @@ class AnnouncementEditControllerEditorUserTest extends ControllerTestCase {
 		$this->assertTextContains('<form action="', $this->view);
 		$this->assertTextContains('/announcements/announcement_edit/form/1', $this->view);
 		$this->assertTextContains('name="data[Announcement][content]"', $this->view);
-		$this->assertTextContains('type="hidden" name="data[Frame][frame_id]"', $this->view);
+		$this->assertTextContains('type="hidden" name="data[Frame][id]"', $this->view);
 		$this->assertTextContains('type="hidden" name="data[Announcement][block_id]"', $this->view);
 		$this->assertTextContains('select name="data[Announcement][status]"', $this->view);
 		$this->assertTextContains('type="hidden" name="data[Announcement][key]"', $this->view);

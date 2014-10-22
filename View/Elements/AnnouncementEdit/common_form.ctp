@@ -9,10 +9,10 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-echo $this->Form->input('Frame.frame_id', array(
+echo $this->Form->input('Frame.id', array(
 			'type' => 'hidden',
 			'value' => (int)$frameId,
-			'ng-model' => 'edit.data.Frame.frame_id'
+			'ng-model' => 'edit.data.Frame.id'
 		)
 	);
 
