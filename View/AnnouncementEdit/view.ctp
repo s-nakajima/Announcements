@@ -20,7 +20,7 @@
 				<form action="/announcements/announcement_edit/view/<?php echo $frameId; ?>/"
 					  id="AnnouncementFormForm<?php echo $frameId; ?>">
 
-					<textarea required
+					<textarea required class="form-control" rows="3"
 							ui-tinymce="tinymceOptions"
 							ng-model="edit.data.Announcement.content">
 					</textarea>
