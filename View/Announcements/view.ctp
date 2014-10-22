@@ -29,7 +29,6 @@
 						ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_PUBLISHED ?>')">
 
 					<span class="glyphicon glyphicon-globe"></span>
-					<?php //echo __d('net_commons', 'Accept'); ?>
 				</button>
 			<?php endif; ?>
 
@@ -41,9 +40,7 @@
 			</button>
 		</p>
 
-		<div ng-bind-html="announcement.Announcement.content">
-			<?php echo $announcement['Announcement']['content']; ?>
-		</div>
+		<div ng-bind-html="htmlContent()"></div>
 
 		<p class="text-left">
 			<?php echo $this->element('Announcements/status_label'); ?>

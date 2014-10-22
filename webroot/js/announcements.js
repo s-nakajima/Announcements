@@ -66,6 +66,17 @@ NetCommonsApp.controller('Announcements',
             }
         );
       };
+
+      /**
+       * htmlContent method
+       *
+       * @return {string}
+       */
+      $scope.htmlContent = function() {
+        //ng-bind-html では、style属性まで消えてしまうため
+        return $sce.trustAsHtml($scope.announcement.Announcement.content);
+      };
+
     });
 
 
@@ -84,23 +95,6 @@ NetCommonsApp.controller('Announcements.edit',
        * @type {string}
        */
       $scope.sending = false;
-
-      ////todo: 後で消す
-      //$scope.tinymceOptions = {
-      //  //mode: 'exact',
-      //  menubar: ' ',
-      //  plugins: 'preview textcolor advlist autolink charmap code' +
-      //            ' link fullscreen autoresize',
-      //  toolbar: 'preview | fullscreen | undo redo  |' +
-      //      ' forecolor |' +
-      //      ' styleselect |' +
-      //      ' bold italic |' +
-      //      ' alignleft aligncenter alignright alignjustify |' +
-      //      ' bullist numlist outdent indent |' +
-      //      ' link |',
-      //  autoresize_min_height: 300//,
-      //  //autoresize_min_height: 300
-      //};
 
       /**
        * edit _method
