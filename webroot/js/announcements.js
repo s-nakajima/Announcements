@@ -69,7 +69,7 @@ NetCommonsApp.controller('Announcements',
               if (typeof reason.data === 'object') {
                 //openによるエラー
                 $scope.flash.danger(reason.status + ' ' + reason.data.name);
-              } else {
+              } else if (reason === 'canceled') {
                 //キャンセル
                 $scope.flash.close();
               }
