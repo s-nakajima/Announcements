@@ -20,7 +20,7 @@ App::uses('NetCommonsBlockComponent', 'NetCommons.Controller/Component');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Model
  */
-class AnnouncementTest extends CakeTestCase {
+class AnnouncementSaveTest extends CakeTestCase {
 
 /**
  * Fixtures
@@ -43,14 +43,7 @@ class AnnouncementTest extends CakeTestCase {
  */
 	public function setUp() {
 		parent::setUp();
-		//$this->Language = ClassRegistry::init('Language');
 		$this->Announcement = ClassRegistry::init('Announcements.Announcement');
-		$this->Block = ClassRegistry::init('Blocks.Block');
-		//$this->Block = $this->getMockByModel('Blocks.Block', array('save'));
-		//$this->Block->expects($this->once())
-		//		->method('save')
-		//		->will($this->returnValue(false));
-		//ClassRegistry::addObject('block');
 	}
 
 /**
@@ -103,100 +96,13 @@ class AnnouncementTest extends CakeTestCase {
 	}
 
 /**
- * testGetAnnouncement method
- *
- * @return void
- */
-	public function testGetAnnouncement() {
-		$blockId = 1;
-		$contentEditable = true;
-		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
-
-		$expected = array(
-			'Announcement' => array(
-				'id' => '2',
-				'block_id' => '1',
-				'key' => 'announcement_1',
-				'status' => '3',
-				'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-				'is_auto_translated' => true,
-				'translation_engine' => 'Lorem ipsum dolor sit amet',
-			),
-			'Block' => array(
-				'id' => '1',
-				'language_id' => '2',
-				'room_id' => '1',
-				'key' => 'block_1',
-				'name' => '',
-			)
-		);
-
-		$this->__assertGetAnnouncement($expected, $result);
-	}
-
-/**
- * testGetAnnouncementByNoEditable method
- *
- * @return void
- */
-	public function testGetAnnouncementByNoEditable() {
-		$blockId = 1;
-		$contentEditable = false;
-		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
-
-		$expected = array(
-			'Announcement' => array(
-				'id' => '1',
-				'block_id' => '1',
-				'key' => 'announcement_1',
-				'status' => '1',
-				'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-				'is_auto_translated' => true,
-				'translation_engine' => 'Lorem ipsum dolor sit amet',
-			),
-			'Block' => array(
-				'id' => '1',
-				'language_id' => '2',
-				'room_id' => '1',
-				'key' => 'block_1',
-				'name' => '',
-			)
-		);
-
-		$this->__assertGetAnnouncement($expected, $result);
-	}
-
-/**
- * testGetAnnouncementByNoBlockId method
- *
- * @return void
- */
-	public function testGetAnnouncementByNoBlockId() {
-		$blockId = 0;
-		$contentEditable = false;
-		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
-
-		$expected = array(
-			'Announcement' => array(
-				'block_id' => '0',
-				'key' => '',
-				'status' => '0',
-				'content' => '',
-				'is_auto_translated' => '0',
-				'key' => '',
-				'id' => '0'
-			),
-		);
-
-		$this->__assertGetAnnouncement($expected, $result);
-	}
-
-/**
  * testSaveAnnouncement method
  *
  * @return void
  */
 	public function testSaveAnnouncement() {
+		$this->Block = ClassRegistry::init('Blocks.Block');
+
 		$postData = array(
 			'Announcement' => array(
 				'block_id' => '1',
@@ -243,6 +149,8 @@ class AnnouncementTest extends CakeTestCase {
  * @return void
  */
 	public function testSaveAnnouncementByErrorFrameId() {
+		$this->Block = ClassRegistry::init('Blocks.Block');
+
 		$postData = array(
 			'Announcement' => array(
 				'block_id' => '1',
@@ -341,6 +249,8 @@ class AnnouncementTest extends CakeTestCase {
  * @return void
  */
 	public function testSaveAnnouncementRollbackByError() {
+		$this->Block = ClassRegistry::init('Blocks.Block');
+
 		//登録処理
 		$postData = array(
 			'Announcement' => array(
@@ -381,6 +291,56 @@ class AnnouncementTest extends CakeTestCase {
 		);
 
 		$this->__assertGetAnnouncement($expected, $result);
+	}
+
+/**
+ * testSaveAnnouncementByBlockSaveError method
+ *
+ * @return void
+ */
+	public function testSaveAnnouncementByBlockSaveError() {
+		$this->Block = $this->getMockForModel('Blocks.Block', array('save'));
+		$this->Block->expects($this->any())
+			 ->method('save')
+			 ->will($this->returnValue(false));
+
+		$postData = array(
+			'Announcement' => array(
+				'status' => '1',
+				'content' => 'add data',
+			),
+			'Frame' => array(
+				'id' => '2'
+			)
+		);
+		$result = $this->Announcement->saveAnnouncement($postData);
+		$this->assertFalse($result);
+	}
+
+/**
+ * testSaveAnnouncementByBlockSaveError method
+ *
+ * @return void
+ */
+	public function testSaveAnnouncementByFrameSaveError() {
+		$this->Frame = $this->getMockForModel('Frames.Frame', array('save'));
+		$this->Frame->expects($this->any())
+			 ->method('save')
+			 ->will($this->returnValue(false));
+
+		$postData = array(
+			'Announcement' => array(
+				'status' => '1',
+				'content' => 'add data',
+			),
+			'Frame' => array(
+				'id' => '2'
+			)
+		);
+		$result = $this->Announcement->saveAnnouncement($postData);
+		$this->assertFalse($result);
+
+		unset($this->Frame);
 	}
 
 }

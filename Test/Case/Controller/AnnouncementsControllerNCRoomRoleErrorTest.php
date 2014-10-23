@@ -1,6 +1,6 @@
 <?php
 /**
- * AnnouncementEditControllerEditorUser Test Case
+ * AnnouncementsControllerNCRoomRoleError Test Case
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -15,12 +15,12 @@ App::uses('NetCommonsBlockComponent', 'NetCommons.Controller/Component');
 App::uses('NetCommonsRoomRoleComponent', 'NetCommons.Controller/Component');
 
 /**
- * AnnouncementEditControllerEditorUser Test Case
+ * AnnouncementsControllerNCRoomRoleError Test Case
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Controller
  */
-class AnnouncementEditControllerEditorUserTest extends ControllerTestCase {
+class AnnouncementsControllerNCRoomRoleErrorTest extends ControllerTestCase {
 
 /**
  * mock controller object
@@ -79,14 +79,20 @@ class AnnouncementEditControllerEditorUserTest extends ControllerTestCase {
  */
 	public function login() {
 		//ログイン処理
-		$this->Controller = $this->generate('Announcements.AnnouncementEdit', array(
+		$this->Controller = $this->generate('Announcements.Announcements', array(
 			'components' => array(
 				'Auth' => array('user'),
 				'Session',
 				'Security',
 				'RequestHandler',
+				'NetCommons.NetCommonsRoomRole',
 			),
 		));
+
+		$this->Controller->NetCommonsRoomRole
+			 ->staticExpects($this->any())
+			 ->method('setView')
+			 ->will($this->returnValue(false));
 
 		$this->Controller->Auth
 			->staticExpects($this->any())
@@ -94,9 +100,9 @@ class AnnouncementEditControllerEditorUserTest extends ControllerTestCase {
 			->will($this->returnCallback(array($this, 'authUserCallback')));
 
 		$this->Controller->Auth->login(array(
-				'username' => 'editor',
-				'password' => 'editor',
-				'role_key' => 'editor',
+				'username' => 'admin',
+				'password' => 'admin',
+				'role_key' => 'system_administrator',
 			)
 		);
 		$this->assertTrue($this->Controller->Auth->loggedIn(), 'login');
@@ -124,29 +130,21 @@ class AnnouncementEditControllerEditorUserTest extends ControllerTestCase {
  */
 	public function authUserCallback() {
 		$user = array(
-			'id' => 3,
-			'username' => 'editor',
-			'role_key' => 'editor',
+			'id' => 1,
+			'username' => 'admin',
+			'role_key' => 'system_administrator',
 		);
 		CakeSession::write('Auth.User', $user);
 		return $user;
 	}
 
 /**
- * testForm method
+ * testBeforeFilter method
  *
  * @return void
  */
-	public function testForm() {
-		$this->testAction('/announcements/announcement_edit/form/1', array('method' => 'get'));
-
-		//登録前のForm取得
-		$this->assertTextContains('<form action="', $this->view);
-		$this->assertTextContains('/announcements/announcement_edit/form/1', $this->view);
-		$this->assertTextContains('name="data[Announcement][content]"', $this->view);
-		$this->assertTextContains('type="hidden" name="data[Frame][id]"', $this->view);
-		$this->assertTextContains('type="hidden" name="data[Announcement][block_id]"', $this->view);
-		$this->assertTextContains('select name="data[Announcement][status]"', $this->view);
-		$this->assertTextContains('type="hidden" name="data[Announcement][key]"', $this->view);
+	public function testBeforeFilter() {
+		$this->setExpectedException('ForbiddenException');
+		$this->testAction('/announcements/announcements/index/1', array('method' => 'get'));
 	}
 }

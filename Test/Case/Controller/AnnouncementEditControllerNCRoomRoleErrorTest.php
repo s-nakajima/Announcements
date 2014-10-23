@@ -1,6 +1,6 @@
 <?php
 /**
- * AnnouncementEditControllerLoginUser Test Case
+ * AnnouncementEditControllerNCRoomRoleError Test Case
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -15,12 +15,12 @@ App::uses('NetCommonsBlockComponent', 'NetCommons.Controller/Component');
 App::uses('NetCommonsRoomRoleComponent', 'NetCommons.Controller/Component');
 
 /**
- * AnnouncementEditControllerLoginUser Test Case
+ * AnnouncementEditControllerNCRoomRoleError Test Case
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Controller
  */
-class AnnouncementEditControllerLoginUserTest extends ControllerTestCase {
+class AnnouncementEditControllerNCRoomRoleErrorTest extends ControllerTestCase {
 
 /**
  * mock controller object
@@ -85,8 +85,14 @@ class AnnouncementEditControllerLoginUserTest extends ControllerTestCase {
 				'Session',
 				'Security',
 				'RequestHandler',
+				'NetCommons.NetCommonsRoomRole',
 			),
 		));
+
+		$this->Controller->NetCommonsRoomRole
+			 ->staticExpects($this->any())
+			 ->method('setView')
+			 ->will($this->returnValue(false));
 
 		$this->Controller->Auth
 			->staticExpects($this->any())
@@ -99,6 +105,7 @@ class AnnouncementEditControllerLoginUserTest extends ControllerTestCase {
 				'role_key' => 'system_administrator',
 			)
 		);
+
 		$this->assertTrue($this->Controller->Auth->loggedIn(), 'login');
 	}
 
@@ -133,89 +140,12 @@ class AnnouncementEditControllerLoginUserTest extends ControllerTestCase {
 	}
 
 /**
- * testIndex method
+ * testBeforeFilter method
  *
  * @return void
  */
-	public function testIndex() {
+	public function testBeforeFilter() {
+		$this->setExpectedException('ForbiddenException');
 		$this->testAction('/announcements/announcement_edit/index/1', array('method' => 'get'));
-
-		//お知らせ編集
-		$this->assertTextContains('<textarea', $this->view);
-		$this->assertTextContains('ui-tinymce="tinymceOptions"', $this->view);
-		$this->assertTextContains('ng-model="edit.data.Announcement.content"', $this->view);
-
-		$this->assertTextContains('ng-click="cancel()"', $this->view);
-		$this->assertTextContains('ng-click="save(\'3\')"', $this->view);
-		$this->assertTextContains('ng-click="save(\'1\')"', $this->view);
-	}
-
-/**
- * testView method
- *
- * @return void
- */
-	public function testView() {
-		$this->testAction('/announcements/announcement_edit/view/1', array('method' => 'get'));
-
-		//お知らせ編集
-		$this->assertTextContains('<textarea', $this->view);
-		$this->assertTextContains('ui-tinymce="tinymceOptions"', $this->view);
-		$this->assertTextContains('ng-model="edit.data.Announcement.content"', $this->view);
-
-		$this->assertTextContains('ng-click="cancel()"', $this->view);
-		$this->assertTextContains('ng-click="save(\'3\')"', $this->view);
-		$this->assertTextContains('ng-click="save(\'1\')"', $this->view);
-	}
-
-/**
- * testForm method
- *
- * @return void
- */
-	public function testForm() {
-		$this->testAction('/announcements/announcement_edit/form/1', array('method' => 'get'));
-
-		//登録前のForm取得
-		$this->assertTextContains('<form action="', $this->view);
-		$this->assertTextContains('/announcements/announcement_edit/form/1', $this->view);
-		$this->assertTextContains('name="data[Announcement][content]"', $this->view);
-		$this->assertTextContains('type="hidden" name="data[Frame][id]"', $this->view);
-		$this->assertTextContains('type="hidden" name="data[Announcement][block_id]"', $this->view);
-		$this->assertTextContains('select name="data[Announcement][status]"', $this->view);
-		$this->assertTextContains('type="hidden" name="data[Announcement][key]"', $this->view);
-	}
-
-/**
- * testEdit method
- *
- * @return void
- */
-	public function testEdit() {
-		$postData = array(
-			'Announcement' => array(
-				'block_id' => '1',
-				'key' => 'announcement_1',
-				'status' => '1',
-				'content' => 'change data',
-			),
-			'Frame' => array(
-				'id' => '1'
-			)
-		);
-
-		$this->testAction('/announcements/announcement_edit/edit/1.json',
-			array(
-				'method' => 'post',
-				'data' => $postData
-			)
-		);
-
-		$this->assertEquals('result', $this->vars['_serialize']);
-
-		$result = array_shift($this->vars['result']);
-		$this->assertEquals(__d('net_commons', 'Successfully finished.'), $result);
-
-		$this->assertArrayHasKey('announcement', $this->vars['result']);
 	}
 }

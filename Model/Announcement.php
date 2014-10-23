@@ -181,7 +181,6 @@ class Announcement extends AnnouncementsAppModel {
  * @param array $frame frame data
  * @return int blocks.id
  * @throws ForbiddenException
- *
  */
 	private function __saveBlock($frame) {
 		if (! isset($frame['Frame']['block_id']) ||
