@@ -301,8 +301,8 @@ class AnnouncementSaveTest extends CakeTestCase {
 	public function testSaveAnnouncementByBlockSaveError() {
 		$this->Block = $this->getMockForModel('Blocks.Block', array('save'));
 		$this->Block->expects($this->any())
-			 ->method('save')
-			 ->will($this->returnValue(false));
+			->method('save')
+			->will($this->returnValue(false));
 
 		$postData = array(
 			'Announcement' => array(
@@ -325,8 +325,8 @@ class AnnouncementSaveTest extends CakeTestCase {
 	public function testSaveAnnouncementByFrameSaveError() {
 		$this->Frame = $this->getMockForModel('Frames.Frame', array('save'));
 		$this->Frame->expects($this->any())
-			 ->method('save')
-			 ->will($this->returnValue(false));
+			->method('save')
+			->will($this->returnValue(false));
 
 		$postData = array(
 			'Announcement' => array(

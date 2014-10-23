@@ -90,9 +90,9 @@ class AnnouncementsControllerNCRoomRoleErrorTest extends ControllerTestCase {
 		));
 
 		$this->Controller->NetCommonsRoomRole
-			 ->staticExpects($this->any())
-			 ->method('setView')
-			 ->will($this->returnValue(false));
+			->staticExpects($this->any())
+			->method('setView')
+			->will($this->returnValue(false));
 
 		$this->Controller->Auth
 			->staticExpects($this->any())

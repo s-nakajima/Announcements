@@ -90,9 +90,9 @@ class AnnouncementEditControllerNCFrameErrorTest extends ControllerTestCase {
 		));
 
 		$this->Controller->NetCommonsFrame
-			 ->staticExpects($this->any())
-			 ->method('setView')
-			 ->will($this->returnValue(false));
+			->staticExpects($this->any())
+			->method('setView')
+			->will($this->returnValue(false));
 
 		$this->Controller->Auth
 			->staticExpects($this->any())
