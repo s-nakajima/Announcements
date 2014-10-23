@@ -107,7 +107,7 @@ class Announcement extends AnnouncementsAppModel {
 
 		$announcement = $this->find('first', array(
 				'conditions' => $conditions,
-				'order' => 'Announcement' . '.id DESC',
+				'order' => 'Announcement.id DESC',
 			)
 		);
 
