@@ -137,6 +137,8 @@ NetCommonsApp.controller('Announcements.edit',
           }
         };
       };
+      // initialize()
+      $scope.initialize();
 
       /**
        * dialog cancel
@@ -208,8 +210,5 @@ NetCommonsApp.controller('Announcements.edit',
               $scope.sending = false;
             });
       };
-
-      // initialize()
-      $scope.initialize();
 
     });
