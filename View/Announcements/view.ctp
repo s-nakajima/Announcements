@@ -19,8 +19,7 @@
 								<?php echo h(json_encode($announcement)); ?>)">
 
 		<p class="text-right">
-			<?php if ($contentPublishable &&
-						$announcement['Announcement']['status'] === NetCommonsBlockComponent::STATUS_APPROVED) : ?>
+			<?php if ($contentPublishable) : ?>
 				<button type="button" class="btn btn-danger"
 						tooltip="<?php echo __d('net_commons', 'Accept'); ?>"
 						ng-disabled="sending"
