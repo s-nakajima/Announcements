@@ -12,7 +12,7 @@
  */
 //NetCommonsApp.requires.push('dialogs.main');
 NetCommonsApp.controller('Announcements',
-                         function($scope, $sce, $modal) {
+                         function($scope, $sce, $modal, $modalStack) {
 
       /**
        * Announcements plugin view url
@@ -51,6 +51,9 @@ NetCommonsApp.controller('Announcements',
        * @return {void}
        */
       $scope.showManage = function() {
+        //既に開いているモーダルウィンドウをキャンセルする
+        $modalStack.dismissAll('canceled');
+
         var templateUrl = $scope.PLUGIN_EDIT_URL +
                               'view/' + $scope.frameId + '.json';
         var controller = 'Announcements.edit';
@@ -95,6 +98,8 @@ NetCommonsApp.controller('Announcements',
  */
 NetCommonsApp.controller('Announcements.edit',
                          function($scope, $http, $modalStack) {
+
+    $scope.animate = false;
 
       /**
        * sending
