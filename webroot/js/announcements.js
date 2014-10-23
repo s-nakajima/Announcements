@@ -99,8 +99,6 @@ NetCommonsApp.controller('Announcements',
 NetCommonsApp.controller('Announcements.edit',
                          function($scope, $http, $modalStack) {
 
-    $scope.animate = false;
-
       /**
        * sending
        *
