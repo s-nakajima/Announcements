@@ -12,7 +12,7 @@
  */
 //NetCommonsApp.requires.push('dialogs.main');
 NetCommonsApp.controller('Announcements',
-                         function($scope, $http, $sce, dialogs, $modal) {
+                         function($scope, $sce, $modal) {
 
       /**
        * Announcements plugin view url
