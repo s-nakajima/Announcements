@@ -24,9 +24,9 @@
 				<button type="button" class="btn btn-danger"
 						tooltip="<?php echo __d('net_commons', 'Accept'); ?>"
 						ng-disabled="sending"
-						ng-controller="Announcements.publish"
+						ng-controller="Announcements.edit"
 						ng-hide="(announcement.Announcement.status !== '<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>')"
-						ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_PUBLISHED ?>')">
+						ng-click="initialize(); save('<?php echo NetCommonsBlockComponent::STATUS_PUBLISHED ?>')">
 
 					<span class="glyphicon glyphicon-globe"></span>
 				</button>
