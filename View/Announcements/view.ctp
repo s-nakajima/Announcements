@@ -10,8 +10,6 @@
  */
 ?>
 
-<?php //echo $this->Html->script('/announcements/js/announcements.js', array('inline' => false)); ?>
-
 <?php if ($contentEditable) : ?>
 	<div id="nc-announcements-<?php echo (int)$frameId; ?>"
 		 ng-controller="Announcements"
