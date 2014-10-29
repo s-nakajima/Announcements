@@ -8,9 +8,8 @@
  * Announcements Javascript
  *
  * @param {string} Controller name
- * @param {function(scope, http, sce, dialogs)} Controller
+ * @param {function($scope, $sce, $modal, $modalStack)} Controller
  */
-//NetCommonsApp.requires.push('dialogs.main');
 NetCommonsApp.controller('Announcements',
                          function($scope, $sce, $modal, $modalStack) {
 
