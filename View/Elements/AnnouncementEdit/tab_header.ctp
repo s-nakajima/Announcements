@@ -19,7 +19,7 @@
 
 	<ul class="nav nav-pills">
 		<li class="active">
-			<a href="#" ng-click="showManage();">
+			<a href="" ng-click="showManage();">
 				<?php echo __d('announcements', 'Announcement edit'); ?>
 			</a>
 		</li>

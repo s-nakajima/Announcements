@@ -23,7 +23,8 @@
         "netcommons/users":             "dev-master",
         "netcommons/rooms":             "dev-master",
         "netcommons/roles":             "dev-master",
-        "netcommons/blocks":            "dev-master"
+        "netcommons/blocks":            "dev-master",
+        "netcommons/auth-general":      "dev-master"
     },
     "license": "NetCommons License",
     "authors": [

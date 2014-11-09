@@ -52,11 +52,11 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$frameId = (isset($this->params['pass'][0]) ? (int)$this->params['pass'][0] : 0);
 		//Frameのデータをviewにセット
 		if (! $this->NetCommonsFrame->setView($this, $frameId)) {
-			throw new ForbiddenException('NetCommonsFrame');
+			throw new ForbiddenException(__d('net_commons', 'Security Error!  Unauthorized input.'));
 		}
 		//Roleのデータをviewにセット
 		if (! $this->NetCommonsRoomRole->setView($this)) {
-			throw new ForbiddenException('NetCommonsRoomRole');
+			throw new ForbiddenException(__d('net_commons', 'Security Error!  Unauthorized input.'));
 		}
 	}
 
@@ -84,8 +84,11 @@ class AnnouncementsController extends AnnouncementsAppController {
 			);
 
 		//Announcementデータをviewにセット
-		$this->set('announcement', $announcement);
-
-		return $this->render('Announcements/view');
+		if (! $announcement) {
+			return $this->render(false);
+		} else {
+			$this->set('announcement', $announcement);
+			return $this->render('Announcements/view');
+		}
 	}
 }

@@ -121,13 +121,6 @@ class Announcements extends CakeMigration {
 	);
 
 /**
- * recodes
- *
- * @var array $migration
- */
-	public $records = array();
-
-/**
  * Before migration callback
  *
  * @param string $direction up or down direction of migration process
@@ -156,25 +149,4 @@ class Announcements extends CakeMigration {
 
 		return true;
 	}
-
-/**
- * Update model records
- *
- * @param string $model model name to update
- * @param string $records records to be stored
- * @param string $scope ?
- * @return boolean Should process continue
- */
-	public function updateRecords($model, $records, $scope = null) {
-		$Model = $this->generateModel($model);
-		foreach ($records as $record) {
-			$Model->create();
-			if (!$Model->save($record, false)) {
-				return false;
-			}
-		}
-
-		return true;
-	}
-
 }

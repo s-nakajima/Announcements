@@ -16,20 +16,28 @@
 	<div class="tab-content">
 		<div id="nc-announcements-edit-<?php echo $frameId; ?>"
 				class="tab-pane active">
-			<p>
-				<form action="/announcements/announcement_edit/view/<?php echo $frameId; ?>/"
-					  id="AnnouncementFormForm<?php echo $frameId; ?>">
+			<?php echo $this->Form->create('Announcement' . (int)$frameId,
+											array('type' => 'get', 'ng-init' => 'initialize()')); ?>
 
-					<textarea required class="form-control" rows="3"
-							ui-tinymce="tinymceOptions"
-							ng-model="edit.data.Announcement.content">
-					</textarea>
+				<div class="panel panel-default">
+					<div class="panel-body has-feedback">
+						<?php echo $this->element('AnnouncementEdit/edit_form'); ?>
 
-					<?php echo $this->element('AnnouncementEdit/common_form'); ?>
-				</form>
-			</p>
+						<hr />
 
-			<?php echo $this->element('AnnouncementEdit/button'); ?>
+						<?php echo $this->element('AnnouncementEdit/comment_form'); ?>
+					</div>
+
+					<?php echo $this->element('AnnouncementEdit/button'); ?>
+				</div>
+
+				<div class="panel panel-default" ng-show="comments.visibility">
+					<?php echo $this->element('AnnouncementEdit/comment_list'); ?>
+				</div>
+
+				<?php echo $this->element('AnnouncementEdit/common_form'); ?>
+
+			<?php echo $this->Form->end(); ?>
 		</div>
 	</div>
 </div>

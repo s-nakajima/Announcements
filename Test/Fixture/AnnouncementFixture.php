@@ -21,10 +21,11 @@ class AnnouncementFixture extends CakeTestFixture {
  */
 	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary', 'comment' => 'ID |  |  | '),
-		'block_id' => array('type' => 'integer', 'null' => false, 'default' => null),
+		'block_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'key' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'announcement content key | お知らせコンテンツキー | Hash値 | ', 'charset' => 'utf8'),
-		'status' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 4, 'comment' => 'public status, 1: public, 2: public pending, 3: draft during 4: remand | 公開状況  1:公開中、2:公開申請中、3:下書き中、4:差し戻し |  | '),
+		'status' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 4, 'comment' => 'public status, 1: public, 2: public pending, 3: draft during 4: remand | 公開状況  1:公開中、2:公開申請中、3:下書き中、4:差し戻し |  | '),
 		'content' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'content | コンテンツ |  | ', 'charset' => 'utf8'),
+		'comment' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'comment | コメント |  | ', 'charset' => 'utf8'),
 		'is_auto_translated' => array('type' => 'boolean', 'null' => false, 'default' => '0', 'comment' => 'translation type. 0:original , 1:auto translation | 翻訳タイプ  0:オリジナル、1:自動翻訳 |  | '),
 		'translation_engine' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'translation engine | 翻訳エンジン |  | ', 'charset' => 'utf8'),
 		'created_user' => array('type' => 'integer', 'null' => true, 'default' => '0', 'comment' => 'created user | 作成者 | users.id | '),
@@ -49,7 +50,8 @@ class AnnouncementFixture extends CakeTestFixture {
 			'key' => 'announcement_1',
 			'status' => '1',
 			'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-			'is_auto_translated' => '1',
+			'comment' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+			'is_auto_translated' => true,
 			'translation_engine' => 'Lorem ipsum dolor sit amet',
 			'created_user' => '1',
 			'created' => '2014-10-09 16:07:57',
@@ -62,13 +64,44 @@ class AnnouncementFixture extends CakeTestFixture {
 			'key' => 'announcement_1',
 			'status' => '3',
 			'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-			'is_auto_translated' => '1',
+			'is_auto_translated' => true,
 			'translation_engine' => 'Lorem ipsum dolor sit amet',
 			'created_user' => '1',
 			'created' => '2014-10-09 16:07:57',
 			'modified_user' => '1',
 			'modified' => '2014-10-09 16:07:57'
 		),
+
+		//コメントテスト
+		//id = 11 to 20
 	);
 
+/**
+ * Initialize the fixture.
+ *
+ * @return void
+ * @throws MissingModelException Whe importing from a model that does not exist.
+ */
+	public function init() {
+		//コメントテスト追加
+		$commentDefault = array(
+			'block_id' => '2',
+			'key' => 'announcement_11',
+			'status' => '1',
+			'content' => 'Content %s',
+			'comment' => 'Comment %s',
+			'created_user' => '1',
+			'created' => '2014-10-09 16:07:57',
+			'is_auto_translated' => false,
+			'translation_engine' => '',
+		);
+		for ($id = 11; $id <= 20; $id++) {
+			$comments = array_merge(array(), $commentDefault);
+			$comments['id'] = $id;
+			$comments['content'] = sprintf($comments['content'], $id);
+			$comments['comment'] = sprintf($comments['comment'], $id);
+			$this->records[] = $comments;
+		}
+		parent::init();
+	}
 }

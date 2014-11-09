@@ -18,7 +18,7 @@
 
 		<p class="text-right">
 			<?php if ($contentPublishable) : ?>
-				<button type="button" class="btn btn-warning"
+				<button type="button" class="btn btn-warning ng-hide"
 						tooltip="<?php echo __d('net_commons', 'Accept'); ?>"
 						ng-controller="Announcements.edit"
 						ng-hide="(announcement.Announcement.status !== '<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>')"

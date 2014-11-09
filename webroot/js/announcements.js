@@ -8,10 +8,10 @@
  * Announcements Javascript
  *
  * @param {string} Controller name
- * @param {function($scope, $sce, $modal, $modalStack)} Controller
+ * @param {function($scope, $http, $sce, $modalStack)} Controller
  */
 NetCommonsApp.controller('Announcements',
-                         function($scope, $sce, $modal, $modalStack) {
+                         function($scope, $http, $sce, $modalStack) {
 
       /**
        * Announcements plugin view url
@@ -35,6 +35,13 @@ NetCommonsApp.controller('Announcements',
       $scope.announcement = {};
 
       /**
+       * comments
+       *
+       * @type {Object.<string>}
+       */
+      $scope.comments = {};
+
+      /**
        * Initialize
        *
        * @return {void}
@@ -50,30 +57,29 @@ NetCommonsApp.controller('Announcements',
        * @return {void}
        */
       $scope.showManage = function() {
-        //既に開いているモーダルウィンドウをキャンセルする
         $modalStack.dismissAll('canceled');
 
-        var templateUrl = $scope.PLUGIN_EDIT_URL +
-                              'view/' + $scope.frameId + '.json';
-        var controller = 'Announcements.edit';
+        $http.get($scope.PLUGIN_EDIT_URL + 'view_latest/' +
+                  $scope.frameId + '/' + Math.random() + '.json')
+            .success(function(data) {
+              //最新データセット
+              $scope.announcement = data.announcement;
+              $scope.comments.current = data.comments.current;
+              $scope.comments.hasPrev = data.comments.hasPrev;
+              $scope.comments.hasNext = data.comments.hasNext;
+              $scope.comments.data = data.comments.data;
+              $scope.comments.disabled =
+                              data.comments.data.length === 0 ? true : false;
+              $scope.comments.visibility =
+                              data.comments.data.length === 0 ? false : true;
 
-        $modal.open({
-          templateUrl: templateUrl,
-          controller: controller,
-          backdrop: 'static',
-          scope: $scope
-        }).result.then(
-            function(result) {},
-            function(reason) {
-              if (typeof reason.data === 'object') {
-                //openによるエラー
-                $scope.flash.danger(reason.status + ' ' + reason.data.name);
-              } else if (reason === 'canceled') {
-                //キャンセル
-                $scope.flash.close();
-              }
-            }
-        );
+              var templateUrl = $scope.PLUGIN_EDIT_URL +
+                              'view/' + $scope.frameId + '.json';
+              $scope.showDialog($scope, templateUrl, 'Announcements.edit');
+            })
+            .error(function(data) {
+              $scope.flash.danger(data.name);
+            });
       };
 
       /**
@@ -97,11 +103,24 @@ NetCommonsApp.controller('Announcements',
  */
 NetCommonsApp.controller('Announcements.edit',
                          function($scope, $http, $modalStack) {
+      /**
+       * errors
+       *
+       * @type {bool}
+       */
+      $scope.errors = {};
+
+      /**
+       * placeholders
+       *
+       * @type {Object.<string>}
+       */
+      $scope.placeholders = {};
 
       /**
        * sending
        *
-       * @type {string}
+       * @type {bool}
        */
       $scope.sending = false;
 
@@ -124,6 +143,7 @@ NetCommonsApp.controller('Announcements.edit',
         $scope.edit.data = {
           Announcement: {
             content: $scope.announcement.Announcement.content,
+            comment: '',
             status: $scope.announcement.Announcement.status,
             block_id: $scope.announcement.Announcement.block_id,
             key: $scope.announcement.Announcement.key,
@@ -139,8 +159,6 @@ NetCommonsApp.controller('Announcements.edit',
           }
         };
       };
-      // initialize()
-      $scope.initialize();
 
       /**
        * dialog cancel
@@ -184,9 +202,9 @@ NetCommonsApp.controller('Announcements.edit',
               //登録情報をPOST
               $scope.sendPost($scope.edit);
             })
-            .error(function(data, status) {
+            .error(function(data) {
               //keyの取得に失敗
-              $scope.flash.danger(status + ' ' + data.name);
+              $scope.flash.danger(data.name);
               $scope.sending = false;
             });
       };
@@ -198,19 +216,68 @@ NetCommonsApp.controller('Announcements.edit',
        * @return {void}
        */
       $scope.sendPost = function(postParams) {
-        $http.post($scope.PLUGIN_EDIT_URL + 'edit/' + Math.random() + '.json',
+        $http.post($scope.PLUGIN_EDIT_URL + 'edit/' +
+                $scope.frameId + '/' + Math.random() + '.json',
             $.param(postParams),
             {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
           .success(function(data) {
               angular.copy(data.announcement, $scope.announcement);
               $scope.flash.success(data.name);
-              $scope.sending = false;
               $modalStack.dismissAll('saved');
             })
-          .error(function(data, status) {
-              $scope.flash.danger(status + ' ' + data.name);
+          .error(function(data) {
+              if (typeof data.errors === 'object') {
+                $scope.errors = data.errors;
+              } else {
+                $scope.flash.danger(data.name);
+              }
+            })
+          .finally (function() {
               $scope.sending = false;
             });
       };
 
+      /**
+       * Comment list of prev page
+       *
+       * @return {void}
+       */
+      $scope.prevComments = function() {
+        if (! $scope.comments.hasPrev) {
+          return;
+        }
+        $scope.getComments($scope.comments.current - 1);
+      };
+
+      /**
+       * Comment list of next page
+       *
+       * @return {void}
+       */
+      $scope.nextComments = function() {
+        if (! $scope.comments.hasNext) {
+          return;
+        }
+        $scope.getComments($scope.comments.current + 1);
+      };
+
+      /**
+       * get comments
+       *
+       * @return {void}
+       */
+      $scope.getComments = function(page) {
+        $http.get($scope.PLUGIN_EDIT_URL + 'comment/' +
+                  $scope.frameId + '/page:' + page + '.json')
+            .success(function(data) {
+              $scope.comments.current = data.comments.current;
+              $scope.comments.hasPrev = data.comments.hasPrev;
+              $scope.comments.hasNext = data.comments.hasNext;
+              $scope.comments.data = data.comments.data;
+            })
+            .error(function(data) {
+              //keyの取得に失敗
+              $scope.flash.danger(data.name);
+            });
+      };
     });
