@@ -20,7 +20,6 @@ script:
   - . tools/build/plugins/cakephp/travis/main.sh
 
 after_script:
-  - cp $TRAVIS_BUILD_DIR/phpunit.xml .
   - . tools/build/plugins/cakephp/travis/post.sh
 
 notifications:
