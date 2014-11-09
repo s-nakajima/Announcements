@@ -68,7 +68,7 @@ class AnnouncementEditControllerValidateErrorTest extends AnnouncementsAppContro
 		);
 
 		$expected = array(
-			'name' => __d('net_commons', 'Validation errors'),
+			'name' => __d('net_commons', 'Invalid request.'),
 			'errors' => array(
 				'content' => array(
 					sprintf(__d('net_commons', 'Please input %s.'), __d('announcements', 'Content'))
@@ -112,10 +112,10 @@ class AnnouncementEditControllerValidateErrorTest extends AnnouncementsAppContro
 		);
 
 		$expected = array(
-			'name' => __d('net_commons', 'Validation errors'),
+			'name' => __d('net_commons', 'Invalid request.'),
 			'errors' => array(
 				'comment' => array(
-					sprintf(__d('net_commons', 'Please input %s.'), __d('announcements', 'Comment'))
+					sprintf(__d('net_commons', 'Please input %s.'), __d('net_commons', 'Comment'))
 				)
 			)
 		);

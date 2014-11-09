@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2014-10-24 07:23+0000\n"
+"POT-Creation-Date: 2014-11-09 14:54+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -13,6 +13,16 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: Announcements/Model/Announcement.php:119
+#: Announcements/Test/Case/Controller/AnnouncementEditControllerValidateErrorTest.php:74
+#: Announcements/View/Elements/AnnouncementEdit/edit_form.ctp:15
+msgid "Content"
+msgstr ""
+
+#: Announcements/Test/Case/Controller/AnnouncementEditControllerValidateErrorTest.php:118
+msgid "Comment"
+msgstr ""
 
 #: Announcements/View/Elements/AnnouncementEdit/tab_header.ctp:23
 msgid "Announcement edit"

@@ -40,7 +40,7 @@
 	<ul class="pager">
 		<li class="previous" ng-class="comments.hasPrev ? '' : 'disabled'">
 			<a href="" ng-click="prevComments()">
-				<?php echo __d('net_commons', 'Prev.'); ?>
+				<?php echo __d('net_commons', 'Prev'); ?>
 			</a>
 		</li>
 		<li class="next" ng-class="comments.hasNext ? '' : 'disabled'">

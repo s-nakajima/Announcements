@@ -12,7 +12,7 @@
 
 <div class="form-group" ng-class="errors.content ? 'has-error' : ''">
 	<label class="control-label">
-		<?php echo __d('net_commons', 'Content'); ?>
+		<?php echo __d('announcements', 'Content'); ?>
 	</label>
 	<span class="label label-danger">
 		<?php echo __d('net_commons', 'Required'); ?>

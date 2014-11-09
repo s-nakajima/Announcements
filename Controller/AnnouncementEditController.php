@@ -200,7 +200,7 @@ class AnnouncementEditController extends AnnouncementsAppController {
 				$errors[$key] = array_unique($errors[$key]);
 			}
 			$result = array(
-				'name' => __d('net_commons', 'Validation errors'),
+				'name' => __d('net_commons', 'Invalid request.'),
 				'errors' => $errors
 			);
 			$this->set(compact('result'));

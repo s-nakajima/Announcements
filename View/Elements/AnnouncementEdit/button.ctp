@@ -51,9 +51,4 @@
 
 	<?php endif; ?>
 
-		<button type="button" class="btn btn-primary" ng-disabled="sending"
-				ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>')">
-			<?php echo __d('net_commons', 'OK'); ?>
-		</button>
-
 </div>
