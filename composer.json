@@ -24,6 +24,7 @@
         "netcommons/rooms":             "dev-master",
         "netcommons/roles":             "dev-master",
         "netcommons/blocks":            "dev-master",
+        "netcommons/auth":              "dev-master",
         "netcommons/auth-general":      "dev-master"
     },
     "license": "NetCommons License",
