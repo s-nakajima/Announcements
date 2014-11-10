@@ -35,15 +35,15 @@
 						)
 					); ?>
 
-			<span class="form-control-feedback"
+			<div class="form-control-feedback"
 					ng-class="errors.comment.$invalid ? 'glyphicon glyphicon-remove' : 'glyphicon glyphicon-ok'; "
 					ng-show="errors.comment">
-			</span>
+			</div>
 
 			<div class="help-block">
-				<span ng-show="(announcement.Announcement.status === '<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>' && ! errors.comment)">
+				<div ng-show="(announcement.Announcement.status === '<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>' && ! errors.comment)">
 					<?php echo __d('net_commons', 'If it is not approved, comment is a required input.'); ?>
-				</span>
+				</div>
 				<br ng-show="(announcement.Announcement.status !== '<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>' || errors.comment && ! errors.comment.$invalid)" />
 
 				<div ng-repeat="error in errors.comment.messages" ng-show="errors.comment.$invalid">
