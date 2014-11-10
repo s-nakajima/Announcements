@@ -21,24 +21,6 @@ App::uses('AnnouncementsAppControllerTest', 'Announcements.Test/Case/Controller'
 class AnnouncementEditControllerTest extends AnnouncementsAppControllerTest {
 
 /**
- * setUp
- *
- * @return void
- */
-	public function setUp() {
-		parent::setUp();
-	}
-
-/**
- * tearDown method
- *
- * @return void
- */
-	public function tearDown() {
-		parent::tearDown();
-	}
-
-/**
  * testIndex method
  *
  * @return void
