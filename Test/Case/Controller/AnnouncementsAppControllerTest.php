@@ -103,17 +103,15 @@ class AnnouncementsAppControllerTest extends ControllerTestCase {
 		$this->Controller->Auth
 			->staticExpects($this->any())
 			->method('user')
-			->will($this->returnCallback(
-					function() {
-						$array = array(
-							'id' => 1,
-							'username' => 'admin',
-							'role_key' => 'system_administrator',
-						);
-						CakeSession::write('Auth.User', $array);
-						return $array;
-					}
-				));
+			->will($this->returnCallback(function() {
+				$array = array(
+					'id' => 1,
+					'username' => 'admin',
+					'role_key' => 'system_administrator',
+				);
+				CakeSession::write('Auth.User', $array);
+				return $array;
+			}));
 
 		$this->Controller->Auth->login(array(
 				'username' => 'admin',
@@ -133,17 +131,15 @@ class AnnouncementsAppControllerTest extends ControllerTestCase {
 		$this->Controller->Auth
 			->staticExpects($this->any())
 			->method('user')
-			->will($this->returnCallback(
-					function() {
-						$array = array(
-							'id' => 3,
-							'username' => 'editor',
-							'role_key' => 'editor',
-						);
-						CakeSession::write('Auth.User', $array);
-						return $array;
-					}
-				));
+			->will($this->returnCallback(function() {
+				$array = array(
+					'id' => 3,
+					'username' => 'editor',
+					'role_key' => 'editor',
+				);
+				CakeSession::write('Auth.User', $array);
+				return $array;
+			}));
 
 		$this->Controller->Auth->login(array(
 				'username' => 'editor',
