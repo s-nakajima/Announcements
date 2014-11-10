@@ -287,7 +287,6 @@ NetCommonsApp.controller('Announcements.edit',
        * @return {string} ngClass of hasFeedback
        */
       $scope.getNgClassComment = function(formElement) {
-        console.log($scope.edit.data);
         if (typeof formElement['comment'] === 'undefined') {
           return '';
         }

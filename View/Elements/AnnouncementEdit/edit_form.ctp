@@ -10,7 +10,7 @@
  */
 ?>
 
-<div class="form-group" ng-class="errors.content ? 'has-error' : ''">
+<div class="form-group" ng-class="errors.content.$invalid ? 'has-error' : ''">
 	<label class="control-label">
 		<?php echo __d('announcements', 'Content'); ?>
 	</label>
@@ -18,7 +18,7 @@
 		<?php echo __d('net_commons', 'Required'); ?>
 	</span>
 
-	<div class="nc-wysiwyg-alert" ng-class="errors.content ? 'alert-danger' : ''">
+	<div class="nc-wysiwyg-alert" ng-class="errors.content.$invalid ? 'alert-danger' : ''">
 		<textarea class="form-control" rows="5"
 				ui-tinymce="tinymceOptions"
 				ng-model="edit.data.Announcement.content">
