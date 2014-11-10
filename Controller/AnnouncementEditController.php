@@ -193,18 +193,9 @@ class AnnouncementEditController extends AnnouncementsAppController {
 			'fieldList' => array('content', 'comment')
 		);
 		if (! $this->Announcement->validates($validateFileds)) {
-			$this->response->statusCode(403);
-			$errors = $this->Announcement->invalidFields();
-			$keys = array_keys($errors);
-			foreach ($keys as $key) {
-				$errors[$key] = array_unique($errors[$key]);
-			}
-			$result = array(
-				'name' => __d('net_commons', 'Invalid request.'),
-				'errors' => $errors
-			);
-			$this->set(compact('result'));
-			$this->set('_serialize', 'result');
+			$this->NetCommonsFrame->setViewValidationErrors($this,
+					$this->Announcement->validationErrors
+				);
 			return $this->render(false);
 		}
 

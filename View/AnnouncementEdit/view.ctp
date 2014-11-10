@@ -14,10 +14,14 @@
 
 <div class="modal-body">
 	<div class="tab-content">
-		<div id="nc-announcements-edit-<?php echo $frameId; ?>"
-				class="tab-pane active">
-			<?php echo $this->Form->create('Announcement' . (int)$frameId,
-											array('type' => 'get', 'ng-init' => 'initialize()')); ?>
+		<div id="nc-announcements-edit-<?php echo $frameId; ?>" class="tab-pane active">
+
+			<?php echo $this->Form->create('Announcement' . (int)$frameId, array(
+					'type' => 'get',
+					'ng-init' => 'initialize()',
+					'name' => 'Announcement' . (int)$frameId,
+					'novalidate' => true
+				)); ?>
 
 				<div class="panel panel-default">
 					<div class="panel-body has-feedback">

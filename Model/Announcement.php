@@ -127,7 +127,7 @@ class Announcement extends AnnouncementsAppModel {
 			$this->validate['comment'] = array(
 				'notEmpty' => array(
 					'rule' => array('notEmpty'),
-					'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('net_commons', 'Comment')),
+					'message' => __d('net_commons', 'If it is not approved, comment is a required input.'),
 					'required' => true,
 				),
 			);

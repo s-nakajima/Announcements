@@ -81,6 +81,7 @@ class AnnouncementFixture extends CakeTestFixture {
  *
  * @return void
  * @throws MissingModelException Whe importing from a model that does not exist.
+ * @codeCoverageIgnore
  */
 	public function init() {
 		//コメントテスト追加

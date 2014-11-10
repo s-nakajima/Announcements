@@ -71,7 +71,10 @@ class AnnouncementEditControllerValidateErrorTest extends AnnouncementsAppContro
 			'name' => __d('net_commons', 'Invalid request.'),
 			'errors' => array(
 				'content' => array(
-					sprintf(__d('net_commons', 'Please input %s.'), __d('announcements', 'Content'))
+					'$invalid' => true,
+					'messages' => array(
+						sprintf(__d('net_commons', 'Please input %s.'), __d('announcements', 'Content'))
+					)
 				)
 			)
 		);
@@ -115,7 +118,10 @@ class AnnouncementEditControllerValidateErrorTest extends AnnouncementsAppContro
 			'name' => __d('net_commons', 'Invalid request.'),
 			'errors' => array(
 				'comment' => array(
-					sprintf(__d('net_commons', 'Please input %s.'), __d('net_commons', 'Comment'))
+					'$invalid' => true,
+					'messages' => array(
+						__d('net_commons', 'If it is not approved, comment is a required input.')
+					)
 				)
 			)
 		);

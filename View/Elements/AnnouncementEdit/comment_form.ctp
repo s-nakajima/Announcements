@@ -10,41 +10,45 @@
  */
 ?>
 
-<div class="row" ng-class="errors.comment ? 'has-error' : ''">
+<div class="row">
 	<div class="col-xs-offset-1 col-xs-11">
-		<?php echo $this->Form->label('Announcement.comment',
-					'<span class="glyphicon glyphicon-comment"></span> ' .
-						__d('net_commons', 'Comment'),
-					array('class' => 'control-label')
-				); ?>
+		<div class="form-group has-feedback"
+				ng-class="getNgClassComment(<?php echo ('Announcement' . (int)$frameId); ?>)">
 
-		<span class="label label-info"> <?php echo __d('net_commons', 'Optional'); ?></span>
+			<?php echo $this->Form->label('Announcement.comment',
+						'<span class="glyphicon glyphicon-comment"></span> ' .
+							__d('net_commons', 'Comment'),
+						array('class' => 'control-label')
+					); ?>
 
-		<?php if (isset($announcement['Announcement']) && $contentPublishable &&
-					$announcement['Announcement']['status'] === NetCommonsBlockComponent::STATUS_APPROVED) : ?>
-			<span class="text-danger"
-				  ng-hide="(announcement.Announcement.status !== '<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>')">
-				<?php echo __d('net_commons', 'If it is not approved, comment is a required input.'); ?>
+			<span class="label label-info"> <?php echo __d('net_commons', 'Optional'); ?></span>
+
+			<?php echo $this->Form->input('Announcement.comment', array(
+							'label' => false,
+							'rows' => '2',
+							'type' => 'textarea',
+							'class' => 'form-control',
+							'ng-model' => 'edit.data.Announcement.comment',
+							'placeholder' => __d('net_commons', 'Please enter comments to the person in charge.'),
+							'autofocus' => 'true',
+							'required' => 'true',
+						)
+					); ?>
+
+			<span class="form-control-feedback"
+					ng-class="errors.comment.$invalid ? 'glyphicon glyphicon-remove' : 'glyphicon glyphicon-ok'; "
+					ng-show="errors.comment">
 			</span>
-		<?php endif; ?>
 
-		<?php echo $this->Form->input('Announcement.comment', array(
-						'label' => false,
-						'rows' => '2',
-						'type' => 'textarea',
-						'class' => 'form-control',
-						'ng-model' => 'edit.data.Announcement.comment',
-						'placeholder' => __d('net_commons', 'Please enter comments to the person in charge.'),
-						'autofocus' => 'true',
-					)
-				); ?>
-		<div class="help-block">
-			<br ng-hide="errors.comment" />
-			<div ng-repeat="error in errors.comment">
-				{{error}}
-			</div>
-			<div ng-hide="errors.comment" ng-show="">
+			<div class="help-block">
+				<span ng-show="(announcement.Announcement.status === '<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>' && ! errors.comment)">
+					<?php echo __d('net_commons', 'If it is not approved, comment is a required input.'); ?>
+				</span>
+				<br ng-show="(announcement.Announcement.status !== '<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>' || errors.comment && ! errors.comment.$invalid)" />
 
+				<div ng-repeat="error in errors.comment.messages" ng-show="errors.comment.$invalid">
+					{{error}}
+				</div>
 			</div>
 		</div>
 	</div>

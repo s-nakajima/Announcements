@@ -103,7 +103,7 @@ class AnnouncementsAppControllerTest extends ControllerTestCase {
 		$this->Controller->Auth
 			->staticExpects($this->any())
 			->method('user')
-			->will($this->returnCallback(function() {
+			->will($this->returnCallback(function () {
 				$array = array(
 					'id' => 1,
 					'username' => 'admin',
@@ -131,7 +131,7 @@ class AnnouncementsAppControllerTest extends ControllerTestCase {
 		$this->Controller->Auth
 			->staticExpects($this->any())
 			->method('user')
-			->will($this->returnCallback(function() {
+			->will($this->returnCallback(function () {
 				$array = array(
 					'id' => 3,
 					'username' => 'editor',

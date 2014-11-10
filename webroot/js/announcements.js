@@ -280,4 +280,22 @@ NetCommonsApp.controller('Announcements.edit',
               $scope.flash.danger(data.name);
             });
       };
+
+      /**
+       * getNgClassComment
+       *
+       * @return {string} ngClass of hasFeedback
+       */
+      $scope.getNgClassComment = function(formElement) {
+        console.log($scope.edit.data);
+        if (typeof formElement['comment'] === 'undefined') {
+          return '';
+        }
+        if (typeof $scope.errors.comment === 'undefined') {
+          return '';
+        }
+        $scope.errors.comment['$invalid'] = formElement['comment'].$invalid;
+        return ($scope.errors.comment['$invalid'] ?
+                    'has-error' : 'has-success');
+      };
     });

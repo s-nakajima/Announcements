@@ -26,8 +26,8 @@
 	</div>
 
 	<div class="help-block">
-		<br ng-hide="errors.content" />
-		<div ng-repeat="error in errors.content">
+		<br ng-hide="errors.content.$invalid" />
+		<div ng-repeat="error in errors.content.messages">
 			{{error}}
 		</div>
 	</div>
