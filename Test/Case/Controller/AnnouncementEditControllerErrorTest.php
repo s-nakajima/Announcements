@@ -131,4 +131,105 @@ class AnnouncementEditControllerErrorTest extends AnnouncementsAppControllerTest
 		$this->_logout();
 	}
 
+/**
+ * testEditStatusError method
+ *
+ * @return void
+ */
+	public function testEditStatusError() {
+		$this->setExpectedException('ForbiddenException');
+
+		$this->_generateController('Announcements.AnnouncementEdit');
+		$this->_loginAdmin();
+
+		$postData = array(
+			'Announcement' => array(
+				'block_id' => '1',
+				'key' => 'announcement_1',
+				'content' => 'edit content',
+				'comment' => 'edit comment',
+			),
+			'Frame' => array(
+				'id' => '1'
+			)
+		);
+
+		$this->testAction('/announcements/announcement_edit/edit/1.json',
+			array(
+				'method' => 'post',
+				'data' => $postData
+			)
+		);
+
+		$this->_logout();
+	}
+
+/**
+ * testEditContentPublishedError method
+ *
+ * @return void
+ */
+	public function testEditContentPublishedError() {
+		$this->setExpectedException('ForbiddenException');
+
+		$this->_generateController('Announcements.AnnouncementEdit');
+		$this->_loginEditor();
+
+		$postData = array(
+			'Announcement' => array(
+				'block_id' => '1',
+				'key' => 'announcement_1',
+				'status' => '1',
+				'content' => 'edit content',
+				'comment' => 'edit comment',
+			),
+			'Frame' => array(
+				'id' => '1'
+			)
+		);
+
+		$this->testAction('/announcements/announcement_edit/edit/1.json',
+			array(
+				'method' => 'post',
+				'data' => $postData
+			)
+		);
+
+		$this->_logout();
+	}
+
+/**
+ * testEditContentDisapprovedError method
+ *
+ * @return void
+ */
+	public function testEditContentDisapprovedError() {
+		$this->setExpectedException('ForbiddenException');
+
+		$this->_generateController('Announcements.AnnouncementEdit');
+		$this->_loginEditor();
+
+		$postData = array(
+			'Announcement' => array(
+				'block_id' => '1',
+				'key' => 'announcement_1',
+				'status' => NetCommonsBlockComponent::STATUS_DISAPPROVED,
+				'content' => 'edit content',
+				'comment' => 'edit comment',
+			),
+			'Frame' => array(
+				'id' => '1'
+			)
+		);
+
+		$this->testAction('/announcements/announcement_edit/edit/1.json',
+			array(
+				'method' => 'post',
+				'data' => $postData
+			)
+		);
+
+		$this->_logout();
+	}
+
 }

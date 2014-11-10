@@ -187,8 +187,19 @@ class AnnouncementEditController extends AnnouncementsAppController {
 			throw new ForbiddenException(__d('net_commons', 'Security Error! Unauthorized input.'));
 		}
 
+		//公開権限チェック
+		if (! isset($this->data['Announcement']['status'])) {
+			throw new ForbiddenException(__d('net_commons', 'Security Error! Unauthorized input.'));
+		}
+		if (! $this->viewVars['contentPublishable'] && (
+				$this->data['Announcement']['status'] === NetCommonsBlockComponent::STATUS_PUBLISHED ||
+				$this->data['Announcement']['status'] === NetCommonsBlockComponent::STATUS_DISAPPROVED
+			)) {
+			throw new ForbiddenException(__d('net_commons', 'Security Error! Unauthorized input.'));
+		}
+
 		//入力チェック
-		$this->Announcement->set($this->request->data);
+		$this->Announcement->set($this->data);
 		$validateFileds = array(
 			'fieldList' => array('content', 'comment')
 		);

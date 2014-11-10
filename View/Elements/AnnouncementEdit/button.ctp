@@ -29,6 +29,7 @@
 				ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_DRAFTED ?>')">
 			<?php echo __d('net_commons', 'Save temporally'); ?>
 		</button>
+
 	<?php else : ?>
 		<button type="button" class="btn btn-default" ng-disabled="sending"
 				ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_DRAFTED ?>')">
