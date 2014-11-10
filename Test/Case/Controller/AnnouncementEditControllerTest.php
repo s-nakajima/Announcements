@@ -267,8 +267,7 @@ class AnnouncementEditControllerTest extends AnnouncementsAppControllerTest {
 		$this->testAction('/announcements/announcement_edit/form/1.json', array('method' => 'get'));
 		$this->view = trim(str_replace(array("\r\n", "\r", "\n"), '', $this->view));
 
-		$expected = '<form action="/var/www/app/lib/Cake/Console/announcements/announcement_edit/form/1.json" ' .
-							'id="Announcement1FormForm" onsubmit="event.returnValue = false; return false;" ' .
+		$expected = 'id="Announcement1FormForm" onsubmit="event.returnValue = false; return false;" ' .
 							'method="post" accept-charset="utf-8">' .
 						'<div style="display:none;"><input type="hidden" name="_method" value="POST"/></div>' .
 						'<textarea name="data[Announcement][content]" cols="30" rows="6" id="AnnouncementContent"></textarea>' .
@@ -301,8 +300,7 @@ class AnnouncementEditControllerTest extends AnnouncementsAppControllerTest {
 		$this->testAction('/announcements/announcement_edit/form/1.json', array('method' => 'get'));
 		$this->view = trim(str_replace(array("\r\n", "\r", "\n"), '', $this->view));
 
-		$expected = '<form action="/var/www/app/lib/Cake/Console/announcements/announcement_edit/form/1.json" ' .
-							'id="Announcement1FormForm" onsubmit="event.returnValue = false; return false;" ' .
+		$expected = 'id="Announcement1FormForm" onsubmit="event.returnValue = false; return false;" ' .
 							'method="post" accept-charset="utf-8">' .
 						'<div style="display:none;"><input type="hidden" name="_method" value="POST"/></div>' .
 						'<textarea name="data[Announcement][content]" cols="30" rows="6" id="AnnouncementContent"></textarea>' .
