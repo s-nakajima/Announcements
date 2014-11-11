@@ -17,7 +17,7 @@
 
 			<?php echo $this->Form->label('Announcement.comment',
 						'<span class="glyphicon glyphicon-comment"></span> ' .
-							__d('net_commons', 'Comment'),
+							__d('net_commons', 'Comments to the person in charge.'),
 						array('class' => 'control-label')
 					); ?>
 
