@@ -32,12 +32,16 @@ class AnnouncementValidateErrorTest extends AnnouncementAppModelTest {
 				'block_id' => 1,
 				'key' => 'announcement_1',
 				'content' => 'edit content',
-				'comment' => 'edit comment',
 				'is_auto_translated' => true,
 				'translation_engine' => 'edit translation_engine',
 			),
 			'Frame' => array(
 				'id' => '1'
+			),
+			'Comment' => array(
+				'plugin_key' => 'announcements',
+				'content_key' => 'announcement_1',
+				'comment' => 'edit comment',
 			)
 		);
 		$result = $this->Announcement->saveAnnouncement($postData);
@@ -47,20 +51,7 @@ class AnnouncementValidateErrorTest extends AnnouncementAppModelTest {
 			null, '', -1, 0, 5, 9999, 'abcde',
 		);
 		foreach ($checkes as $i => $check) {
-			$postData = array(
-				'Announcement' => array(
-					'block_id' => 1,
-					'key' => 'announcement_1',
-					'status' => $check,
-					'content' => 'edit content',
-					'comment' => 'edit comment',
-					'is_auto_translated' => true,
-					'translation_engine' => 'edit translation_engine',
-				),
-				'Frame' => array(
-					'id' => '1'
-				)
-			);
+			$postData['Announcement']['status'] = $check;
 			$result = $this->Announcement->saveAnnouncement($postData);
 			$this->assertFalse($result, 'saveAnnouncement test No.' . ($i + 1) . print_r($postData, true));
 		}
@@ -77,12 +68,16 @@ class AnnouncementValidateErrorTest extends AnnouncementAppModelTest {
 				'block_id' => 1,
 				'key' => 'announcement_1',
 				'status' => '1',
-				'comment' => 'edit comment',
 				'is_auto_translated' => true,
 				'translation_engine' => 'edit translation_engine',
 			),
 			'Frame' => array(
 				'id' => '1'
+			),
+			'Comment' => array(
+				'plugin_key' => 'announcements',
+				'content_key' => 'announcement_1',
+				'comment' => 'edit comment',
 			)
 		);
 		$result = $this->Announcement->saveAnnouncement($postData);
@@ -92,20 +87,7 @@ class AnnouncementValidateErrorTest extends AnnouncementAppModelTest {
 			null, '',
 		);
 		foreach ($checkes as $i => $check) {
-			$postData = array(
-				'Announcement' => array(
-					'block_id' => 1,
-					'key' => 'announcement_1',
-					'status' => '1',
-					'content' => $check,
-					'comment' => 'edit comment',
-					'is_auto_translated' => true,
-					'translation_engine' => 'edit translation_engine',
-				),
-				'Frame' => array(
-					'id' => '1'
-				)
-			);
+			$postData['Announcement']['content'] = $check;
 			$result = $this->Announcement->saveAnnouncement($postData);
 			$this->assertFalse($result, 'saveAnnouncement test No.' . ($i + 1) . print_r($postData, true));
 		}
@@ -128,6 +110,10 @@ class AnnouncementValidateErrorTest extends AnnouncementAppModelTest {
 			),
 			'Frame' => array(
 				'id' => '1'
+			),
+			'Comment' => array(
+				'plugin_key' => 'announcements',
+				'content_key' => 'announcement_1',
 			)
 		);
 		$result = $this->Announcement->saveAnnouncement($postData);
@@ -137,20 +123,7 @@ class AnnouncementValidateErrorTest extends AnnouncementAppModelTest {
 			null, '',
 		);
 		foreach ($checkes as $i => $check) {
-			$postData = array(
-				'Announcement' => array(
-					'block_id' => 1,
-					'key' => 'announcement_1',
-					'status' => NetCommonsBlockComponent::STATUS_DISAPPROVED,
-					'content' => 'edit content',
-					'comment' => $check,
-					'is_auto_translated' => true,
-					'translation_engine' => 'edit translation_engine',
-				),
-				'Frame' => array(
-					'id' => '1'
-				)
-			);
+			$postData['Comment']['comment'] = $check;
 			$result = $this->Announcement->saveAnnouncement($postData);
 			$this->assertFalse($result, 'saveAnnouncement test No.' . ($i + 1) . print_r($postData, true));
 		}

@@ -47,7 +47,6 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 							'tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 				'is_auto_translated' => true,
 				'translation_engine' => 'Lorem ipsum dolor sit amet',
-				'comment' => null,
 			),
 			'Block' => array(
 				'id' => '1',
@@ -87,14 +86,6 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 							'tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 				'is_auto_translated' => true,
 				'translation_engine' => 'Lorem ipsum dolor sit amet',
-				'comment' => 'Lorem ipsum dolor sit amet, aliquet feugiat. '	.
-							'Convallis morbi fringilla gravida, '	.
-							'phasellus feugiat dapibus velit nunc, '	.
-							'pulvinar eget sollicitudin venenatis cum nullam, ' .
-							'vivamus ut a sed, mollitia lectus. '	.
-							'Nulla vestibulum massa neque ut et, id hendrerit sit, ' .
-							'feugiat in taciti enim proin nibh, '	.
-							'tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			),
 			'Block' => array(
 				'id' => '1',
@@ -145,12 +136,16 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'key' => 'announcement_1',
 				'status' => '1',
 				'content' => 'edit content',
-				'comment' => 'edit comment',
 				'is_auto_translated' => true,
 				'translation_engine' => 'edit translation_engine',
 			),
 			'Frame' => array(
 				'id' => '1'
+			),
+			'Comment' => array(
+				'plugin_key' => 'announcements',
+				'content_key' => 'announcement_1',
+				'comment' => 'edit comment',
 			)
 		);
 		$result = $this->Announcement->saveAnnouncement($postData);
@@ -162,14 +157,13 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 
 		$expected = array(
 			'Announcement' => array(
-				'id' => '21',
+				'id' => '4',
 				'block_id' => '1',
 				'key' => 'announcement_1',
 				'status' => '1',
 				'content' => 'edit content',
 				'is_auto_translated' => true,
 				'translation_engine' => 'edit translation_engine',
-				'comment' => 'edit comment',
 			),
 			'Block' => array(
 				'id' => '1',
@@ -195,10 +189,14 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'content' => 'add content',
 				'is_auto_translated' => true,
 				'translation_engine' => 'add translation_engine',
-				'comment' => 'add comment',
 			),
 			'Frame' => array(
 				'id' => '3'
+			),
+			'Comment' => array(
+				'plugin_key' => 'announcements',
+				'content_key' => '',
+				'comment' => 'add comment',
 			)
 		);
 		$result = $this->Announcement->saveAnnouncement($postData);
@@ -218,13 +216,12 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 
 		$expected = array(
 			'Announcement' => array(
-				'id' => '21',
+				'id' => '4',
 				'block_id' => '3',
 				'status' => '1',
 				'content' => 'add content',
 				'is_auto_translated' => true,
 				'translation_engine' => 'add translation_engine',
-				'comment' => 'add comment',
 			),
 			'Block' => array(
 				'id' => '3',
@@ -249,12 +246,16 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'key' => 'announcement_1',
 				'status' => '4',
 				'content' => 'edit content',
-				'comment' => 'edit comment',
 				'is_auto_translated' => true,
 				'translation_engine' => 'edit translation_engine',
 			),
 			'Frame' => array(
 				'id' => '1'
+			),
+			'Comment' => array(
+				'plugin_key' => 'announcements',
+				'content_key' => 'announcement_1',
+				'comment' => 'edit comment',
 			)
 		);
 		$result = $this->Announcement->saveAnnouncement($postData);
@@ -266,12 +267,78 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 
 		$expected = array(
 			'Announcement' => array(
-				'id' => '21',
+				'id' => '4',
 				'block_id' => '1',
 				'key' => 'announcement_1',
 				'status' => NetCommonsBlockComponent::STATUS_DISAPPROVED,
 				'content' => 'edit content',
-				'comment' => 'edit comment',
+				'is_auto_translated' => true,
+				'translation_engine' => 'edit translation_engine',
+			),
+			'Block' => array(
+				'id' => '1',
+				'language_id' => '2',
+				'room_id' => '1',
+				'key' => 'block_1',
+				'name' => '',
+			)
+		);
+
+		$this->_assertGetAnnouncement($expected, $result);
+	}
+
+/**
+ * testSaveAnnouncement method
+ *
+ * @return void
+ */
+	public function testSaveAnnouncementStatusModify() {
+		$postData = array(
+			'Announcement' => array(
+				'block_id' => '1',
+				'key' => 'announcement_1',
+				'status' => '2',
+				'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. '	.
+							'Convallis morbi fringilla gravida, '	.
+							'phasellus feugiat dapibus velit nunc, '	.
+							'pulvinar eget sollicitudin venenatis cum nullam, ' .
+							'vivamus ut a sed, mollitia lectus. '	.
+							'Nulla vestibulum massa neque ut et, id hendrerit sit, ' .
+							'feugiat in taciti enim proin nibh, '	.
+							'tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+				'is_auto_translated' => true,
+				'translation_engine' => 'edit translation_engine',
+			),
+			'Frame' => array(
+				'id' => '1'
+			),
+			'Comment' => array(
+				'plugin_key' => 'announcements',
+				'content_key' => 'announcement_1',
+				'comment' => '',
+			)
+		);
+		$result = $this->Announcement->saveAnnouncement($postData);
+		$this->assertArrayHasKey('Announcement', $result, 'Error saveAnnouncement');
+
+		$blockId = 1;
+		$contentEditable = true;
+		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
+
+		$expected = array(
+			'Announcement' => array(
+				'id' => '4',
+				'block_id' => '1',
+				'key' => 'announcement_1',
+				'status' => '2',
+				'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. '	.
+							'Convallis morbi fringilla gravida, '	.
+							'phasellus feugiat dapibus velit nunc, '	.
+							'pulvinar eget sollicitudin venenatis cum nullam, ' .
+							'vivamus ut a sed, mollitia lectus. '	.
+							'Nulla vestibulum massa neque ut et, id hendrerit sit, ' .
+							'feugiat in taciti enim proin nibh, '	.
+							'tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 				'is_auto_translated' => true,
 				'translation_engine' => 'edit translation_engine',
 			),

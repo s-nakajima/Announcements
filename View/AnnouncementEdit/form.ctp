@@ -20,9 +20,30 @@ echo $this->Form->input('Announcement.content', array(
 		)
 	);
 
-echo $this->Form->input('Announcement.comment', array(
+echo $this->Form->input('Comment.comment', array(
 			'type' => 'textarea',
 			'value' => '',
+		)
+	);
+
+echo $this->Form->input('Comment.plugin_key', array(
+			'type' => 'hidden',
+			'value' => 'announcements',
+			'ng-model' => 'edit.data.Comment.plugin_key',
+		)
+	);
+
+echo $this->Form->input('Comment.content_key', array(
+			'type' => 'hidden',
+			'value' => $announcement['Announcement']['key'],
+			'ng-model' => 'edit.data.Comment.content_key',
+		)
+	);
+
+echo $this->Form->input('Announcement.block_id', array(
+			'type' => 'hidden',
+			'value' => (int)$blockId,
+			'ng-model' => 'edit.data.Announcement.block_id',
 		)
 	);
 

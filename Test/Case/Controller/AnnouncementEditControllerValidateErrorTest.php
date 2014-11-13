@@ -21,29 +21,13 @@ App::uses('AnnouncementsAppControllerTest', 'Announcements.Test/Case/Controller'
 class AnnouncementEditControllerValidateErrorTest extends AnnouncementsAppControllerTest {
 
 /**
- * setUp
- *
- * @return void
- */
-	public function setUp() {
-		parent::setUp();
-	}
-
-/**
- * tearDown method
- *
- * @return void
- */
-	public function tearDown() {
-		parent::tearDown();
-	}
-
-/**
  * testEditContentError method
  *
  * @return void
  */
 	public function testEditContentError() {
+		$this->setExpectedException('ForbiddenException');
+
 		$this->_generateController('Announcements.AnnouncementEdit');
 		$this->_loginAdmin();
 
@@ -53,10 +37,14 @@ class AnnouncementEditControllerValidateErrorTest extends AnnouncementsAppContro
 				'key' => 'announcement_1',
 				'status' => '1',
 				'content' => '',
-				'comment' => 'edit comment',
 			),
 			'Frame' => array(
 				'id' => '1'
+			),
+			'Comment' => array(
+				'plugin_key' => 'announcements',
+				'content_key' => 'announcement_1',
+				'comment' => 'edit comment',
 			)
 		);
 
@@ -66,21 +54,6 @@ class AnnouncementEditControllerValidateErrorTest extends AnnouncementsAppContro
 				'data' => $postData
 			)
 		);
-
-		$expected = array(
-			'name' => __d('net_commons', 'Invalid request.'),
-			'errors' => array(
-				'content' => array(
-					'$invalid' => true,
-					'messages' => array(
-						sprintf(__d('net_commons', 'Please input %s.'), __d('announcements', 'Content'))
-					)
-				)
-			)
-		);
-
-		$this->assertEquals($expected, $this->vars['result'],
-				'Json data =' . print_r($this->vars['result'], true));
 
 		$this->_logout();
 	}
@@ -91,6 +64,8 @@ class AnnouncementEditControllerValidateErrorTest extends AnnouncementsAppContro
  * @return void
  */
 	public function testEditCommentError() {
+		$this->setExpectedException('ForbiddenException');
+
 		$this->_generateController('Announcements.AnnouncementEdit');
 		$this->_loginAdmin();
 
@@ -100,10 +75,14 @@ class AnnouncementEditControllerValidateErrorTest extends AnnouncementsAppContro
 				'key' => 'announcement_1',
 				'status' => NetCommonsBlockComponent::STATUS_DISAPPROVED,
 				'content' => 'edit content',
-				'comment' => '',
 			),
 			'Frame' => array(
 				'id' => '1'
+			),
+			'Comment' => array(
+				'plugin_key' => 'announcements',
+				'content_key' => 'announcement_1',
+				'comment' => '',
 			)
 		);
 
@@ -113,21 +92,6 @@ class AnnouncementEditControllerValidateErrorTest extends AnnouncementsAppContro
 				'data' => $postData
 			)
 		);
-
-		$expected = array(
-			'name' => __d('net_commons', 'Invalid request.'),
-			'errors' => array(
-				'comment' => array(
-					'$invalid' => true,
-					'messages' => array(
-						__d('net_commons', 'If it is not approved, comment is a required input.')
-					)
-				)
-			)
-		);
-
-		$this->assertEquals($expected, $this->vars['result'],
-				'Json data =' . print_r($this->vars['result'], true));
 
 		$this->_logout();
 	}

@@ -111,13 +111,6 @@ NetCommonsApp.controller('Announcements.edit',
       $scope.errors = {};
 
       /**
-       * placeholders
-       *
-       * @type {Object.<string>}
-       */
-      $scope.placeholders = {};
-
-      /**
        * sending
        *
        * @type {bool}
@@ -143,11 +136,15 @@ NetCommonsApp.controller('Announcements.edit',
         $scope.edit.data = {
           Announcement: {
             content: $scope.announcement.Announcement.content,
-            comment: '',
             status: $scope.announcement.Announcement.status,
             block_id: $scope.announcement.Announcement.block_id,
             key: $scope.announcement.Announcement.key,
             id: $scope.announcement.Announcement.id
+          },
+          Comment: {
+            plugin_key: 'announcements',
+            content_key: $scope.announcement.Announcement.key,
+            comment: ''
           },
           Frame: {
             id: $scope.frameId
@@ -170,6 +167,23 @@ NetCommonsApp.controller('Announcements.edit',
       };
 
       /**
+       * validate
+       *
+       * @return {bool}
+       */
+      $scope.validate = function() {
+        var status = $scope.edit.data.Announcement.status;
+        if (status === $scope.STATUS_DISAPPROVED &&
+                $scope.edit.data.Comment.comment === '') {
+          return false;
+        }
+        if ($scope.edit.data.Announcement.content === '') {
+          return false;
+        }
+        return true;
+      };
+
+      /**
        * dialog save
        *
        * @param {number} status
@@ -180,8 +194,12 @@ NetCommonsApp.controller('Announcements.edit',
        * @return {void}
        */
       $scope.save = function(status) {
-        $scope.sending = true;
+        $scope.edit.data.Announcement.status = status;
+        if (! $scope.validate()) {
+          return;
+        }
 
+        $scope.sending = true;
         $http.get($scope.PLUGIN_EDIT_URL + 'form/' +
                   $scope.frameId + '/' + Math.random() + '.json')
             .success(function(data) {
@@ -195,9 +213,6 @@ NetCommonsApp.controller('Announcements.edit',
                   $(form).find('input[name="data[_Token][fields]"]').val();
               $scope.edit.data._Token.unlocked =
                   $(form).find('input[name="data[_Token][unlocked]"]').val();
-
-              //ステータスセット
-              $scope.edit.data.Announcement.status = status;
 
               //登録情報をPOST
               $scope.sendPost($scope.edit);
@@ -226,39 +241,11 @@ NetCommonsApp.controller('Announcements.edit',
               $modalStack.dismissAll('saved');
             })
           .error(function(data) {
-              if (typeof data.errors === 'object') {
-                $scope.errors = data.errors;
-              } else {
-                $scope.flash.danger(data.name);
-              }
+              $scope.flash.danger(data.name);
             })
           .finally (function() {
               $scope.sending = false;
             });
-      };
-
-      /**
-       * Comment list of prev page
-       *
-       * @return {void}
-       */
-      $scope.prevComments = function() {
-        if (! $scope.comments.hasPrev) {
-          return;
-        }
-        $scope.getComments($scope.comments.current - 1);
-      };
-
-      /**
-       * Comment list of next page
-       *
-       * @return {void}
-       */
-      $scope.nextComments = function() {
-        if (! $scope.comments.hasNext) {
-          return;
-        }
-        $scope.getComments($scope.comments.current + 1);
       };
 
       /**
@@ -267,13 +254,19 @@ NetCommonsApp.controller('Announcements.edit',
        * @return {void}
        */
       $scope.getComments = function(page) {
-        $http.get($scope.PLUGIN_EDIT_URL + 'comment/' +
+        $http.get($scope.PLUGIN_EDIT_URL + 'comments/' +
                   $scope.frameId + '/page:' + page + '.json')
             .success(function(data) {
               $scope.comments.current = data.comments.current;
               $scope.comments.hasPrev = data.comments.hasPrev;
               $scope.comments.hasNext = data.comments.hasNext;
-              $scope.comments.data = data.comments.data;
+              if (page === 1 &&
+                      data.comments.limit > $scope.comments.data.length) {
+                $scope.comments.data = data.comments.data;
+              } else {
+                $scope.comments.data =
+                    $scope.comments.data.concat(data.comments.data);
+              }
             })
             .error(function(data) {
               //keyの取得に失敗
@@ -286,15 +279,11 @@ NetCommonsApp.controller('Announcements.edit',
        *
        * @return {string} ngClass of hasFeedback
        */
-      $scope.getNgClassComment = function(formElement) {
-        if (typeof formElement['comment'] === 'undefined') {
+      $scope.getNgClassComment = function(form) {
+        if ($scope.edit.data.Announcement.status !==
+                                           $scope.STATUS_DISAPPROVED) {
           return '';
         }
-        if (typeof $scope.errors.comment === 'undefined') {
-          return '';
-        }
-        $scope.errors.comment['$invalid'] = formElement['comment'].$invalid;
-        return ($scope.errors.comment['$invalid'] ?
-                    'has-error' : 'has-success');
+        return (form['comment'].$invalid ? 'has-error' : 'has-success');
       };
     });

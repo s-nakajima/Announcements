@@ -10,6 +10,7 @@
  */
 
 App::uses('AnnouncementsAppController', 'Announcements.Controller');
+App::uses('Comment', 'Blocks.Model'); //当定義がないと、エラーになる
 
 /**
  * Announcement edit Controller
@@ -26,6 +27,7 @@ class AnnouncementEditController extends AnnouncementsAppController {
  */
 	public $uses = array(
 		'Announcements.Announcement',
+		'Blocks.Comment',
 	);
 
 /**
@@ -110,52 +112,58 @@ class AnnouncementEditController extends AnnouncementsAppController {
 	public function view_latest($frameId = 0) {
 		//最新データ取得
 		$this->view($frameId);
-		$this->comment($frameId);
+		$this->comments($frameId, Comment::STARTLIMIT);
 
 		return $this->render('AnnouncementEdit/view_latest', false);
 	}
 
 /**
- * view method
+ * comments method
  *
  * @param int $frameId frames.id
+ * @param int $limit limit
  * @return CakeResponse A response object containing the rendered view.
  * @throws ForbiddenException
  */
-	public function comment($frameId = 0) {
+	public function comments($frameId = 0, $limit = 0) {
+		if (! isset($this->viewVars['announcement'])) {
+			$this->view($frameId);
+		}
+		if ($limit === 0) {
+			$limit = Comment::MAXLIMIT;
+		}
+
 		//コメントデータを取得
-		$this->Announcement->unbindModel(array('belongsTo' => array('Block')), false);
 		$this->Paginator->settings = array(
-			'Announcement' => array(
+			'Comment' => array(
 				'fields' => array(
-					'Announcement.id',
-					'Announcement.comment',
-					'Announcement.created_user',
-					'Announcement.created',
+					'Comment.id',
+					'Comment.comment',
+					'Comment.created_user',
+					'Comment.created',
 					'CreatedUser.key',
 					'CreatedUser.value',
 				),
 				'conditions' => array(
-					'Announcement.block_id' => $this->viewVars['blockId'],
-					'Announcement.comment !=' => '',
+					'Comment.content_key' => $this->viewVars['announcement']['Announcement']['key'],
 				),
-				'limit' => 5,
-				'order' => 'Announcement.id DESC',
+				'limit' => $limit,
+				'order' => 'Comment.id DESC',
 			),
 			'CreatedUser' => array(
 				'conditions' => array(
-					'Announcement.created_user = CreatedUser.user_id',
+					'Comment.created_user = CreatedUser.user_id',
 					'CreatedUser.language_id' => $this->viewVars['languageId'],
 					'CreatedUser.key' => 'nickname'
 				)
 			)
 		);
-		$comments = $this->Paginator->paginate('Announcement');
-		$this->Announcement->bindModel(array('belongsTo' => array('Block')), false);
+		$comments = $this->Paginator->paginate('Comment');
 		$this->set('comments', $comments);
+		$this->set('limit', $limit);
 
-		if ($this->params['action'] === 'comment') {
-			return $this->render('AnnouncementEdit/comment', false);
+		if ($this->params['action'] === 'comments') {
+			return $this->render('AnnouncementEdit/comments', false);
 		}
 	}
 
@@ -196,18 +204,6 @@ class AnnouncementEditController extends AnnouncementsAppController {
 				$this->data['Announcement']['status'] === NetCommonsBlockComponent::STATUS_DISAPPROVED
 			)) {
 			throw new ForbiddenException(__d('net_commons', 'Security Error! Unauthorized input.'));
-		}
-
-		//入力チェック
-		$this->Announcement->set($this->data);
-		$validateFileds = array(
-			'fieldList' => array('content', 'comment')
-		);
-		if (! $this->Announcement->validates($validateFileds)) {
-			$this->NetCommonsFrame->setViewValidationErrors($this,
-					$this->Announcement->validationErrors
-				);
-			return $this->render(false);
 		}
 
 		//登録

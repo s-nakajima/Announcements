@@ -32,10 +32,15 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
 				'block_id' => '1',
 				'key' => 'announcement_1',
 				'status' => '1',
-				'content' => 'change data',
+				'content' => 'edit content',
 			),
 			'Frame' => array(
 				'id' => '10'
+			),
+			'Comment' => array(
+				'plugin_key' => 'announcements',
+				'content_key' => 'announcement_1',
+				'comment' => 'edit comment',
 			)
 		);
 		$result = $this->Announcement->saveAnnouncement($postData);
@@ -56,7 +61,7 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
 		$postData = array(
 			'Announcement' => array(
 				'status' => '1',
-				'content' => 'add data',
+				'content' => 'add content',
 			),
 			'Frame' => array(
 				'id' => '3'
@@ -80,7 +85,7 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
 		$postData = array(
 			'Announcement' => array(
 				'status' => '1',
-				'content' => 'add data',
+				'content' => 'add content',
 			),
 			'Frame' => array(
 				'id' => '3'

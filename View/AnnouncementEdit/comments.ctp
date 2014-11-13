@@ -15,6 +15,7 @@ $result = array(
 	'comments' => array(
 		'data' => $comments,
 		'current' => $this->Paginator->current(),
+		'limit' => $limit,
 		'hasPrev' => $this->Paginator->hasPrev(),
 		'hasNext' => $this->Paginator->hasNext(),
 	)

@@ -30,6 +30,7 @@ class AnnouncementAppModelTest extends CakeTestCase {
 	public $fixtures = array(
 		'plugin.announcements.announcement',
 		'plugin.announcements.block',
+		'plugin.announcements.comment',
 		'plugin.frames.box',
 		'plugin.frames.language',
 		'plugin.rooms.room',

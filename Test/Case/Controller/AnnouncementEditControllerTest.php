@@ -21,24 +21,6 @@ App::uses('AnnouncementsAppControllerTest', 'Announcements.Test/Case/Controller'
 class AnnouncementEditControllerTest extends AnnouncementsAppControllerTest {
 
 /**
- * setUp
- *
- * @return void
- */
-	public function setUp() {
-		parent::setUp();
-	}
-
-/**
- * tearDown method
- *
- * @return void
- */
-	public function tearDown() {
-		parent::tearDown();
-	}
-
-/**
  * testIndex method
  *
  * @return void
@@ -74,7 +56,7 @@ class AnnouncementEditControllerTest extends AnnouncementsAppControllerTest {
 		$this->assertTextContains('<textarea', $this->view);
 		$this->assertTextContains('ui-tinymce="tinymceOptions"', $this->view);
 		$this->assertTextContains('ng-model="edit.data.Announcement.content"', $this->view);
-		$this->assertTextContains('ng-model="edit.data.Announcement.comment"', $this->view);
+		$this->assertTextContains('ng-model="edit.data.Comment.comment"', $this->view);
 
 		$this->assertTextContains('ng-click="cancel()"', $this->view);
 		$this->assertTextContains('ng-click="save(\'3\')"', $this->view);
@@ -109,7 +91,6 @@ class AnnouncementEditControllerTest extends AnnouncementsAppControllerTest {
 								'Nulla vestibulum massa neque ut et, id hendrerit sit, ' .
 								'feugiat in taciti enim proin nibh, '	.
 								'tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-					'comment' => null,
 					'is_auto_translated' => true,
 					'translation_engine' => 'Lorem ipsum dolor sit amet',
 					'created_user' => '1',
@@ -130,12 +111,12 @@ class AnnouncementEditControllerTest extends AnnouncementsAppControllerTest {
 				),
 			),
 			'comments' => array(
-				'current' => 1,
+				'current' => 0,
 				'hasPrev' => false,
 				'hasNext' => false,
 				'data' => array(
 					0 => array(
-						'Announcement' => array(
+						'Comment' => array(
 							'id' => '1',
 							'comment' => 'Lorem ipsum dolor sit amet, aliquet feugiat. '	.
 										'Convallis morbi fringilla gravida, '	.
@@ -146,7 +127,7 @@ class AnnouncementEditControllerTest extends AnnouncementsAppControllerTest {
 										'feugiat in taciti enim proin nibh, '	.
 										'tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 							'created_user' => '1',
-							'created' => 'CURRENT_DATETIME',
+							'created' => 'CURRENT_DATETIME'
 						),
 						'CreatedUser' => array(
 							'key' => 'nickname',
@@ -166,8 +147,8 @@ class AnnouncementEditControllerTest extends AnnouncementsAppControllerTest {
 		);
 		$keys = array_keys($result['comments']['data']);
 		foreach ($keys as $i) {
-			if (isset($result['comments']['data'][$i]['Announcement']['created'])) {
-				$result['comments']['data'][$i]['Announcement']['created'] = 'CURRENT_DATETIME';
+			if (isset($result['comments']['data'][$i]['Comment']['created'])) {
+				$result['comments']['data'][$i]['Comment']['created'] = 'CURRENT_DATETIME';
 			}
 		}
 
@@ -185,68 +166,36 @@ class AnnouncementEditControllerTest extends AnnouncementsAppControllerTest {
 		$this->_generateController('Announcements.AnnouncementEdit');
 		$this->_loginAdmin();
 
-		$this->testAction('/announcements/announcement_edit/comment/2.json', array('method' => 'get'));
+		$this->testAction('/announcements/announcement_edit/comments/2.json', array('method' => 'get'));
+
+		$expectedComments = array();
+		for ($i = 20; $i > 10; $i--) {
+			$expectedComments[] = array(
+				'Comment' => array(
+					'id' => (string)$i, 'comment' => 'Comment ' . $i,
+					'created_user' => '1', 'created' => 'CURRENT_DATETIME',
+				),
+				'CreatedUser' => array(
+					'key' => 'nickname', 'value' => 'admin'
+				)
+			);
+		}
 
 		$expected = array(
 			'comments' => array(
 				'current' => 1,
+				'limit' => 100,
 				'hasPrev' => false,
-				'hasNext' => true,
-				'data' => array(
-					0 => array(
-						'Announcement' => array(
-							'id' => '20', 'comment' => 'Comment 20',
-							'created_user' => '1', 'created' => 'CURRENT_DATETIME',
-						),
-						'CreatedUser' => array(
-							'key' => 'nickname', 'value' => 'admin'
-						),
-					),
-					1 => array(
-						'Announcement' => array(
-							'id' => '19', 'comment' => 'Comment 19',
-							'created_user' => '1', 'created' => 'CURRENT_DATETIME',
-						),
-						'CreatedUser' => array(
-							'key' => 'nickname', 'value' => 'admin'
-						),
-					),
-					2 => array(
-						'Announcement' => array(
-							'id' => '18', 'comment' => 'Comment 18',
-							'created_user' => '1', 'created' => 'CURRENT_DATETIME',
-						),
-						'CreatedUser' => array(
-							'key' => 'nickname', 'value' => 'admin'
-						),
-					),
-					3 => array(
-						'Announcement' => array(
-							'id' => '17', 'comment' => 'Comment 17',
-							'created_user' => '1', 'created' => 'CURRENT_DATETIME',
-						),
-						'CreatedUser' => array(
-							'key' => 'nickname', 'value' => 'admin'
-						),
-					),
-					4 => array(
-						'Announcement' => array(
-							'id' => '16', 'comment' => 'Comment 16',
-							'created_user' => '1', 'created' => 'CURRENT_DATETIME',
-						),
-						'CreatedUser' => array(
-							'key' => 'nickname', 'value' => 'admin'
-						),
-					),
-				),
+				'hasNext' => false,
+				'data' => $expectedComments,
 			),
 		);
 
 		$result = json_decode($this->view, true);
 		$keys = array_keys($result['comments']['data']);
 		foreach ($keys as $i) {
-			if (isset($result['comments']['data'][$i]['Announcement']['created'])) {
-				$result['comments']['data'][$i]['Announcement']['created'] = 'CURRENT_DATETIME';
+			if (isset($result['comments']['data'][$i]['Comment']['created'])) {
+				$result['comments']['data'][$i]['Comment']['created'] = 'CURRENT_DATETIME';
 			}
 		}
 
@@ -271,7 +220,10 @@ class AnnouncementEditControllerTest extends AnnouncementsAppControllerTest {
 							'method="post" accept-charset="utf-8">' .
 						'<div style="display:none;"><input type="hidden" name="_method" value="POST"/></div>' .
 						'<textarea name="data[Announcement][content]" cols="30" rows="6" id="AnnouncementContent"></textarea>' .
-						'<textarea name="data[Announcement][comment]" cols="30" rows="6" id="AnnouncementComment"></textarea>' .
+						'<textarea name="data[Comment][comment]" cols="30" rows="6" id="CommentComment"></textarea>' .
+						'<input type="hidden" name="data[Comment][plugin_key]" value="announcements" ng-model="edit.data.Comment.plugin_key" id="CommentPluginKey"/>' .
+						'<input type="hidden" name="data[Comment][content_key]" value="announcement_1" ng-model="edit.data.Comment.content_key" id="CommentContentKey"/>' .
+						'<input type="hidden" name="data[Announcement][block_id]" value="1" ng-model="edit.data.Announcement.block_id" id="AnnouncementBlockId"/>' .
 						'<select name="data[Announcement][status]" id="AnnouncementStatus">' .
 						'<option value="1">1</option>' .
 						'<option value="3">3</option>' .
@@ -304,7 +256,10 @@ class AnnouncementEditControllerTest extends AnnouncementsAppControllerTest {
 							'method="post" accept-charset="utf-8">' .
 						'<div style="display:none;"><input type="hidden" name="_method" value="POST"/></div>' .
 						'<textarea name="data[Announcement][content]" cols="30" rows="6" id="AnnouncementContent"></textarea>' .
-						'<textarea name="data[Announcement][comment]" cols="30" rows="6" id="AnnouncementComment"></textarea>' .
+						'<textarea name="data[Comment][comment]" cols="30" rows="6" id="CommentComment"></textarea>' .
+						'<input type="hidden" name="data[Comment][plugin_key]" value="announcements" ng-model="edit.data.Comment.plugin_key" id="CommentPluginKey"/>' .
+						'<input type="hidden" name="data[Comment][content_key]" value="announcement_1" ng-model="edit.data.Comment.content_key" id="CommentContentKey"/>' .
+						'<input type="hidden" name="data[Announcement][block_id]" value="1" ng-model="edit.data.Announcement.block_id" id="AnnouncementBlockId"/>' .
 						'<select name="data[Announcement][status]" id="AnnouncementStatus">' .
 						'<option value="2">2</option>' .
 						'<option value="3">3</option>' .
@@ -335,10 +290,14 @@ class AnnouncementEditControllerTest extends AnnouncementsAppControllerTest {
 				'key' => 'announcement_1',
 				'status' => '1',
 				'content' => 'edit content',
-				'comment' => 'edit comment',
 			),
 			'Frame' => array(
 				'id' => '1'
+			),
+			'Comment' => array(
+				'plugin_key' => 'announcements',
+				'content_key' => 'announcement_1',
+				'comment' => 'edit comment',
 			)
 		);
 
@@ -346,16 +305,15 @@ class AnnouncementEditControllerTest extends AnnouncementsAppControllerTest {
 			'name' => __d('net_commons', 'Successfully finished.'),
 			'announcement' => array(
 				'Announcement' => array(
-					'id' => '21',
+					'id' => '4',
 					'block_id' => '1',
 					'key' => 'announcement_1',
 					'status' => '1',
 					'content' => 'edit content',
-					'comment' => 'edit comment',
 					'is_auto_translated' => false,
 					'translation_engine' => null,
 					'created_user' => '1',
-					'modified_user' => '0',
+					'modified_user' => '1',
 				),
 				'Block' => array(
 					'id' => '1',

@@ -18,20 +18,23 @@
 
 	<?php if (isset($announcement['Announcement']) && $contentPublishable &&
 				$announcement['Announcement']['status'] === NetCommonsBlockComponent::STATUS_APPROVED) : ?>
-		<button type="button" class="btn btn-danger" ng-disabled="sending"
+		<button type="button" name="status" class="btn btn-danger"
+				ng-disabled="sending"
 				ng-hide="announcement.Announcement.status !== '<?php echo (NetCommonsBlockComponent::STATUS_APPROVED); ?>'"
 				ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_DISAPPROVED ?>')">
 			<?php echo __d('net_commons', 'Disapproval'); ?>
 		</button>
 
-		<button type="button" class="btn btn-default ng-hide" ng-disabled="sending"
+		<button type="button" class="btn btn-default ng-hide"
+				ng-disabled="sending"
 				ng-hide="announcement.Announcement.status === '<?php echo (NetCommonsBlockComponent::STATUS_APPROVED); ?>'"
 				ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_DRAFTED ?>')">
 			<?php echo __d('net_commons', 'Save temporally'); ?>
 		</button>
 
 	<?php else : ?>
-		<button type="button" class="btn btn-default" ng-disabled="sending"
+		<button type="button" class="btn btn-default"
+				ng-disabled="sending"
 				ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_DRAFTED ?>')">
 			<?php echo __d('net_commons', 'Save temporally'); ?>
 		</button>
@@ -39,13 +42,15 @@
 	<?php endif; ?>
 
 	<?php if ($contentPublishable) : ?>
-		<button type="button" class="btn btn-primary" ng-disabled="sending"
+		<button type="button" class="btn btn-primary"
+				ng-disabled="sending"
 				ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_PUBLISHED ?>')">
 			<?php echo __d('net_commons', 'OK'); ?>
 		</button>
 
 	<?php else : ?>
-		<button type="button" class="btn btn-primary" ng-disabled="sending"
+		<button type="button" class="btn btn-primary"
+				ng-disabled="sending"
 				ng-click="save('<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>')">
 			<?php echo __d('net_commons', 'OK'); ?>
 		</button>

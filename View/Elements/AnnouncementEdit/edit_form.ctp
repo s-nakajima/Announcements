@@ -10,7 +10,7 @@
  */
 ?>
 
-<div class="form-group" ng-class="errors.content.$invalid ? 'has-error' : ''">
+<div class="form-group" ng-class="edit.data.Announcement.content === '' ? 'has-error' : 'has-success'">
 	<label class="control-label">
 		<?php echo __d('announcements', 'Content'); ?>
 	</label>
@@ -18,7 +18,7 @@
 		<?php echo __d('net_commons', 'Required'); ?>
 	</span>
 
-	<div class="nc-wysiwyg-alert" ng-class="errors.content.$invalid ? 'alert-danger' : ''">
+	<div class="nc-wysiwyg-alert" ng-class="edit.data.Announcement.content === '' ? 'alert-danger' : 'alert-success'">
 		<textarea class="form-control" rows="5"
 				ui-tinymce="tinymceOptions"
 				ng-model="edit.data.Announcement.content">
@@ -26,9 +26,9 @@
 	</div>
 
 	<div class="help-block">
-		<br ng-hide="errors.content.$invalid" />
-		<div ng-repeat="error in errors.content.messages">
-			{{error}}
+		<br ng-hide="(edit.data.Announcement.content === '')" />
+		<div ng-show="(edit.data.Announcement.content === '')">
+			<?php echo (sprintf(__d('net_commons', 'Please input %s.'), __d('announcements', 'Content'))); ?>
 		</div>
 	</div>
 </div>

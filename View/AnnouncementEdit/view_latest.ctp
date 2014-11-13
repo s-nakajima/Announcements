@@ -15,7 +15,7 @@ $result = array(
 	'announcement' => $announcement,
 	'comments' => array(
 		'data' => $comments,
-		'current' => $this->Paginator->current(),
+		'current' => 0,
 		'hasPrev' => $this->Paginator->hasPrev(),
 		'hasNext' => $this->Paginator->hasNext(),
 	)

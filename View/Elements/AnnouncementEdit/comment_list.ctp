@@ -10,43 +10,26 @@
  */
 ?>
 
-<div class="panel-heading">
-	<?php echo __d('net_commons', 'Comment list'); ?>
-</div>
-
 <div class="panel-body">
-	<div class="row" ng-repeat="comment in comments.data">
-		<div class="col-sm-12" ng-hide="$first"><hr /></div>
-		<div class="col-sm-4">
-			{{comment.Announcement.created}}
-			<br />
-			<a href="" ng-click="showUser(comment.Announcement.created_user)">
-				{{comment.CreatedUser.value | limitTo:<?php echo Announcement::NICKNAME_LENGTH ?>}}
+	<div ng-repeat="comment in comments.data">
+		<div ng-hide="$first"><hr /></div>
+		<div>
+			<a href="" ng-click="showUser(comment.Comment.created_user)">
+				<b>{{comment.CreatedUser.value}}</b>
 			</a>
-		</div>
-		<div class="col-sm-8">
-			<a href="" onclick="$(this).popover('show');" tabindex="1"
-				data-toggle="popover"
-				data-trigger="focus"
-				data-placement="top"
-				data-content="{{comment.Announcement.comment}}">
 
-				{{comment.Announcement.comment | limitTo:<?php echo Announcement::COMMENT_LENGTH ?>}}
-			</a>
+			<small class="text-muted nc-comment-time">{{comment.Comment.created}}</small>
+		</div>
+		<div>
+			{{comment.Comment.comment}}
 		</div>
 	</div>
 
 	<hr />
-	<ul class="pager">
-		<li class="previous" ng-class="comments.hasPrev ? '' : 'disabled'">
-			<a href="" ng-click="prevComments()">
-				<?php echo __d('net_commons', 'Prev'); ?>
-			</a>
-		</li>
-		<li class="next" ng-class="comments.hasNext ? '' : 'disabled'">
-			<a href="" ng-click="nextComments()">
-				<?php echo __d('net_commons', 'Next'); ?>
-			</a>
-		</li>
-	</ul>
+
+	<button type="button" class="btn btn-default btn-block"
+			ng-show="comments.hasNext"
+			ng-click="getComments(comments.current + 1)">
+		<?php echo __d('net_commons', 'More'); ?>
+	</button>
 </div>

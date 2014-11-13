@@ -13,11 +13,11 @@
 <div class="row">
 	<div class="col-xs-offset-1 col-xs-11">
 		<div class="form-group has-feedback"
-				ng-class="getNgClassComment(<?php echo ('Announcement' . (int)$frameId); ?>)">
+				ng-class="getNgClassComment(<?php echo ($formName); ?>)">
 
 			<?php echo $this->Form->label('Announcement.comment',
 						'<span class="glyphicon glyphicon-comment"></span> ' .
-							__d('net_commons', 'Comment'),
+							__d('net_commons', 'Comments to the person in charge.'),
 						array('class' => 'control-label')
 					); ?>
 
@@ -27,28 +27,29 @@
 							'label' => false,
 							'rows' => '2',
 							'type' => 'textarea',
-							'class' => 'form-control',
-							'ng-model' => 'edit.data.Announcement.comment',
+							'class' => 'form-control nc-noresize',
+							'ng-model' => 'edit.data.Comment.comment',
 							'placeholder' => __d('net_commons', 'Please enter comments to the person in charge.'),
 							'autofocus' => 'true',
-							'required' => 'true',
+							'ng-required' => "(edit.data.Announcement.status === '" . NetCommonsBlockComponent::STATUS_DISAPPROVED . "')",
 						)
 					); ?>
 
 			<div class="form-control-feedback"
-					ng-class="errors.comment.$invalid ? 'glyphicon glyphicon-remove' : 'glyphicon glyphicon-ok'; "
-					ng-show="errors.comment">
+					ng-class="<?php echo ($formName); ?>.comment.$invalid ?
+									'glyphicon glyphicon-remove' : 'glyphicon glyphicon-ok'; "
+					ng-show="(edit.data.Announcement.status === '<?php echo NetCommonsBlockComponent::STATUS_DISAPPROVED ?>')">
 			</div>
 
 			<div class="help-block">
-				<div ng-show="(announcement.Announcement.status === '<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>' && ! errors.comment)">
+				<br ng-hide="(edit.data.Announcement.status === '<?php echo NetCommonsBlockComponent::STATUS_DISAPPROVED ?>' &&
+							<?php echo ($formName); ?>.comment.$invalid)" />
+
+				<div ng-show="(edit.data.Announcement.status === '<?php echo NetCommonsBlockComponent::STATUS_DISAPPROVED ?>' &&
+							<?php echo ($formName); ?>.comment.$invalid)">
 					<?php echo __d('net_commons', 'If it is not approved, comment is a required input.'); ?>
 				</div>
-				<br ng-show="(announcement.Announcement.status !== '<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>' || errors.comment && ! errors.comment.$invalid)" />
 
-				<div ng-repeat="error in errors.comment.messages" ng-show="errors.comment.$invalid">
-					{{error}}
-				</div>
 			</div>
 		</div>
 	</div>

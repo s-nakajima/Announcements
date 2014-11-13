@@ -22,20 +22,6 @@ App::uses('AnnouncementsAppModel', 'Announcements.Model');
 class Announcement extends AnnouncementsAppModel {
 
 /**
- * comment text length
- *
- * @var int
- */
-	const COMMENT_LENGTH = 34;
-
-/**
- * comment text length
- *
- * @var int
- */
-	const NICKNAME_LENGTH = 15;
-
-/**
  * Validation rules
  *
  * @var array
@@ -122,18 +108,21 @@ class Announcement extends AnnouncementsAppModel {
 			),
 		);
 
-		//ステータス 差し戻しのみコメント必須
-		if ($this->data['Announcement']['status'] === NetCommonsBlockComponent::STATUS_DISAPPROVED) {
-			$this->validate['comment'] = array(
-				'notEmpty' => array(
-					'rule' => array('notEmpty'),
-					'message' => __d('net_commons', 'If it is not approved, comment is a required input.'),
-					'required' => true,
-				),
-			);
-		}
-
 		return parent::beforeValidate($options);
+	}
+
+/**
+ * before save
+ *
+ * @param array $options Options passed from Model::save().
+ * @return bool True if the operation should continue, false if it should abort
+ */
+	public function beforeSave($options = array()) {
+		if (! isset($this->data[$this->name]['id'])) {
+			$this->data[$this->name]['created_user'] = CakeSession::read('Auth.User.id');
+		}
+		$this->data[$this->name]['modified_user'] = CakeSession::read('Auth.User.id');
+		return true;
 	}
 
 /**
@@ -176,37 +165,75 @@ class Announcement extends AnnouncementsAppModel {
  */
 	public function saveAnnouncement($postData) {
 		//DBへの登録
+		$models = array(
+			'Block' => 'Blocks.Block',
+			'Comment' => 'Blocks.Comment',
+		);
+		foreach ($models as $model => $class) {
+			$this->$model = ClassRegistry::init($class);
+			$this->$model->setDataSource('master');
+		}
+
 		$dataSource = $this->getDataSource();
 		$dataSource->begin();
 		try {
+			//ブロックの登録
 			$block = $this->Block->saveByFrameId($postData['Frame']['id']);
 			if (! $block) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 
-			$count = $this->find('count', array(
-				'conditions' => array('block_id' => (int)$block['Block']['id'])
-			));
-			if ($count === 0) {
-				//announcementsテーブルのkey生成
-				$postData['Announcement']['key'] = hash('sha256', 'announcement_' . microtime());
+			//お知らせデータの取得
+			$announcement = $this->getAnnouncement((int)$block['Block']['id'], true);
+			if ($announcement['Announcement']['key'] === '') {
+				$postData['Announcement']['key'] = hash('sha256', 'annoncement_' . microtime());
 			}
 
-			unset($postData['Announcement']['id']);
-			$announcement = $this->create();
+			//お知らせの登録
+			if ($postData['Announcement']['content'] !== $announcement['Announcement']['content'] ||
+					$postData['Announcement']['status'] !== $announcement['Announcement']['status']) {
+				unset($postData['Announcement']['id']);
+				$announcement = $this->create();
+			}
 			$announcement['Announcement'] = $postData['Announcement'];
 			$announcement['Announcement']['block_id'] = (int)$block['Block']['id'];
-			$announcement['Announcement']['created_user'] = CakeSession::read('Auth.User.id');
 			$announcement = $this->save($announcement);
 			if (! $announcement) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
+
+			//コメントの登録
+			if (! $this->__saveComment($announcement, $postData)) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+
 			$dataSource->commit();
 			return $announcement;
 
 		} catch (Exception $ex) {
+			//CakeLog::error($ex);
 			$dataSource->rollback();
 			return false;
 		}
 	}
+
+/**
+ * save comment
+ *
+ * @param array $announcement announcement data
+ * @param array $postData received post data
+ * @return bool true success, false error
+ */
+	private function __saveComment($announcement, $postData) {
+		//コメントの登録(ステータス 差し戻しのみコメント必須)
+		if ($announcement['Announcement']['status'] === NetCommonsBlockComponent::STATUS_DISAPPROVED ||
+				$postData['Comment']['comment'] !== '') {
+
+			$postData['Comment']['content_key'] = $announcement['Announcement']['key'];
+			return $this->Comment->save($postData['Comment']);
+		}
+
+		return true;
+	}
+
 }

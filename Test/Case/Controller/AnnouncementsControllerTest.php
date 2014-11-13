@@ -31,15 +31,6 @@ class AnnouncementsControllerTest extends AnnouncementsAppControllerTest {
 	}
 
 /**
- * tearDown method
- *
- * @return void
- */
-	public function tearDown() {
-		parent::tearDown();
-	}
-
-/**
  * testIndex method
  *
  * @return void
