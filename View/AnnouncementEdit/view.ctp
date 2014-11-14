@@ -13,6 +13,8 @@ $formName = 'AnnouncementForm' . (int)$frameId;
 
 ?>
 
+<div id="nc-top"></div>
+
 <?php echo $this->element('AnnouncementEdit/tab_header'); ?>
 
 <div class="modal-body">

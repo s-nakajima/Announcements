@@ -296,7 +296,7 @@ NetCommonsApp.controller('Announcements.edit',
        * @return {string} ngClass of hasFeedback
        */
       $scope.gotoTop = function() {
-        $location.hash('nc-announcements-edit-' + $scope.frameId);
+        $location.hash('nc-top');
         $anchorScroll();
       };
 
