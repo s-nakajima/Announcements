@@ -16,7 +16,7 @@
     },
     "require-dev": {
         "mustangostang/spyc":           "dev-master",
-        "satooshi/php-coveralls":       "dev-master",
+        "satooshi/php-coveralls":       "~0.6.1",
         "netcommons/net-commons":       "dev-master",
         "netcommons/frames":            "dev-master",
         "netcommons/pages":             "dev-master",
