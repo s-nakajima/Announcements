@@ -280,8 +280,10 @@ NetCommonsApp.controller('Announcements.edit',
        * @return {string} ngClass of hasFeedback
        */
       $scope.getNgClassComment = function(form) {
-        if ($scope.edit.data.Announcement.status !==
-                                           $scope.STATUS_DISAPPROVED) {
+        if ($scope.edit.data.Announcement.status ===
+                                 $scope.announcement.Announcement.status ||
+            $scope.edit.data.Announcement.status !==
+                                 $scope.STATUS_DISAPPROVED) {
           return '';
         }
         return (form['comment'].$invalid ? 'has-error' : 'has-success');

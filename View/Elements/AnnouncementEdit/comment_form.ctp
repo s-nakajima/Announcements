@@ -29,27 +29,27 @@
 							'type' => 'textarea',
 							'class' => 'form-control nc-noresize',
 							'ng-model' => 'edit.data.Comment.comment',
-							'placeholder' => __d('net_commons', 'Please enter comments to the person in charge.'),
+							'ng-init' => "placeholder = " .
+										"'" . __d('net_commons', 'Please enter comments to the person in charge.') . "'" .
+										" + (announcement.Announcement.status === '" . NetCommonsBlockComponent::STATUS_APPROVED . "'" .
+											" ? '" . __d('net_commons', 'If it is not approved, input required.') . "' : '')",
+							'placeholder' => '{{placeholder}}',
 							'autofocus' => 'true',
 							'ng-required' => "(edit.data.Announcement.status === '" . NetCommonsBlockComponent::STATUS_DISAPPROVED . "')",
 						)
 					); ?>
 
 			<div class="form-control-feedback"
-					ng-class="<?php echo ($formName); ?>.comment.$invalid ?
+					ng-class="getNgClassComment(<?php echo ($formName); ?>) === 'has-error' ?
 									'glyphicon glyphicon-remove' : 'glyphicon glyphicon-ok'; "
-					ng-show="(edit.data.Announcement.status === '<?php echo NetCommonsBlockComponent::STATUS_DISAPPROVED ?>')">
+					ng-show="(getNgClassComment(<?php echo ($formName); ?>) === '' ? 'false' : 'true')">
 			</div>
 
 			<div class="help-block">
-				<br ng-hide="(edit.data.Announcement.status === '<?php echo NetCommonsBlockComponent::STATUS_DISAPPROVED ?>' &&
-							<?php echo ($formName); ?>.comment.$invalid)" />
-
-				<div ng-show="(edit.data.Announcement.status === '<?php echo NetCommonsBlockComponent::STATUS_DISAPPROVED ?>' &&
-							<?php echo ($formName); ?>.comment.$invalid)">
+				<br ng-hide="(getNgClassComment(<?php echo ($formName); ?>) === 'has-error' ? 'true' : 'false')" />
+				<div ng-show="(getNgClassComment(<?php echo ($formName); ?>) === 'has-error' ? 'true' : 'false')">
 					<?php echo __d('net_commons', 'If it is not approved, comment is a required input.'); ?>
 				</div>
-
 			</div>
 		</div>
 	</div>

@@ -18,7 +18,7 @@
 				<b>{{comment.CreatedUser.value}}</b>
 			</a>
 
-			<small class="text-muted nc-comment-time">{{comment.Comment.created}}</small>
+			<small class="text-muted">{{comment.Comment.created}}</small>
 		</div>
 		<div>
 			{{comment.Comment.comment}}
