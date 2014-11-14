@@ -57,7 +57,7 @@ class AnnouncementsControllerTest extends AnnouncementsAppControllerTest {
 	public function testIndexByNewFrameId() {
 		$this->testAction('/announcements/announcements/index/3', array('method' => 'get'));
 
-		$this->assertEmpty(trim($this->view));
+		$this->assertEmpty($this->view, $this->view);
 	}
 
 /**
@@ -86,6 +86,6 @@ class AnnouncementsControllerTest extends AnnouncementsAppControllerTest {
  */
 	public function testViewByNewFrameId() {
 		$this->testAction('/announcements/announcements/view/3', array('method' => 'get'));
-		$this->assertEmpty(trim($this->view));
+		$this->assertEmpty($this->view, $this->view);
 	}
 }
