@@ -69,6 +69,7 @@ class AnnouncementsAppControllerTest extends ControllerTestCase {
  */
 	public function tearDown() {
 		Configure::write('Config.language', null);
+		CakeSession::write('Auth.User', null);
 		unset($this->Controller);
 		parent::tearDown();
 	}

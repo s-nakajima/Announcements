@@ -86,6 +86,7 @@ class AnnouncementsControllerTest extends AnnouncementsAppControllerTest {
  */
 	public function testViewByNewFrameId() {
 		$this->testAction('/announcements/announcements/view/3', array('method' => 'get'));
+
 		$this->assertEmpty($this->view, $this->view);
 	}
 }
