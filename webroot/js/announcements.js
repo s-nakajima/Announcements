@@ -102,7 +102,8 @@ NetCommonsApp.controller('Announcements',
  * @param {function($scope, $http, $modalStack)} Controller
  */
 NetCommonsApp.controller('Announcements.edit',
-                         function($scope, $http, $modalStack) {
+    function($scope, $http, $modalStack, $location, $anchorScroll) {
+
       /**
        * errors
        *
@@ -288,4 +289,15 @@ NetCommonsApp.controller('Announcements.edit',
         }
         return (form['comment'].$invalid ? 'has-error' : 'has-success');
       };
+
+      /**
+       * gotoTop
+       *
+       * @return {string} ngClass of hasFeedback
+       */
+      $scope.gotoTop = function() {
+        $location.hash('nc-announcements-edit-' + $scope.frameId);
+        $anchorScroll();
+      };
+
     });

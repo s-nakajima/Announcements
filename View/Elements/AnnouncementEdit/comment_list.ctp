@@ -32,4 +32,11 @@
 			ng-click="getComments(comments.current + 1)">
 		<?php echo __d('net_commons', 'More'); ?>
 	</button>
+
+	<div class="text-right" ng-hide="(comments.current === 0)">
+		<button type="button" class="btn btn-default btn-sm" ng-click="gotoTop()">
+			<?php echo __d('net_commons', 'Top'); ?>
+		</button>
+	</div>
+
 </div>
