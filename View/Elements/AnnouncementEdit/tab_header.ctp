@@ -19,9 +19,7 @@
 
 	<ul class="nav nav-pills">
 		<li class="active">
-			<a href="">
-				<?php echo __d('announcements', 'Announcement edit'); ?>
-			</a>
+			<a><?php echo __d('announcements', 'Announcement edit'); ?></a>
 		</li>
 	</ul>
 </div>
