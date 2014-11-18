@@ -44,8 +44,6 @@ $formName = 'AnnouncementForm' . (int)$frameId;
 					<?php echo $this->element('AnnouncementEdit/comment_list'); ?>
 				</div>
 
-				<?php echo $this->element('AnnouncementEdit/common_form'); ?>
-
 			<?php echo $this->Form->end(); ?>
 		</div>
 	</div>

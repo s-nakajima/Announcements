@@ -42,6 +42,10 @@ class AnnouncementEditController extends AnnouncementsAppController {
 		'Paginator'
 	);
 
+	public $helpers = array(
+		'Announcements.NetCommonsForm'
+	);
+
 /**
  * beforeFilter
  *
