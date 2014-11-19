@@ -33,9 +33,14 @@
 		<?php echo __d('net_commons', 'More'); ?>
 	</button>
 
-	<div class="text-right" ng-hide="(comments.current === 0)">
-		<button type="button" class="btn btn-default btn-sm" ng-click="gotoTop()">
+	<div class="text-right">
+		<a nghref="##nc-top" class="glyphicon glyphicon-circle-arrow-up">
 			<?php echo __d('net_commons', 'Top'); ?>
+		</a>
+
+
+		<button type="button" class="btn btn-default" ng-click="gotoTop()">
+			<span class="glyphicon glyphicon-hand-up"> </span>
 		</button>
 	</div>
 

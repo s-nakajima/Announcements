@@ -15,9 +15,30 @@ $formName = 'AnnouncementForm' . (int)$frameId;
 
 <div id="nc-top"></div>
 
-<?php echo $this->element('AnnouncementEdit/tab_header'); ?>
+<div class="modal-header">
+	<button class="close" type="button"
+			tooltip="<?php echo __d('net_commons', 'Close'); ?>"
+			ng-click="cancel()">
+		<span class="glyphicon glyphicon-remove small"></span>
+	</button>
+
+	<?php echo __d('announcements', 'plugin_name'); ?>
+</div>
 
 <div class="modal-body">
+	<ul class="nav nav-tabs" role="tablist">
+		<li class="active">
+			<a href="" role="tab" data-toggle="tab">
+				<?php echo __d('announcements', 'Announcement edit'); ?>
+			</a>
+		</li>
+		<li>
+			<a href="" role="tab" data-toggle="tab" ng-click="showManage()">
+				<?php echo __d('announcements', 'Announcement edit'); ?>
+			</a>
+		</li>
+	</ul>
+	<br />
 	<div class="tab-content">
 		<div id="nc-announcements-edit-<?php echo $frameId; ?>" class="tab-pane active">
 
@@ -45,6 +66,10 @@ $formName = 'AnnouncementForm' . (int)$frameId;
 				</div>
 
 			<?php echo $this->Form->end(); ?>
+		</div>
+
+		<div id="nc-announcements-display-change-<?php echo $frameId; ?>" class="tab-pane">
+			aaaaa
 		</div>
 	</div>
 </div>
