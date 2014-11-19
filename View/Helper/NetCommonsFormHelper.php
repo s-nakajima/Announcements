@@ -87,13 +87,17 @@ class NetCommonsFormHelper extends FormHelper {
 
 		$data = array();
 		$xmlData = Xml::toArray(Xml::build($this->__tokenHTML));
+		if (isset($xmlData['form']['div'][0]) && isset($xmlData['form']['div'][1])) {
 
-		if (isset($xmlData['form']['div']) &&
-				isset($xmlData['form']['div'][0]) &&
-				isset($xmlData['form']['div'][1])) {
-
-			$tokenArray = array_merge_recursive($xmlData['form']['div'][0], $xmlData['form']['div'][1]);
-			foreach ($tokenArray['input'] as $i => $input) {
+			//data[_Token][key]の取得
+			foreach ($xmlData['form']['div'][0]['input'] as $i => $input) {
+				$matches = array();
+				if (preg_match('/data\[(_Token)\]\[(.+)\]/iU', $input['@name'], $matches)) {
+					$data[$matches[1]][$matches[2]] = $input['@value'];
+				}
+			}
+			//data[_Token][fields]、data[_Token][unlocked]の取得
+			foreach ($xmlData['form']['div'][1]['input'] as $i => $input) {
 				$matches = array();
 				if (preg_match('/data\[(_Token)\]\[(.+)\]/iU', $input['@name'], $matches)) {
 					$data[$matches[1]][$matches[2]] = $input['@value'];
@@ -103,20 +107,4 @@ class NetCommonsFormHelper extends FormHelper {
 
 		return json_encode($data);
 	}
-
-/**
- * Generates a hidden field with a security hash based on the fields used in the form.
- *
- * @param array $fields The list of fields to use when generating the hash
- * @return string A hidden input field with a security hash
- * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/form.html#FormHelper::secure
- */
-	public function secure($fields = array()) {
-		$result = parent::secure($fields);
-CakeLog::debug('==secure==');
-CakeLog::debug($result);
-
-		return $result;
-	}
-
 }
