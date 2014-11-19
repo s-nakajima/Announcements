@@ -9,35 +9,41 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-$this->NetCommonsForm->create('Announcement' . (int)$frameId);
+echo $this->Form->create('Announcement' . (int)$frameId, array(
+			'default' => false,
+			'inputDefaults' => array('label' => false, 'div' => false),
+		));
 
-$this->NetCommonsForm->input('Announcement.content', array(
+echo $this->Form->input('Announcement.content', array(
 			'type' => 'textarea',
 			'value' => '',
 		)
 	);
 
-$this->NetCommonsForm->input('Comment.comment', array(
+echo $this->Form->input('Comment.comment', array(
 			'type' => 'textarea',
 			'value' => '',
 		)
 	);
 
-$this->NetCommonsForm->input('Comment.plugin_key', array(
+echo $this->Form->input('Comment.plugin_key', array(
 			'type' => 'hidden',
 			'value' => 'announcements',
+			'ng-model' => 'edit.data.Comment.plugin_key',
 		)
 	);
 
-$this->NetCommonsForm->input('Comment.content_key', array(
+echo $this->Form->input('Comment.content_key', array(
 			'type' => 'hidden',
 			'value' => $announcement['Announcement']['key'],
+			'ng-model' => 'edit.data.Comment.content_key',
 		)
 	);
 
-$this->NetCommonsForm->input('Announcement.block_id', array(
+echo $this->Form->input('Announcement.block_id', array(
 			'type' => 'hidden',
 			'value' => (int)$blockId,
+			'ng-model' => 'edit.data.Announcement.block_id',
 		)
 	);
 
@@ -53,29 +59,12 @@ if ($contentPublishable) {
 		NetCommonsBlockComponent::STATUS_DRAFTED,
 	);
 }
-$this->NetCommonsForm->input('Announcement.status', array(
+echo $this->Form->input('Announcement.status', array(
 			'type' => 'select',
 			'options' => array_combine($options, $options)
 		)
 	);
 
+echo $this->element('AnnouncementEdit/common_form');
 
-$this->NetCommonsForm->input('Frame.id', array(
-			'type' => 'hidden',
-			'value' => (int)$frameId,
-		)
-	);
-
-$this->NetCommonsForm->input('Announcement.key', array(
-			'type' => 'hidden',
-			'value' => $announcement['Announcement']['key'],
-		)
-	);
-
-$this->NetCommonsForm->input('Announcement.id', array(
-			'type' => 'hidden',
-			'value' => (int)$announcement['Announcement']['id'],
-		)
-	);
-
-echo $this->NetCommonsForm->endJson();
+echo $this->Form->end();

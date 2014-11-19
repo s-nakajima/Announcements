@@ -204,18 +204,16 @@ NetCommonsApp.controller('Announcements.edit',
         $http.get($scope.PLUGIN_EDIT_URL + 'form/' +
                   $scope.frameId + '/' + Math.random() + '.json')
             .success(function(data) {
-console.log(data);
-//              //フォームエレメント生成
-//              var form = $('<div>').html(data);
-//
-//              //セキュリティキーセット
-//              $scope.edit.data._Token.key =
-//                  $(form).find('input[name="data[_Token][key]"]').val();
-//              $scope.edit.data._Token.fields =
-//                  $(form).find('input[name="data[_Token][fields]"]').val();
-//              $scope.edit.data._Token.unlocked =
-//                  $(form).find('input[name="data[_Token][unlocked]"]').val();
-              $scope.edit.data._Token = data._Token;
+              //フォームエレメント生成
+              var form = $('<div>').html(data);
+
+              //セキュリティキーセット
+              $scope.edit.data._Token.key =
+                  $(form).find('input[name="data[_Token][key]"]').val();
+              $scope.edit.data._Token.fields =
+                  $(form).find('input[name="data[_Token][fields]"]').val();
+              $scope.edit.data._Token.unlocked =
+                  $(form).find('input[name="data[_Token][unlocked]"]').val();
 
               //登録情報をPOST
               $scope.sendPost($scope.edit);

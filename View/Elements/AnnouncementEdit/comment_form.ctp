@@ -21,6 +21,8 @@
 						array('class' => 'control-label')
 					); ?>
 
+			<span class="label label-info"> <?php echo __d('net_commons', 'Optional'); ?></span>
+
 			<?php echo $this->Form->input('Announcement.comment', array(
 							'label' => false,
 							'rows' => '2',

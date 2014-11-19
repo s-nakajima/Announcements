@@ -17,5 +17,9 @@
 		<span class="glyphicon glyphicon-remove small"></span>
 	</button>
 
-	<?php echo __d('announcements', 'plugin_name'); ?>
+	<ul class="nav nav-pills">
+		<li class="active">
+			<a><?php echo __d('announcements', 'Announcement edit'); ?></a>
+		</li>
+	</ul>
 </div>
