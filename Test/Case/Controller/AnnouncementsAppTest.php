@@ -18,15 +18,9 @@ App::uses('NetCommonsRoomRoleComponent', 'NetCommons.Controller/Component');
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Controller
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
-class AnnouncementsAppControllerTest extends ControllerTestCase {
-
-/**
- * mock controller object
- *
- * @var null
- */
-	public $Controller = null;
+class AnnouncementsAppTest extends ControllerTestCase {
 
 /**
  * Fixtures
@@ -38,8 +32,6 @@ class AnnouncementsAppControllerTest extends ControllerTestCase {
 		'plugin.announcements.announcement',
 		'plugin.announcements.block',
 		'plugin.announcements.comment',
-		'plugin.frames.page',
-		'plugin.frames.box',
 		'plugin.frames.language',
 		'plugin.announcements.user_attributes_user',
 		'plugin.announcements.user',
@@ -70,7 +62,6 @@ class AnnouncementsAppControllerTest extends ControllerTestCase {
 	public function tearDown() {
 		Configure::write('Config.language', null);
 		CakeSession::write('Auth.User', null);
-		unset($this->Controller);
 		parent::tearDown();
 	}
 
@@ -87,12 +78,11 @@ class AnnouncementsAppControllerTest extends ControllerTestCase {
 				'Auth' => array('user'),
 				'Session',
 				'Security',
-				//'RequestHandler',
 			)
 		);
 		$params = array_merge_recursive($mocks, $addMocks);
 
-		$this->Controller = $this->generate($controllerName, $params);
+		$this->generate($controllerName, $params);
 	}
 
 /**
@@ -102,7 +92,7 @@ class AnnouncementsAppControllerTest extends ControllerTestCase {
  */
 	protected function _loginAdmin() {
 		//ログイン処理
-		$this->Controller->Auth
+		$this->controller->Auth
 			->staticExpects($this->any())
 			->method('user')
 			->will($this->returnCallback(function () {
@@ -115,12 +105,12 @@ class AnnouncementsAppControllerTest extends ControllerTestCase {
 				return $array;
 			}));
 
-		$this->Controller->Auth->login(array(
+		$this->controller->Auth->login(array(
 				'username' => 'admin',
 				'password' => 'admin',
 			)
 		);
-		$this->assertTrue($this->Controller->Auth->loggedIn(), '_loginAdmin');
+		$this->assertTrue($this->controller->Auth->loggedIn(), '_loginAdmin');
 	}
 
 /**
@@ -130,7 +120,7 @@ class AnnouncementsAppControllerTest extends ControllerTestCase {
  */
 	protected function _loginEditor() {
 		//ログイン処理
-		$this->Controller->Auth
+		$this->controller->Auth
 			->staticExpects($this->any())
 			->method('user')
 			->will($this->returnCallback(function () {
@@ -143,12 +133,12 @@ class AnnouncementsAppControllerTest extends ControllerTestCase {
 				return $array;
 			}));
 
-		$this->Controller->Auth->login(array(
+		$this->controller->Auth->login(array(
 				'username' => 'editor',
 				'password' => 'editor',
 			)
 		);
-		$this->assertTrue($this->Controller->Auth->loggedIn(), '_loginEditor');
+		$this->assertTrue($this->controller->Auth->loggedIn(), '_loginEditor');
 	}
 
 /**
@@ -174,14 +164,14 @@ class AnnouncementsAppControllerTest extends ControllerTestCase {
  * @return void
  */
 	protected function _setComponentError($componentName, $methodName) {
-		$this->Controller->$componentName
+		$this->controller->$componentName
 			->staticExpects($this->any())
 			->method($methodName)
 			->will($this->returnValue(false));
 
 		$this->assertTrue(
-				method_exists($this->Controller->$componentName, $methodName),
-				get_class($this->Controller->$componentName) . '::' . $methodName
+				method_exists($this->controller->$componentName, $methodName),
+				get_class($this->controller->$componentName) . '::' . $methodName
 			);
 	}
 
@@ -193,65 +183,15 @@ class AnnouncementsAppControllerTest extends ControllerTestCase {
  * @return void
  */
 	protected function _setModelError($modelName, $methodName) {
-		$this->Controller->$modelName = $this->getMockForModel($modelName, array($methodName));
-		$this->Controller->$modelName->expects($this->any())
+		$this->controller->$modelName = $this->getMockForModel($modelName, array($methodName));
+		$this->controller->$modelName->expects($this->any())
 			->method($methodName)
 			->will($this->returnValue(false));
 
 		$this->assertTrue(
-				method_exists($this->Controller->$modelName, $methodName),
-				get_class($this->Controller->$modelName) . '::' . $methodName
+				method_exists($this->controller->$modelName, $methodName),
+				get_class($this->controller->$modelName) . '::' . $methodName
 			);
-	}
-
-/**
- * _assertGetAnnouncement method
- *
- * @param array $expected correct data
- * @param array $result result data
- * @return void
- */
-	protected function _assertAnnouncement($expected, $result) {
-		$unsets = array(
-			//'created_user',
-			'created',
-			//'modified_user',
-			'modified'
-		);
-
-		//Announcementデータのテスト
-		foreach ($unsets as $key) {
-			if (array_key_exists($key, $result['Announcement'])) {
-				unset($result['Announcement'][$key]);
-			}
-		}
-
-		$this->assertArrayHasKey('Announcement', $result, 'Error ArrayHasKey Announcement');
-		$this->assertEquals($expected['Announcement'], $result['Announcement'], 'Error Equals Announcement');
-
-		//Blockデータのテスト
-		if (isset($expected['Block'])) {
-			foreach ($unsets as $key) {
-				if (array_key_exists($key, $result['Block'])) {
-					unset($result['Block'][$key]);
-				}
-			}
-
-			$this->assertArrayHasKey('Block', $result, 'Error ArrayHasKey Block');
-			$this->assertEquals($expected['Block'], $result['Block'], 'Error Equals Block');
-		}
-
-		//Blockデータのテスト
-		if (isset($expected['Block'])) {
-			foreach ($unsets as $key) {
-				if (array_key_exists($key, $result['Block'])) {
-					unset($result['Block'][$key]);
-				}
-			}
-
-			$this->assertArrayHasKey('Block', $result, 'Error ArrayHasKey Block');
-			$this->assertEquals($expected['Block'], $result['Block'], 'Error Equals Block');
-		}
 	}
 
 /**

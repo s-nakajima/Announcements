@@ -8,10 +8,10 @@
  * Announcements Javascript
  *
  * @param {string} Controller name
- * @param {function($scope, $http, $sce, $modalStack)} Controller
+ * @param {function($scope, $http, $sce)} Controller
  */
 NetCommonsApp.controller('Announcements',
-                         function($scope, $http, $sce, $modalStack) {
+                         function($scope, $http, $sce) {
 
       /**
        * Announcements plugin view url
@@ -21,13 +21,6 @@ NetCommonsApp.controller('Announcements',
       $scope.PLUGIN_INDEX_URL = '/announcements/announcements/';
 
       /**
-       * Announcements edit url
-       *
-       * @const
-       */
-      $scope.PLUGIN_EDIT_URL = '/announcements/announcement_edit/';
-
-      /**
        * Announcement
        *
        * @type {Object.<string>}
@@ -35,11 +28,20 @@ NetCommonsApp.controller('Announcements',
       $scope.announcement = {};
 
       /**
-       * comments
+       * post object
        *
        * @type {Object.<string>}
        */
-      $scope.comments = {};
+      $scope.edit = {
+        _method: 'POST',
+        data: {
+          _Token: {
+            key: '',
+            fields: '',
+            unlocked: ''
+          }
+        }
+      };
 
       /**
        * Initialize
@@ -56,30 +58,54 @@ NetCommonsApp.controller('Announcements',
        *
        * @return {void}
        */
-      $scope.showManage = function() {
-        $modalStack.dismissAll('canceled');
-
-        $http.get($scope.PLUGIN_EDIT_URL + 'view_latest/' +
-                  $scope.frameId + '/' + Math.random() + '.json')
+      $scope.showSetting = function() {
+        $http.get($scope.PLUGIN_INDEX_URL + 'edit/' +
+                  $scope.frameId + '.json', {cache: false})
             .success(function(data) {
               //最新データセット
-              $scope.announcement = data.announcement;
-              $scope.comments.current = data.comments.current;
-              $scope.comments.hasPrev = data.comments.hasPrev;
-              $scope.comments.hasNext = data.comments.hasNext;
-              $scope.comments.data = data.comments.data;
-              $scope.comments.disabled =
-                              data.comments.data.length === 0 ? true : false;
-              $scope.comments.visibility =
-                              data.comments.data.length === 0 ? false : true;
+              $scope.setEditData(data.results);
 
-              var templateUrl = $scope.PLUGIN_EDIT_URL +
-                              'view/' + $scope.frameId + '.json';
+              var templateUrl = $scope.PLUGIN_INDEX_URL +
+                                'setting/' + $scope.frameId;
               $scope.showDialog($scope, templateUrl, 'Announcements.edit');
             })
             .error(function(data) {
               $scope.flash.danger(data.name);
             });
+      };
+
+      /**
+       * dialog initialize
+       *
+       * @return {void}
+       */
+      $scope.setEditData = function(data) {
+        if (data) {
+          //最新データセット
+          $scope.announcement = data.announcement;
+          $scope.comments.init(
+              data.comments,
+              'announcements',
+              $scope.announcement.Announcement.key
+          );
+        }
+
+        //編集データセット
+        $scope.edit.data.Announcement = {
+          content: $scope.announcement.Announcement.content,
+          status: $scope.announcement.Announcement.status,
+          block_id: $scope.announcement.Announcement.block_id,
+          key: $scope.announcement.Announcement.key,
+          id: $scope.announcement.Announcement.id
+        };
+        $scope.edit.data.Comment = {
+          plugin_key: 'announcements',
+          content_key: $scope.announcement.Announcement.key,
+          comment: ''
+        };
+        $scope.edit.data.Frame = {
+          id: $scope.frameId
+        };
       };
 
       /**
@@ -102,7 +128,7 @@ NetCommonsApp.controller('Announcements',
  * @param {function($scope, $http, $modalStack)} Controller
  */
 NetCommonsApp.controller('Announcements.edit',
-    function($scope, $http, $modalStack, $location, $anchorScroll) {
+    function($scope, $http, $modalStack) {
 
       /**
        * errors
@@ -119,46 +145,6 @@ NetCommonsApp.controller('Announcements.edit',
       $scope.sending = false;
 
       /**
-       * edit object
-       *
-       * @type {Object.<string>}
-       */
-      $scope.edit = {
-        _method: 'POST',
-        data: {}
-      };
-
-      /**
-       * dialog initialize
-       *
-       * @return {void}
-       */
-      $scope.initialize = function() {
-        $scope.edit.data = {
-          Announcement: {
-            content: $scope.announcement.Announcement.content,
-            status: $scope.announcement.Announcement.status,
-            block_id: $scope.announcement.Announcement.block_id,
-            key: $scope.announcement.Announcement.key,
-            id: $scope.announcement.Announcement.id
-          },
-          Comment: {
-            plugin_key: 'announcements',
-            content_key: $scope.announcement.Announcement.key,
-            comment: ''
-          },
-          Frame: {
-            id: $scope.frameId
-          },
-          _Token: {
-            key: '',
-            fields: '',
-            unlocked: ''
-          }
-        };
-      };
-
-      /**
        * dialog cancel
        *
        * @return {void}
@@ -172,12 +158,15 @@ NetCommonsApp.controller('Announcements.edit',
        *
        * @return {bool}
        */
-      $scope.validate = function() {
-        var status = $scope.edit.data.Announcement.status;
-        if (status === $scope.STATUS_DISAPPROVED &&
-                $scope.edit.data.Comment.comment === '') {
+      $scope.validate = function(form) {
+        //コメントチェック
+        var editStatus = $scope.edit.data.Announcement.status;
+        var status = $scope.announcement.Announcement.status;
+        if ($scope.comments.input.hasErrorTarget(status, editStatus) &&
+                $scope.comments.input.invalid(form)) {
           return false;
         }
+        //本文チェック
         if ($scope.edit.data.Announcement.content === '') {
           return false;
         }
@@ -194,26 +183,17 @@ NetCommonsApp.controller('Announcements.edit',
        * - 4: Disapprove
        * @return {void}
        */
-      $scope.save = function(status) {
+      $scope.save = function(form, status) {
         $scope.edit.data.Announcement.status = status;
-        if (! $scope.validate()) {
+        if (! $scope.validate(form)) {
           return;
         }
 
         $scope.sending = true;
-        $http.get($scope.PLUGIN_EDIT_URL + 'form/' +
-                  $scope.frameId + '/' + Math.random() + '.json')
+        $http.get($scope.PLUGIN_INDEX_URL + 'token/' +
+                  $scope.frameId + '.json', {cache: false})
             .success(function(data) {
-              //フォームエレメント生成
-              var form = $('<div>').html(data);
-
-              //セキュリティキーセット
-              $scope.edit.data._Token.key =
-                  $(form).find('input[name="data[_Token][key]"]').val();
-              $scope.edit.data._Token.fields =
-                  $(form).find('input[name="data[_Token][fields]"]').val();
-              $scope.edit.data._Token.unlocked =
-                  $(form).find('input[name="data[_Token][unlocked]"]').val();
+              $scope.edit.data._Token = data._Token;
 
               //登録情報をPOST
               $scope.sendPost($scope.edit);
@@ -232,12 +212,13 @@ NetCommonsApp.controller('Announcements.edit',
        * @return {void}
        */
       $scope.sendPost = function(postParams) {
-        $http.post($scope.PLUGIN_EDIT_URL + 'edit/' +
-                $scope.frameId + '/' + Math.random() + '.json',
+        $http.post(
+            $scope.PLUGIN_INDEX_URL + 'edit/' + $scope.frameId + '.json',
             $.param(postParams),
-            {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+            {cache: false,
+              headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
           .success(function(data) {
-              angular.copy(data.announcement, $scope.announcement);
+              angular.copy(data.results.announcement, $scope.announcement);
               $scope.flash.success(data.name);
               $modalStack.dismissAll('saved');
             })
@@ -247,57 +228,6 @@ NetCommonsApp.controller('Announcements.edit',
           .finally (function() {
               $scope.sending = false;
             });
-      };
-
-      /**
-       * get comments
-       *
-       * @return {void}
-       */
-      $scope.getComments = function(page) {
-        $http.get($scope.PLUGIN_EDIT_URL + 'comments/' +
-                  $scope.frameId + '/page:' + page + '.json')
-            .success(function(data) {
-              $scope.comments.current = data.comments.current;
-              $scope.comments.hasPrev = data.comments.hasPrev;
-              $scope.comments.hasNext = data.comments.hasNext;
-              if (page === 1 &&
-                      data.comments.limit > $scope.comments.data.length) {
-                $scope.comments.data = data.comments.data;
-              } else {
-                $scope.comments.data =
-                    $scope.comments.data.concat(data.comments.data);
-              }
-            })
-            .error(function(data) {
-              //keyの取得に失敗
-              $scope.flash.danger(data.name);
-            });
-      };
-
-      /**
-       * getNgClassComment
-       *
-       * @return {string} ngClass of hasFeedback
-       */
-      $scope.getNgClassComment = function(form) {
-        if ($scope.edit.data.Announcement.status ===
-                                 $scope.announcement.Announcement.status ||
-            $scope.edit.data.Announcement.status !==
-                                 $scope.STATUS_DISAPPROVED) {
-          return '';
-        }
-        return (form['comment'].$invalid ? 'has-error' : 'has-success');
-      };
-
-      /**
-       * gotoTop
-       *
-       * @return {string} ngClass of hasFeedback
-       */
-      $scope.gotoTop = function() {
-        $location.hash('nc-top');
-        $anchorScroll();
       };
 
     });

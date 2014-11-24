@@ -28,7 +28,7 @@
 	<div class="help-block">
 		<br ng-hide="(edit.data.Announcement.content === '')" />
 		<div ng-show="(edit.data.Announcement.content === '')">
-			<?php echo (sprintf(__d('net_commons', 'Please input %s.'), __d('announcements', 'Content'))); ?>
+			<?php echo sprintf(__d('net_commons', 'Please input %s.'), __d('announcements', 'Content')); ?>
 		</div>
 	</div>
 </div>

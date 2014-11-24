@@ -55,29 +55,4 @@ class CommentFixture extends CakeTestFixture {
 		),
 	);
 
-/**
- * Initialize the fixture.
- *
- * @return void
- * @throws MissingModelException Whe importing from a model that does not exist.
- * @codeCoverageIgnore
- */
-	public function init() {
-		//コメントテスト追加
-		$commentDefault = array(
-			'plugin_key' => 'announcements',
-			'content_key' => 'announcement_11',
-			'comment' => 'Comment %s',
-			'created_user' => '1',
-			'created' => '2014-10-09 16:07:57',
-		);
-		for ($id = 11; $id <= 20; $id++) {
-			$comments = array_merge(array(), $commentDefault);
-			$comments['id'] = $id;
-			$comments['comment'] = sprintf($comments['comment'], $id);
-			$this->records[] = $comments;
-		}
-		parent::init();
-	}
-
 }

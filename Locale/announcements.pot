@@ -15,11 +15,15 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 #: Announcements/Model/Announcement.php:105
-#: Announcements/View/Elements/AnnouncementEdit/edit_form.ctp:15;31
+#: Announcements/View/Announcements/view.ctp:15;31
 msgid "Content"
 msgstr ""
 
-#: Announcements/View/Elements/AnnouncementEdit/tab_header.ctp:23
-msgid "Announcement edit"
+#: Announcements/View/Announcements/setting.ctp:23
+msgid "plugin_name"
+msgstr "Announcements"
+
+#: Announcements/View/Announcements/setting.ctp:23
+msgid "Edit"
 msgstr ""
 

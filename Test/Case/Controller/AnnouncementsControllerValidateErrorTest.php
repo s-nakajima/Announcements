@@ -9,8 +9,8 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('AnnouncementEditController', 'Announcements.Controller');
-App::uses('AnnouncementsAppControllerTest', 'Announcements.Test/Case/Controller');
+App::uses('AnnouncementsController', 'Announcements.Controller');
+App::uses('AnnouncementsAppTest', 'Announcements.Test/Case/Controller');
 
 /**
  * AnnouncementEditController Test Case
@@ -18,7 +18,7 @@ App::uses('AnnouncementsAppControllerTest', 'Announcements.Test/Case/Controller'
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Controller
  */
-class AnnouncementEditControllerValidateErrorTest extends AnnouncementsAppControllerTest {
+class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
 
 /**
  * testEditContentError method
@@ -28,7 +28,7 @@ class AnnouncementEditControllerValidateErrorTest extends AnnouncementsAppContro
 	public function testEditContentError() {
 		$this->setExpectedException('ForbiddenException');
 
-		$this->_generateController('Announcements.AnnouncementEdit');
+		$this->_generateController('Announcements.Announcements');
 		$this->_loginAdmin();
 
 		$postData = array(
@@ -48,12 +48,14 @@ class AnnouncementEditControllerValidateErrorTest extends AnnouncementsAppContro
 			)
 		);
 
-		$this->testAction('/announcements/announcement_edit/edit/1.json',
-			array(
-				'method' => 'post',
-				'data' => $postData
-			)
-		);
+		$this->testAction(
+				'/announcements/announcements/edit/1.json',
+				array(
+					'method' => 'post',
+					'data' => $postData,
+					'return' => 'contents'
+				)
+			);
 
 		$this->_logout();
 	}
@@ -66,7 +68,7 @@ class AnnouncementEditControllerValidateErrorTest extends AnnouncementsAppContro
 	public function testEditCommentError() {
 		$this->setExpectedException('ForbiddenException');
 
-		$this->_generateController('Announcements.AnnouncementEdit');
+		$this->_generateController('Announcements.Announcements');
 		$this->_loginAdmin();
 
 		$postData = array(
@@ -86,11 +88,13 @@ class AnnouncementEditControllerValidateErrorTest extends AnnouncementsAppContro
 			)
 		);
 
-		$this->testAction('/announcements/announcement_edit/edit/1.json',
-			array(
-				'method' => 'post',
-				'data' => $postData
-			)
+		$this->testAction(
+				'/announcements/announcements/edit/1.json',
+				array(
+					'method' => 'post',
+					'data' => $postData,
+					'return' => 'contents'
+				)
 		);
 
 		$this->_logout();

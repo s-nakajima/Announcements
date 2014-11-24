@@ -20,7 +20,7 @@ App::uses('AnnouncementsAppController', 'Announcements.Controller');
 class AnnouncementsController extends AnnouncementsAppController {
 
 /**
- * use model
+ * use models
  *
  * @var array
  */
@@ -29,14 +29,23 @@ class AnnouncementsController extends AnnouncementsAppController {
 	);
 
 /**
- * use component
+ * use components
  *
  * @var array
  */
 	public $components = array(
-		'NetCommons.NetCommonsBlock', //use Announcement model
+		'NetCommons.NetCommonsBlock', //Use Announcement model
 		'NetCommons.NetCommonsFrame',
 		'NetCommons.NetCommonsRoomRole',
+	);
+
+/**
+ * use helpers
+ *
+ * @var array
+ */
+	public $helpers = array(
+		'NetCommons.NetCommonsForm'
 	);
 
 /**
@@ -63,20 +72,21 @@ class AnnouncementsController extends AnnouncementsAppController {
 /**
  * index method
  *
- * @param int $frameId frames.id
- * @return CakeResponse A response object containing the rendered view.
+ * @return void
  */
-	public function index($frameId = 0) {
-		return $this->view($frameId);
+	public function index() {
+		$this->view();
+		if ($this->viewVars['announcement']) {
+			$this->render('Announcements/view');
+		}
 	}
 
 /**
  * view method
  *
- * @param int $frameId frames.id
- * @return CakeResponse A response object containing the rendered view.
+ * @return void
  */
-	public function view($frameId = 0) {
+	public function view() {
 		//Announcementデータを取得
 		$announcement = $this->Announcement->getAnnouncement(
 				$this->viewVars['blockId'],
@@ -84,11 +94,100 @@ class AnnouncementsController extends AnnouncementsAppController {
 			);
 
 		//Announcementデータをviewにセット
+		$this->set('announcement', $announcement);
 		if (! $announcement) {
-			return $this->render(false);
-		} else {
-			$this->set('announcement', $announcement);
-			return $this->render('Announcements/view');
+			$this->render(false);
 		}
 	}
+
+/**
+ * setting method
+ *
+ * @return void
+ */
+	public function setting() {
+		//編集権限チェック
+		$this->__validateEditable();
+
+		$this->layout = 'NetCommons.modal';
+		$this->view();
+	}
+
+/**
+ * edit method
+ *
+ * @return void
+ * @throws ForbiddenException
+ */
+	public function edit() {
+		//編集権限チェック
+		$this->__validateEditable();
+
+		//登録処理
+		if ($this->request->isPost()) {
+			//公開権限チェック
+			if (! isset($this->data['Announcement']['status'])) {
+				throw new ForbiddenException(__d('net_commons', 'Security Error! Unauthorized input.'));
+			}
+			if (! $this->viewVars['contentPublishable'] && (
+					$this->data['Announcement']['status'] === NetCommonsBlockComponent::STATUS_PUBLISHED ||
+					$this->data['Announcement']['status'] === NetCommonsBlockComponent::STATUS_DISAPPROVED
+				)) {
+				throw new ForbiddenException(__d('net_commons', 'Security Error! Unauthorized input.'));
+			}
+			//登録
+			$result = $this->Announcement->saveAnnouncement($this->data);
+			if (! $result) {
+				throw new ForbiddenException(__d('net_commons', 'Security Error! Unauthorized input.'));
+			}
+		}
+
+		//最新データ取得
+		$this->view();
+
+		//render
+		if ($this->request->isPost()) {
+			//登録後のrender
+			$results = array('announcement' => $this->viewVars['announcement']);
+			$this->renderJson($results, __d('net_commons', 'Successfully finished.'));
+
+		} else {
+			//コメントデータ取得
+			$contentKey = $this->viewVars['announcement']['Announcement']['key'];
+			$view = $this->requestAction(
+					'/comments/comments/index/announcements/' . $contentKey . '.json', array('return'));
+			$comments = json_decode($view, true);
+			//JSON形式で戻す
+			$results = Hash::merge($comments['results'], array('announcement' => $this->viewVars['announcement']));
+			//表示render
+			$this->renderJson($results);
+		}
+	}
+
+/**
+ * token method
+ *
+ * @return void
+ */
+	public function token() {
+		//編集権限チェック
+		$this->__validateEditable();
+
+		$this->view();
+		$this->render('Announcements/token', false);
+	}
+
+/**
+ * __validateEditable method
+ *
+ * @return void
+ * @throws ForbiddenException
+ */
+	private function __validateEditable() {
+		//編集権限チェック
+		if (! $this->viewVars['contentEditable']) {
+			throw new ForbiddenException(__d('net_commons', 'Security Error! Unauthorized input.'));
+		}
+	}
+
 }

@@ -167,7 +167,7 @@ class Announcement extends AnnouncementsAppModel {
 		//DBへの登録
 		$models = array(
 			'Block' => 'Blocks.Block',
-			'Comment' => 'Blocks.Comment',
+			'Comment' => 'Comments.Comment',
 		);
 		foreach ($models as $model => $class) {
 			$this->$model = ClassRegistry::init($class);
@@ -176,6 +176,7 @@ class Announcement extends AnnouncementsAppModel {
 
 		$dataSource = $this->getDataSource();
 		$dataSource->begin();
+		$this->setDataSource('master');
 		try {
 			//ブロックの登録
 			$block = $this->Block->saveByFrameId($postData['Frame']['id']);

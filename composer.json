@@ -25,7 +25,8 @@
         "netcommons/roles":             "dev-master",
         "netcommons/blocks":            "dev-master",
         "netcommons/auth":              "dev-master",
-        "netcommons/auth-general":      "dev-master"
+        "netcommons/auth-general":      "dev-master",
+        "netcommons/comments":          "dev-master"
     },
     "license": "NetCommons License",
     "authors": [
