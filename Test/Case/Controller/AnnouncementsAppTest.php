@@ -32,6 +32,7 @@ class AnnouncementsAppTest extends ControllerTestCase {
 		'plugin.announcements.announcement',
 		'plugin.announcements.block',
 		'plugin.announcements.comment',
+		'plugin.frames.box',
 		'plugin.frames.language',
 		'plugin.announcements.user_attributes_user',
 		'plugin.announcements.user',
