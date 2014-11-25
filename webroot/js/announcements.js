@@ -8,10 +8,10 @@
  * Announcements Javascript
  *
  * @param {string} Controller name
- * @param {function($scope, $http, $sce)} Controller
+ * @param {function($scope, $sce)} Controller
  */
 NetCommonsApp.controller('Announcements',
-                         function($scope, $http, $sce) {
+                         function($scope, $sce) {
 
       /**
        * Announcements plugin view url
@@ -59,15 +59,16 @@ NetCommonsApp.controller('Announcements',
        * @return {void}
        */
       $scope.showSetting = function() {
-        $http.get($scope.PLUGIN_INDEX_URL + 'edit/' +
-                  $scope.frameId + '.json', {cache: false})
+        $scope.get(
+            $scope.PLUGIN_INDEX_URL + 'edit/' + $scope.frameId + '.json')
             .success(function(data) {
               //最新データセット
               $scope.setEditData(data.results);
 
-              var templateUrl = $scope.PLUGIN_INDEX_URL +
-                                'setting/' + $scope.frameId;
-              $scope.showDialog($scope, templateUrl, 'Announcements.edit');
+              $scope.showDialog(
+                  $scope,
+                  $scope.PLUGIN_INDEX_URL + 'setting/' + $scope.frameId,
+                  'Announcements.edit');
             })
             .error(function(data) {
               $scope.flash.danger(data.name);
@@ -125,17 +126,10 @@ NetCommonsApp.controller('Announcements',
  * Announcements.edit Javascript
  *
  * @param {string} Controller name
- * @param {function($scope, $http, $modalStack)} Controller
+ * @param {function($scope, $modalStack)} Controller
  */
 NetCommonsApp.controller('Announcements.edit',
-    function($scope, $http, $modalStack) {
-
-      /**
-       * errors
-       *
-       * @type {bool}
-       */
-      $scope.errors = {};
+    function($scope, $modalStack) {
 
       /**
        * sending
@@ -190,42 +184,31 @@ NetCommonsApp.controller('Announcements.edit',
         }
 
         $scope.sending = true;
-        $http.get($scope.PLUGIN_INDEX_URL + 'token/' +
-                  $scope.frameId + '.json', {cache: false})
+        $scope.get(
+            $scope.PLUGIN_INDEX_URL + 'token/' + $scope.frameId + '.json')
             .success(function(data) {
               $scope.edit.data._Token = data._Token;
 
               //登録情報をPOST
-              $scope.sendPost($scope.edit);
+              $scope.post(
+                  $scope.PLUGIN_INDEX_URL + 'edit/' + $scope.frameId + '.json',
+                  $scope.edit)
+              .success(function(data) {
+                    angular.copy(data.results.announcement,
+                                 $scope.announcement);
+                    $scope.flash.success(data.name);
+                    $modalStack.dismissAll('saved');
+                  })
+              .error(function(data) {
+                    $scope.flash.danger(data.name);
+                  })
+              .finally (function() {
+                    $scope.sending = false;
+                  });
             })
             .error(function(data) {
               //keyの取得に失敗
               $scope.flash.danger(data.name);
-              $scope.sending = false;
-            });
-      };
-
-      /**
-       * send post
-       *
-       * @param {Object.<string>} postParams
-       * @return {void}
-       */
-      $scope.sendPost = function(postParams) {
-        $http.post(
-            $scope.PLUGIN_INDEX_URL + 'edit/' + $scope.frameId + '.json',
-            $.param(postParams),
-            {cache: false,
-              headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-          .success(function(data) {
-              angular.copy(data.results.announcement, $scope.announcement);
-              $scope.flash.success(data.name);
-              $modalStack.dismissAll('saved');
-            })
-          .error(function(data) {
-              $scope.flash.danger(data.name);
-            })
-          .finally (function() {
               $scope.sending = false;
             });
       };

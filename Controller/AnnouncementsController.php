@@ -58,15 +58,12 @@ class AnnouncementsController extends AnnouncementsAppController {
 		parent::beforeFilter();
 		$this->Auth->allow();
 
-		$frameId = (isset($this->params['pass'][0]) ? (int)$this->params['pass'][0] : 0);
 		//Frameのデータをviewにセット
-		if (! $this->NetCommonsFrame->setView($this, $frameId)) {
-			throw new ForbiddenException(__d('net_commons', 'Security Error! Unauthorized input.'));
-		}
+		$frameId = (isset($this->params['pass'][0]) ? (int)$this->params['pass'][0] : 0);
+		$this->NetCommonsFrame->setView($this, $frameId);
+
 		//Roleのデータをviewにセット
-		if (! $this->NetCommonsRoomRole->setView($this)) {
-			throw new ForbiddenException(__d('net_commons', 'Security Error! Unauthorized input.'));
-		}
+		$this->NetCommonsRoomRole->setView($this);
 	}
 
 /**
@@ -117,7 +114,6 @@ class AnnouncementsController extends AnnouncementsAppController {
  * edit method
  *
  * @return void
- * @throws ForbiddenException
  */
 	public function edit() {
 		//編集権限チェック
@@ -126,19 +122,14 @@ class AnnouncementsController extends AnnouncementsAppController {
 		//登録処理
 		if ($this->request->isPost()) {
 			//公開権限チェック
-			if (! isset($this->data['Announcement']['status'])) {
-				throw new ForbiddenException(__d('net_commons', 'Security Error! Unauthorized input.'));
-			}
-			if (! $this->viewVars['contentPublishable'] && (
-					$this->data['Announcement']['status'] === NetCommonsBlockComponent::STATUS_PUBLISHED ||
-					$this->data['Announcement']['status'] === NetCommonsBlockComponent::STATUS_DISAPPROVED
-				)) {
-				throw new ForbiddenException(__d('net_commons', 'Security Error! Unauthorized input.'));
-			}
+			$this->__validatePublishable();
+
 			//登録
-			$result = $this->Announcement->saveAnnouncement($this->data);
-			if (! $result) {
-				throw new ForbiddenException(__d('net_commons', 'Security Error! Unauthorized input.'));
+			if (! $this->Announcement->saveAnnouncement($this->data)) {
+				//バリデーションエラー
+				$results = array('validationErrors' => $this->Announcement->validationErrors);
+				$this->renderJson($results, __d('net_commons', 'Bad Request'), 400);
+				return;
 			}
 		}
 
@@ -181,11 +172,35 @@ class AnnouncementsController extends AnnouncementsAppController {
  * __validateEditable method
  *
  * @return void
+ * @throws UnauthorizedException
  * @throws ForbiddenException
  */
 	private function __validateEditable() {
+		//認証エラー
+		if (! $this->Auth->user()) {
+			throw new UnauthorizedException(__d('net_commons', 'Unauthorized'));
+		}
 		//編集権限チェック
 		if (! $this->viewVars['contentEditable']) {
+			throw new ForbiddenException(__d('net_commons', 'Security Error! Unauthorized input.'));
+		}
+	}
+
+/**
+ * __validatePublishable method
+ *
+ * @return void
+ * @throws ForbiddenException
+ */
+	private function __validatePublishable() {
+		//公開権限チェック
+		if (! isset($this->data['Announcement']['status'])) {
+			throw new ForbiddenException(__d('net_commons', 'Security Error! Unauthorized input.'));
+		}
+		if (! $this->viewVars['contentPublishable'] && (
+				$this->data['Announcement']['status'] === NetCommonsBlockComponent::STATUS_PUBLISHED ||
+				$this->data['Announcement']['status'] === NetCommonsBlockComponent::STATUS_DISAPPROVED
+			)) {
 			throw new ForbiddenException(__d('net_commons', 'Security Error! Unauthorized input.'));
 		}
 	}

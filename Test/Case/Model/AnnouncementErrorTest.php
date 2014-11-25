@@ -27,6 +27,8 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
  * @return void
  */
 	public function testSaveAnnouncementByErrorFrameId() {
+		$this->setExpectedException('InternalErrorException');
+
 		$postData = array(
 			'Announcement' => array(
 				'block_id' => '1',
@@ -43,32 +45,7 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
 				'comment' => 'edit comment',
 			)
 		);
-		$result = $this->Announcement->saveAnnouncement($postData);
-		$this->assertFalse($result, 'saveAnnouncement');
-	}
-
-/**
- * testSaveAnnouncementByBlockSaveError method
- *
- * @return void
- */
-	public function testSaveAnnouncementByBlockSaveError() {
-		$this->Block = $this->getMockForModel('Blocks.Block', array('save'));
-		$this->Block->expects($this->any())
-			->method('save')
-			->will($this->returnValue(false));
-
-		$postData = array(
-			'Announcement' => array(
-				'status' => '1',
-				'content' => 'add content',
-			),
-			'Frame' => array(
-				'id' => '3'
-			)
-		);
-		$result = $this->Announcement->saveAnnouncement($postData);
-		$this->assertFalse($result);
+		$this->Announcement->saveAnnouncement($postData);
 	}
 
 /**
@@ -77,6 +54,8 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
  * @return void
  */
 	public function testSaveAnnouncementByFrameSaveError() {
+		$this->setExpectedException('InternalErrorException');
+
 		$this->Frame = $this->getMockForModel('Frames.Frame', array('save'));
 		$this->Frame->expects($this->any())
 			->method('save')

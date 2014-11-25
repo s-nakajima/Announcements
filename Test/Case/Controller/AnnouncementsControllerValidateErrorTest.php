@@ -26,8 +26,6 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
  * @return void
  */
 	public function testEditContentError() {
-		$this->setExpectedException('ForbiddenException');
-
 		$this->_generateController('Announcements.Announcements');
 		$this->_loginAdmin();
 
@@ -48,7 +46,7 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
 			)
 		);
 
-		$this->testAction(
+		$view = $this->testAction(
 				'/announcements/announcements/edit/1.json',
 				array(
 					'method' => 'post',
@@ -56,6 +54,15 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
 					'return' => 'contents'
 				)
 			);
+
+		$result = json_decode($view, true);
+
+		$this->assertArrayHasKey('code', $result, print_r($result, true));
+		$this->assertEquals(400, $result['code'], print_r($result, true));
+		$this->assertArrayHasKey('name', $result, print_r($result, true));
+		$this->assertArrayHasKey('results', $result, print_r($result, true));
+		$this->assertArrayHasKey('validationErrors', $result['results'], print_r($result, true));
+		$this->assertArrayHasKey('content', $result['results']['validationErrors'], print_r($result, true));
 
 		$this->_logout();
 	}
@@ -66,8 +73,6 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
  * @return void
  */
 	public function testEditCommentError() {
-		$this->setExpectedException('ForbiddenException');
-
 		$this->_generateController('Announcements.Announcements');
 		$this->_loginAdmin();
 
@@ -88,14 +93,23 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
 			)
 		);
 
-		$this->testAction(
+		$view = $this->testAction(
 				'/announcements/announcements/edit/1.json',
 				array(
 					'method' => 'post',
 					'data' => $postData,
 					'return' => 'contents'
 				)
-		);
+			);
+
+		$result = json_decode($view, true);
+
+		$this->assertArrayHasKey('code', $result, print_r($result, true));
+		$this->assertEquals(400, $result['code'], print_r($result, true));
+		$this->assertArrayHasKey('name', $result, print_r($result, true));
+		$this->assertArrayHasKey('results', $result, print_r($result, true));
+		$this->assertArrayHasKey('validationErrors', $result['results'], print_r($result, true));
+		$this->assertArrayHasKey('comment', $result['results']['validationErrors'], print_r($result, true));
 
 		$this->_logout();
 	}

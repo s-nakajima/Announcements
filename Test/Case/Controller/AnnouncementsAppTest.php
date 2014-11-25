@@ -143,6 +143,34 @@ class AnnouncementsAppTest extends ControllerTestCase {
 	}
 
 /**
+ * _loginAdmin method
+ *
+ * @return void
+ */
+	protected function _loginVisitor() {
+		//ログイン処理
+		$this->controller->Auth
+			->staticExpects($this->any())
+			->method('user')
+			->will($this->returnCallback(function () {
+				$array = array(
+					'id' => 5,
+					'username' => 'visitor',
+					'role_key' => 'visitor',
+				);
+				CakeSession::write('Auth.User', $array);
+				return $array;
+			}));
+
+		$this->controller->Auth->login(array(
+				'username' => 'visitor',
+				'password' => 'visitor',
+			)
+		);
+		$this->assertTrue($this->controller->Auth->loggedIn(), '_loginVisitor');
+	}
+
+/**
  * _logout method
  *
  * @return void

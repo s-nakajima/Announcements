@@ -165,6 +165,7 @@ class Announcement extends AnnouncementsAppModel {
  */
 	public function saveAnnouncement($postData) {
 		//DBへの登録
+		$this->setDataSource('master');
 		$models = array(
 			'Block' => 'Blocks.Block',
 			'Comment' => 'Comments.Comment',
@@ -176,46 +177,65 @@ class Announcement extends AnnouncementsAppModel {
 
 		$dataSource = $this->getDataSource();
 		$dataSource->begin();
-		$this->setDataSource('master');
 		try {
 			//ブロックの登録
 			$block = $this->Block->saveByFrameId($postData['Frame']['id']);
-			if (! $block) {
-				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-			}
 
 			//お知らせデータの取得
 			$announcement = $this->getAnnouncement((int)$block['Block']['id'], true);
 			if ($announcement['Announcement']['key'] === '') {
 				$postData['Announcement']['key'] = hash('sha256', 'annoncement_' . microtime());
+				$postData['Announcement']['block_id'] = (int)$block['Block']['id'];
 			}
 
 			//お知らせの登録
-			if ($postData['Announcement']['content'] !== $announcement['Announcement']['content'] ||
-					$postData['Announcement']['status'] !== $announcement['Announcement']['status']) {
-				unset($postData['Announcement']['id']);
-				$announcement = $this->create();
-			}
-			$announcement['Announcement'] = $postData['Announcement'];
-			$announcement['Announcement']['block_id'] = (int)$block['Block']['id'];
-			$announcement = $this->save($announcement);
+			$announcement = $this->__saveAnnouncement($announcement, $postData);
 			if (! $announcement) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 
 			//コメントの登録
 			if (! $this->__saveComment($announcement, $postData)) {
+				$this->validationErrors = $this->Comment->validationErrors;
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
-
 			$dataSource->commit();
 			return $announcement;
 
 		} catch (Exception $ex) {
-			//CakeLog::error($ex);
+			//ロールバック
 			$dataSource->rollback();
-			return false;
+			//エラー出力
+			CakeLog::error($ex);
+			if ($this->validationErrors) {
+				return false;
+			} else {
+				throw $ex;
+			}
 		}
+	}
+
+/**
+ * save announcement
+ *
+ * @param array $announcement announcement data
+ * @param array $postData received post data
+ * @return mixed object announcement, false error
+ */
+	private function __saveAnnouncement($announcement, $postData) {
+		//お知らせの登録
+		if (!isset($postData['Announcement']['content'])) {
+			//定義されていない場合、Noticeが発生するため、nullで初期化
+			$postData['Announcement']['content'] = null;
+		}
+		if ($postData['Announcement']['content'] !== $announcement['Announcement']['content'] ||
+				$postData['Announcement']['status'] !== $announcement['Announcement']['status']) {
+
+			unset($postData['Announcement']['id']);
+			$announcement = $this->create();
+		}
+		$announcement['Announcement'] = $postData['Announcement'];
+		return $this->save($announcement);
 	}
 
 /**

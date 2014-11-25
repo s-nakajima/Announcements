@@ -68,6 +68,16 @@ class UserFixture extends CakeTestFixture {
 			'modified_user' => 1,
 			'modified' => '2014-06-02 16:18:08'
 		),
+		array(
+			'id' => 4,
+			'username' => 'Lorem ipsum dolor sit amet',
+			'password' => 'Lorem ipsum dolor sit amet',
+			'role_key' => 'visitor',
+			'created_user' => 1,
+			'created' => '2014-06-02 16:18:08',
+			'modified_user' => 1,
+			'modified' => '2014-06-02 16:18:08'
+		),
 	);
 
 }

@@ -21,35 +21,13 @@ App::uses('AnnouncementsAppTest', 'Announcements.Test/Case/Controller');
 class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 
 /**
- * testNCFrameError method
+ * testEditLoginError method
  *
  * @return void
  */
-	public function testNCFrameError() {
-		$this->setExpectedException('ForbiddenException');
-
-		$this->_generateController('Announcements.Announcements', array(
-			'components' => array('NetCommons.NetCommonsFrame'),
-		));
-		$this->_setComponentError('NetCommonsFrame', 'setView');
-
-		$this->testAction('/announcements/announcements/index/1', array('method' => 'get'));
-	}
-
-/**
- * testNCRoomRoleError method
- *
- * @return void
- */
-	public function testNCRoomRoleError() {
-		$this->setExpectedException('ForbiddenException');
-
-		$this->_generateController('Announcements.Announcements', array(
-			'components' => array('NetCommons.NetCommonsRoomRole'),
-		));
-		$this->_setComponentError('NetCommonsRoomRole', 'setView');
-
-		$this->testAction('/announcements/announcements/index/1', array('method' => 'get'));
+	public function testEditLoginError() {
+		$this->setExpectedException('UnauthorizedException');
+		$this->testAction('/announcements/announcements/edit/1.json', array('method' => 'get'));
 	}
 
 /**
@@ -59,7 +37,13 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
  */
 	public function testContentEditableError() {
 		$this->setExpectedException('ForbiddenException');
+
+		$this->_generateController('Announcements.Announcements');
+		$this->_loginVisitor();
+
 		$this->testAction('/announcements/announcements/edit/1.json', array('method' => 'get'));
+
+		$this->_logout();
 	}
 
 /**
@@ -149,43 +133,6 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 				'block_id' => '1',
 				'key' => 'announcement_1',
 				'status' => NetCommonsBlockComponent::STATUS_DISAPPROVED,
-				'content' => 'edit content',
-				'comment' => 'edit comment',
-			),
-			'Frame' => array(
-				'id' => '1'
-			)
-		);
-
-		$this->testAction(
-				'/announcements/announcements/edit/1.json',
-				array(
-					'method' => 'post',
-					'data' => $postData,
-					'return' => 'contents'
-				)
-			);
-
-		$this->_logout();
-	}
-
-/**
- * testEditSaveError method
- *
- * @return void
- */
-	public function testEditSaveError() {
-		$this->setExpectedException('ForbiddenException');
-
-		$this->_generateController('Announcements.Announcements');
-		$this->_setModelError('Announcements.Announcement', 'save');
-		$this->_loginAdmin();
-
-		$postData = array(
-			'Announcement' => array(
-				'block_id' => '1',
-				'key' => 'announcement_1',
-				'status' => '1',
 				'content' => 'edit content',
 				'comment' => 'edit comment',
 			),
