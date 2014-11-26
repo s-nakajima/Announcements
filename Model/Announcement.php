@@ -159,7 +159,7 @@ class Announcement extends AnnouncementsAppModel {
 /**
  * save announcement
  *
- * @param array $postData received post data
+ * @param array $postData received post data   TODO: $dataにする
  * @return bool true success, false error
  * @throws InternalErrorException
  */
