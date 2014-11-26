@@ -177,18 +177,24 @@ class Announcement extends AnnouncementsAppModel {
 
 		$dataSource = $this->getDataSource();
 		$dataSource->begin();
+
+		//TODO: validationを実行
+
 		try {
 			//ブロックの登録
 			$block = $this->Block->saveByFrameId($postData['Frame']['id']);
 
 			//お知らせデータの取得
+			//TODO: __saveAnnouncements()にまとめる
 			$announcement = $this->getAnnouncement((int)$block['Block']['id'], true);
 			if ($announcement['Announcement']['key'] === '') {
+				//TODO: securityコンポーネントのhash
 				$postData['Announcement']['key'] = hash('sha256', 'annoncement_' . microtime());
 				$postData['Announcement']['block_id'] = (int)$block['Block']['id'];
 			}
 
 			//お知らせの登録
+			//TODO: saveでは、validationしない
 			$announcement = $this->__saveAnnouncement($announcement, $postData);
 			if (! $announcement) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
@@ -206,10 +212,10 @@ class Announcement extends AnnouncementsAppModel {
 			//ロールバック
 			$dataSource->rollback();
 			//エラー出力
-			CakeLog::error($ex);
 			if ($this->validationErrors) {
 				return false;
 			} else {
+				CakeLog::error($ex);
 				throw $ex;
 			}
 		}

@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 ?>
-
+<?php //TODO: Elementsのディレクトリ構成修正する ?>
 <div class="form-group" ng-class="edit.data.Announcement.content === '' ? 'has-error' : 'has-success'">
 	<label class="control-label">
 		<?php echo __d('announcements', 'Content'); ?>

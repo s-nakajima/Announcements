@@ -56,7 +56,10 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow();
+		//TODO: 認証チェック
+		$this->Auth->allow(array('edit', 'setting'));
+
+		//TODO: 権限チェック(NetCommonsAuthコンポーネント)もallow
 
 		//Frameのデータをviewにセット
 		$frameId = (isset($this->params['pass'][0]) ? (int)$this->params['pass'][0] : 0);
@@ -93,6 +96,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		//Announcementデータをviewにセット
 		$this->set('announcement', $announcement);
 		if (! $announcement) {
+			//TODO: autoRender= false
 			$this->render(false);
 		}
 	}
@@ -128,6 +132,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 			if (! $this->Announcement->saveAnnouncement($this->data)) {
 				//バリデーションエラー
 				$results = array('validationErrors' => $this->Announcement->validationErrors);
+				//TODO: ステータスコード定数？
 				$this->renderJson($results, __d('net_commons', 'Bad Request'), 400);
 				return;
 			}
@@ -144,6 +149,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 
 		} else {
 			//コメントデータ取得
+			//TODO: contentKeyが空の場合、全件表示されてしまう。
 			$contentKey = $this->viewVars['announcement']['Announcement']['key'];
 			$view = $this->requestAction(
 					'/comments/comments/index/announcements/' . $contentKey . '.json', array('return'));
@@ -177,11 +183,14 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	private function __validateEditable() {
 		//認証エラー
+		//TODO: Auth->allowでやる
 		if (! $this->Auth->user()) {
 			throw new UnauthorizedException(__d('net_commons', 'Unauthorized'));
 		}
 		//編集権限チェック
+		//TODO: コンポーネント化
 		if (! $this->viewVars['contentEditable']) {
+			//TODO: Permission denied
 			throw new ForbiddenException(__d('net_commons', 'Security Error! Unauthorized input.'));
 		}
 	}
@@ -195,8 +204,12 @@ class AnnouncementsController extends AnnouncementsAppController {
 	private function __validatePublishable() {
 		//公開権限チェック
 		if (! isset($this->data['Announcement']['status'])) {
+			//TODO: Invalid request
+			//TODO: Bad request
 			throw new ForbiddenException(__d('net_commons', 'Security Error! Unauthorized input.'));
 		}
+
+		//TODO: モデル名？を渡して共通化(NetCommonsAuth)
 		if (! $this->viewVars['contentPublishable'] && (
 				$this->data['Announcement']['status'] === NetCommonsBlockComponent::STATUS_PUBLISHED ||
 				$this->data['Announcement']['status'] === NetCommonsBlockComponent::STATUS_DISAPPROVED

@@ -10,6 +10,7 @@
  */
 
 //App::uses('AppController', 'Controller');
+//TODO: AppControllerがNetCommonsAppControllerを継承する
 App::uses('NetCommonsAppController', 'NetCommons.Controller');
 
 /**

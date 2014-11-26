@@ -39,6 +39,7 @@ $formName = 'AnnouncementForm' . (int)$frameId;
 
 				<hr />
 
+				<?php //TODO: 第3引数のpluginは不要。Comments.formで呼び出せる ?>
 				<?php echo $this->element('form',
 							array(
 								'statusModel' => 'announcement.Announcement.status',
@@ -51,6 +52,8 @@ $formName = 'AnnouncementForm' . (int)$frameId;
 			</div>
 
 			<div class="panel-footer text-center">
+				<?php //TODO: workflow_buttons ?>
+				<?php //TODO: 第3引数のpluginは不要。 ?>
 				<?php echo $this->element('save_button',
 							array(
 								'status' => $announcement['Announcement']['status'],
@@ -62,6 +65,7 @@ $formName = 'AnnouncementForm' . (int)$frameId;
 			</div>
 		</div>
 
+		<?php //TODO: 第3引数のpluginは不要。 ?>
 		<?php echo $this->element('index', array(), array('plugin' => 'Comments')); ?>
 
 	<?php echo $this->Form->end(); ?>
