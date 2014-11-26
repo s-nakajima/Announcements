@@ -57,7 +57,11 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		//TODO: 認証チェック
-		$this->Auth->allow(array('edit', 'setting'));
+		//$this->Auth->unauthorizedRedirect = false;
+		//$this->Auth->loginAction = false;
+		//$this->Auth->deny(array('edit', 'setting'));
+		//$this->Auth->allow('view', 'index');
+		$this->Auth->allow();
 
 		//TODO: 権限チェック(NetCommonsAuthコンポーネント)もallow
 
