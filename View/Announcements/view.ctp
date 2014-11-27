@@ -28,17 +28,14 @@
 				</button>
 			<?php endif; ?>
 
-			<?php //TODO: 第3引数のpluginは不要。 ?>
-			<?php echo $this->element('setting_button', array(), array('plugin' => 'NetCommons')); ?>
+			<?php echo $this->element('NetCommons.setting_button'); ?>
 		</p>
 
 		<div ng-bind-html="htmlContent()"></div>
 
 		<p class="text-left">
-			<?php //TODO: 第3引数のpluginは不要。 ?>
-			<?php echo $this->element('status_label',
-					array('statusModel' => 'announcement.Announcement.status'),
-					array('plugin' => 'NetCommons')); ?>
+			<?php echo $this->element('NetCommons.status_label',
+					array('statusModel' => 'announcement.Announcement.status')); ?>
 		</p>
 	</div>
 

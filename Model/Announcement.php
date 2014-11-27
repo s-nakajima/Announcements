@@ -159,11 +159,11 @@ class Announcement extends AnnouncementsAppModel {
 /**
  * save announcement
  *
- * @param array $postData received post data   TODO: $dataにする
+ * @param array $data received post data
  * @return bool true success, false error
  * @throws InternalErrorException
  */
-	public function saveAnnouncement($postData) {
+	public function saveAnnouncement($data) {
 		//DBへの登録
 		$this->setDataSource('master');
 		$models = array(
@@ -182,26 +182,16 @@ class Announcement extends AnnouncementsAppModel {
 
 		try {
 			//ブロックの登録
-			$block = $this->Block->saveByFrameId($postData['Frame']['id']);
-
-			//お知らせデータの取得
-			//TODO: __saveAnnouncements()にまとめる
-			$announcement = $this->getAnnouncement((int)$block['Block']['id'], true);
-			if ($announcement['Announcement']['key'] === '') {
-				//TODO: securityコンポーネントのhash
-				$postData['Announcement']['key'] = hash('sha256', 'annoncement_' . microtime());
-				$postData['Announcement']['block_id'] = (int)$block['Block']['id'];
-			}
+			$block = $this->Block->saveByFrameId($data['Frame']['id']);
 
 			//お知らせの登録
-			//TODO: saveでは、validationしない
-			$announcement = $this->__saveAnnouncement($announcement, $postData);
+			$announcement = $this->__saveAnnouncement($block, $data);
 			if (! $announcement) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 
 			//コメントの登録
-			if (! $this->__saveComment($announcement, $postData)) {
+			if (! $this->__saveComment($announcement, $data)) {
 				$this->validationErrors = $this->Comment->validationErrors;
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
@@ -224,23 +214,30 @@ class Announcement extends AnnouncementsAppModel {
 /**
  * save announcement
  *
- * @param array $announcement announcement data
- * @param array $postData received post data
+ * @param array $block block data
+ * @param array $data received post data
  * @return mixed object announcement, false error
  */
-	private function __saveAnnouncement($announcement, $postData) {
-		//お知らせの登録
-		if (!isset($postData['Announcement']['content'])) {
-			//定義されていない場合、Noticeが発生するため、nullで初期化
-			$postData['Announcement']['content'] = null;
+	private function __saveAnnouncement($block, $data) {
+		//お知らせデータの取得
+		$announcement = $this->getAnnouncement((int)$data['Announcement']['block_id'], true);
+		if ($announcement['Announcement']['key'] === '') {
+			$data['Announcement']['key'] = Security::hash('annoncement_' . microtime());
+			$data['Announcement']['block_id'] = (int)$block['Block']['id'];
 		}
-		if ($postData['Announcement']['content'] !== $announcement['Announcement']['content'] ||
-				$postData['Announcement']['status'] !== $announcement['Announcement']['status']) {
 
-			unset($postData['Announcement']['id']);
+		//お知らせの登録
+		if (!isset($data['Announcement']['content'])) {
+			//定義されていない場合、Noticeが発生するため、nullで初期化
+			$data['Announcement']['content'] = null;
+		}
+		if ($data['Announcement']['content'] !== $announcement['Announcement']['content'] ||
+				$data['Announcement']['status'] !== $announcement['Announcement']['status']) {
+
+			unset($data['Announcement']['id']);
 			$announcement = $this->create();
 		}
-		$announcement['Announcement'] = $postData['Announcement'];
+		$announcement['Announcement'] = $data['Announcement'];
 		return $this->save($announcement);
 	}
 
@@ -248,16 +245,16 @@ class Announcement extends AnnouncementsAppModel {
  * save comment
  *
  * @param array $announcement announcement data
- * @param array $postData received post data
+ * @param array $data received post data
  * @return bool true success, false error
  */
-	private function __saveComment($announcement, $postData) {
+	private function __saveComment($announcement, $data) {
 		//コメントの登録(ステータス 差し戻しのみコメント必須)
 		if ($announcement['Announcement']['status'] === NetCommonsBlockComponent::STATUS_DISAPPROVED ||
-				$postData['Comment']['comment'] !== '') {
+				$data['Comment']['comment'] !== '') {
 
-			$postData['Comment']['content_key'] = $announcement['Announcement']['key'];
-			return $this->Comment->save($postData['Comment']);
+			$data['Comment']['content_key'] = $announcement['Announcement']['key'];
+			return $this->Comment->save($data['Comment']);
 		}
 
 		return true;

@@ -100,8 +100,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		//Announcementデータをviewにセット
 		$this->set('announcement', $announcement);
 		if (! $announcement) {
-			//TODO: autoRender= false
-			$this->render(false);
+			$this->autoRender = false;
 		}
 	}
 
@@ -136,7 +135,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 			if (! $this->Announcement->saveAnnouncement($this->data)) {
 				//バリデーションエラー
 				$results = array('validationErrors' => $this->Announcement->validationErrors);
-				//TODO: ステータスコード定数？
 				$this->renderJson($results, __d('net_commons', 'Bad Request'), 400);
 				return;
 			}
@@ -194,8 +192,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		//編集権限チェック
 		//TODO: コンポーネント化
 		if (! $this->viewVars['contentEditable']) {
-			//TODO: Permission denied
-			throw new ForbiddenException(__d('net_commons', 'Security Error! Unauthorized input.'));
+			throw new ForbiddenException(__d('net_commons', 'Permission denied'));
 		}
 	}
 
@@ -204,13 +201,12 @@ class AnnouncementsController extends AnnouncementsAppController {
  *
  * @return void
  * @throws ForbiddenException
+ * @throws BadRequestException
  */
 	private function __validatePublishable() {
 		//公開権限チェック
 		if (! isset($this->data['Announcement']['status'])) {
-			//TODO: Invalid request
-			//TODO: Bad request
-			throw new ForbiddenException(__d('net_commons', 'Security Error! Unauthorized input.'));
+			throw new BadRequestException(__d('net_commons', 'Invalid request'));
 		}
 
 		//TODO: モデル名？を渡して共通化(NetCommonsAuth)
@@ -218,7 +214,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 				$this->data['Announcement']['status'] === NetCommonsBlockComponent::STATUS_PUBLISHED ||
 				$this->data['Announcement']['status'] === NetCommonsBlockComponent::STATUS_DISAPPROVED
 			)) {
-			throw new ForbiddenException(__d('net_commons', 'Security Error! Unauthorized input.'));
+			throw new ForbiddenException(__d('net_commons', 'Permission denied'));
 		}
 	}
 

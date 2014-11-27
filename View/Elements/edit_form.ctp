@@ -9,14 +9,12 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 ?>
-<?php //TODO: Elementsのディレクトリ構成修正する ?>
+
 <div class="form-group" ng-class="edit.data.Announcement.content === '' ? 'has-error' : 'has-success'">
 	<label class="control-label">
 		<?php echo __d('announcements', 'Content'); ?>
 	</label>
-	<span class="label label-danger">
-		<?php echo __d('net_commons', 'Required'); ?>
-	</span>
+	<?php echo $this->element('NetCommons.required'); ?>
 
 	<div class="nc-wysiwyg-alert" ng-class="edit.data.Announcement.content === '' ? 'alert-danger' : 'alert-success'">
 		<textarea class="form-control" rows="5"

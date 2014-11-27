@@ -1,6 +1,6 @@
 <?php
 /**
- * announcement edit view template
+ * announcement setting view template
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -12,18 +12,16 @@
 $formName = 'AnnouncementForm' . (int)$frameId;
 ?>
 
-<?php $this->start('title_for_modal'); ?>
+<?php $this->start('titleForModal'); ?>
 <?php echo __d('announcements', 'plugin_name'); ?>
 <?php $this->end(); ?>
 
-<?php $this->startIfEmpty('tablist'); ?>
-<ul class="nav nav-tabs" role="tablist">
-	<li ng-class="{active:tab.isSet(0)}">
-		<a href="" role="tab" data-toggle="tab">
-			<?php echo __d('announcements', 'Announcement edit'); ?>
-		</a>
-	</li>
-</ul>
+<?php $this->startIfEmpty('tabList'); ?>
+<li ng-class="{active:tab.isSet(0)}">
+	<a href="" role="tab" data-toggle="tab">
+		<?php echo __d('announcements', 'Announcement edit'); ?>
+	</a>
+</li>
 <?php $this->end(); ?>
 
 <div ng-show="tab.isSet(0)">
@@ -35,38 +33,32 @@ $formName = 'AnnouncementForm' . (int)$frameId;
 
 		<div class="panel panel-default">
 			<div class="panel-body has-feedback">
-				<?php echo $this->element('Announcements/edit_form', array('formName' => $formName)); ?>
+				<?php echo $this->element('edit_form', array('formName' => $formName)); ?>
 
 				<hr />
 
-				<?php //TODO: 第3引数のpluginは不要。Comments.formで呼び出せる ?>
-				<?php echo $this->element('form',
+				<?php echo $this->element('Comments.form',
 							array(
 								'statusModel' => 'announcement.Announcement.status',
 								'editModel' => 'edit.data.Comment.comment',
 								'editStatusModel' => 'edit.data.Announcement.status',
 								'formName' => 'AnnouncementForm' . (int)$frameId,
-							),
-							array('plugin' => 'Comments')
+							)
 						); ?>
 			</div>
 
 			<div class="panel-footer text-center">
-				<?php //TODO: workflow_buttons ?>
-				<?php //TODO: 第3引数のpluginは不要。 ?>
-				<?php echo $this->element('save_button',
+				<?php echo $this->element('NetCommons.workflow_buttons',
 							array(
 								'status' => $announcement['Announcement']['status'],
 								'statusModel' => 'announcement.Announcement.status',
 								'formName' => 'AnnouncementForm' . (int)$frameId,
-							),
-							array('plugin' => 'NetCommons')
+							)
 						); ?>
 			</div>
 		</div>
 
-		<?php //TODO: 第3引数のpluginは不要。 ?>
-		<?php echo $this->element('index', array(), array('plugin' => 'Comments')); ?>
+		<?php echo $this->element('Comments.index'); ?>
 
 	<?php echo $this->Form->end(); ?>
 </div>
