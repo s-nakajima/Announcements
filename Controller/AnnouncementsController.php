@@ -35,8 +35,14 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public $components = array(
 		'NetCommons.NetCommonsBlock', //Use Announcement model
-		'NetCommons.NetCommonsFrame',
-		'NetCommons.NetCommonsRoomRole',
+		'NetCommons.NetCommonsFrame' => array(
+			'setView' => true
+		),
+		'NetCommons.NetCommonsRoomRole' => array(
+			'setView' => true,
+			'workflowActions' => array('edit'),
+			'workflowModelName' => 'Announcement',
+		),
 	);
 
 /**
@@ -57,20 +63,50 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		//TODO: 認証チェック
-		//$this->Auth->unauthorizedRedirect = false;
-		//$this->Auth->loginAction = false;
+		$this->Auth->unauthorizedRedirect = false;
+		//$this->Auth->ajaxLogin = true;
+		//$this->Auth->ajaxLayout = false;
+		//$this->Auth->loginAction = null;
 		//$this->Auth->deny(array('edit', 'setting'));
 		//$this->Auth->allow('view', 'index');
-		$this->Auth->allow();
+		//$this->Auth->allow();
 
-		//TODO: 権限チェック(NetCommonsAuthコンポーネント)もallow
 
 		//Frameのデータをviewにセット
-		$frameId = (isset($this->params['pass'][0]) ? (int)$this->params['pass'][0] : 0);
-		$this->NetCommonsFrame->setView($this, $frameId);
+		//$frameId = (isset($this->params['pass'][0]) ? (int)$this->params['pass'][0] : 0);
+		//$this->NetCommonsFrame->setView($this, $frameId);
 
+		//var_dump($this->params);
 		//Roleのデータをviewにセット
-		$this->NetCommonsRoomRole->setView($this);
+		//$this->NetCommonsRoomRole->setView($this);
+		$this->NetCommonsRoomRole->allow(
+			array('contentEditable' => array('setting', 'token', 'edit'))
+		);
+	}
+/**
+ * The beforeRedirect method is invoked when the controller's redirect method is called but before any
+ * further action.
+ *
+ * If this method returns false the controller will not continue on to redirect the request.
+ * The $url, $status and $exit variables have same meaning as for the controller's method. You can also
+ * return a string which will be interpreted as the URL to redirect to or return associative array with
+ * key 'url' and optionally 'status' and 'exit'.
+ *
+ * @param string|array $url A string or array-based URL pointing to another location within the app,
+ *     or an absolute URL
+ * @param integer $status Optional HTTP status code (eg: 404)
+ * @param boolean $exit If true, exit() will be called after the redirect
+ * @return mixed
+ *   false to stop redirection event,
+ *   string controllers a new redirection URL or
+ *   array with the keys url, status and exit to be used by the redirect method.
+ * @link http://book.cakephp.org/2.0/en/controllers.html#request-life-cycle-callbacks
+ */
+	public function beforeRedirect($url, $status = null, $exit = true) {
+//		if ($url['action'] === 'login') {
+//			throw new UnauthorizedException(__d('net_commons', 'Unauthorized'));
+//		}
+//		return parent::beforeRedirect($url, $status, $exit);
 	}
 
 /**
@@ -110,9 +146,6 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	public function setting() {
-		//編集権限チェック
-		$this->__validateEditable();
-
 		$this->layout = 'NetCommons.modal';
 		$this->view();
 	}
@@ -123,14 +156,8 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	public function edit() {
-		//編集権限チェック
-		$this->__validateEditable();
-
 		//登録処理
 		if ($this->request->isPost()) {
-			//公開権限チェック
-			$this->__validatePublishable();
-
 			//登録
 			if (! $this->Announcement->saveAnnouncement($this->data)) {
 				//バリデーションエラー
@@ -174,48 +201,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 
 		$this->view();
 		$this->render('Announcements/token', false);
-	}
-
-/**
- * __validateEditable method
- *
- * @return void
- * @throws UnauthorizedException
- * @throws ForbiddenException
- */
-	private function __validateEditable() {
-		//認証エラー
-		//TODO: Auth->allowでやる
-		if (! $this->Auth->user()) {
-			throw new UnauthorizedException(__d('net_commons', 'Unauthorized'));
-		}
-		//編集権限チェック
-		//TODO: コンポーネント化
-		if (! $this->viewVars['contentEditable']) {
-			throw new ForbiddenException(__d('net_commons', 'Permission denied'));
-		}
-	}
-
-/**
- * __validatePublishable method
- *
- * @return void
- * @throws ForbiddenException
- * @throws BadRequestException
- */
-	private function __validatePublishable() {
-		//公開権限チェック
-		if (! isset($this->data['Announcement']['status'])) {
-			throw new BadRequestException(__d('net_commons', 'Invalid request'));
-		}
-
-		//TODO: モデル名？を渡して共通化(NetCommonsAuth)
-		if (! $this->viewVars['contentPublishable'] && (
-				$this->data['Announcement']['status'] === NetCommonsBlockComponent::STATUS_PUBLISHED ||
-				$this->data['Announcement']['status'] === NetCommonsBlockComponent::STATUS_DISAPPROVED
-			)) {
-			throw new ForbiddenException(__d('net_commons', 'Permission denied'));
-		}
 	}
 
 }

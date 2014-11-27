@@ -22,7 +22,7 @@
 						tooltip="<?php echo __d('net_commons', 'Accept'); ?>"
 						ng-controller="Announcements.edit"
 						ng-hide="(announcement.Announcement.status !== '<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>')"
-						ng-click="setEditData(); save('<?php echo NetCommonsBlockComponent::STATUS_PUBLISHED ?>')">
+						ng-click="setEditData(); save(null, '<?php echo NetCommonsBlockComponent::STATUS_PUBLISHED ?>')">
 
 					<span class="glyphicon glyphicon-ok"></span>
 				</button>

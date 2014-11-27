@@ -61,8 +61,8 @@ NetCommonsApp.controller('Announcements',
       $scope.showSetting = function() {
         $scope.get(
             $scope.PLUGIN_INDEX_URL + 'edit/' + $scope.frameId + '.json')
-            .success(function(data) {
-              //最新データセット
+            .success(function(data, status) {
+               //最新データセット
               $scope.setEditData(data.results);
 
               $scope.showDialog(
@@ -70,7 +70,8 @@ NetCommonsApp.controller('Announcements',
                   $scope.PLUGIN_INDEX_URL + 'setting/' + $scope.frameId,
                   'Announcements.edit');
             })
-            .error(function(data) {
+            .error(function(data, status) {
+              console.log(status);
               $scope.flash.danger(data.name);
             });
       };
@@ -179,7 +180,7 @@ NetCommonsApp.controller('Announcements.edit',
        */
       $scope.save = function(form, status) {
         $scope.edit.data.Announcement.status = status;
-        if (! $scope.validate(form)) {
+        if (form && ! $scope.validate(form)) {
           return;
         }
 
