@@ -35,13 +35,13 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public $components = array(
 		'NetCommons.NetCommonsBlock', //Use Announcement model
-		'NetCommons.NetCommonsFrame' => array(
-			'setView' => true
-		),
+		'NetCommons.NetCommonsFrame',
 		'NetCommons.NetCommonsRoomRole' => array(
-			'setView' => true,
 			'workflowActions' => array('edit'),
 			'workflowModelName' => 'Announcement',
+			'allowedActions' => array(
+				'contentEditable' => array('setting', 'token', 'edit')
+			)
 		),
 	);
 
@@ -53,76 +53,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public $helpers = array(
 		'NetCommons.NetCommonsForm'
 	);
-
-/**
- * beforeFilter
- *
- * @return void
- * @throws ForbiddenException
- */
-	public function beforeFilter() {
-		parent::beforeFilter();
-		//TODO: 認証チェック
-		//$this->Auth->unauthorizedRedirect = false;
-		//$this->Auth->ajaxLogin = true;
-		//$this->Auth->ajaxLayout = false;
-		//$this->Auth->loginAction = null;
-		//CakeLog::debug(get_class($this) . '.' . $this->params['action'] . '.beforeFilter');
-		//CakeLog::debug(print_r($this->Session->read('Auth.redirect'), true));
-		//$this->Auth->loginAction = array(
-		//		'plugin' => 'auth',
-		//		'controller' => 'auth',
-		//		'action' => null,
-		//	);
-		//$this->Auth->deny(array('edit', 'setting'));
-		//$this->Auth->allow('view', 'index');
-		//$this->Auth->allow();
-
-
-		//Frameのデータをviewにセット
-		//$frameId = (isset($this->params['pass'][0]) ? (int)$this->params['pass'][0] : 0);
-		//$this->NetCommonsFrame->setView($this, $frameId);
-
-		//var_dump($this->params);
-		//Roleのデータをviewにセット
-		//$this->NetCommonsRoomRole->setView($this);
-		$this->NetCommonsRoomRole->allow(
-			array('contentEditable' => array('setting', 'token', 'edit'))
-		);
-	}
-/**
- * The beforeRedirect method is invoked when the controller's redirect method is called but before any
- * further action.
- *
- * If this method returns false the controller will not continue on to redirect the request.
- * The $url, $status and $exit variables have same meaning as for the controller's method. You can also
- * return a string which will be interpreted as the URL to redirect to or return associative array with
- * key 'url' and optionally 'status' and 'exit'.
- *
- * @param string|array $url A string or array-based URL pointing to another location within the app,
- *     or an absolute URL
- * @param integer $status Optional HTTP status code (eg: 404)
- * @param boolean $exit If true, exit() will be called after the redirect
- * @return mixed
- *   false to stop redirection event,
- *   string controllers a new redirection URL or
- *   array with the keys url, status and exit to be used by the redirect method.
- * @link http://book.cakephp.org/2.0/en/controllers.html#request-life-cycle-callbacks
- */
-	public function beforeRedirect($url, $status = null, $exit = true) {
-//		CakeLog::debug(get_class($this) . '.' . $this->params['action'] . '.beforeRedirect');
-//		CakeLog::debug(print_r($this->Session->read('Auth.redirect'), true));
-//		CakeLog::debug($this->response->statusCode());
-//		CakeLog::debug($status);
-//		CakeLog::debug(print_r($url, true));
-//		CakeLog::debug(print_r($this->Auth->authError, true));
-//		if ($this->Session->read('Auth.redirect')) {
-//			$this->Session->delete('Auth.redirect');
-//			throw new UnauthorizedException(__d('net_commons', 'Unauthorized'));
-//		}
-//$this->response->statusCode(200);
-//		return parent::beforeRedirect($url, 200, $exit);
-	}
 
 /**
  * index method
@@ -211,9 +141,6 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	public function token() {
-		//編集権限チェック
-		$this->__validateEditable();
-
 		$this->view();
 		$this->render('Announcements/token', false);
 	}
