@@ -11,7 +11,7 @@
  * @param {function($scope, $sce)} Controller
  */
 NetCommonsApp.controller('Announcements',
-                         function($scope, $sce) {
+                         function($scope, $sce, NetCommons) {
 
       /**
        * Announcements plugin view url
@@ -59,19 +59,18 @@ NetCommonsApp.controller('Announcements',
        * @return {void}
        */
       $scope.showSetting = function() {
-        $scope.get(
+        NetCommons.get(
             $scope.PLUGIN_INDEX_URL + 'edit/' + $scope.frameId + '.json')
             .success(function(data) {
                //最新データセット
               $scope.setEditData(data.results);
 
-              $scope.showDialog(
+              NetCommons.showDialog(
                   $scope,
                   $scope.PLUGIN_INDEX_URL + 'setting/' + $scope.frameId,
                   'Announcements.edit');
             })
-            .error(function(data, status) {
-              console.log(status);
+            .error(function(data) {
               $scope.flash.danger(data.name);
             });
       };
@@ -128,7 +127,14 @@ NetCommonsApp.controller('Announcements',
  * @param {function($scope, $modalStack)} Controller
  */
 NetCommonsApp.controller('Announcements.edit',
-    function($scope, $modalStack) {
+    function($scope, $modalStack, NetCommons, NetCommonsWysiwyg) {
+
+      /**
+       * tinymce optins
+       *
+       * @type {{mode: string, menubar: string, plugins: string, toolbar: string}}
+       */
+      $scope.tinymceOptions = NetCommonsWysiwyg.options;
 
       /**
        * sending
@@ -183,13 +189,13 @@ NetCommonsApp.controller('Announcements.edit',
         }
 
         $scope.sending = true;
-        $scope.get(
+        NetCommons.get(
             $scope.PLUGIN_INDEX_URL + 'token/' + $scope.frameId + '.json')
             .success(function(data) {
               $scope.edit.data._Token = data._Token;
 
               //登録情報をPOST
-              $scope.post(
+              NetCommons.post(
                   $scope.PLUGIN_INDEX_URL + 'edit/' + $scope.frameId + '.json',
                   $scope.edit)
               .success(function(data) {
