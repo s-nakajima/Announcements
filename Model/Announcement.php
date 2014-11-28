@@ -88,8 +88,8 @@ class Announcement extends AnnouncementsAppModel {
 					'allowEmpty' => false,
 					'required' => true,
 				),
-				'range' => array(
-					'rule' => array('range', 0, 5),
+				'inList' => array(
+					'rule' => array('inList', NetCommonsBlockComponent::$STATUSES),
 					'message' => __d('net_commons', 'Invalid request.'),
 				)
 			),

@@ -61,7 +61,7 @@ NetCommonsApp.controller('Announcements',
       $scope.showSetting = function() {
         $scope.get(
             $scope.PLUGIN_INDEX_URL + 'edit/' + $scope.frameId + '.json')
-            .success(function(data, status) {
+            .success(function(data) {
                //最新データセット
               $scope.setEditData(data.results);
 
