@@ -63,10 +63,17 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		//TODO: 認証チェック
-		$this->Auth->unauthorizedRedirect = false;
+		//$this->Auth->unauthorizedRedirect = false;
 		//$this->Auth->ajaxLogin = true;
 		//$this->Auth->ajaxLayout = false;
 		//$this->Auth->loginAction = null;
+		//CakeLog::debug(get_class($this) . '.' . $this->params['action'] . '.beforeFilter');
+		//CakeLog::debug(print_r($this->Session->read('Auth.redirect'), true));
+		//$this->Auth->loginAction = array(
+		//		'plugin' => 'auth',
+		//		'controller' => 'auth',
+		//		'action' => null,
+		//	);
 		//$this->Auth->deny(array('edit', 'setting'));
 		//$this->Auth->allow('view', 'index');
 		//$this->Auth->allow();
@@ -103,10 +110,18 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @link http://book.cakephp.org/2.0/en/controllers.html#request-life-cycle-callbacks
  */
 	public function beforeRedirect($url, $status = null, $exit = true) {
-//		if ($url['action'] === 'login') {
+//		CakeLog::debug(get_class($this) . '.' . $this->params['action'] . '.beforeRedirect');
+//		CakeLog::debug(print_r($this->Session->read('Auth.redirect'), true));
+//		CakeLog::debug($this->response->statusCode());
+//		CakeLog::debug($status);
+//		CakeLog::debug(print_r($url, true));
+//		CakeLog::debug(print_r($this->Auth->authError, true));
+//		if ($this->Session->read('Auth.redirect')) {
+//			$this->Session->delete('Auth.redirect');
 //			throw new UnauthorizedException(__d('net_commons', 'Unauthorized'));
 //		}
-//		return parent::beforeRedirect($url, $status, $exit);
+//$this->response->statusCode(200);
+//		return parent::beforeRedirect($url, 200, $exit);
 	}
 
 /**
