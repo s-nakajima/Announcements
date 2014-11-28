@@ -74,6 +74,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public function view() {
 		//Announcementデータを取得
 		$announcement = $this->Announcement->getAnnouncement(
+				$this->viewVars['frameId'],
 				$this->viewVars['blockId'],
 				$this->viewVars['contentEditable']
 			);
@@ -104,12 +105,14 @@ class AnnouncementsController extends AnnouncementsAppController {
 		//登録処理
 		if ($this->request->isPost()) {
 			//登録
-			if (! $this->Announcement->saveAnnouncement($this->data)) {
+			$announcement = $this->Announcement->saveAnnouncement($this->data);
+			if (! $announcement) {
 				//バリデーションエラー
 				$results = array('validationErrors' => $this->Announcement->validationErrors);
 				$this->renderJson($results, __d('net_commons', 'Bad Request'), 400);
 				return;
 			}
+			$this->set('blockId', $announcement['Announcement']['block_id']);
 		}
 
 		//最新データ取得

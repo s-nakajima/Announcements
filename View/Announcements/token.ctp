@@ -23,18 +23,6 @@ $this->NetCommonsForm->input('Comment.comment', array(
 		)
 	);
 
-$this->NetCommonsForm->input('Comment.plugin_key', array(
-			'type' => 'hidden',
-			'value' => 'announcements',
-		)
-	);
-
-$this->NetCommonsForm->input('Comment.content_key', array(
-			'type' => 'hidden',
-			'value' => $announcement['Announcement']['key'],
-		)
-	);
-
 $this->NetCommonsForm->input('Announcement.block_id', array(
 			'type' => 'hidden',
 			'value' => (int)$blockId,

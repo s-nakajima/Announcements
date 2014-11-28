@@ -101,12 +101,10 @@ NetCommonsApp.controller('Announcements',
           id: $scope.announcement.Announcement.id
         };
         $scope.edit.data.Comment = {
-          plugin_key: 'announcements',
-          content_key: $scope.announcement.Announcement.key,
-          comment: ''
+          comment: $scope.announcement.Comment.comment
         };
         $scope.edit.data.Frame = {
-          id: $scope.frameId
+          id: $scope.announcement.Frame.id
         };
       };
 

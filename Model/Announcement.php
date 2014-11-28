@@ -26,6 +26,13 @@ class Announcement extends AnnouncementsAppModel {
  *
  * @var array
  */
+	const COMMENT_PLUGIN_KEY = 'announcements';
+
+/**
+ * Validation rules
+ *
+ * @var array
+ */
 	public $validate = array();
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -128,11 +135,12 @@ class Announcement extends AnnouncementsAppModel {
 /**
  * get content data
  *
+ * @param int $frameId frames.id
  * @param int $blockId blocks.id
  * @param bool $contentEditable true can edit the content, false not can edit the content.
  * @return array
  */
-	public function getAnnouncement($blockId, $contentEditable) {
+	public function getAnnouncement($frameId, $blockId, $contentEditable) {
 		$conditions = array(
 			'block_id' => $blockId,
 		);
@@ -140,6 +148,7 @@ class Announcement extends AnnouncementsAppModel {
 			$conditions['status'] = NetCommonsBlockComponent::STATUS_PUBLISHED;
 		}
 
+		$this->recursive = -1;
 		$announcement = $this->find('first', array(
 				'conditions' => $conditions,
 				'order' => 'Announcement.id DESC',
@@ -151,6 +160,13 @@ class Announcement extends AnnouncementsAppModel {
 			$announcement['Announcement']['content'] = '';
 			$announcement['Announcement']['key'] = '';
 			$announcement['Announcement']['id'] = '0';
+		}
+
+		if ($announcement) {
+			//Commentセット
+			$announcement['Comment']['comment'] = '';
+			//Frameセット
+			$announcement['Frame']['id'] = $frameId;
 		}
 
 		return $announcement;
@@ -220,14 +236,18 @@ class Announcement extends AnnouncementsAppModel {
  */
 	private function __saveAnnouncement($block, $data) {
 		//お知らせデータの取得
-		$announcement = $this->getAnnouncement((int)$data['Announcement']['block_id'], true);
+		$announcement = $this->getAnnouncement(
+				(int)$data['Frame']['id'],
+				(int)$data['Announcement']['block_id'],
+				true
+			);
 		if ($announcement['Announcement']['key'] === '') {
 			$data['Announcement']['key'] = Security::hash('annoncement_' . microtime());
 			$data['Announcement']['block_id'] = (int)$block['Block']['id'];
 		}
 
 		//お知らせの登録
-		if (!isset($data['Announcement']['content'])) {
+		if (! isset($data['Announcement']['content'])) {
 			//定義されていない場合、Noticeが発生するため、nullで初期化
 			$data['Announcement']['content'] = null;
 		}
@@ -253,6 +273,7 @@ class Announcement extends AnnouncementsAppModel {
 		if ($announcement['Announcement']['status'] === NetCommonsBlockComponent::STATUS_DISAPPROVED ||
 				$data['Comment']['comment'] !== '') {
 
+			$data['Comment']['plugin_key'] = self::COMMENT_PLUGIN_KEY;
 			$data['Comment']['content_key'] = $announcement['Announcement']['key'];
 			return $this->Comment->save($data['Comment']);
 		}
