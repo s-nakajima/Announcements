@@ -8,9 +8,9 @@
  * @license http://www.netcommons.org/license.txt NetCommons License
  * @copyright Copyright 2014, NetCommons Project
  */
-
-$formName = 'AnnouncementForm' . (int)$frameId;
 ?>
+
+<?php $formName = 'AnnouncementForm' . (int)$frameId; ?>
 
 <?php $this->start('titleForModal'); ?>
 <?php echo __d('announcements', 'plugin_name'); ?>
@@ -37,24 +37,11 @@ $formName = 'AnnouncementForm' . (int)$frameId;
 
 				<hr />
 
-				<?php echo $this->element('Comments.form',
-							array(
-								'statusModel' => 'announcement.Announcement.status',
-								'editModel' => 'edit.data.Comment.comment',
-								'editStatusModel' => 'edit.data.Announcement.status',
-								'formName' => 'AnnouncementForm' . (int)$frameId,
-							)
-						); ?>
+				<?php echo $this->element('Comments.form', array('formName' => $formName)); ?>
 			</div>
 
 			<div class="panel-footer text-center">
-				<?php echo $this->element('NetCommons.workflow_buttons',
-							array(
-								'status' => $announcement['Announcement']['status'],
-								'statusModel' => 'announcement.Announcement.status',
-								'formName' => 'AnnouncementForm' . (int)$frameId,
-							)
-						); ?>
+				<?php echo $this->element('NetCommons.workflow_buttons'); ?>
 			</div>
 		</div>
 

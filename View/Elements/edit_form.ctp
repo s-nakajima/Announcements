@@ -18,7 +18,7 @@
 
 	<div class="nc-wysiwyg-alert" ng-class="edit.data.Announcement.content === '' ? 'alert-danger' : 'alert-success'">
 		<textarea class="form-control" rows="5"
-				ui-tinymce="tinymceOptions"
+				ui-tinymce="tinymce.options"
 				ng-model="edit.data.Announcement.content">
 		</textarea>
 	</div>

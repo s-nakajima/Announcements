@@ -11,7 +11,7 @@
  * @param {function($scope, $sce)} Controller
  */
 NetCommonsApp.controller('Announcements',
-                         function($scope, $sce, NetCommons) {
+     function($scope, $sce, NetCommonsBase, NetCommonsFlush, NetCommonsWorkflow) {
 
       /**
        * Announcements plugin view url
@@ -19,6 +19,14 @@ NetCommonsApp.controller('Announcements',
        * @const
        */
       $scope.PLUGIN_INDEX_URL = '/announcements/announcements/';
+
+      /**
+       * workflow
+       *
+       * @type {object}
+       */
+      $scope.workflow = NetCommonsWorkflow.new($scope);
+      $scope.workflow.comments.plugin_key = 'announcements';
 
       /**
        * Announcement
@@ -59,19 +67,19 @@ NetCommonsApp.controller('Announcements',
        * @return {void}
        */
       $scope.showSetting = function() {
-        NetCommons.get(
+        NetCommonsBase.get(
             $scope.PLUGIN_INDEX_URL + 'edit/' + $scope.frameId + '.json')
             .success(function(data) {
                //最新データセット
               $scope.setEditData(data.results);
 
-              NetCommons.showDialog(
-                  $scope,
+              NetCommonsBase.showDialog(
+                  $scope.$id,
                   $scope.PLUGIN_INDEX_URL + 'setting/' + $scope.frameId,
                   'Announcements.edit');
             })
             .error(function(data) {
-              $scope.flash.danger(data.name);
+              NetCommonsFlush.danger(data.name);
             });
       };
 
@@ -81,14 +89,12 @@ NetCommonsApp.controller('Announcements',
        * @return {void}
        */
       $scope.setEditData = function(data) {
+        $scope.workflow.clear();
+
+        //最新データセット
         if (data) {
-          //最新データセット
           $scope.announcement = data.announcement;
-          $scope.comments.init(
-              data.comments,
-              'announcements',
-              $scope.announcement.Announcement.key
-          );
+          $scope.workflow.init(data['comments']);
         }
 
         //編集データセット
@@ -105,6 +111,12 @@ NetCommonsApp.controller('Announcements',
         $scope.edit.data.Frame = {
           id: $scope.announcement.Frame.id
         };
+
+        $scope.workflow.currentStatus = $scope.announcement.Announcement.status;
+        $scope.workflow.editStatus = $scope.edit.data.Announcement.status;
+        $scope.workflow.comments.content_key =
+                                $scope.announcement.Announcement.key;
+        $scope.workflow.input.comment = $scope.edit.data.Comment.comment;
       };
 
       /**
@@ -127,14 +139,31 @@ NetCommonsApp.controller('Announcements',
  * @param {function($scope, $modalStack)} Controller
  */
 NetCommonsApp.controller('Announcements.edit',
-    function($scope, $modalStack, NetCommons, NetCommonsWysiwyg) {
+    function($scope, $modalStack,
+             NetCommonsBase, NetCommonsWysiwyg, NetCommonsFlush,
+             NetCommonsTab, NetCommonsUser) {
 
       /**
-       * tinymce optins
+       * tab
        *
-       * @type {{mode: string, menubar: string, plugins: string, toolbar: string}}
+       * @type {object}
        */
-      $scope.tinymceOptions = NetCommonsWysiwyg.options;
+      $scope.tab = NetCommonsTab.new();
+
+      /**
+       * show user information method
+       *
+       * @param {number} users.id
+       * @return {string}
+       */
+      $scope.user = NetCommonsUser.new();
+
+      /**
+       * tinymce
+       *
+       * @type {object}
+       */
+      $scope.tinymce = NetCommonsWysiwyg.new();
 
       /**
        * sending
@@ -157,12 +186,10 @@ NetCommonsApp.controller('Announcements.edit',
        *
        * @return {bool}
        */
-      $scope.validate = function(form) {
+      $scope.validate = function() {
         //コメントチェック
-        var editStatus = $scope.edit.data.Announcement.status;
-        var status = $scope.announcement.Announcement.status;
-        if ($scope.comments.input.hasErrorTarget(status, editStatus) &&
-                $scope.comments.input.invalid(form)) {
+        if ($scope.workflow.input.hasErrorTarget() &&
+                                    $scope.workflow.input.invalid()) {
           return false;
         }
         //本文チェック
@@ -182,30 +209,33 @@ NetCommonsApp.controller('Announcements.edit',
        * - 4: Disapprove
        * @return {void}
        */
-      $scope.save = function(form, status) {
+      $scope.save = function(status) {
         $scope.edit.data.Announcement.status = status;
-        if (form && ! $scope.validate(form)) {
+        $scope.edit.data.Comment.comment = $scope.workflow.input.comment;
+        $scope.workflow.editStatus = $scope.edit.data.Announcement.status;
+
+        if (! $scope.validate()) {
           return;
         }
 
         $scope.sending = true;
-        NetCommons.get(
+        NetCommonsBase.get(
             $scope.PLUGIN_INDEX_URL + 'token/' + $scope.frameId + '.json')
             .success(function(data) {
               $scope.edit.data._Token = data._Token;
 
               //登録情報をPOST
-              NetCommons.post(
+              NetCommonsBase.post(
                   $scope.PLUGIN_INDEX_URL + 'edit/' + $scope.frameId + '.json',
                   $scope.edit)
               .success(function(data) {
                     angular.copy(data.results.announcement,
                                  $scope.announcement);
-                    $scope.flash.success(data.name);
+                    NetCommonsFlush.success(data.name);
                     $modalStack.dismissAll('saved');
                   })
               .error(function(data) {
-                    $scope.flash.danger(data.name);
+                    NetCommonsFlush.danger(data.name);
                   })
               .finally (function() {
                     $scope.sending = false;
@@ -213,7 +243,7 @@ NetCommonsApp.controller('Announcements.edit',
             })
             .error(function(data) {
               //keyの取得に失敗
-              $scope.flash.danger(data.name);
+              NetCommonsFlush.danger(data.name);
               $scope.sending = false;
             });
       };
