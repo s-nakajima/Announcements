@@ -219,33 +219,21 @@ NetCommonsApp.controller('Announcements.edit',
         }
 
         $scope.sending = true;
-        NetCommonsBase.get(
-            $scope.PLUGIN_INDEX_URL + 'token/' + $scope.frameId + '.json')
-            .success(function(data) {
-              $scope.edit.data._Token = data._Token;
-
-              //登録情報をPOST
-              NetCommonsBase.post(
-                  $scope.PLUGIN_INDEX_URL + 'edit/' + $scope.frameId + '.json',
-                  $scope.edit)
-              .success(function(data) {
-                    angular.copy(data.results.announcement,
-                                 $scope.announcement);
-                    NetCommonsFlush.success(data.name);
-                    $modalStack.dismissAll('saved');
-                  })
-              .error(function(data) {
-                    NetCommonsFlush.danger(data.name);
-                  })
-              .finally (function() {
-                    $scope.sending = false;
-                  });
-            })
-            .error(function(data) {
-              //keyの取得に失敗
-              NetCommonsFlush.danger(data.name);
-              $scope.sending = false;
-            });
+        NetCommonsBase.save(
+              $scope.PLUGIN_INDEX_URL + 'token/' + $scope.frameId + '.json',
+              $scope.PLUGIN_INDEX_URL + 'edit/' + $scope.frameId + '.json',
+              $scope.edit)
+          .success(function(data) {
+                angular.copy(data.results.announcement, $scope.announcement);
+                //NetCommonsFlush.success(data.name);
+                $modalStack.dismissAll('saved');
+              })
+          .error(function(data) {
+                //NetCommonsFlush.danger(data.name);
+              })
+          .finally (function() {
+                $scope.sending = false;
+              });
       };
 
     });
