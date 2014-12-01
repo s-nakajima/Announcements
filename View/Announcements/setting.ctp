@@ -28,7 +28,7 @@
 	<?php echo $this->Form->create('Announcement' . (int)$frameId, array(
 			'type' => 'get',
 			'name' => $formName,
-			'novalidate' => true
+			'novalidate' => true,
 		)); ?>
 
 		<div class="panel panel-default">
@@ -41,7 +41,7 @@
 			</div>
 
 			<div class="panel-footer text-center">
-				<?php echo $this->element('NetCommons.workflow_buttons'); ?>
+				<?php echo $this->element('NetCommons.workflow_buttons', array('formName' => $formName)); ?>
 			</div>
 		</div>
 

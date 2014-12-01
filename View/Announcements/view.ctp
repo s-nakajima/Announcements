@@ -12,6 +12,7 @@
 
 <?php if ($contentEditable) : ?>
 	<?php echo $this->Html->script('/net_commons/base/js/workflow.js', false); ?>
+	<?php echo $this->Html->script('/net_commons/base/js/wysiwyg.js', false); ?>
 	<?php echo $this->Html->script('/announcements/js/announcements.js', false);?>
 
 	<div id="nc-announcements-<?php echo (int)$frameId; ?>"
@@ -23,9 +24,8 @@
 			<?php if ($contentPublishable) : ?>
 				<button type="button" class="btn btn-warning ng-hide"
 						tooltip="<?php echo __d('net_commons', 'Accept'); ?>"
-						ng-controller="Announcements.edit"
 						ng-hide="(announcement.Announcement.status !== '<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>')"
-						ng-click="setEditData(); save(null, '<?php echo NetCommonsBlockComponent::STATUS_PUBLISHED ?>')">
+						ng-click="published()">
 
 					<span class="glyphicon glyphicon-ok"></span>
 				</button>

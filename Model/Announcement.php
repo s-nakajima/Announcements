@@ -110,8 +110,8 @@ class Announcement extends AnnouncementsAppModel {
 				'notEmpty' => array(
 					'rule' => array('notEmpty'),
 					'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('announcements', 'Content')),
-					'required' => true,
-				)
+					'required' => true
+				),
 			),
 		);
 
