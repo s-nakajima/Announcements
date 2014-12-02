@@ -117,25 +117,28 @@ class AnnouncementsController extends AnnouncementsAppController {
 
 		//最新データ取得
 		$this->view();
+		$results = array('announcement' => $this->viewVars['announcement']);
 
 		//render
 		if ($this->request->isPost()) {
 			//登録後のrender
-			$results = array('announcement' => $this->viewVars['announcement']);
 			$this->renderJson($results, __d('net_commons', 'Successfully finished.'));
+			return;
+		}
 
-		} else {
-			//コメントデータ取得
-			//TODO: contentKeyが空の場合、全件表示されてしまう。
-			$contentKey = $this->viewVars['announcement']['Announcement']['key'];
+		//コメントデータ取得
+		$contentKey = $this->viewVars['announcement']['Announcement']['key'];
+		if ($contentKey) {
 			$view = $this->requestAction(
 					'/comments/comments/index/announcements/' . $contentKey . '.json', array('return'));
 			$comments = json_decode($view, true);
 			//JSON形式で戻す
-			$results = Hash::merge($comments['results'], array('announcement' => $this->viewVars['announcement']));
-			//表示render
-			$this->renderJson($results);
+			$results = Hash::merge($comments['results'], $results);
 		}
+
+		//表示render
+		$this->renderJson($results);
+
 	}
 
 /**

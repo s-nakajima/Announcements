@@ -11,10 +11,9 @@
  * @param {function($scope, $sce)} Controller
  */
 NetCommonsApp.controller('Announcements',
-  function($scope, $sce, NetCommonsBase, NetCommonsWorkflow) {
-console.log('Announcements=' + $scope.$id);
+    function($scope, $sce, NetCommonsBase, NetCommonsWorkflow) {
 
-     /**
+      /**
        * plugin
        *
        * @type {object}
@@ -71,10 +70,10 @@ console.log('Announcements=' + $scope.$id);
         NetCommonsBase.showSetting(
             $scope.plugin.getUrl('edit', $scope.frameId + '.json'),
             $scope.setEditData,
-            {templateUrl: $scope.plugin.getUrl('setting') + '/' + $scope.frameId,
+            {templateUrl: $scope.plugin.getUrl('setting', $scope.frameId),
               scope: $scope,
               controller: 'Announcements.edit'}
-          );
+        );
       };
 
       /**
@@ -91,9 +90,6 @@ console.log('Announcements=' + $scope.$id);
           $scope.announcement = data.announcement;
           $scope.workflow.init(data['comments']);
         }
-
-        console.log($scope.$id);
-        console.log($scope.form2);
 
         //編集データセット
         $scope.edit.data.Announcement = {
@@ -113,7 +109,7 @@ console.log('Announcements=' + $scope.$id);
         $scope.workflow.currentStatus = $scope.announcement.Announcement.status;
         $scope.workflow.editStatus = $scope.edit.data.Announcement.status;
         $scope.workflow.comments.content_key =
-                                $scope.announcement.Announcement.key;
+                                 $scope.announcement.Announcement.key;
         $scope.workflow.input.comment = $scope.edit.data.Comment.comment;
       };
 
@@ -136,13 +132,13 @@ console.log('Announcements=' + $scope.$id);
         $scope.setEditData();
 
         NetCommonsBase.save(
-              $scope,
-              $scope.plugin.getUrl('token') + '/' + $scope.frameId + '.json',
-              $scope.plugin.getUrl('edit') + '/' + $scope.frameId + '.json',
-              $scope.edit,
-              function(data) {
-                angular.copy(data.results.announcement, $scope.announcement);
-              });
+            $scope,
+            $scope.plugin.getUrl('token', $scope.frameId + '.json'),
+            $scope.plugin.getUrl('edit', $scope.frameId + '.json'),
+            $scope.edit,
+            function(data) {
+              angular.copy(data.results.announcement, $scope.announcement);
+            });
       };
     });
 
@@ -178,7 +174,6 @@ NetCommonsApp.controller('Announcements.edit',
        * @type {object}
        */
       $scope.tinymce = NetCommonsWysiwyg.new();
-console.log('Announcements.edit=' + $scope.$id);
 
       /**
        * serverValidationClear method
@@ -204,13 +199,13 @@ console.log('Announcements.edit=' + $scope.$id);
         $scope.edit.data.Comment.comment = $scope.workflow.input.comment;
 
         NetCommonsBase.save(
-              $scope,
-              form,
-              $scope.plugin.getUrl('token') + '/' + $scope.frameId + '.json',
-              $scope.plugin.getUrl('edit') + '/' + $scope.frameId + '.json',
-              $scope.edit,
-              function(data) {
-                angular.copy(data.results.announcement, $scope.announcement);
-              });
+            $scope,
+            form,
+            $scope.plugin.getUrl('token', $scope.frameId + '.json'),
+            $scope.plugin.getUrl('edit', $scope.frameId + '.json'),
+            $scope.edit,
+            function(data) {
+              angular.copy(data.results.announcement, $scope.announcement);
+            });
       };
     });
