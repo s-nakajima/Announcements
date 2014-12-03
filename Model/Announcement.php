@@ -180,7 +180,7 @@ class Announcement extends AnnouncementsAppModel {
  * @throws InternalErrorException
  */
 	public function saveAnnouncement($data) {
-		//DBへの登録
+		//モデル定義
 		$this->setDataSource('master');
 		$models = array(
 			'Block' => 'Blocks.Block',
@@ -191,50 +191,56 @@ class Announcement extends AnnouncementsAppModel {
 			$this->$model->setDataSource('master');
 		}
 
+		//トランザクションBegin
 		$dataSource = $this->getDataSource();
 		$dataSource->begin();
 
-		//TODO: validationを実行
+		//validationを実行
+		if (! $this->__validateAnnouncement($data)) {
+			return false;
+		}
+		if (! $this->__validateComment($data)) {
+			$this->validationErrors = $this->Comment->validationErrors;
+			return false;
+		}
 
 		try {
 			//ブロックの登録
 			$block = $this->Block->saveByFrameId($data['Frame']['id']);
 
 			//お知らせの登録
-			$announcement = $this->__saveAnnouncement($block, $data);
+			$this->data['Announcement']['block_id'] = (int)$block['Block']['id'];
+			$announcement = $this->save();
 			if (! $announcement) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
-
 			//コメントの登録
-			if (! $this->__saveComment($announcement, $data)) {
-				$this->validationErrors = $this->Comment->validationErrors;
-				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			if ($this->Comment->data) {
+				if (! $this->Comment->save()) {
+					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+				}
 			}
+
+			//トランザクションCommit
 			$dataSource->commit();
 			return $announcement;
 
 		} catch (Exception $ex) {
-			//ロールバック
+			//トランザクションRollback
 			$dataSource->rollback();
 			//エラー出力
-			if ($this->validationErrors) {
-				return false;
-			} else {
-				CakeLog::error($ex);
-				throw $ex;
-			}
+			CakeLog::error($ex);
+			throw $ex;
 		}
 	}
 
 /**
- * save announcement
+ * validate announcement
  *
- * @param array $block block data
  * @param array $data received post data
  * @return mixed object announcement, false error
  */
-	private function __saveAnnouncement($block, $data) {
+	private function __validateAnnouncement($data) {
 		//お知らせデータの取得
 		$announcement = $this->getAnnouncement(
 				(int)$data['Frame']['id'],
@@ -243,7 +249,6 @@ class Announcement extends AnnouncementsAppModel {
 			);
 		if ($announcement['Announcement']['key'] === '') {
 			$data['Announcement']['key'] = Security::hash('annoncement_' . microtime());
-			$data['Announcement']['block_id'] = (int)$block['Block']['id'];
 		}
 
 		//お知らせの登録
@@ -258,26 +263,29 @@ class Announcement extends AnnouncementsAppModel {
 			$announcement = $this->create();
 		}
 		$announcement['Announcement'] = $data['Announcement'];
-		return $this->save($announcement);
+
+		$this->set($announcement);
+
+		return $this->validates();
 	}
 
 /**
- * save comment
+ * validate comment
  *
- * @param array $announcement announcement data
  * @param array $data received post data
  * @return bool true success, false error
  */
-	private function __saveComment($announcement, $data) {
+	private function __validateComment($data) {
 		//コメントの登録(ステータス 差し戻しのみコメント必須)
-		if ($announcement['Announcement']['status'] === NetCommonsBlockComponent::STATUS_DISAPPROVED ||
+		if ($this->data['Announcement']['status'] === NetCommonsBlockComponent::STATUS_DISAPPROVED ||
 				$data['Comment']['comment'] !== '') {
 
 			$data['Comment']['plugin_key'] = self::COMMENT_PLUGIN_KEY;
-			$data['Comment']['content_key'] = $announcement['Announcement']['key'];
-			return $this->Comment->save($data['Comment']);
-		}
+			$data['Comment']['content_key'] = $this->data['Announcement']['key'];
 
+			$this->Comment->set($data['Comment']);
+			return $this->Comment->validates();
+		}
 		return true;
 	}
 

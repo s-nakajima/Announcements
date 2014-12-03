@@ -113,18 +113,14 @@ class AnnouncementsController extends AnnouncementsAppController {
 				return;
 			}
 			$this->set('blockId', $announcement['Announcement']['block_id']);
+			$results = array('announcement' => $announcement);
+			$this->renderJson($results, __d('net_commons', 'Successfully finished.'));
+			return;
 		}
 
 		//最新データ取得
 		$this->view();
 		$results = array('announcement' => $this->viewVars['announcement']);
-
-		//render
-		if ($this->request->isPost()) {
-			//登録後のrender
-			$this->renderJson($results, __d('net_commons', 'Successfully finished.'));
-			return;
-		}
 
 		//コメントデータ取得
 		$contentKey = $this->viewVars['announcement']['Announcement']['key'];
@@ -138,7 +134,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 
 		//表示render
 		$this->renderJson($results);
-
 	}
 
 /**

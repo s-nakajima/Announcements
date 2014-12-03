@@ -26,7 +26,7 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
  * @return void
  */
 	public function testEditLoginError() {
-		$this->setExpectedException('UnauthorizedException');
+		$this->setExpectedException('ForbiddenException');
 		$this->testAction('/announcements/announcements/edit/1.json', array('method' => 'get'));
 	}
 
@@ -52,7 +52,7 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
  * @return void
  */
 	public function testEditStatusError() {
-		$this->setExpectedException('ForbiddenException');
+		$this->setExpectedException('BadRequestException');
 
 		$this->_generateController('Announcements.Announcements');
 		$this->_loginAdmin();

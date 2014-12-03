@@ -40,8 +40,6 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
 				'id' => '10'
 			),
 			'Comment' => array(
-				'plugin_key' => 'announcements',
-				'content_key' => 'announcement_1',
 				'comment' => 'edit comment',
 			)
 		);
@@ -65,9 +63,13 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
 			'Announcement' => array(
 				'status' => '1',
 				'content' => 'add content',
+				'block_id' => '0'
 			),
 			'Frame' => array(
 				'id' => '3'
+			),
+			'Comment' => array(
+				'comment' => 'edit comment',
 			)
 		);
 		$result = $this->Announcement->saveAnnouncement($postData);
@@ -75,4 +77,69 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
 
 		unset($this->Frame);
 	}
+
+/**
+ * testSaveAnnouncementBySaveError method
+ *
+ * @return void
+ */
+	public function testSaveAnnouncementBySaveError() {
+		$this->setExpectedException('InternalErrorException');
+
+		$this->Announcement = $this->getMockForModel('Announcements.Announcement', array('save'));
+		$this->Announcement->expects($this->any())
+			->method('save')
+			->will($this->returnValue(false));
+
+		$postData = array(
+			'Announcement' => array(
+				'status' => '1',
+				'content' => 'add content',
+				'block_id' => '0'
+			),
+			'Frame' => array(
+				'id' => '3'
+			),
+			'Comment' => array(
+				'comment' => 'edit comment',
+			)
+		);
+		$result = $this->Announcement->saveAnnouncement($postData);
+		$this->assertFalse($result);
+
+		unset($this->Announcement);
+	}
+
+/**
+ * testSaveAnnouncementByCommentSaveError method
+ *
+ * @return void
+ */
+	public function testSaveAnnouncementByCommentSaveError() {
+		$this->setExpectedException('InternalErrorException');
+
+		$this->Comment = $this->getMockForModel('Comments.Comment', array('save'));
+		$this->Comment->expects($this->any())
+			->method('save')
+			->will($this->returnValue(false));
+
+		$postData = array(
+			'Announcement' => array(
+				'status' => '1',
+				'content' => 'add content',
+				'block_id' => '0'
+			),
+			'Frame' => array(
+				'id' => '3'
+			),
+			'Comment' => array(
+				'comment' => 'edit comment',
+			)
+		);
+		$result = $this->Announcement->saveAnnouncement($postData);
+		$this->assertFalse($result);
+
+		unset($this->Comment);
+	}
+
 }

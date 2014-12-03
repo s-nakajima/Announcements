@@ -111,7 +111,7 @@ class AnnouncementsAppTest extends ControllerTestCase {
 				'password' => 'admin',
 			)
 		);
-		$this->assertTrue($this->controller->Auth->loggedIn(), '_loginAdmin');
+		$this->assertTrue($this->controller->Auth->loggedIn(), '_loginAdmin()');
 	}
 
 /**
@@ -139,7 +139,7 @@ class AnnouncementsAppTest extends ControllerTestCase {
 				'password' => 'editor',
 			)
 		);
-		$this->assertTrue($this->controller->Auth->loggedIn(), '_loginEditor');
+		$this->assertTrue($this->controller->Auth->loggedIn(), '_loginEditor()');
 	}
 
 /**
@@ -167,7 +167,7 @@ class AnnouncementsAppTest extends ControllerTestCase {
 				'password' => 'visitor',
 			)
 		);
-		$this->assertTrue($this->controller->Auth->loggedIn(), '_loginVisitor');
+		$this->assertTrue($this->controller->Auth->loggedIn(), '_loginVisitor()');
 	}
 
 /**
@@ -181,8 +181,7 @@ class AnnouncementsAppTest extends ControllerTestCase {
 			'data' => array(
 			),
 		));
-		$this->assertEqual($this->headers['Location'], Router::url('/auth/login', true));
-		$this->assertNull(CakeSession::read('Auth.User'), '_logout');
+		$this->assertNull(CakeSession::read('Auth.User'), '_logout()');
 	}
 
 /**

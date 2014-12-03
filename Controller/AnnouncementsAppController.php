@@ -9,9 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-//TODO: AppControllerがNetCommonsAppControllerを継承する
 App::uses('AppController', 'Controller');
-//App::uses('NetCommonsAppController', 'NetCommons.Controller');
 
 /**
  * AnnouncementsApp Controller
