@@ -26,7 +26,6 @@ NetCommonsApp.controller('Announcements',
        * @type {object}
        */
       $scope.workflow = NetCommonsWorkflow.new($scope);
-      $scope.workflow.comments.plugin_key = 'announcements';
 
       /**
        * Announcement
@@ -88,7 +87,9 @@ NetCommonsApp.controller('Announcements',
         //最新データセット
         if (data) {
           $scope.announcement = data.announcement;
-          $scope.workflow.init(data['comments']);
+          $scope.workflow.init('announcements',
+                               $scope.announcement.Announcement.key,
+                               data['comments']);
         }
 
         //編集データセット
@@ -108,8 +109,6 @@ NetCommonsApp.controller('Announcements',
 
         $scope.workflow.currentStatus = $scope.announcement.Announcement.status;
         $scope.workflow.editStatus = $scope.edit.data.Announcement.status;
-        $scope.workflow.comments.content_key =
-                                 $scope.announcement.Announcement.key;
         $scope.workflow.input.comment = $scope.edit.data.Comment.comment;
       };
 
