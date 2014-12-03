@@ -22,6 +22,40 @@ App::uses('AnnouncementAppModelTest', 'Announcements.Test/Case/Model');
 class AnnouncementErrorTest extends AnnouncementAppModelTest {
 
 /**
+ * logLevels
+ *
+ * @var array
+ */
+	public $logLevels = array();
+
+/**
+ * setUp method
+ *
+ * @return void
+ */
+	public function setUp() {
+		parent::setUp();
+
+		//異常(catch)テストでエラーTraceが必ず出力されてしまうため、ログ出力をOFFにする
+		//また、Modelでは、CakeLog::error()を使うとNoticeが発生するため、CakeLog::write()を使って出力する
+		$this->logLevels = CakeLog::levels();
+		$setLevels = $this->logLevels;
+		$setLevels[LOG_ERR] = '';
+		CakeLog::levels($setLevels, false);
+	}
+
+/**
+ * tearDown method
+ *
+ * @return void
+ */
+	public function tearDown() {
+		//ログ出力をONにする
+		CakeLog::levels($this->logLevels, false);
+		parent::tearDown();
+	}
+
+/**
  * testSaveAnnouncementByErrorFrameId method
  *
  * @return void
@@ -72,8 +106,7 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
 				'comment' => 'edit comment',
 			)
 		);
-		$result = $this->Announcement->saveAnnouncement($postData);
-		$this->assertFalse($result);
+		$this->Announcement->saveAnnouncement($postData);
 
 		unset($this->Frame);
 	}
@@ -104,8 +137,7 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
 				'comment' => 'edit comment',
 			)
 		);
-		$result = $this->Announcement->saveAnnouncement($postData);
-		$this->assertFalse($result);
+		$this->Announcement->saveAnnouncement($postData);
 
 		unset($this->Announcement);
 	}
@@ -136,8 +168,7 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
 				'comment' => 'edit comment',
 			)
 		);
-		$result = $this->Announcement->saveAnnouncement($postData);
-		$this->assertFalse($result);
+		$this->Announcement->saveAnnouncement($postData);
 
 		unset($this->Comment);
 	}

@@ -229,7 +229,7 @@ class Announcement extends AnnouncementsAppModel {
 			//トランザクションRollback
 			$dataSource->rollback();
 			//エラー出力
-			CakeLog::error($ex);
+			CakeLog::write(LOG_ERR, $ex);
 			throw $ex;
 		}
 	}
