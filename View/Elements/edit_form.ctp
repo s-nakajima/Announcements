@@ -10,28 +10,27 @@
  */
 ?>
 
-<div class="form-group" ng-class="<?php echo h($formName); ?>.content.$invalid ? 'has-error' : 'has-success'">
+<div class="form-group" ng-class="form.content.$invalid ? 'has-error' : 'has-success'">
 	<label class="control-label">
 		<?php echo __d('announcements', 'Content'); ?>
 	</label>
 	<?php echo $this->element('NetCommons.required'); ?>
 
-	<div class="nc-wysiwyg-alert" ng-class="<?php echo h($formName); ?>.content.$invalid ? 'alert-danger' : 'alert-success'">
+	<div class="nc-wysiwyg-alert" ng-class="form.content.$invalid ? 'alert-danger' : 'alert-success'">
 		<textarea name="content" class="form-control" rows="5"
 				ui-tinymce="tinymce.options" required
-				ng-change="serverValidationClear(<?php echo h($formName); ?>, 'content')"
-				nc-validation-clear="content"
+				ng-change="serverValidationClear(form, 'content')"
 				ng-model="edit.data.Announcement.content">
 		</textarea>
 	</div>
 
 	<div class="help-block">
-		<br ng-hide="<?php echo h($formName); ?>.content.$invalid" />
-		<div ng-show="<?php echo h($formName); ?>.content.$invalid">
-			<div ng-repeat="errorMessage in <?php echo h($formName); ?>.content.validationErrors">
+		<br ng-hide="form.content.$invalid" />
+		<div ng-show="form.content.$invalid">
+			<div ng-repeat="errorMessage in form.content.validationErrors">
 				{{errorMessage}}
 			</div>
-			<div ng-if="! <?php echo h($formName); ?>.content.validationErrors">
+			<div ng-if="! form.content.validationErrors">
 				<?php echo sprintf(__d('net_commons', 'Please input %s.'), __d('announcements', 'Content')); ?>
 			</div>
 		</div>

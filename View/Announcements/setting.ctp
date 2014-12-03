@@ -31,17 +31,17 @@
 			'novalidate' => true,
 		)); ?>
 
-		<div class="panel panel-default">
+		<div class="panel panel-default" ng-init="initialize(<?php echo $formName; ?>)">
 			<div class="panel-body has-feedback">
-				<?php echo $this->element('edit_form', array('formName' => $formName)); ?>
+				<?php echo $this->element('edit_form'); ?>
 
 				<hr />
 
-				<?php echo $this->element('Comments.form', array('formName' => $formName)); ?>
+				<?php echo $this->element('Comments.form'); ?>
 			</div>
 
 			<div class="panel-footer text-center">
-				<?php echo $this->element('NetCommons.workflow_buttons', array('formName' => $formName)); ?>
+				<?php echo $this->element('NetCommons.workflow_buttons'); ?>
 			</div>
 		</div>
 

@@ -127,11 +127,13 @@ NetCommonsApp.controller('Announcements',
        *
        * @return {void}
        */
-      $scope.publiched = function() {
+      $scope.publish = function() {
         $scope.setEditData();
+        $scope.edit.data.Announcement.status = NetCommonsBase.STATUS_PUBLISHED;
 
         NetCommonsBase.save(
             $scope,
+            null,
             $scope.plugin.getUrl('token', $scope.frameId + '.json'),
             $scope.plugin.getUrl('edit', $scope.frameId + '.json'),
             $scope.edit,
@@ -183,6 +185,22 @@ NetCommonsApp.controller('Announcements.edit',
       $scope.serverValidationClear = NetCommonsBase.serverValidationClear;
 
       /**
+       * form
+       *
+       * @type {form}
+       */
+      $scope.form = {};
+
+      /**
+       * Initialize
+       *
+       * @return {void}
+       */
+      $scope.initialize = function(form) {
+        $scope.form = form;
+      };
+
+      /**
        * dialog save
        *
        * @param {number} status
@@ -192,14 +210,14 @@ NetCommonsApp.controller('Announcements.edit',
        * - 4: Disapprove
        * @return {void}
        */
-      $scope.save = function(form, status) {
+      $scope.save = function(status) {
         $scope.edit.data.Announcement.status = status;
         $scope.workflow.editStatus = status;
         $scope.edit.data.Comment.comment = $scope.workflow.input.comment;
 
         NetCommonsBase.save(
             $scope,
-            form,
+            $scope.form,
             $scope.plugin.getUrl('token', $scope.frameId + '.json'),
             $scope.plugin.getUrl('edit', $scope.frameId + '.json'),
             $scope.edit,

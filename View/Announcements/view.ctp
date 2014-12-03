@@ -25,7 +25,7 @@
 				<button type="button" class="btn btn-warning ng-hide"
 						tooltip="<?php echo __d('net_commons', 'Accept'); ?>"
 						ng-hide="(announcement.Announcement.status !== '<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>')"
-						ng-click="published()">
+						ng-click="publish()">
 
 					<span class="glyphicon glyphicon-ok"></span>
 				</button>
