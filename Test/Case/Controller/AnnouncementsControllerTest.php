@@ -112,12 +112,12 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 		$this->assertTextContains('<textarea', $view, print_r($view, true));
 		$this->assertTextContains('ui-tinymce="tinymce.options"', $view, print_r($view, true));
 		$this->assertTextContains('ng-model="edit.data.Announcement.content"', $view, print_r($view, true));
-		$this->assertTextContains('nc-workflow-form="AnnouncementForm1"', $view, print_r($view, true));
+		$this->assertTextContains('nc-workflow-form', $view, print_r($view, true));
 
 		$this->assertTextContains('ng-click="cancel()"', $view, print_r($view, true));
-		$this->assertTextContains('ng-click="save(AnnouncementForm1, \'4\')"', $view, print_r($view, true));
-		$this->assertTextContains('ng-click="save(AnnouncementForm1, \'3\')"', $view, print_r($view, true));
-		$this->assertTextContains('ng-click="save(AnnouncementForm1, \'1\')"', $view, print_r($view, true));
+		$this->assertTextContains('ng-click="save(\'4\')"', $view, print_r($view, true));
+		$this->assertTextContains('ng-click="save(\'3\')"', $view, print_r($view, true));
+		$this->assertTextContains('ng-click="save(\'1\')"', $view, print_r($view, true));
 
 		$this->_logout();
 	}
