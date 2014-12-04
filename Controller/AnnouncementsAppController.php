@@ -9,8 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-//App::uses('AppController', 'Controller');
-App::uses('NetCommonsAppController', 'NetCommons.Controller');
+App::uses('AppController', 'Controller');
 
 /**
  * AnnouncementsApp Controller
@@ -18,7 +17,7 @@ App::uses('NetCommonsAppController', 'NetCommons.Controller');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Controller
  */
-class AnnouncementsAppController extends NetCommonsAppController {
+class AnnouncementsAppController extends AppController {
 
 /**
  * use component

@@ -48,6 +48,7 @@ class AnnouncementAppModelTest extends CakeTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->Announcement = ClassRegistry::init('Announcements.Announcement');
+		$this->Comment = ClassRegistry::init('Comments.Comment');
 	}
 
 /**
@@ -57,44 +58,31 @@ class AnnouncementAppModelTest extends CakeTestCase {
  */
 	public function tearDown() {
 		unset($this->Announcement);
+		unset($this->Comment);
 		parent::tearDown();
 	}
 
 /**
- * _assertGetAnnouncement method
+ * _assertArray method
  *
- * @param array $expected correct data
+ * @param string $key target key
+ * @param mixed $value array or string, number
  * @param array $result result data
  * @return void
  */
-	protected function _assertGetAnnouncement($expected, $result) {
-		$unsets = array(
-			'created_user',
-			'created',
-			'modified_user',
-			'modified'
-		);
-
-		//Announcementデータのテスト
-		foreach ($unsets as $key) {
-			if (array_key_exists($key, $result['Announcement'])) {
-				unset($result['Announcement'][$key]);
-			}
+	protected function _assertArray($key, $value, $result) {
+		if ($key !== null) {
+			$this->assertArrayHasKey($key, $result);
+			$target = $result[$key];
+		} else {
+			$target = $result;
 		}
-
-		$this->assertArrayHasKey('Announcement', $result, 'Error ArrayHasKey Announcement');
-		$this->assertEquals($expected['Announcement'], $result['Announcement'], 'Error Equals Announcement');
-
-		//Blockデータのテスト
-		if (isset($expected['Block'])) {
-			foreach ($unsets as $key) {
-				if (array_key_exists($key, $result['Block'])) {
-					unset($result['Block'][$key]);
-				}
+		if (is_array($value)) {
+			foreach ($value as $nextKey => $nextValue) {
+				$this->_assertArray($nextKey, $nextValue, $target);
 			}
-
-			$this->assertArrayHasKey('Block', $result, 'Error ArrayHasKey Block');
-			$this->assertEquals($expected['Block'], $result['Block'], 'Error Equals Block');
+		} elseif (isset($value)) {
+			$this->assertEquals($value, $target, 'key=' . print_r($key, true) . 'value=' . print_r($value, true) . 'result=' . print_r($result, true));
 		}
 	}
 

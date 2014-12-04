@@ -11,14 +11,21 @@
  * @param {function($scope, $sce)} Controller
  */
 NetCommonsApp.controller('Announcements',
-                         function($scope, $sce) {
+    function($scope, $sce, NetCommonsBase, NetCommonsWorkflow) {
 
       /**
-       * Announcements plugin view url
+       * plugin
        *
-       * @const
+       * @type {object}
        */
-      $scope.PLUGIN_INDEX_URL = '/announcements/announcements/';
+      $scope.plugin = NetCommonsBase.initUrl('announcements', 'announcements');
+
+      /**
+       * workflow
+       *
+       * @type {object}
+       */
+      $scope.workflow = NetCommonsWorkflow.new($scope);
 
       /**
        * Announcement
@@ -59,20 +66,13 @@ NetCommonsApp.controller('Announcements',
        * @return {void}
        */
       $scope.showSetting = function() {
-        $scope.get(
-            $scope.PLUGIN_INDEX_URL + 'edit/' + $scope.frameId + '.json')
-            .success(function(data) {
-              //最新データセット
-              $scope.setEditData(data.results);
-
-              $scope.showDialog(
-                  $scope,
-                  $scope.PLUGIN_INDEX_URL + 'setting/' + $scope.frameId,
-                  'Announcements.edit');
-            })
-            .error(function(data) {
-              $scope.flash.danger(data.name);
-            });
+        NetCommonsBase.showSetting(
+            $scope.plugin.getUrl('edit', $scope.frameId + '.json'),
+            $scope.setEditData,
+            {templateUrl: $scope.plugin.getUrl('setting', $scope.frameId),
+              scope: $scope,
+              controller: 'Announcements.edit'}
+        );
       };
 
       /**
@@ -81,14 +81,15 @@ NetCommonsApp.controller('Announcements',
        * @return {void}
        */
       $scope.setEditData = function(data) {
+        //workflow初期化
+        $scope.workflow.clear();
+
+        //最新データセット
         if (data) {
-          //最新データセット
           $scope.announcement = data.announcement;
-          $scope.comments.init(
-              data.comments,
-              'announcements',
-              $scope.announcement.Announcement.key
-          );
+          $scope.workflow.init('announcements',
+                               $scope.announcement.Announcement.key,
+                               data['comments']);
         }
 
         //編集データセット
@@ -100,13 +101,15 @@ NetCommonsApp.controller('Announcements',
           id: $scope.announcement.Announcement.id
         };
         $scope.edit.data.Comment = {
-          plugin_key: 'announcements',
-          content_key: $scope.announcement.Announcement.key,
-          comment: ''
+          comment: $scope.announcement.Comment.comment
         };
         $scope.edit.data.Frame = {
-          id: $scope.frameId
+          id: $scope.announcement.Frame.id
         };
+
+        $scope.workflow.currentStatus = $scope.announcement.Announcement.status;
+        $scope.workflow.editStatus = $scope.edit.data.Announcement.status;
+        $scope.workflow.input.comment = $scope.edit.data.Comment.comment;
       };
 
       /**
@@ -119,6 +122,25 @@ NetCommonsApp.controller('Announcements',
         return $sce.trustAsHtml($scope.announcement.Announcement.content);
       };
 
+      /**
+       * published method
+       *
+       * @return {void}
+       */
+      $scope.publish = function() {
+        $scope.setEditData();
+        $scope.edit.data.Announcement.status = NetCommonsBase.STATUS_PUBLISHED;
+
+        NetCommonsBase.save(
+            $scope,
+            null,
+            $scope.plugin.getUrl('token', $scope.frameId + '.json'),
+            $scope.plugin.getUrl('edit', $scope.frameId + '.json'),
+            $scope.edit,
+            function(data) {
+              angular.copy(data.results.announcement, $scope.announcement);
+            });
+      };
     });
 
 
@@ -129,42 +151,53 @@ NetCommonsApp.controller('Announcements',
  * @param {function($scope, $modalStack)} Controller
  */
 NetCommonsApp.controller('Announcements.edit',
-    function($scope, $modalStack) {
+    function($scope, NetCommonsBase, NetCommonsWysiwyg,
+             NetCommonsTab, NetCommonsUser) {
 
       /**
-       * sending
+       * tab
        *
-       * @type {bool}
+       * @type {object}
        */
-      $scope.sending = false;
+      $scope.tab = NetCommonsTab.new();
 
       /**
-       * dialog cancel
+       * show user information method
+       *
+       * @param {number} users.id
+       * @return {string}
+       */
+      $scope.user = NetCommonsUser.new();
+
+      /**
+       * tinymce
+       *
+       * @type {object}
+       */
+      $scope.tinymce = NetCommonsWysiwyg.new();
+
+      /**
+       * serverValidationClear method
+       *
+       * @param {number} users.id
+       * @return {string}
+       */
+      $scope.serverValidationClear = NetCommonsBase.serverValidationClear;
+
+      /**
+       * form
+       *
+       * @type {form}
+       */
+      $scope.form = {};
+
+      /**
+       * Initialize
        *
        * @return {void}
        */
-      $scope.cancel = function() {
-        $modalStack.dismissAll('canceled');
-      };
-
-      /**
-       * validate
-       *
-       * @return {bool}
-       */
-      $scope.validate = function(form) {
-        //コメントチェック
-        var editStatus = $scope.edit.data.Announcement.status;
-        var status = $scope.announcement.Announcement.status;
-        if ($scope.comments.input.hasErrorTarget(status, editStatus) &&
-                $scope.comments.input.invalid(form)) {
-          return false;
-        }
-        //本文チェック
-        if ($scope.edit.data.Announcement.content === '') {
-          return false;
-        }
-        return true;
+      $scope.initialize = function(form) {
+        $scope.form = form;
       };
 
       /**
@@ -177,40 +210,19 @@ NetCommonsApp.controller('Announcements.edit',
        * - 4: Disapprove
        * @return {void}
        */
-      $scope.save = function(form, status) {
+      $scope.save = function(status) {
         $scope.edit.data.Announcement.status = status;
-        if (! $scope.validate(form)) {
-          return;
-        }
+        $scope.workflow.editStatus = status;
+        $scope.edit.data.Comment.comment = $scope.workflow.input.comment;
 
-        $scope.sending = true;
-        $scope.get(
-            $scope.PLUGIN_INDEX_URL + 'token/' + $scope.frameId + '.json')
-            .success(function(data) {
-              $scope.edit.data._Token = data._Token;
-
-              //登録情報をPOST
-              $scope.post(
-                  $scope.PLUGIN_INDEX_URL + 'edit/' + $scope.frameId + '.json',
-                  $scope.edit)
-              .success(function(data) {
-                    angular.copy(data.results.announcement,
-                                 $scope.announcement);
-                    $scope.flash.success(data.name);
-                    $modalStack.dismissAll('saved');
-                  })
-              .error(function(data) {
-                    $scope.flash.danger(data.name);
-                  })
-              .finally (function() {
-                    $scope.sending = false;
-                  });
-            })
-            .error(function(data) {
-              //keyの取得に失敗
-              $scope.flash.danger(data.name);
-              $scope.sending = false;
+        NetCommonsBase.save(
+            $scope,
+            $scope.form,
+            $scope.plugin.getUrl('token', $scope.frameId + '.json'),
+            $scope.plugin.getUrl('edit', $scope.frameId + '.json'),
+            $scope.edit,
+            function(data) {
+              angular.copy(data.results.announcement, $scope.announcement);
             });
       };
-
     });

@@ -27,37 +27,24 @@ class AnnouncementTest extends AnnouncementAppModelTest {
  * @return void
  */
 	public function testGetAnnouncement() {
+		$frameId = 1;
 		$blockId = 1;
 		$contentEditable = true;
-		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
+		$result = $this->Announcement->getAnnouncement($frameId, $blockId, $contentEditable);
 
 		$expected = array(
 			'Announcement' => array(
 				'id' => '2',
-				'block_id' => '1',
+				'block_id' => $blockId,
+				'status' => NetCommonsBlockComponent::STATUS_DRAFTED,
 				'key' => 'announcement_1',
-				'status' => '3',
-				'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. '	.
-							'Convallis morbi fringilla gravida, '	.
-							'phasellus feugiat dapibus velit nunc, '	.
-							'pulvinar eget sollicitudin venenatis cum nullam, ' .
-							'vivamus ut a sed, mollitia lectus. '	.
-							'Nulla vestibulum massa neque ut et, id hendrerit sit, ' .
-							'feugiat in taciti enim proin nibh, '	.
-							'tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-				'is_auto_translated' => true,
-				'translation_engine' => 'Lorem ipsum dolor sit amet',
 			),
-			'Block' => array(
-				'id' => '1',
-				'language_id' => '2',
-				'room_id' => '1',
-				'key' => 'block_1',
-				'name' => '',
-			)
+			'Frame' => array(
+				'id' => $frameId
+			),
 		);
 
-		$this->_assertGetAnnouncement($expected, $result);
+		$this->_assertArray(null, $expected, $result);
 	}
 
 /**
@@ -66,37 +53,24 @@ class AnnouncementTest extends AnnouncementAppModelTest {
  * @return void
  */
 	public function testGetAnnouncementByNoEditable() {
+		$frameId = 1;
 		$blockId = 1;
 		$contentEditable = false;
-		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
+		$result = $this->Announcement->getAnnouncement($frameId, $blockId, $contentEditable);
 
 		$expected = array(
 			'Announcement' => array(
 				'id' => '1',
-				'block_id' => '1',
+				'block_id' => $blockId,
 				'key' => 'announcement_1',
-				'status' => '1',
-				'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. '	.
-							'Convallis morbi fringilla gravida, '	.
-							'phasellus feugiat dapibus velit nunc, '	.
-							'pulvinar eget sollicitudin venenatis cum nullam, ' .
-							'vivamus ut a sed, mollitia lectus. '	.
-							'Nulla vestibulum massa neque ut et, id hendrerit sit, ' .
-							'feugiat in taciti enim proin nibh, '	.
-							'tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-				'is_auto_translated' => true,
-				'translation_engine' => 'Lorem ipsum dolor sit amet',
+				'status' => NetCommonsBlockComponent::STATUS_PUBLISHED,
 			),
-			'Block' => array(
-				'id' => '1',
-				'language_id' => '2',
-				'room_id' => '1',
-				'key' => 'block_1',
-				'name' => '',
-			)
+			'Frame' => array(
+				'id' => $frameId
+			),
 		);
 
-		$this->_assertGetAnnouncement($expected, $result);
+		$this->_assertArray(null, $expected, $result);
 	}
 
 /**
@@ -105,23 +79,24 @@ class AnnouncementTest extends AnnouncementAppModelTest {
  * @return void
  */
 	public function testGetAnnouncementByNoBlockId() {
+		$frameId = 3;
 		$blockId = 0;
 		$contentEditable = true;
-		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
+		$result = $this->Announcement->getAnnouncement($frameId, $blockId, $contentEditable);
 
 		$expected = array(
 			'Announcement' => array(
+				'id' => '0',
 				'block_id' => '0',
 				'key' => '',
 				'status' => '0',
-				'content' => '',
-				'is_auto_translated' => '0',
-				'key' => '',
-				'id' => '0'
+			),
+			'Frame' => array(
+				'id' => $frameId
 			),
 		);
 
-		$this->_assertGetAnnouncement($expected, $result);
+		$this->_assertArray(null, $expected, $result);
 	}
 
 /**
@@ -130,51 +105,41 @@ class AnnouncementTest extends AnnouncementAppModelTest {
  * @return void
  */
 	public function testSaveAnnouncement() {
+		$frameId = 1;
+		$blockId = 1;
+
 		$postData = array(
 			'Announcement' => array(
-				'block_id' => '1',
+				'block_id' => $blockId,
 				'key' => 'announcement_1',
-				'status' => '1',
+				'status' => NetCommonsBlockComponent::STATUS_PUBLISHED,
 				'content' => 'edit content',
 				'is_auto_translated' => true,
 				'translation_engine' => 'edit translation_engine',
 			),
 			'Frame' => array(
-				'id' => '1'
+				'id' => $frameId
 			),
 			'Comment' => array(
-				'plugin_key' => 'announcements',
-				'content_key' => 'announcement_1',
 				'comment' => 'edit comment',
 			)
 		);
-		$result = $this->Announcement->saveAnnouncement($postData);
-		$this->assertArrayHasKey('Announcement', $result, 'Error saveAnnouncement');
+		$this->Announcement->saveAnnouncement($postData);
 
-		$blockId = 1;
-		$contentEditable = true;
-		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
+		$result = $this->Announcement->getAnnouncement($frameId, $blockId, true);
 
 		$expected = array(
 			'Announcement' => array(
 				'id' => '4',
-				'block_id' => '1',
+				'block_id' => $blockId,
 				'key' => 'announcement_1',
-				'status' => '1',
-				'content' => 'edit content',
-				'is_auto_translated' => true,
-				'translation_engine' => 'edit translation_engine',
 			),
-			'Block' => array(
-				'id' => '1',
-				'language_id' => '2',
-				'room_id' => '1',
-				'key' => 'block_1',
-				'name' => '',
-			)
+			'Frame' => array(
+				'id' => $frameId
+			),
 		);
 
-		$this->_assertGetAnnouncement($expected, $result);
+		$this->_assertArray(null, $expected, $result);
 	}
 
 /**
@@ -183,55 +148,40 @@ class AnnouncementTest extends AnnouncementAppModelTest {
  * @return void
  */
 	public function testSaveAnnouncementByNoBlockId() {
+		$frameId = 3;
+		$blockId = 0;
+
 		$postData = array(
 			'Announcement' => array(
-				'status' => '1',
+				'block_id' => $blockId,
+				'status' => NetCommonsBlockComponent::STATUS_PUBLISHED,
 				'content' => 'add content',
 				'is_auto_translated' => true,
 				'translation_engine' => 'add translation_engine',
 			),
 			'Frame' => array(
-				'id' => '3'
+				'id' => $frameId
 			),
 			'Comment' => array(
-				'plugin_key' => 'announcements',
-				'content_key' => '',
 				'comment' => 'add comment',
 			)
 		);
-		$result = $this->Announcement->saveAnnouncement($postData);
-		$this->assertArrayHasKey('Announcement', $result, 'Error saveAnnouncement');
+		$this->Announcement->saveAnnouncement($postData);
 
 		$blockId = 3;
-		$contentEditable = true;
-		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
-
-		$this->assertArrayHasKey('key', $result['Announcement'], 'Error ArrayHasKey Announcement.key');
-		$this->assertTrue(strlen($result['Announcement']['key']) > 0, 'Error strlen Announcement.key');
-		unset($result['Announcement']['key']);
-
-		$this->assertArrayHasKey('key', $result['Block'], 'Error ArrayHasKey Block.key');
-		$this->assertTrue(strlen($result['Block']['key']) > 0, 'Error strlen Block.key');
-		unset($result['Block']['key']);
+		$result = $this->Announcement->getAnnouncement($frameId, $blockId, true);
 
 		$expected = array(
 			'Announcement' => array(
 				'id' => '4',
-				'block_id' => '3',
-				'status' => '1',
-				'content' => 'add content',
-				'is_auto_translated' => true,
-				'translation_engine' => 'add translation_engine',
+				'block_id' => $blockId,
 			),
-			'Block' => array(
-				'id' => '3',
-				'language_id' => '2',
-				'room_id' => '1',
-				'name' => '',
-			)
+			'Frame' => array(
+				'id' => $frameId
+			),
 		);
 
-		$this->_assertGetAnnouncement($expected, $result);
+		$this->_assertArray(null, $expected, $result);
 	}
 
 /**
@@ -240,51 +190,42 @@ class AnnouncementTest extends AnnouncementAppModelTest {
  * @return void
  */
 	public function testSaveAnnouncementByStatusDisapproved() {
+		$frameId = 1;
+		$blockId = 1;
+
 		$postData = array(
 			'Announcement' => array(
-				'block_id' => '1',
-				'key' => 'announcement_1',
-				'status' => '4',
-				'content' => 'edit content',
-				'is_auto_translated' => true,
-				'translation_engine' => 'edit translation_engine',
-			),
-			'Frame' => array(
-				'id' => '1'
-			),
-			'Comment' => array(
-				'plugin_key' => 'announcements',
-				'content_key' => 'announcement_1',
-				'comment' => 'edit comment',
-			)
-		);
-		$result = $this->Announcement->saveAnnouncement($postData);
-		$this->assertArrayHasKey('Announcement', $result, 'Error saveAnnouncement');
-
-		$blockId = 1;
-		$contentEditable = true;
-		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
-
-		$expected = array(
-			'Announcement' => array(
-				'id' => '4',
-				'block_id' => '1',
+				'block_id' => $blockId,
 				'key' => 'announcement_1',
 				'status' => NetCommonsBlockComponent::STATUS_DISAPPROVED,
 				'content' => 'edit content',
 				'is_auto_translated' => true,
 				'translation_engine' => 'edit translation_engine',
 			),
-			'Block' => array(
-				'id' => '1',
-				'language_id' => '2',
-				'room_id' => '1',
-				'key' => 'block_1',
-				'name' => '',
+			'Frame' => array(
+				'id' => $frameId
+			),
+			'Comment' => array(
+				'comment' => 'edit comment',
 			)
 		);
+		$this->Announcement->saveAnnouncement($postData);
 
-		$this->_assertGetAnnouncement($expected, $result);
+		$result = $this->Announcement->getAnnouncement($frameId, $blockId, true);
+
+		$expected = array(
+			'Announcement' => array(
+				'id' => '4',
+				'block_id' => $blockId,
+				'key' => 'announcement_1',
+				'status' => NetCommonsBlockComponent::STATUS_DISAPPROVED,
+			),
+			'Frame' => array(
+				'id' => $frameId,
+			),
+		);
+
+		$this->_assertArray(null, $expected, $result);
 	}
 
 /**
@@ -293,11 +234,14 @@ class AnnouncementTest extends AnnouncementAppModelTest {
  * @return void
  */
 	public function testSaveAnnouncementStatusModify() {
+		$frameId = 1;
+		$blockId = 1;
+
 		$postData = array(
 			'Announcement' => array(
-				'block_id' => '1',
+				'block_id' => $blockId,
 				'key' => 'announcement_1',
-				'status' => '2',
+				'status' => NetCommonsBlockComponent::STATUS_APPROVED,
 				'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. '	.
 							'Convallis morbi fringilla gravida, '	.
 							'phasellus feugiat dapibus velit nunc, '	.
@@ -310,48 +254,29 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'translation_engine' => 'edit translation_engine',
 			),
 			'Frame' => array(
-				'id' => '1'
+				'id' => $frameId
 			),
 			'Comment' => array(
-				'plugin_key' => 'announcements',
-				'content_key' => 'announcement_1',
 				'comment' => '',
 			)
 		);
-		$result = $this->Announcement->saveAnnouncement($postData);
-		$this->assertArrayHasKey('Announcement', $result, 'Error saveAnnouncement');
+		$this->Announcement->saveAnnouncement($postData);
 
-		$blockId = 1;
-		$contentEditable = true;
-		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
+		$result = $this->Announcement->getAnnouncement($frameId, $blockId, true);
 
 		$expected = array(
 			'Announcement' => array(
 				'id' => '4',
-				'block_id' => '1',
+				'block_id' => $blockId,
 				'key' => 'announcement_1',
-				'status' => '2',
-				'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. '	.
-							'Convallis morbi fringilla gravida, '	.
-							'phasellus feugiat dapibus velit nunc, '	.
-							'pulvinar eget sollicitudin venenatis cum nullam, ' .
-							'vivamus ut a sed, mollitia lectus. '	.
-							'Nulla vestibulum massa neque ut et, id hendrerit sit, ' .
-							'feugiat in taciti enim proin nibh, '	.
-							'tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-				'is_auto_translated' => true,
-				'translation_engine' => 'edit translation_engine',
+				'status' => NetCommonsBlockComponent::STATUS_APPROVED,
 			),
-			'Block' => array(
-				'id' => '1',
-				'language_id' => '2',
-				'room_id' => '1',
-				'key' => 'block_1',
-				'name' => '',
+			'Frame' => array(
+				'id' => $frameId,
 			)
 		);
 
-		$this->_assertGetAnnouncement($expected, $result);
+		$this->_assertArray(null, $expected, $result);
 	}
 
 }

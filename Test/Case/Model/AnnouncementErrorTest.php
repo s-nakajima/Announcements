@@ -22,6 +22,40 @@ App::uses('AnnouncementAppModelTest', 'Announcements.Test/Case/Model');
 class AnnouncementErrorTest extends AnnouncementAppModelTest {
 
 /**
+ * logLevels
+ *
+ * @var array
+ */
+	public $logLevels = array();
+
+/**
+ * setUp method
+ *
+ * @return void
+ */
+	public function setUp() {
+		parent::setUp();
+
+		//異常(catch)テストでエラーTraceが必ず出力されてしまうため、ログ出力をOFFにする
+		//また、Modelでは、CakeLog::error()を使うとNoticeが発生するため、CakeLog::write()を使って出力する
+		$this->logLevels = CakeLog::levels();
+		$setLevels = $this->logLevels;
+		$setLevels[LOG_ERR] = '';
+		CakeLog::levels($setLevels, false);
+	}
+
+/**
+ * tearDown method
+ *
+ * @return void
+ */
+	public function tearDown() {
+		//ログ出力をONにする
+		CakeLog::levels($this->logLevels, false);
+		parent::tearDown();
+	}
+
+/**
  * testSaveAnnouncementByErrorFrameId method
  *
  * @return void
@@ -40,8 +74,6 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
 				'id' => '10'
 			),
 			'Comment' => array(
-				'plugin_key' => 'announcements',
-				'content_key' => 'announcement_1',
 				'comment' => 'edit comment',
 			)
 		);
@@ -65,14 +97,80 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
 			'Announcement' => array(
 				'status' => '1',
 				'content' => 'add content',
+				'block_id' => '0'
 			),
 			'Frame' => array(
 				'id' => '3'
+			),
+			'Comment' => array(
+				'comment' => 'edit comment',
 			)
 		);
-		$result = $this->Announcement->saveAnnouncement($postData);
-		$this->assertFalse($result);
+		$this->Announcement->saveAnnouncement($postData);
 
 		unset($this->Frame);
 	}
+
+/**
+ * testSaveAnnouncementBySaveError method
+ *
+ * @return void
+ */
+	public function testSaveAnnouncementBySaveError() {
+		$this->setExpectedException('InternalErrorException');
+
+		$this->Announcement = $this->getMockForModel('Announcements.Announcement', array('save'));
+		$this->Announcement->expects($this->any())
+			->method('save')
+			->will($this->returnValue(false));
+
+		$postData = array(
+			'Announcement' => array(
+				'status' => '1',
+				'content' => 'add content',
+				'block_id' => '0'
+			),
+			'Frame' => array(
+				'id' => '3'
+			),
+			'Comment' => array(
+				'comment' => 'edit comment',
+			)
+		);
+		$this->Announcement->saveAnnouncement($postData);
+
+		unset($this->Announcement);
+	}
+
+/**
+ * testSaveAnnouncementByCommentSaveError method
+ *
+ * @return void
+ */
+	public function testSaveAnnouncementByCommentSaveError() {
+		$this->setExpectedException('InternalErrorException');
+
+		$this->Comment = $this->getMockForModel('Comments.Comment', array('save'));
+		$this->Comment->expects($this->any())
+			->method('save')
+			->will($this->returnValue(false));
+
+		$postData = array(
+			'Announcement' => array(
+				'status' => '1',
+				'content' => 'add content',
+				'block_id' => '0'
+			),
+			'Frame' => array(
+				'id' => '3'
+			),
+			'Comment' => array(
+				'comment' => 'edit comment',
+			)
+		);
+		$this->Announcement->saveAnnouncement($postData);
+
+		unset($this->Comment);
+	}
+
 }
