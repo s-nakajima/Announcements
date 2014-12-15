@@ -148,8 +148,8 @@ class Announcement extends AnnouncementsAppModel {
 			$conditions['status'] = NetCommonsBlockComponent::STATUS_PUBLISHED;
 		}
 
-		$this->recursive = -1;
 		$announcement = $this->find('first', array(
+				'recursive' => -1,
 				'conditions' => $conditions,
 				'order' => 'Announcement.id DESC',
 			)
