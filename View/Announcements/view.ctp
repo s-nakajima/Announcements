@@ -21,17 +21,8 @@
 								<?php echo h(json_encode($announcement)); ?>)">
 
 		<p class="text-right">
-			<?php if ($contentPublishable) : ?>
-				<span class="nc-tooltip" tooltip="<?php echo __d('net_commons', 'Accept'); ?>">
-					<button type="button" class="btn btn-warning ng-hide"
-							ng-hide="(announcement.Announcement.status !== '<?php echo NetCommonsBlockComponent::STATUS_APPROVED ?>')"
-							ng-disabled="sending"
-							ng-click="publish();">
-
-						<span class="glyphicon glyphicon-ok"></span>
-					</button>
-				</span>
-			<?php endif; ?>
+			<?php echo $this->element('NetCommons.publish_button',
+					array('status' => 'announcement.Announcement.status')); ?>
 
 			<?php echo $this->element('NetCommons.setting_button'); ?>
 		</p>
@@ -40,7 +31,7 @@
 
 		<p class="text-left">
 			<?php echo $this->element('NetCommons.status_label',
-					array('statusModel' => 'announcement.Announcement.status')); ?>
+					array('status' => 'announcement.Announcement.status')); ?>
 		</p>
 	</div>
 
