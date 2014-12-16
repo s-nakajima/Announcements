@@ -53,7 +53,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @var array
  */
 	public $helpers = array(
-		'NetCommons.NetCommonsForm'
+		'NetCommons.Token'
 	);
 
 /**
@@ -134,18 +134,15 @@ class AnnouncementsController extends AnnouncementsAppController {
 			$results = Hash::merge($comments['results'], $results);
 		}
 
-		//表示render
-		$this->renderJson($results);
-	}
-
-/**
- * token method
- *
- * @return void
- */
-	public function token() {
-		$this->view();
-		$this->render('Announcements/token', false);
+		$this->request->data = $this->viewVars['announcement'];
+		$tokenFields = Hash::flatten($this->request->data);
+		$hiddenFields = array(
+			'Announcement.block_id',
+			'Announcement.key'
+		);
+		$this->set('tokenFields', $tokenFields);
+		$this->set('hiddenFields', $hiddenFields);
+		$this->set('results', $results);
 	}
 
 }

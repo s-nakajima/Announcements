@@ -155,6 +155,13 @@ class Announcement extends AnnouncementsAppModel {
 			)
 		);
 
+		if ($announcement) {
+			unset($announcement['Announcement']['created'],
+					$announcement['Announcement']['created_user'],
+					$announcement['Announcement']['modified'],
+					$announcement['Announcement']['modified_user']);
+		}
+
 		if ($contentEditable && ! $announcement) {
 			$announcement = $this->create();
 			$announcement['Announcement']['content'] = '';

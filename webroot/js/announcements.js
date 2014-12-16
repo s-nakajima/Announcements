@@ -94,19 +94,7 @@ NetCommonsApp.controller('Announcements',
         }
 
         //編集データセット
-        $scope.edit.data.Announcement = {
-          content: $scope.announcement.Announcement.content,
-          status: $scope.announcement.Announcement.status,
-          block_id: $scope.announcement.Announcement.block_id,
-          key: $scope.announcement.Announcement.key,
-          id: $scope.announcement.Announcement.id
-        };
-        $scope.edit.data.Comment = {
-          comment: $scope.announcement.Comment.comment
-        };
-        $scope.edit.data.Frame = {
-          id: $scope.announcement.Frame.id
-        };
+        $scope.edit.data = $scope.announcement;
 
         $scope.workflow.currentStatus = $scope.announcement.Announcement.status;
         $scope.workflow.editStatus = $scope.edit.data.Announcement.status;
@@ -134,7 +122,6 @@ NetCommonsApp.controller('Announcements',
 
         NetCommonsBase.save(
             null,
-            $scope.plugin.getUrl('token', $scope.frameId + '.json'),
             $scope.plugin.getUrl('edit', $scope.frameId + '.json'),
             $scope.edit,
             function(data) {
@@ -218,7 +205,6 @@ NetCommonsApp.controller('Announcements.edit',
 
         NetCommonsBase.save(
             $scope.form,
-            $scope.plugin.getUrl('token', $scope.frameId + '.json'),
             $scope.plugin.getUrl('edit', $scope.frameId + '.json'),
             $scope.edit,
             function(data) {
