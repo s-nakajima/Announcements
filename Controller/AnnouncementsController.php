@@ -62,10 +62,8 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	public function index() {
+		$this->view = 'Announcements/view';
 		$this->view();
-		if ($this->viewVars['announcement']) {
-			$this->render('Announcements/view');
-		}
 	}
 
 /**
@@ -75,15 +73,12 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public function view() {
 		//Announcementデータを取得
-		$announcement = $this->Announcement->getAnnouncement(
-				$this->viewVars['frameId'],
-				$this->viewVars['blockId'],
-				$this->viewVars['contentEditable']
-			);
+		$this->__setAnnouncement();
 
-		//Announcementデータをviewにセット
-		$this->set('announcement', $announcement);
-		if (! $announcement) {
+		if ($this->viewVars['contentEditable']) {
+			$this->view = 'Announcements/viewForEditor';
+		}
+		if (! $this->viewVars['announcement']) {
 			$this->autoRender = false;
 		}
 	}
@@ -95,7 +90,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public function setting() {
 		$this->layout = 'NetCommons.modal';
-		$this->view();
+		$this->__setAnnouncement();
 	}
 
 /**
@@ -121,7 +116,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		}
 
 		//最新データ取得
-		$this->view();
+		$this->__setAnnouncement();
 		$results = array('announcement' => $this->viewVars['announcement']);
 
 		//コメントデータ取得
@@ -143,6 +138,23 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->set('tokenFields', $tokenFields);
 		$this->set('hiddenFields', $hiddenFields);
 		$this->set('results', $results);
+	}
+
+/**
+ * __setAnnouncement method
+ *
+ * @return void
+ */
+	private function __setAnnouncement() {
+		//Announcementデータを取得
+		$announcement = $this->Announcement->getAnnouncement(
+				$this->viewVars['frameId'],
+				$this->viewVars['blockId'],
+				$this->viewVars['contentEditable']
+			);
+
+		//Announcementデータをviewにセット
+		$this->set('announcement', $announcement);
 	}
 
 }
