@@ -42,13 +42,7 @@ NetCommonsApp.controller('Announcements',
        */
       $scope.edit = {
         _method: 'POST',
-        data: {
-          _Token: {
-            key: '',
-            fields: '',
-            unlocked: ''
-          }
-        }
+        data: {}
       };
 
       /**
