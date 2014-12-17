@@ -155,19 +155,19 @@ class Announcement extends AnnouncementsAppModel {
 			)
 		);
 
-		if ($announcement) {
-			unset($announcement['Announcement']['created'],
-					$announcement['Announcement']['created_user'],
-					$announcement['Announcement']['modified'],
-					$announcement['Announcement']['modified_user']);
+		if ($contentEditable && ! $announcement) {
+			$default = array(
+				'content' => '',
+				'key' => '',
+				'id' => '0'
+			);
+			$announcement = $this->create($default);
 		}
 
-		if ($contentEditable && ! $announcement) {
-			$announcement = $this->create();
-			$announcement['Announcement']['content'] = '';
-			$announcement['Announcement']['key'] = '';
-			$announcement['Announcement']['id'] = '0';
-		}
+		unset($announcement['Announcement']['created'],
+				$announcement['Announcement']['created_user'],
+				$announcement['Announcement']['modified'],
+				$announcement['Announcement']['modified_user']);
 
 		if ($announcement) {
 			//Commentセット
@@ -233,6 +233,7 @@ class Announcement extends AnnouncementsAppModel {
 
 			//トランザクションCommit
 			$dataSource->commit();
+//			$dataSource->rollback();
 			return $announcement;
 
 		} catch (Exception $ex) {

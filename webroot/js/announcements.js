@@ -94,7 +94,7 @@ NetCommonsApp.controller('Announcements',
         }
 
         //編集データセット
-        $scope.edit.data = $scope.announcement;
+        $scope.edit.data = angular.copy($scope.announcement);
 
         $scope.workflow.currentStatus = $scope.announcement.Announcement.status;
         $scope.workflow.editStatus = $scope.edit.data.Announcement.status;
