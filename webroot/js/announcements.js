@@ -143,13 +143,6 @@ NetCommonsApp.controller('Announcements.edit',
              NetCommonsTab, NetCommonsUser, NetCommonsFlash) {
 
       /**
-       * tab
-       *
-       * @type {object}
-       */
-      $scope.tab = NetCommonsTab.new();
-
-      /**
        * show user information method
        *
        * @param {number} users.id
