@@ -140,7 +140,7 @@ NetCommonsApp.controller('Announcements',
  */
 NetCommonsApp.controller('Announcements.edit',
     function($scope, $modalStack, NetCommonsBase, NetCommonsWysiwyg,
-             NetCommonsTab, NetCommonsUser, NetCommonsFlash) {
+             NetCommonsUser, NetCommonsFlash) {
 
       /**
        * show user information method
