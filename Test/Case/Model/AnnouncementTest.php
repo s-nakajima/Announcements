@@ -36,7 +36,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 			'Announcement' => array(
 				'id' => '2',
 				'block_id' => $blockId,
-				'status' => NetCommonsBlockComponent::STATUS_DRAFTED,
+				'status' => NetCommonsBlockComponent::STATUS_INDRAFT,
 				'key' => 'announcement_1',
 			),
 			'Frame' => array(
