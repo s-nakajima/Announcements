@@ -96,16 +96,6 @@ NetCommonsApp.controller('Announcements',
       };
 
       /**
-       * htmlContent method
-       *
-       * @return {string}
-       */
-      $scope.htmlContent = function() {
-        //ng-bind-html では、style属性まで消えてしまうため
-        return $sce.trustAsHtml($scope.announcement.Announcement.content);
-      };
-
-      /**
        * published method
        *
        * @return {void}

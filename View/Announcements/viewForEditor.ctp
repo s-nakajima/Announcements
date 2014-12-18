@@ -26,7 +26,7 @@
 		<?php echo $this->element('NetCommons.setting_button'); ?>
 	</p>
 
-	<div ng-bind-html="htmlContent()"></div>
+	<div ng-bind-html="announcement.Announcement.content | ncHtmlContent"></div>
 
 	<p class="text-left">
 		<?php echo $this->element('NetCommons.status_label',
