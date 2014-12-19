@@ -27,7 +27,8 @@ class Announcement extends AnnouncementsAppModel {
  * @var array
  */
 	public $actsAs = array(
-		'NetCommons.Trackable'
+		'NetCommons.Trackable',
+		'NetCommons.Publishable'
 	);
 
 /**
@@ -81,7 +82,7 @@ class Announcement extends AnnouncementsAppModel {
  * @see Model::save()
  */
 	public function beforeValidate($options = array()) {
-		$this->validate = array(
+		$this->validate = Hash::merge($this->validate, array(
 			'block_id' => array(
 				'numeric' => array(
 					'rule' => array('numeric'),
@@ -97,18 +98,9 @@ class Announcement extends AnnouncementsAppModel {
 					'required' => true,
 				)
 			),
-			'status' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					'message' => __d('net_commons', 'Invalid request.'),
-					'allowEmpty' => false,
-					'required' => true,
-				),
-				'inList' => array(
-					'rule' => array('inList', NetCommonsBlockComponent::$STATUSES),
-					'message' => __d('net_commons', 'Invalid request.'),
-				)
-			),
+
+			//status to set in PublishableBehavior.
+
 			'is_auto_translated' => array(
 				'boolean' => array(
 					'rule' => array('boolean'),
@@ -122,7 +114,7 @@ class Announcement extends AnnouncementsAppModel {
 					'required' => true
 				),
 			),
-		);
+		));
 
 		return parent::beforeValidate($options);
 	}
@@ -228,7 +220,6 @@ class Announcement extends AnnouncementsAppModel {
 
 			//トランザクションCommit
 			$dataSource->commit();
-//			$dataSource->rollback();
 			return $announcement;
 
 		} catch (Exception $ex) {
@@ -273,7 +264,7 @@ class Announcement extends AnnouncementsAppModel {
 		$this->set($announcement);
 
 		$this->validates();
-
+CakeLog::debug(print_r($this->validationErrors, true));
 		return $this->validationErrors ? $this->validationErrors : true;
 	}
 }

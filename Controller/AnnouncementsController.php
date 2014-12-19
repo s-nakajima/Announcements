@@ -39,11 +39,11 @@ class AnnouncementsController extends AnnouncementsAppController {
 		'NetCommons.NetCommonsRoomRole' => array(
 			//コンテンツの権限設定
 			'allowedActions' => array(
-				'contentEditable' => array('setting', 'token', 'edit')
+				'contentEditable' => array('setting', 'edit')
 			),
-			//コンテンツのワークフロー設定(公開権限チェック)
-			'workflowActions' => array('edit'),
-			'workflowModelName' => 'Announcement',
+//			//コンテンツのワークフロー設定(公開権限チェック)
+//			'workflowActions' => array('edit'),
+//			'workflowModelName' => 'Announcement',
 		),
 	);
 
