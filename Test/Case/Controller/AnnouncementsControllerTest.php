@@ -68,10 +68,11 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 					'return' => 'view',
 				)
 			);
+
+		$this->assertTextContains('nc-announcements-1', $view, print_r($view, true));
 		$this->assertTextContains('ng-controller="Announcements"', $view, print_r($view, true));
 		$this->assertTextContains('ng-init="initialize(1,', $view, print_r($view, true));
 		$this->assertTextContains('ng-click="showSetting()"', $view, print_r($view, true));
-		$this->assertTextContains('ng-bind-html="htmlContent()"', $view, print_r($view, true));
 
 		$this->_logout();
 	}
@@ -118,56 +119,6 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 		$this->assertTextContains('ng-click="save(\'4\')"', $view, print_r($view, true));
 		$this->assertTextContains('ng-click="save(\'3\')"', $view, print_r($view, true));
 		$this->assertTextContains('ng-click="save(\'1\')"', $view, print_r($view, true));
-
-		$this->_logout();
-	}
-
-/**
- * testToken method
- *
- * @return void
- */
-	public function testToken() {
-		$this->_generateController('Announcements.Announcements');
-		$this->_loginAdmin();
-
-		$view = $this->testAction(
-				'/announcements/announcements/token/1.json',
-				array(
-					'method' => 'get',
-					'return' => 'vars',
-				)
-			);
-
-		$this->assertArrayHasKey('announcement', $view, print_r($view, true));
-		$this->assertArrayHasKey('Announcement', $view['announcement'], print_r($view, true));
-		$this->assertArrayHasKey('id', $view['announcement']['Announcement'], print_r($view, true));
-		$this->assertEquals('announcement_1', $view['announcement']['Announcement']['key'], print_r($view, true));
-
-		$this->_logout();
-	}
-
-/**
- * testFormEditor method
- *
- * @return void
- */
-	public function testTokenByEditor() {
-		$this->_generateController('Announcements.Announcements');
-		$this->_loginEditor();
-
-		$view = $this->testAction(
-				'/announcements/announcements/token/1.json',
-				array(
-					'method' => 'get',
-					'return' => 'vars',
-				)
-			);
-
-		$this->assertArrayHasKey('announcement', $view, print_r($view, true));
-		$this->assertArrayHasKey('Announcement', $view['announcement'], print_r($view, true));
-		$this->assertArrayHasKey('id', $view['announcement']['Announcement'], print_r($view, true));
-		$this->assertEquals('announcement_1', $view['announcement']['Announcement']['key'], print_r($view, true));
 
 		$this->_logout();
 	}

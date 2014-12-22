@@ -22,6 +22,21 @@ App::uses('AnnouncementAppModelTest', 'Announcements.Test/Case/Model');
 class AnnouncementTest extends AnnouncementAppModelTest {
 
 /**
+ * setUp method
+ *
+ * @return void
+ */
+	public function setUp() {
+		parent::setUp();
+		$this->Announcement = ClassRegistry::init('Announcements.Announcement');
+		$permission = NetCommonsRoomRoleComponent::PUBLISHABLE_PERMISSION;
+		$this->Announcement->Behaviors->Publishable->
+				settings[$this->Announcement->alias][$permission] = true;
+
+		$this->Comment = ClassRegistry::init('Comments.Comment');
+	}
+
+/**
  * testGetAnnouncement method
  *
  * @return void
@@ -158,6 +173,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'content' => 'add content',
 				'is_auto_translated' => true,
 				'translation_engine' => 'add translation_engine',
+				'key' => '',
 			),
 			'Frame' => array(
 				'id' => $frameId

@@ -43,6 +43,7 @@ class AnnouncementsAppTest extends ControllerTestCase {
 		'plugin.roles.default_role_permission',
 		'plugin.rooms.roles_room',
 		'plugin.rooms.room_role_permission',
+		'plugin.blocks.block_role_permission',
 	);
 
 /**
