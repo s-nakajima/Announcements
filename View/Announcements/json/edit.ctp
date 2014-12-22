@@ -12,22 +12,5 @@
 $tokens = $this->Token->getToken($tokenFields, $hiddenFields);
 $results['announcement'] += $tokens;
 
-//echo $this->element('NetCommons.json',
-//		array('results' => $results));
-
-if (!isset($name)) {
-	$name = 'OK';
-}
-if (!isset($status)) {
-	$status = 200;
-}
-
-$result = array(
-	'code' => $status,
-	'name' => $name,
-	'results' => $results
-);
-$this->set(compact('result'));
-$this->set('_serialize', 'result');
-
-echo $this->render();
+echo $this->element('NetCommons.json',
+		array('results' => $results));
