@@ -264,7 +264,6 @@ class Announcement extends AnnouncementsAppModel {
 		$this->set($announcement);
 
 		$this->validates();
-CakeLog::debug(print_r($this->validationErrors, true));
 		return $this->validationErrors ? $this->validationErrors : true;
 	}
 }
