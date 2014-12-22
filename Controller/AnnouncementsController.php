@@ -41,9 +41,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 			'allowedActions' => array(
 				'contentEditable' => array('setting', 'edit')
 			),
-//			//コンテンツのワークフロー設定(公開権限チェック)
-//			'workflowActions' => array('edit'),
-//			'workflowModelName' => 'Announcement',
 		),
 	);
 
