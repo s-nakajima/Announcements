@@ -22,6 +22,16 @@ App::uses('AnnouncementsAppModel', 'Announcements.Model');
 class Announcement extends AnnouncementsAppModel {
 
 /**
+ * use behaviors
+ *
+ * @var array
+ */
+	public $actsAs = array(
+		'NetCommons.Trackable',
+		'NetCommons.Publishable'
+	);
+
+/**
  * Validation rules
  *
  * @var array
@@ -72,7 +82,7 @@ class Announcement extends AnnouncementsAppModel {
  * @see Model::save()
  */
 	public function beforeValidate($options = array()) {
-		$this->validate = array(
+		$this->validate = Hash::merge($this->validate, array(
 			'block_id' => array(
 				'numeric' => array(
 					'rule' => array('numeric'),
@@ -88,18 +98,9 @@ class Announcement extends AnnouncementsAppModel {
 					'required' => true,
 				)
 			),
-			'status' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					'message' => __d('net_commons', 'Invalid request.'),
-					'allowEmpty' => false,
-					'required' => true,
-				),
-				'inList' => array(
-					'rule' => array('inList', NetCommonsBlockComponent::$STATUSES),
-					'message' => __d('net_commons', 'Invalid request.'),
-				)
-			),
+
+			//status to set in PublishableBehavior.
+
 			'is_auto_translated' => array(
 				'boolean' => array(
 					'rule' => array('boolean'),
@@ -113,23 +114,9 @@ class Announcement extends AnnouncementsAppModel {
 					'required' => true
 				),
 			),
-		);
+		));
 
 		return parent::beforeValidate($options);
-	}
-
-/**
- * before save
- *
- * @param array $options Options passed from Model::save().
- * @return bool True if the operation should continue, false if it should abort
- */
-	public function beforeSave($options = array()) {
-		if (! isset($this->data[$this->name]['id'])) {
-			$this->data[$this->name]['created_user'] = CakeSession::read('Auth.User.id');
-		}
-		$this->data[$this->name]['modified_user'] = CakeSession::read('Auth.User.id');
-		return true;
 	}
 
 /**
@@ -148,19 +135,26 @@ class Announcement extends AnnouncementsAppModel {
 			$conditions['status'] = NetCommonsBlockComponent::STATUS_PUBLISHED;
 		}
 
-		$this->recursive = -1;
 		$announcement = $this->find('first', array(
+				'recursive' => -1,
 				'conditions' => $conditions,
 				'order' => 'Announcement.id DESC',
 			)
 		);
 
 		if ($contentEditable && ! $announcement) {
-			$announcement = $this->create();
-			$announcement['Announcement']['content'] = '';
-			$announcement['Announcement']['key'] = '';
-			$announcement['Announcement']['id'] = '0';
+			$default = array(
+				'content' => '',
+				'key' => '',
+				'id' => '0'
+			);
+			$announcement = $this->create($default);
 		}
+
+		unset($announcement['Announcement']['created'],
+				$announcement['Announcement']['created_user'],
+				$announcement['Announcement']['modified'],
+				$announcement['Announcement']['modified_user']);
 
 		if ($announcement) {
 			//Commentセット
@@ -270,7 +264,6 @@ class Announcement extends AnnouncementsAppModel {
 		$this->set($announcement);
 
 		$this->validates();
-
 		return $this->validationErrors ? $this->validationErrors : true;
 	}
 }

@@ -11,7 +11,8 @@
  * @param {function($scope, $sce)} Controller
  */
 NetCommonsApp.controller('Announcements',
-    function($scope, $sce, NetCommonsBase, NetCommonsWorkflow) {
+    function($scope, $sce,
+             NetCommonsBase, NetCommonsWorkflow, NetCommonsFlash) {
 
       /**
        * plugin
@@ -41,13 +42,7 @@ NetCommonsApp.controller('Announcements',
        */
       $scope.edit = {
         _method: 'POST',
-        data: {
-          _Token: {
-            key: '',
-            fields: '',
-            unlocked: ''
-          }
-        }
+        data: {}
       };
 
       /**
@@ -93,33 +88,11 @@ NetCommonsApp.controller('Announcements',
         }
 
         //編集データセット
-        $scope.edit.data.Announcement = {
-          content: $scope.announcement.Announcement.content,
-          status: $scope.announcement.Announcement.status,
-          block_id: $scope.announcement.Announcement.block_id,
-          key: $scope.announcement.Announcement.key,
-          id: $scope.announcement.Announcement.id
-        };
-        $scope.edit.data.Comment = {
-          comment: $scope.announcement.Comment.comment
-        };
-        $scope.edit.data.Frame = {
-          id: $scope.announcement.Frame.id
-        };
+        $scope.edit.data = angular.copy($scope.announcement);
 
         $scope.workflow.currentStatus = $scope.announcement.Announcement.status;
         $scope.workflow.editStatus = $scope.edit.data.Announcement.status;
         $scope.workflow.input.comment = $scope.edit.data.Comment.comment;
-      };
-
-      /**
-       * htmlContent method
-       *
-       * @return {string}
-       */
-      $scope.htmlContent = function() {
-        //ng-bind-html では、style属性まで消えてしまうため
-        return $sce.trustAsHtml($scope.announcement.Announcement.content);
       };
 
       /**
@@ -132,13 +105,12 @@ NetCommonsApp.controller('Announcements',
         $scope.edit.data.Announcement.status = NetCommonsBase.STATUS_PUBLISHED;
 
         NetCommonsBase.save(
-            $scope,
             null,
-            $scope.plugin.getUrl('token', $scope.frameId + '.json'),
             $scope.plugin.getUrl('edit', $scope.frameId + '.json'),
             $scope.edit,
             function(data) {
               angular.copy(data.results.announcement, $scope.announcement);
+              NetCommonsFlash.success(data.name);
             });
       };
     });
@@ -151,15 +123,8 @@ NetCommonsApp.controller('Announcements',
  * @param {function($scope, $modalStack)} Controller
  */
 NetCommonsApp.controller('Announcements.edit',
-    function($scope, NetCommonsBase, NetCommonsWysiwyg,
-             NetCommonsTab, NetCommonsUser) {
-
-      /**
-       * tab
-       *
-       * @type {object}
-       */
-      $scope.tab = NetCommonsTab.new();
+    function($scope, $modalStack, NetCommonsBase, NetCommonsWysiwyg,
+             NetCommonsUser, NetCommonsFlash) {
 
       /**
        * show user information method
@@ -216,13 +181,13 @@ NetCommonsApp.controller('Announcements.edit',
         $scope.edit.data.Comment.comment = $scope.workflow.input.comment;
 
         NetCommonsBase.save(
-            $scope,
             $scope.form,
-            $scope.plugin.getUrl('token', $scope.frameId + '.json'),
             $scope.plugin.getUrl('edit', $scope.frameId + '.json'),
             $scope.edit,
             function(data) {
               angular.copy(data.results.announcement, $scope.announcement);
+              NetCommonsFlash.success(data.name);
+              $modalStack.dismissAll('saved');
             });
       };
     });
