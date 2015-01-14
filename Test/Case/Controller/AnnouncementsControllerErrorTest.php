@@ -52,8 +52,6 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
  * @return void
  */
 	public function testEditStatusError() {
-		$this->setExpectedException('BadRequestException');
-
 		$this->_generateController('Announcements.Announcements');
 		$this->_loginAdmin();
 
@@ -62,6 +60,8 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 				'block_id' => '1',
 				'key' => 'announcement_1',
 				'content' => 'edit content',
+			),
+			'Comment' => array(
 				'comment' => 'edit comment',
 			),
 			'Frame' => array(
@@ -69,7 +69,7 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 			)
 		);
 
-		$this->testAction(
+		$view = $this->testAction(
 				'/announcements/announcements/edit/1.json',
 				array(
 					'method' => 'post',
@@ -77,6 +77,10 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 					'return' => 'contents'
 				)
 			);
+
+		$result = json_decode($view, true);
+		$this->assertArrayHasKey('code', $result, print_r($result, true));
+		$this->assertEquals(400, $result['code'], print_r($result, true));
 
 		$this->_logout();
 	}
@@ -87,8 +91,6 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
  * @return void
  */
 	public function testEditContentPublishedError() {
-		$this->setExpectedException('ForbiddenException');
-
 		$this->_generateController('Announcements.Announcements');
 		$this->_loginEditor();
 
@@ -98,6 +100,8 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 				'key' => 'announcement_1',
 				'status' => '1',
 				'content' => 'edit content',
+			),
+			'Comment' => array(
 				'comment' => 'edit comment',
 			),
 			'Frame' => array(
@@ -105,7 +109,7 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 			)
 		);
 
-		$this->testAction(
+		$view = $this->testAction(
 				'/announcements/announcements/edit/1.json',
 				array(
 					'method' => 'post',
@@ -113,6 +117,9 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 					'return' => 'contents'
 				)
 			);
+		$result = json_decode($view, true);
+		$this->assertArrayHasKey('code', $result, print_r($result, true));
+		$this->assertEquals(400, $result['code'], print_r($result, true));
 
 		$this->_logout();
 	}
@@ -123,8 +130,6 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
  * @return void
  */
 	public function testEditContentDisapprovedError() {
-		$this->setExpectedException('ForbiddenException');
-
 		$this->_generateController('Announcements.Announcements');
 		$this->_loginEditor();
 
@@ -134,6 +139,8 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 				'key' => 'announcement_1',
 				'status' => NetCommonsBlockComponent::STATUS_DISAPPROVED,
 				'content' => 'edit content',
+			),
+			'Comment' => array(
 				'comment' => 'edit comment',
 			),
 			'Frame' => array(
@@ -141,7 +148,7 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 			)
 		);
 
-		$this->testAction(
+		$view = $this->testAction(
 				'/announcements/announcements/edit/1.json',
 				array(
 					'method' => 'post',
@@ -149,6 +156,9 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 					'return' => 'contents'
 				)
 			);
+		$result = json_decode($view, true);
+		$this->assertArrayHasKey('code', $result, print_r($result, true));
+		$this->assertEquals(400, $result['code'], print_r($result, true));
 
 		$this->_logout();
 	}

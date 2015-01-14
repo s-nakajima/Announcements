@@ -195,6 +195,7 @@ class Announcement extends AnnouncementsAppModel {
 			$this->validationErrors = $ret;
 			return false;
 		}
+		$data[$this->name]['key'] = $this->data[$this->name]['key'];
 		$ret = $this->Comment->validateByStatus($data, array('caller' => $this->name));
 		if (is_array($ret)) {
 			$this->validationErrors = $ret;

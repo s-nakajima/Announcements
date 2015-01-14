@@ -172,8 +172,6 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 				'id' => '1'
 			),
 			'Comment' => array(
-				'plugin_key' => 'announcements',
-				'content_key' => 'announcement_1',
 				'comment' => 'edit comment',
 			)
 		);

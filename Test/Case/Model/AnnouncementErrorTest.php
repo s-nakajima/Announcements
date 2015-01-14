@@ -67,7 +67,7 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
 			'Announcement' => array(
 				'block_id' => '1',
 				'key' => 'announcement_1',
-				'status' => '1',
+				'status' => '2',
 				'content' => 'edit content',
 			),
 			'Frame' => array(
@@ -77,7 +77,8 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
 				'comment' => 'edit comment',
 			)
 		);
-		$this->Announcement->saveAnnouncement($postData);
+
+		$result = $this->Announcement->saveAnnouncement($postData);
 	}
 
 /**
@@ -95,7 +96,7 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
 
 		$postData = array(
 			'Announcement' => array(
-				'status' => '1',
+				'status' => '2',
 				'content' => 'add content',
 				'block_id' => '0'
 			),
@@ -126,7 +127,7 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
 
 		$postData = array(
 			'Announcement' => array(
-				'status' => '1',
+				'status' => '2',
 				'content' => 'add content',
 				'block_id' => '0'
 			),
@@ -157,7 +158,7 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
 
 		$postData = array(
 			'Announcement' => array(
-				'status' => '1',
+				'status' => '2',
 				'content' => 'add content',
 				'block_id' => '0'
 			),

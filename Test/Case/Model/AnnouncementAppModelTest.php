@@ -13,6 +13,7 @@
 
 App::uses('Announcement', 'Announcements.Model');
 App::uses('NetCommonsBlockComponent', 'NetCommons.Controller/Component');
+App::uses('NetCommonsRoomRoleComponent', 'NetCommons.Controller/Component');
 
 /**
  *Announcement Model Test Case

@@ -30,8 +30,8 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 		parent::setUp();
 		$this->Announcement = ClassRegistry::init('Announcements.Announcement');
 		$permission = NetCommonsRoomRoleComponent::PUBLISHABLE_PERMISSION;
-		$this->Announcement->Behaviors->Publishable->
-				settings[$this->Announcement->alias][$permission] = true;
+		$this->Announcement->Behaviors->Publishable
+				->settings[$this->Announcement->alias][$permission] = true;
 
 		$this->Comment = ClassRegistry::init('Comments.Comment');
 	}
@@ -51,7 +51,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 			'Announcement' => array(
 				'id' => '2',
 				'block_id' => $blockId,
-				'status' => NetCommonsBlockComponent::STATUS_INDRAFT,
+				'status' => NetCommonsBlockComponent::STATUS_IN_DRAFT,
 				'key' => 'announcement_1',
 			),
 			'Frame' => array(
@@ -225,7 +225,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'comment' => 'edit comment',
 			)
 		);
-		$this->Announcement->saveAnnouncement($postData);
+		$result = $this->Announcement->saveAnnouncement($postData);
 
 		$result = $this->Announcement->getAnnouncement($frameId, $blockId, true);
 
