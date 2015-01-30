@@ -10,7 +10,7 @@
  */
 ?>
 
-<?php $formName = 'AnnouncementForm' . (int)$frameId; ?>
+<?php $formName = 'AnnouncementForm'; ?>
 
 <?php $this->start('titleForModal'); ?>
 <?php echo __d('announcements', 'plugin_name'); ?>
@@ -24,9 +24,9 @@
 </li>
 <?php $this->end(); ?>
 
-<div ng-show="tab.isSet(0)">
-	<?php echo $this->Form->create('Announcement' . (int)$frameId, array(
-			'type' => 'get',
+<div>
+	<?php echo $this->Form->create('Announcement', array(
+			'action' => 'get',
 			'name' => $formName,
 			'novalidate' => true,
 		)); ?>

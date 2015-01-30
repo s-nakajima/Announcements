@@ -26,6 +26,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public $uses = array(
 		'Announcements.Announcement',
+		'Comments.Comment',
 	);
 
 /**
@@ -39,7 +40,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		'NetCommons.NetCommonsRoomRole' => array(
 			//コンテンツの権限設定
 			'allowedActions' => array(
-				'contentEditable' => array('setting', 'edit')
+				'contentEditable' => array('edit')
 			),
 		),
 	);
@@ -69,25 +70,33 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	public function view() {
-		//Announcementデータを取得
-		$this->__setAnnouncement();
+		$this->__initAnnouncement();
+
+		if (!isset($this->viewVars['announcements'])) {
+			throw new NotFoundException(__d('net_commons', 'Not Found'));
+		}
+
+		if ($this->request->is('ajax')) {
+			$tokenFields = Hash::flatten($this->request->data);
+			$hiddenFields = array(
+				'Announcement.block_id',
+				'Announcement.key'
+			);
+			$this->set('tokenFields', $tokenFields);
+			$this->set('hiddenFields', $hiddenFields);
+		}
+
+		/* $results = array( */
+		/* 	'announcements' => $this->viewVars['announcements'], */
+		/* ); */
+		/* $this->set(compact('results')); */
 
 		if ($this->viewVars['contentEditable']) {
 			$this->view = 'Announcements/viewForEditor';
 		}
-		if (! $this->viewVars['announcement']) {
+		if (! $this->viewVars['announcements']) {
 			$this->autoRender = false;
 		}
-	}
-
-/**
- * setting method
- *
- * @return void
- */
-	public function setting() {
-		$this->layout = 'NetCommons.modal';
-		$this->__setAnnouncement();
 	}
 
 /**
@@ -98,60 +107,96 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public function edit() {
 		//登録処理
 		if ($this->request->isPost()) {
-			//登録
-			$announcement = $this->Announcement->saveAnnouncement($this->data);
-			if (! $announcement) {
-				//バリデーションエラー
-				$results = array('validationErrors' => $this->Announcement->validationErrors);
-				$this->renderJson($results, __d('net_commons', 'Bad Request'), 400);
-				return;
+			if ($matches = preg_grep('/^save_\d/', array_keys($this->data))) {
+				list(, $status) = explode('_', $matches[0]);
 			}
+
+			$data = array_merge_recursive(
+				$this->data,
+				['Announcement' => ['status' => $status]]
+			);
+			var_dump(1);
+			if (!$announcement = $this->Announcement->getAnnouncement(
+				(int)$data['Frame']['id'],
+				isset($data['Block']['id']) ? (int)$data['Block']['id'] : null,
+				true
+			)) {
+		/* if (!isset($this->data[$this->name]['id']) && !isset($this->data[$this->name]['key'])) { */
+		/* 	$this->data[$this->name]['key'] = Security::hash($this->name . mt_rand() . microtime(), 'md5'); */
+		/* } */
+				$announcement = $this->Announcement->create(['key' => Security::hash('announcement' . mt_rand() . microtime(), 'md5')]);
+			}
+			var_dump(1);
+			/* var_dump($this->request->data); */
+			/* var_dump($data); */
+			/* var_dump($announcement); */
+			/* exit; */
+			/* $this->set($data); */
+			$announcement = array_merge($announcement['Announcement'], $data['Announcement']);
+			var_dump($announcement);
+			$ret = $this->Announcement->validateAnnouncement($announcement);
+			var_dump($ret);
+			if (is_array($ret)) {
+				$this->validationErrors = $ret;
+				return false;
+			}
+			var_dump(1);
+			$comment = array_merge(
+				$this->Announcement->data,
+				[
+					'Comment' => $data['Comment'],
+				]);
+			$ret = $this->Comment->validateByStatus($comment, array('caller' => 'Announcement'));
+		/* var_dump($comment); */
+		/* var_dump($data); */
+		/* var_dump($this->Announcement->data); */
+		/* var_dump($ret); */
+			var_dump(1);
+			if (is_array($ret)) {
+				$this->validationErrors = $ret;
+				return false;
+			}
+
+			$announcement = $this->Announcement->saveAnnouncement($data);
 			$this->set('blockId', $announcement['Announcement']['block_id']);
-			$results = array('announcement' => $announcement);
-			$this->renderJson($results, __d('net_commons', 'Successfully finished.'));
+			$this->redirect($this->request->query['back_url']);
 			return;
 		}
+			var_dump(1);
 
 		//最新データ取得
-		$this->__setAnnouncement();
-		$results = array('announcement' => $this->viewVars['announcement']);
-
-		//コメントデータ取得
-		$contentKey = $this->viewVars['announcement']['Announcement']['key'];
-		if ($contentKey) {
-			$view = $this->requestAction(
-					'/comments/comments/index/announcements/' . $contentKey . '.json', array('return'));
-			$comments = json_decode($view, true);
-			//JSON形式で戻す
-			$results = Hash::merge($comments['results'], $results);
-		}
-
-		$this->request->data = $this->viewVars['announcement'];
-		$tokenFields = Hash::flatten($this->request->data);
-		$hiddenFields = array(
-			'Announcement.block_id',
-			'Announcement.key'
-		);
-		$this->set('tokenFields', $tokenFields);
-		$this->set('hiddenFields', $hiddenFields);
-		$this->set('results', $results);
+		$this->__initAnnouncement();
+		/* var_dump($this->viewVars); */
+		$results = array('announcements' => $this->viewVars['announcements']);
+		$this->set('backUrl', $this->request->query['back_url']);
 	}
 
 /**
- * __setAnnouncement method
+ * __initAnnouncement method
  *
  * @return void
  */
-	private function __setAnnouncement() {
-		//Announcementデータを取得
-		$announcement = $this->Announcement->getAnnouncement(
-				$this->viewVars['frameId'],
-				$this->viewVars['blockId'],
-				$this->viewVars['contentEditable']
-			);
+	private function __initAnnouncement() {
+		if (!$announcements = $this->Announcement->getAnnouncement(
+			$this->viewVars['frameId'],
+			$this->viewVars['blockId'],
+			$this->viewVars['contentEditable']
+		)) {
+			$announcements = $this->Announcement->create();
+		}
+		$comments = $this->Comment->getComments(
+			array(
+				'plugin_key' => 'announcements',
+				'content_key' => isset($announcements['Announcement']['key']) ? $announcements['Announcement']['key'] : null,
+			)
+		);
 
-		//Announcementデータをviewにセット
-		$this->set('announcement', $announcement);
+		$results = array(
+			'announcements' => $announcements['Announcement'],
+			'comments' => $comments,
+			'contentStatus' => $announcements['Announcement']['status'],
+		);
+		$results = $this->camelizeKeyRecursive($results);
+		$this->set($results);
 	}
-
 }

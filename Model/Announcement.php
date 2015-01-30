@@ -27,16 +27,9 @@ class Announcement extends AnnouncementsAppModel {
  * @var array
  */
 	public $actsAs = array(
-		'NetCommons.Trackable',
-		'NetCommons.Publishable'
+		// TODO: disabled for debug
+		/* 'NetCommons.Publishable' */
 	);
-
-/**
- * Validation rules
- *
- * @var array
- */
-	const COMMENT_PLUGIN_KEY = 'announcements';
 
 /**
  * Validation rules
@@ -142,27 +135,6 @@ class Announcement extends AnnouncementsAppModel {
 			)
 		);
 
-		if ($contentEditable && ! $announcement) {
-			$default = array(
-				'content' => '',
-				'key' => '',
-				'id' => '0'
-			);
-			$announcement = $this->create($default);
-		}
-
-		unset($announcement['Announcement']['created'],
-				$announcement['Announcement']['created_user'],
-				$announcement['Announcement']['modified'],
-				$announcement['Announcement']['modified_user']);
-
-		if ($announcement) {
-			//Commentセット
-			$announcement['Comment']['comment'] = '';
-			//Frameセット
-			$announcement['Frame']['id'] = $frameId;
-		}
-
 		return $announcement;
 	}
 
@@ -173,6 +145,7 @@ class Announcement extends AnnouncementsAppModel {
  * @return mixed On success Model::$data if its not empty or true, false on failure
  * @throws InternalErrorException
  */
+
 	public function saveAnnouncement($data) {
 		//モデル定義
 		$this->setDataSource('master');
@@ -188,19 +161,6 @@ class Announcement extends AnnouncementsAppModel {
 		//トランザクションBegin
 		$dataSource = $this->getDataSource();
 		$dataSource->begin();
-
-		//validationを実行
-		$ret = $this->__validateAnnouncement($data);
-		if (is_array($ret)) {
-			$this->validationErrors = $ret;
-			return false;
-		}
-		$data[$this->name]['key'] = $this->data[$this->name]['key'];
-		$ret = $this->Comment->validateByStatus($data, array('caller' => $this->name));
-		if (is_array($ret)) {
-			$this->validationErrors = $ret;
-			return false;
-		}
 
 		try {
 			//ブロックの登録
@@ -238,32 +198,8 @@ class Announcement extends AnnouncementsAppModel {
  * @param array $data received post data
  * @return bool|array True on success, validation errors array on error
  */
-	private function __validateAnnouncement($data) {
-		//お知らせデータの取得
-		$announcement = $this->getAnnouncement(
-				(int)$data['Frame']['id'],
-				(int)$data['Announcement']['block_id'],
-				true
-			);
-		if ($announcement['Announcement']['key'] === '') {
-			$data[$this->name]['key'] = Security::hash($this->name . mt_rand() . microtime(), 'md5');
-		}
-
-		//お知らせの登録
-		if (! isset($data['Announcement']['content'])) {
-			//定義されていない場合、Noticeが発生するため、nullで初期化
-			$data['Announcement']['content'] = null;
-		}
-		if ($data['Announcement']['content'] !== $announcement['Announcement']['content'] ||
-				$data['Announcement']['status'] !== $announcement['Announcement']['status']) {
-
-			unset($data['Announcement']['id']);
-			$announcement = $this->create();
-		}
-		$announcement['Announcement'] = $data['Announcement'];
-
-		$this->set($announcement);
-
+	public function validateAnnouncement($data) {
+		$this->set($data);
 		$this->validates();
 		return $this->validationErrors ? $this->validationErrors : true;
 	}

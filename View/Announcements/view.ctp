@@ -11,5 +11,5 @@
 ?>
 
 <div>
-	<?php echo $announcement['Announcement']['content']; ?>
+	<?php echo $announcements['content']; ?>
 </div>

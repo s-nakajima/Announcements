@@ -12,24 +12,20 @@
 
 <?php echo $this->Html->script('/net_commons/base/js/workflow.js', false); ?>
 <?php echo $this->Html->script('/net_commons/base/js/wysiwyg.js', false); ?>
-<?php echo $this->Html->script('/announcements/js/announcements.js', false);?>
+<?php echo $this->Html->script('/announcements/js/announcements.js', false); ?>
 
 <div id="nc-announcements-<?php echo (int)$frameId; ?>"
 	 ng-controller="Announcements"
-	 ng-init="initialize(<?php echo (int)$frameId; ?>,
-							<?php echo h(json_encode($announcement)); ?>)">
+	 ng-init="initialize(<?php echo h(json_encode($this->viewVars)); ?>)">
 
 	<p class="text-right">
-		<?php echo $this->element('NetCommons.publish_button',
-				array('status' => 'announcement.Announcement.status')); ?>
-
 		<?php echo $this->element('NetCommons.setting_button'); ?>
 	</p>
 
-	<div ng-bind-html="announcement.Announcement.content | ncHtmlContent"></div>
+	<?php echo $announcements['content']; ?>
 
 	<p class="text-left">
 		<?php echo $this->element('NetCommons.status_label',
-				array('status' => 'announcement.Announcement.status')); ?>
+				array('status' => 'announcements.status')); ?>
 	</p>
 </div>

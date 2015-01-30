@@ -10,110 +10,139 @@
  * @param {string} Controller name
  * @param {function($scope, $sce)} Controller
  */
-NetCommonsApp.controller('Announcements',
-    function($scope, $sce,
-             NetCommonsBase, NetCommonsWorkflow, NetCommonsFlash) {
+// NetCommonsApp.controller('Announcements',
+//     function($scope, $sce, NetCommonsBase, NetCommonsWorkflow) {
 
-      /**
-       * plugin
-       *
-       * @type {object}
-       */
-      $scope.plugin = NetCommonsBase.initUrl('announcements', 'announcements');
+//       /**
+//        * plugin
+//        *
+//        * @type {object}
+//        */
+//       $scope.plugin = NetCommonsBase.initUrl('announcements', 'announcements');
 
-      /**
-       * workflow
-       *
-       * @type {object}
-       */
-      $scope.workflow = NetCommonsWorkflow.new($scope);
+//       /**
+//        * workflow
+//        *
+//        * @type {object}
+//        */
+//       $scope.workflow = NetCommonsWorkflow.new($scope);
 
-      /**
-       * Announcement
-       *
-       * @type {Object.<string>}
-       */
-      $scope.announcement = {};
+//       /**
+//        * Announcement
+//        *
+//        * @type {Object.<string>}
+//        */
+//       $scope.announcement = {};
 
-      /**
-       * post object
-       *
-       * @type {Object.<string>}
-       */
-      $scope.edit = {
-        _method: 'POST',
-        data: {}
-      };
+//       /**
+//        * post object
+//        *
+//        * @type {Object.<string>}
+//        */
+//       $scope.edit = {
+//         _method: 'POST',
+//         data: {
+//           _Token: {
+//             key: '',
+//             fields: '',
+//             unlocked: ''
+//           }
+//         }
+//       };
 
-      /**
-       * Initialize
-       *
-       * @return {void}
-       */
-      $scope.initialize = function(frameId, announcement) {
-        $scope.frameId = frameId;
-        $scope.announcement = announcement;
-      };
+//       /**
+//        * Initialize
+//        *
+//        * @return {void}
+//        */
+//       $scope.initialize = function(frameId, data) {
+//         console.debug(data);
+//         $scope.frameId = frameId;
+//         $scope.announcement = data.announcement;
+//       };
 
-      /**
-       * Show manage dialog
-       *
-       * @return {void}
-       */
-      $scope.showSetting = function() {
-        NetCommonsBase.showSetting(
-            $scope.plugin.getUrl('edit', $scope.frameId + '.json'),
-            $scope.setEditData,
-            {templateUrl: $scope.plugin.getUrl('setting', $scope.frameId),
-              scope: $scope,
-              controller: 'Announcements.edit'}
-        );
-      };
+//       /**
+//        * Show manage dialog
+//        *
+//        * @return {void}
+//        */
+//       $scope.showSetting = function() {
+//         NetCommonsBase.showSetting(
+//             $scope.plugin.getUrl('view', $scope.frameId + '.json'),
+//             $scope.setEditData,
+//             {templateUrl: $scope.plugin.getUrl('setting', $scope.frameId),
+//               scope: $scope,
+//               controller: 'Announcements.edit'}
+//         );
+//       };
 
-      /**
-       * dialog initialize
-       *
-       * @return {void}
-       */
-      $scope.setEditData = function(data) {
-        //workflow初期化
-        $scope.workflow.clear();
+//       /**
+//        * dialog initialize
+//        *
+//        * @return {void}
+//        */
+//       $scope.setEditData = function(data) {
+//         //workflow初期化
+//         $scope.workflow.clear();
 
-        //最新データセット
-        if (data) {
-          $scope.announcement = data.announcement;
-          $scope.workflow.init('announcements',
-                               $scope.announcement.Announcement.key,
-                               data['comments']);
-        }
+//         //最新データセット
+//         if (data) {
+//           $scope.announcement = data.announcement;
+//           $scope.workflow.init('announcements',
+//                                $scope.announcement.key,
+//                                data['comments']);
+//         }
 
-        //編集データセット
-        $scope.edit.data = angular.copy($scope.announcement);
+//         //編集データセット
+//         // $scope.announcement = {
+//         //   content: $scope.announcement.content,
+//         //   status: $scope.announcement.status,
+//         //   block_id: $scope.announcement.block_id,
+//         //   key: $scope.announcement.key,
+//         //   id: $scope.announcement.id
+//         // };
+//         // $scope.comment = {
+//         //   comment: $scope.announcement.Comment.comment
+//         // };
+//         // $scope.frame = {
+//         //   id: $scope.announcement.Frame.id
+//         // };
 
-        $scope.workflow.currentStatus = $scope.announcement.Announcement.status;
-        $scope.workflow.editStatus = $scope.edit.data.Announcement.status;
-        $scope.workflow.input.comment = $scope.edit.data.Comment.comment;
-      };
+//         $scope.workflow.currentStatus = $scope.announcement.status;
+//         $scope.workflow.editStatus = $scope.announcement.status;
+//         $scope.workflow.input.comment = $scope.comment.comment;
+//       };
 
-      /**
-       * published method
-       *
-       * @return {void}
-       */
-      $scope.publish = function() {
-        $scope.setEditData();
-        $scope.edit.data.Announcement.status = NetCommonsBase.STATUS_PUBLISHED;
+//       /**
+//        * htmlContent method
+//        *
+//        * @return {string}
+//        */
+//       $scope.htmlContent = function() {
+//         //ng-bind-html では、style属性まで消えてしまうため
+//         return $sce.trustAsHtml($scope.announcement.content);
+//       };
 
-        NetCommonsBase.save(
-            null,
-            $scope.plugin.getUrl('edit', $scope.frameId + '.json'),
-            $scope.edit,
-            function(data) {
-              angular.copy(data.results.announcement, $scope.announcement);
-              NetCommonsFlash.success(data.name);
-            });
-      };
-    });
+//       /**
+//        * published method
+//        *
+//        * @return {void}
+//        */
+//       $scope.publish = function() {
+//         $scope.setEditData();
+//         $scope.announcement.status = NetCommonsBase.STATUS_PUBLISHED;
+
+//         NetCommonsBase.save(
+//             $scope,
+//             null,
+//             $scope.plugin.getUrl('token', $scope.frameId + '.json'),
+//             $scope.plugin.getUrl('edit', $scope.frameId + '.json'),
+//             $scope.edit,
+//             function(data) {
+//               angular.copy(data.results.announcement, $scope.announcement);
+//             });
+//       };
+//     });
 
 
 /**
@@ -122,9 +151,16 @@ NetCommonsApp.controller('Announcements',
  * @param {string} Controller name
  * @param {function($scope, $modalStack)} Controller
  */
-NetCommonsApp.controller('Announcements.edit',
-    function($scope, $modalStack, NetCommonsBase, NetCommonsWysiwyg,
-             NetCommonsUser, NetCommonsFlash) {
+NetCommonsApp.controller('Announcements',
+  function($scope, NetCommonsBase, NetCommonsWysiwyg,
+           NetCommonsTab, NetCommonsUser) {
+
+      /**
+       * tab
+       *
+       * @type {object}
+       */
+      $scope.tab = NetCommonsTab.new();
 
       /**
        * show user information method
@@ -154,15 +190,25 @@ NetCommonsApp.controller('Announcements.edit',
        *
        * @type {form}
        */
-      $scope.form = {};
+      // $scope.form = {};
+
+      /**
+       * master
+       *
+       * @type {object}
+       */
+      // $scope.master = {};
 
       /**
        * Initialize
        *
        * @return {void}
        */
-      $scope.initialize = function(form) {
-        $scope.form = form;
+      $scope.initialize = function(data) {
+        // $scope.form = form;
+        $scope.announcements = angular.copy(data.announcements);
+        // console.debug(typeof data.announcements.id == 'undefined');
+        // console.debug($scope.announcements.id);
       };
 
       /**
@@ -176,18 +222,31 @@ NetCommonsApp.controller('Announcements.edit',
        * @return {void}
        */
       $scope.save = function(status) {
-        $scope.edit.data.Announcement.status = status;
-        $scope.workflow.editStatus = status;
-        $scope.edit.data.Comment.comment = $scope.workflow.input.comment;
+        console.debug(2);
+        // $scope.master = angular.copy($scope.announcement);
+        // $scope.announcement.status = status;
+        // $scope.workflow.editStatus = status;
+        // $scope.comment = $scope.workflow.input.comment;
+        // console.debug($scope.announcement.status);
 
-        NetCommonsBase.save(
-            $scope.form,
-            $scope.plugin.getUrl('edit', $scope.frameId + '.json'),
-            $scope.edit,
-            function(data) {
-              angular.copy(data.results.announcement, $scope.announcement);
-              NetCommonsFlash.success(data.name);
-              $modalStack.dismissAll('saved');
-            });
+        // NetCommonsBase.save(
+        //     $scope,
+        //     $scope.form,
+        //     $scope.plugin.getUrl('token', $scope.frameId + '.json'),
+        //     $scope.plugin.getUrl('edit', $scope.frameId + '.json'),
+        //     $scope.edit,
+        //     function(data) {
+        //       angular.copy(data.results.announcement, $scope.announcement);
+        //     });
+        // NetCommonsBase.post(
+        //   $scope.plugin.getUrl('edit', $scope.frameId + '.json'),
+        //   $scope.edit
+        // );
       };
+
+      // $scope.reset = function() {
+      //   $scope.user = angular.copy($scope.master);
+      // };
+
+      // $scope.reset();
     });

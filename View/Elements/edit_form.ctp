@@ -8,32 +8,37 @@
  * @license http://www.netcommons.org/license.txt NetCommons License
  * @copyright Copyright 2014, NetCommons Project
  */
+		/* <textarea name="content" class="form-control" rows="5" */
+		/* 		ui-tinymce="tinymce.options" required */
+		/* 		ng-change="serverValidationClear(form, 'content')" */
+		/* 		ng-model="announcement.content"><?php echo $announcement['content']; ?></textarea> */
 ?>
 
-<div class="form-group" ng-class="form.content.$invalid ? 'has-error' : 'has-success'">
+<div class="form-group">
 	<label class="control-label">
 		<?php echo __d('announcements', 'Content'); ?>
 	</label>
 	<?php echo $this->element('NetCommons.required'); ?>
 
-	<div class="nc-wysiwyg-alert" ng-class="form.content.$invalid ? 'alert-danger' : 'alert-success'">
-		<textarea name="content" class="form-control" rows="5"
-				ui-tinymce="tinymce.options" required
-				ng-change="serverValidationClear(form, 'content')"
-				ng-model="edit.data.Announcement.content">
-		</textarea>
+	<div class="nc-wysiwyg-alert">
+		<?php echo $this->Form->textarea('content',
+					array(
+						'class' => 'form-control',
+						'ui-tinymce' => 'tinymce.options',
+						'ng-model' => 'announcements.content',
+						'rows' => 5,
+						'required' => 'required',
+					)) ?>
 	</div>
 
-	<div class="help-block">
-		<br ng-hide="form.content.$invalid" />
-		<div ng-show="form.content.$invalid">
-			<div ng-repeat="errorMessage in form.content.validationErrors">
-				{{errorMessage}}
+	<div class="has-error">
+		<?php if ($this->validationErrors['Announcement']): ?>
+		<?php foreach ($this->validationErrors['Announcement']['content'] as $message): ?>
+			<div class="help-block">
+				<?php echo $message ?>
 			</div>
-			<div ng-if="! form.content.validationErrors">
-				<?php echo sprintf(__d('net_commons', 'Please input %s.'), __d('announcements', 'Content')); ?>
-			</div>
-		</div>
+		<?php endforeach ?>
+		<?php endif ?>
 	</div>
 </div>
 
