@@ -108,6 +108,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		//登録処理
 		if ($this->request->isPost()) {
 			if ($matches = preg_grep('/^save_\d/', array_keys($this->data))) {
+				var_dummp($matches);
 				list(, $status) = explode('_', $matches[0]);
 			}
 
