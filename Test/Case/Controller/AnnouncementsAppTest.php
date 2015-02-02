@@ -38,6 +38,7 @@ class AnnouncementsAppTest extends ControllerTestCase {
 		'plugin.announcements.user',
 		'plugin.announcements.frame',
 		'plugin.announcements.plugin',
+		'plugin.pages.page',
 		'plugin.rooms.room',
 		'plugin.rooms.roles_rooms_user',
 		'plugin.roles.default_role_permission',
