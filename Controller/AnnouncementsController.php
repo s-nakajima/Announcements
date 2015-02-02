@@ -159,7 +159,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 
 			$announcement = $this->Announcement->saveAnnouncement($data);
 			$this->set('blockId', $announcement['Announcement']['block_id']);
-			$this->redirect(isset($this->request->query['back_url']) ? $this->request->query['back_url'] : null));
+			$this->redirect(isset($this->request->query['back_url']) ? $this->request->query['back_url'] : null);
 			return;
 		}
 			var_dump(1);
