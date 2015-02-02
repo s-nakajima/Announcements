@@ -56,10 +56,11 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'status' => NetCommonsBlockComponent::STATUS_IN_DRAFT,
 				'key' => 'announcement_1',
 			),
-			'Frame' => array(
-				'id' => $frameId
-			),
+			/* 'Frame' => array( */
+			/* 	'id' => $frameId */
+			/* ), */
 		);
+		var_dump($result);
 
 		$this->_assertArray(null, $expected, $result);
 	}
@@ -82,10 +83,11 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'key' => 'announcement_1',
 				'status' => NetCommonsBlockComponent::STATUS_PUBLISHED,
 			),
-			'Frame' => array(
-				'id' => $frameId
-			),
+			/* 'Frame' => array( */
+			/* 	'id' => $frameId */
+			/* ), */
 		);
+		var_dump($result);
 
 		$this->_assertArray(null, $expected, $result);
 	}
@@ -112,6 +114,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'id' => $frameId
 			),
 		);
+		var_dump($result);
 
 		$this->_assertArray(null, $expected, $result);
 	}
@@ -155,6 +158,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'id' => $frameId
 			),
 		);
+		var_dump($result);
 
 		$this->_assertArray(null, $expected, $result);
 	}
@@ -194,10 +198,11 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'id' => '4',
 				'block_id' => $blockId,
 			),
-			'Frame' => array(
-				'id' => $frameId
-			),
+			/* 'Frame' => array( */
+			/* 	'id' => $frameId */
+			/* ), */
 		);
+		var_dump($result);
 
 		$this->_assertArray(null, $expected, $result);
 	}
@@ -242,6 +247,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'id' => $frameId,
 			),
 		);
+		var_dump($result);
 
 		$this->_assertArray(null, $expected, $result);
 	}
@@ -281,6 +287,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 		$this->Announcement->saveAnnouncement($postData);
 
 		$result = $this->Announcement->getAnnouncement($frameId, $blockId, true);
+		var_dump($result);
 
 		$expected = array(
 			'Announcement' => array(

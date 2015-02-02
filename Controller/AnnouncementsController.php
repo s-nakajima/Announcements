@@ -159,7 +159,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 
 			$announcement = $this->Announcement->saveAnnouncement($data);
 			$this->set('blockId', $announcement['Announcement']['block_id']);
-			$this->redirect($this->request->query['back_url']);
+			$this->redirect(isset($this->request->query['back_url']) ? $this->request->query['back_url'] : null));
 			return;
 		}
 			var_dump(1);
@@ -168,7 +168,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->__initAnnouncement();
 		/* var_dump($this->viewVars); */
 		$results = array('announcements' => $this->viewVars['announcements']);
-		$this->set('backUrl', $this->request->query['back_url']);
+		$this->set('backUrl', isset($this->request->query['back_url']) ? $this->request->query['back_url'] : null);
 	}
 
 /**

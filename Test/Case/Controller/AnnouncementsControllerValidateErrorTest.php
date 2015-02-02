@@ -43,7 +43,8 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
 				'plugin_key' => 'announcements',
 				'content_key' => 'announcement_1',
 				'comment' => 'edit comment',
-			)
+			),
+			sprintf('save_%s', NetCommonsBlockComponent::STATUS_PUBLISHED),
 		);
 
 		$view = $this->testAction(
@@ -90,7 +91,8 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
 				'plugin_key' => 'announcements',
 				'content_key' => 'announcement_1',
 				'comment' => '',
-			)
+			),
+			sprintf('save_%s', NetCommonsBlockComponent::STATUS_DISAPPROVED),
 		);
 
 		$view = $this->testAction(

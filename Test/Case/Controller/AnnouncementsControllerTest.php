@@ -173,7 +173,8 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 			),
 			'Comment' => array(
 				'comment' => 'edit comment',
-			)
+			),
+			sprintf('save_%s', NetCommonsBlockComponent::STATUS_PUBLISHED),
 		);
 
 		$view = $this->testAction(
