@@ -67,7 +67,7 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 			'Frame' => array(
 				'id' => '1'
 			),
-			'save_9',
+			'save_9' => '',
 		);
 
 		$view = $this->testAction(
