@@ -18,16 +18,17 @@
     "require-dev": {
         "mustangostang/spyc":           "dev-master",
         "satooshi/php-coveralls":       "~0.6.1",
-        "netcommons/net-commons":       "dev-master",
-        "netcommons/frames":            "dev-master",
-        "netcommons/pages":             "dev-master",
-        "netcommons/users":             "dev-master",
-        "netcommons/rooms":             "dev-master",
-        "netcommons/roles":             "dev-master",
-        "netcommons/blocks":            "dev-master",
         "netcommons/auth":              "dev-master",
         "netcommons/auth-general":      "dev-master",
-        "netcommons/comments":          "dev-master"
+        "netcommons/boxes":             "dev-master",
+        "netcommons/blocks":            "dev-master",
+        "netcommons/comments":          "dev-master",
+        "netcommons/frames":            "dev-master",
+        "netcommons/net-commons":       "dev-master",
+        "netcommons/roles":             "dev-master",
+        "netcommons/rooms":             "dev-master",
+        "netcommons/pages":             "dev-master",
+        "netcommons/users":             "dev-master"
     },
     "license": "NetCommons License",
     "authors": [
