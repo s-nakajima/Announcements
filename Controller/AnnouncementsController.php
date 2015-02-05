@@ -105,17 +105,34 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	public function edit() {
-		//登録処理
+		$this->__initAnnouncement();
+		$backUrl = isset($this->request->query['back_url']) ? $this->request->query['back_url'] : null;
+
 		if ($this->request->isPost()) {
+				var_dump(1);
 			if ($matches = preg_grep('/^save_\d/', array_keys($this->data))) {
 				list(, $status) = explode('_', array_shift($matches));
+			} else {
+				/* $results = array('validationErrors' => $this->Announcement->validationErrors); */
+				var_dump(3);
+				if ($this->request->is('ajax')) {
+				var_dump(3.1);
+					$this->renderJson(['a'], __d('net_commons', 'Bad Request'), 400);
+					return;
+				} else {
+					throw new BadRequestException(__d('net_commons', 'Bad Request'));
+				}
+				var_dump(3.2);
+				return;
 			}
 
-			$data = array_merge_recursive(
+			/* $data = array_merge_recursive( */
+			$data = Hash::merge(
 				$this->data,
 				['Announcement' => ['status' => $status]]
 			);
-			var_dump(1);
+			/* unset($data['save_1']); */
+			/* var_dump(1); */
 			if (!$announcement = $this->Announcement->getAnnouncement(
 				(int)$data['Frame']['id'],
 				isset($data['Block']['id']) ? (int)$data['Block']['id'] : null,
@@ -126,49 +143,73 @@ class AnnouncementsController extends AnnouncementsAppController {
 		/* } */
 				$announcement = $this->Announcement->create(['key' => Security::hash('announcement' . mt_rand() . microtime(), 'md5')]);
 			}
-			var_dump(1);
+			/* var_dump(1); */
 			/* var_dump($this->request->data); */
 			/* var_dump($data); */
 			/* var_dump($announcement); */
 			/* exit; */
 			/* $this->set($data); */
-			$announcement = array_merge($announcement['Announcement'], $data['Announcement']);
-			var_dump($announcement);
+			$announcement = Hash::merge($announcement['Announcement'], $data['Announcement']);
+			/* var_dump($announcement); */
 			$ret = $this->Announcement->validateAnnouncement($announcement);
-			var_dump($ret);
+			/* var_dump($ret); */
+				var_dump(4);
 			if (is_array($ret)) {
+				var_dump(5);
 				$this->validationErrors = $ret;
+				/* if ($this->request->is('ajax')) { */
+				/* 	throw new BadRequestException(__d('net_commons', 'Bad Request')); */
+				/* } */
+				if ($this->request->is('ajax')) {
+					$results = ['error' => ['validationErrors' => $ret]];
+					$this->renderJson($results, __d('net_commons', 'Bad Request'), 400);
+					return;
+				} else {
+					throw new BadRequestException(__d('net_commons', 'Bad Request'));
+				}
 				return false;
 			}
-			var_dump(1);
+				var_dump(6);
+			/* var_dump(1); */
 			$comment = array_merge(
 				$this->Announcement->data,
 				[
 					'Comment' => $data['Comment'],
 				]);
+			/* var_dump($comment); */
 			$ret = $this->Comment->validateByStatus($comment, array('caller' => 'Announcement'));
 		/* var_dump($comment); */
 		/* var_dump($data); */
 		/* var_dump($this->Announcement->data); */
 		/* var_dump($ret); */
-			var_dump(1);
+			/* var_dump(1); */
+				var_dump(6);
 			if (is_array($ret)) {
+				var_dump(7);
 				$this->validationErrors = $ret;
+				if ($this->request->is('ajax')) {
+					$results = ['error' => ['validationErrors' => $ret]];
+					$this->renderJson($results, __d('net_commons', 'Bad Request'), 400);
+					return;
+				} else {
+					throw new BadRequestException(__d('net_commons', 'Bad Request'));
+				}
 				return false;
 			}
+				var_dump(8);
 
 			$announcement = $this->Announcement->saveAnnouncement($data);
 			$this->set('blockId', $announcement['Announcement']['block_id']);
-			$this->redirect(isset($this->request->query['back_url']) ? $this->request->query['back_url'] : null);
+			if (!$this->request->is('ajax')) {
+				$this->redirect($backUrl);
+			}
 			return;
 		}
-			var_dump(1);
+			/* var_dump(1); */
 
-		//最新データ取得
-		$this->__initAnnouncement();
 		/* var_dump($this->viewVars); */
 		$results = array('announcements' => $this->viewVars['announcements']);
-		$this->set('backUrl', isset($this->request->query['back_url']) ? $this->request->query['back_url'] : null);
+		$this->set('backUrl', $backUrl);
 	}
 
 /**

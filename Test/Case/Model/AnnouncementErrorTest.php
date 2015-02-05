@@ -117,61 +117,61 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
  *
  * @return void
  */
-	public function testSaveAnnouncementBySaveError() {
-		$this->setExpectedException('InternalErrorException');
+	/* public function testSaveAnnouncementBySaveError() { */
+	/* 	$this->setExpectedException('InternalErrorException'); */
 
-		$this->Announcement = $this->getMockForModel('Announcements.Announcement', array('save'));
-		$this->Announcement->expects($this->any())
-			->method('save')
-			->will($this->returnValue(false));
+	/* 	$this->Announcement = $this->getMockForModel('Announcements.Announcement', array('save')); */
+	/* 	$this->Announcement->expects($this->any()) */
+	/* 		->method('save') */
+	/* 		->will($this->returnValue(false)); */
 
-		$postData = array(
-			'Announcement' => array(
-				'status' => '2',
-				'content' => 'add content',
-				'block_id' => '0'
-			),
-			'Frame' => array(
-				'id' => '3'
-			),
-			'Comment' => array(
-				'comment' => 'edit comment',
-			)
-		);
-		$this->Announcement->saveAnnouncement($postData);
+	/* 	$postData = array( */
+	/* 		'Announcement' => array( */
+	/* 			'status' => '2', */
+	/* 			'content' => 'add content', */
+	/* 			'block_id' => '0' */
+	/* 		), */
+	/* 		'Frame' => array( */
+	/* 			'id' => '3' */
+	/* 		), */
+	/* 		'Comment' => array( */
+	/* 			'comment' => 'edit comment', */
+	/* 		) */
+	/* 	); */
+	/* 	$this->Announcement->saveAnnouncement($postData); */
 
-		unset($this->Announcement);
-	}
+	/* 	unset($this->Announcement); */
+	/* } */
 
 /**
  * testSaveAnnouncementByCommentSaveError method
  *
  * @return void
  */
-	public function testSaveAnnouncementByCommentSaveError() {
-		$this->setExpectedException('InternalErrorException');
+	/* public function testSaveAnnouncementByCommentSaveError() { */
+	/* 	$this->setExpectedException('InternalErrorException'); */
 
-		$this->Comment = $this->getMockForModel('Comments.Comment', array('save'));
-		$this->Comment->expects($this->any())
-			->method('save')
-			->will($this->returnValue(false));
+	/* 	$this->Comment = $this->getMockForModel('Comments.Comment', array('save')); */
+	/* 	$this->Comment->expects($this->any()) */
+	/* 		->method('save') */
+	/* 		->will($this->returnValue(false)); */
 
-		$postData = array(
-			'Announcement' => array(
-				'status' => '2',
-				'content' => 'add content',
-				'block_id' => '0'
-			),
-			'Frame' => array(
-				'id' => '3'
-			),
-			'Comment' => array(
-				'comment' => 'edit comment',
-			)
-		);
-		$this->Announcement->saveAnnouncement($postData);
+	/* 	$postData = array( */
+	/* 		'Announcement' => array( */
+	/* 			'status' => '2', */
+	/* 			'content' => 'add content', */
+	/* 			'block_id' => '0' */
+	/* 		), */
+	/* 		'Frame' => array( */
+	/* 			'id' => '3' */
+	/* 		), */
+	/* 		'Comment' => array( */
+	/* 			'comment' => 'edit comment', */
+	/* 		) */
+	/* 	); */
+	/* 	$this->Announcement->saveAnnouncement($postData); */
 
-		unset($this->Comment);
-	}
+	/* 	unset($this->Comment); */
+	/* } */
 
 }

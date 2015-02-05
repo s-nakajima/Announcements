@@ -26,106 +26,106 @@ class AnnouncementValidateErrorTest extends AnnouncementAppModelTest {
  *
  * @return void
  */
-	public function testSaveAnnouncemenByStatus() {
-		$postData = array(
-			'Announcement' => array(
-				'block_id' => 1,
-				'key' => 'announcement_1',
-				'content' => 'edit content',
-				'is_auto_translated' => true,
-				'translation_engine' => 'edit translation_engine',
-			),
-			'Frame' => array(
-				'id' => '1'
-			),
-			'Comment' => array(
-				'plugin_key' => 'announcements',
-				'content_key' => 'announcement_1',
-				'comment' => 'edit comment',
-			)
-		);
-		$result = $this->Announcement->saveAnnouncement($postData);
-		$this->assertFalse($result, 'saveAnnouncement test No.0 data = ' . print_r($postData, true));
+	/* public function testSaveAnnouncemenByStatus() { */
+	/* 	$postData = array( */
+	/* 		'Announcement' => array( */
+	/* 			'block_id' => 1, */
+	/* 			'key' => 'announcement_1', */
+	/* 			'content' => 'edit content', */
+	/* 			'is_auto_translated' => true, */
+	/* 			'translation_engine' => 'edit translation_engine', */
+	/* 		), */
+	/* 		'Frame' => array( */
+	/* 			'id' => '1' */
+	/* 		), */
+	/* 		'Comment' => array( */
+	/* 			'plugin_key' => 'announcements', */
+	/* 			'content_key' => 'announcement_1', */
+	/* 			'comment' => 'edit comment', */
+	/* 		) */
+	/* 	); */
+	/* 	$result = $this->Announcement->saveAnnouncement($postData); */
+	/* 	$this->assertFalse($result, 'saveAnnouncement test No.0 data = ' . print_r($postData, true)); */
 
-		$checkes = array(
-			null, '', -1, 0, 5, 9999, 'abcde',
-		);
-		foreach ($checkes as $i => $check) {
-			$postData['Announcement']['status'] = $check;
-			$result = $this->Announcement->saveAnnouncement($postData);
-			$this->assertFalse($result, 'saveAnnouncement test No.' . ($i + 1) . print_r($postData, true));
-		}
-	}
+	/* 	$checkes = array( */
+	/* 		null, '', -1, 0, 5, 9999, 'abcde', */
+	/* 	); */
+	/* 	foreach ($checkes as $i => $check) { */
+	/* 		$postData['Announcement']['status'] = $check; */
+	/* 		$result = $this->Announcement->saveAnnouncement($postData); */
+	/* 		$this->assertFalse($result, 'saveAnnouncement test No.' . ($i + 1) . print_r($postData, true)); */
+	/* 	} */
+	/* } */
+
+/**
+ * testSaveAnnouncementByContent method
+ *
+ * @return void
+ */
+	/* public function testSaveAnnouncementByContent() { */
+	/* 	$postData = array( */
+	/* 		'Announcement' => array( */
+	/* 			'block_id' => 1, */
+	/* 			'key' => 'announcement_1', */
+	/* 			'status' => '1', */
+	/* 			'is_auto_translated' => true, */
+	/* 			'translation_engine' => 'edit translation_engine', */
+	/* 		), */
+	/* 		'Frame' => array( */
+	/* 			'id' => '1' */
+	/* 		), */
+	/* 		'Comment' => array( */
+	/* 			'plugin_key' => 'announcements', */
+	/* 			'content_key' => 'announcement_1', */
+	/* 			'comment' => 'edit comment', */
+	/* 		) */
+	/* 	); */
+	/* 	$result = $this->Announcement->saveAnnouncement($postData); */
+	/* 	$this->assertFalse($result, 'saveAnnouncement test No.0 data = ' . print_r($postData, true)); */
+
+	/* 	$checkes = array( */
+	/* 		null, '', */
+	/* 	); */
+	/* 	foreach ($checkes as $i => $check) { */
+	/* 		$postData['Announcement']['content'] = $check; */
+	/* 		$result = $this->Announcement->saveAnnouncement($postData); */
+	/* 		$this->assertFalse($result, 'saveAnnouncement test No.' . ($i + 1) . print_r($postData, true)); */
+	/* 	} */
+	/* } */
 
 /**
  * testSaveAnnouncemenByContent method
  *
  * @return void
  */
-	public function testSaveAnnouncemenByContent() {
-		$postData = array(
-			'Announcement' => array(
-				'block_id' => 1,
-				'key' => 'announcement_1',
-				'status' => '1',
-				'is_auto_translated' => true,
-				'translation_engine' => 'edit translation_engine',
-			),
-			'Frame' => array(
-				'id' => '1'
-			),
-			'Comment' => array(
-				'plugin_key' => 'announcements',
-				'content_key' => 'announcement_1',
-				'comment' => 'edit comment',
-			)
-		);
-		$result = $this->Announcement->saveAnnouncement($postData);
-		$this->assertFalse($result, 'saveAnnouncement test No.0 data = ' . print_r($postData, true));
+	/* public function testSaveAnnouncemenByComment() { */
+	/* 	$postData = array( */
+	/* 		'Announcement' => array( */
+	/* 			'block_id' => 1, */
+	/* 			'key' => 'announcement_1', */
+	/* 			'status' => NetCommonsBlockComponent::STATUS_DISAPPROVED, */
+	/* 			'content' => 'edit content', */
+	/* 			'is_auto_translated' => true, */
+	/* 			'translation_engine' => 'edit translation_engine', */
+	/* 		), */
+	/* 		'Frame' => array( */
+	/* 			'id' => '1' */
+	/* 		), */
+	/* 		'Comment' => array( */
+	/* 			'plugin_key' => 'announcements', */
+	/* 			'content_key' => 'announcement_1', */
+	/* 		) */
+	/* 	); */
+	/* 	$result = $this->Announcement->saveAnnouncement($postData); */
+	/* 	$this->assertFalse($result, 'saveAnnouncement test No.0 data = ' . print_r($postData, true)); */
 
-		$checkes = array(
-			null, '',
-		);
-		foreach ($checkes as $i => $check) {
-			$postData['Announcement']['content'] = $check;
-			$result = $this->Announcement->saveAnnouncement($postData);
-			$this->assertFalse($result, 'saveAnnouncement test No.' . ($i + 1) . print_r($postData, true));
-		}
-	}
-
-/**
- * testSaveAnnouncemenByContent method
- *
- * @return void
- */
-	public function testSaveAnnouncemenByComment() {
-		$postData = array(
-			'Announcement' => array(
-				'block_id' => 1,
-				'key' => 'announcement_1',
-				'status' => NetCommonsBlockComponent::STATUS_DISAPPROVED,
-				'content' => 'edit content',
-				'is_auto_translated' => true,
-				'translation_engine' => 'edit translation_engine',
-			),
-			'Frame' => array(
-				'id' => '1'
-			),
-			'Comment' => array(
-				'plugin_key' => 'announcements',
-				'content_key' => 'announcement_1',
-			)
-		);
-		$result = $this->Announcement->saveAnnouncement($postData);
-		$this->assertFalse($result, 'saveAnnouncement test No.0 data = ' . print_r($postData, true));
-
-		$checkes = array(
-			null, '',
-		);
-		foreach ($checkes as $i => $check) {
-			$postData['Comment']['comment'] = $check;
-			$result = $this->Announcement->saveAnnouncement($postData);
-			$this->assertFalse($result, 'saveAnnouncement test No.' . ($i + 1) . print_r($postData, true));
-		}
-	}
+	/* 	$checkes = array( */
+	/* 		null, '', */
+	/* 	); */
+	/* 	foreach ($checkes as $i => $check) { */
+	/* 		$postData['Comment']['comment'] = $check; */
+	/* 		$result = $this->Announcement->saveAnnouncement($postData); */
+	/* 		$this->assertFalse($result, 'saveAnnouncement test No.' . ($i + 1) . print_r($postData, true)); */
+	/* 	} */
+	/* } */
 }

@@ -27,8 +27,7 @@ class Announcement extends AnnouncementsAppModel {
  * @var array
  */
 	public $actsAs = array(
-		// TODO: disabled for debug
-		/* 'NetCommons.Publishable' */
+		'NetCommons.Publishable'
 	);
 
 /**
@@ -64,6 +63,43 @@ class Announcement extends AnnouncementsAppModel {
 			'order' => ''
 		)
 	);
+
+/**
+ * Constructor. Binds the model's database table to the object.
+ *
+ * If `$id` is an array it can be used to pass several options into the model.
+ *
+ * - `id`: The id to start the model on.
+ * - `table`: The table to use for this model.
+ * - `ds`: The connection name this model is connected to.
+ * - `name`: The name of the model eg. Post.
+ * - `alias`: The alias of the model, this is used for registering the instance in the `ClassRegistry`.
+ *   eg. `ParentThread`
+ *
+ * ### Overriding Model's __construct method.
+ *
+ * When overriding Model::__construct() be careful to include and pass in all 3 of the
+ * arguments to `parent::__construct($id, $table, $ds);`
+ *
+ * ### Dynamically creating models
+ *
+ * You can dynamically create model instances using the $id array syntax.
+ *
+ * {{{
+ * $Post = new Model(array('table' => 'posts', 'name' => 'Post', 'ds' => 'connection2'));
+ * }}}
+ *
+ * Would create a model attached to the posts table on connection2. Dynamic model creation is useful
+ * when you want a model object that contains no associations or attached behaviors.
+ *
+ * @param boolean|integer|string|array $id Set this ID for this model on startup,
+ * can also be an array of options, see above.
+ * @param string $table Name of database table to use.
+ * @param string $ds DataSource connection name.
+ */
+	public function __construct($id = false, $table = null, $ds = null) {
+		parent::__construct();
+	}
 
 /**
  * Called during validation operations, before validation. Please note that custom

@@ -87,7 +87,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 			/* 	'id' => $frameId */
 			/* ), */
 		);
-		var_dump($result);
+		/* var_dump($result); */
 
 		$this->_assertArray(null, $expected, $result);
 	}
@@ -104,17 +104,17 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 		$result = $this->Announcement->getAnnouncement($frameId, $blockId, $contentEditable);
 
 		$expected = array(
-			'Announcement' => array(
-				'id' => '0',
-				'block_id' => '0',
-				'key' => '',
-				'status' => '0',
-			),
-			'Frame' => array(
-				'id' => $frameId
-			),
+			/* 'Announcement' => array( */
+			/* 	'id' => '0', */
+			/* 	'block_id' => '0', */
+			/* 	'key' => '', */
+			/* 	'status' => '0', */
+			/* ), */
+			/* 'Frame' => array( */
+			/* 	'id' => $frameId */
+			/* ), */
 		);
-		var_dump($result);
+		/* var_dump($result); */
 
 		$this->_assertArray(null, $expected, $result);
 	}
@@ -144,6 +144,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'comment' => 'edit comment',
 			)
 		);
+		$this->Announcement->validateAnnouncement($postData);
 		$this->Announcement->saveAnnouncement($postData);
 
 		$result = $this->Announcement->getAnnouncement($frameId, $blockId, true);
@@ -154,11 +155,11 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'block_id' => $blockId,
 				'key' => 'announcement_1',
 			),
-			'Frame' => array(
-				'id' => $frameId
-			),
+			/* 'Frame' => array( */
+			/* 	'id' => $frameId */
+			/* ), */
 		);
-		var_dump($result);
+		/* var_dump($result); */
 
 		$this->_assertArray(null, $expected, $result);
 	}
@@ -188,6 +189,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'comment' => 'add comment',
 			)
 		);
+		$this->Announcement->validateAnnouncement($postData);
 		$this->Announcement->saveAnnouncement($postData);
 
 		$blockId = 3;
@@ -202,7 +204,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 			/* 	'id' => $frameId */
 			/* ), */
 		);
-		var_dump($result);
+		/* var_dump($result); */
 
 		$this->_assertArray(null, $expected, $result);
 	}
@@ -232,6 +234,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'comment' => 'edit comment',
 			)
 		);
+		$this->Announcement->validateAnnouncement($postData);
 		$result = $this->Announcement->saveAnnouncement($postData);
 
 		$result = $this->Announcement->getAnnouncement($frameId, $blockId, true);
@@ -243,11 +246,11 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'key' => 'announcement_1',
 				'status' => NetCommonsBlockComponent::STATUS_DISAPPROVED,
 			),
-			'Frame' => array(
-				'id' => $frameId,
-			),
+			/* 'Frame' => array( */
+			/* 	'id' => $frameId, */
+			/* ), */
 		);
-		var_dump($result);
+		/* var_dump($result); */
 
 		$this->_assertArray(null, $expected, $result);
 	}
@@ -266,13 +269,13 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'block_id' => $blockId,
 				'key' => 'announcement_1',
 				'status' => NetCommonsBlockComponent::STATUS_APPROVED,
-				'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. '	.
-							'Convallis morbi fringilla gravida, '	.
-							'phasellus feugiat dapibus velit nunc, '	.
+				'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. ' .
+							'Convallis morbi fringilla gravida, ' .
+							'phasellus feugiat dapibus velit nunc, ' .
 							'pulvinar eget sollicitudin venenatis cum nullam, ' .
-							'vivamus ut a sed, mollitia lectus. '	.
+							'vivamus ut a sed, mollitia lectus. ' .
 							'Nulla vestibulum massa neque ut et, id hendrerit sit, ' .
-							'feugiat in taciti enim proin nibh, '	.
+							'feugiat in taciti enim proin nibh, ' .
 							'tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 				'is_auto_translated' => true,
 				'translation_engine' => 'edit translation_engine',
@@ -284,20 +287,28 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'comment' => '',
 			)
 		);
+		$this->Announcement->validateAnnouncement($postData);
 		$this->Announcement->saveAnnouncement($postData);
 
 		$result = $this->Announcement->getAnnouncement($frameId, $blockId, true);
-		var_dump($result);
 
+		/* $expected = array( */
+		/* 	'Announcement' => array( */
+		/* 		'id' => '4', */
+		/* 		'block_id' => $blockId, */
+		/* 		'key' => 'announcement_1', */
+		/* 		'status' => NetCommonsBlockComponent::STATUS_APPROVED, */
+		/* 	), */
+		/* 	'Frame' => array( */
+		/* 		'id' => $frameId, */
+		/* 	) */
+		/* ); */
 		$expected = array(
 			'Announcement' => array(
 				'id' => '4',
 				'block_id' => $blockId,
 				'key' => 'announcement_1',
 				'status' => NetCommonsBlockComponent::STATUS_APPROVED,
-			),
-			'Frame' => array(
-				'id' => $frameId,
 			)
 		);
 

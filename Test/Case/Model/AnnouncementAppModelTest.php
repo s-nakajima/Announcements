@@ -33,7 +33,7 @@ class AnnouncementAppModelTest extends CakeTestCase {
 		'plugin.announcements.block',
 		'plugin.announcements.comment',
 		'plugin.frames.box',
-		'plugin.frames.language',
+		/* 'plugin.frames.language', */
 		'plugin.rooms.room',
 		'plugin.announcements.user_attributes_user',
 		'plugin.announcements.user',
