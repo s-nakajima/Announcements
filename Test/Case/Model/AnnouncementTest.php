@@ -29,12 +29,6 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 	public function setUp() {
 		parent::setUp();
 		$this->Announcement = ClassRegistry::init('Announcements.Announcement');
-		$permission = NetCommonsRoomRoleComponent::PUBLISHABLE_PERMISSION;
-		/* TODO: Disabled for debug */
-		/* TODO: Indirect modification of overloaded property BehaviorCollection::$Publishable has no effect */
-		/* $this->Announcement->Behaviors->Publishable */
-		/* 		->settings[$this->Announcement->alias][$permission] = true; */
-
 		$this->Comment = ClassRegistry::init('Comments.Comment');
 	}
 

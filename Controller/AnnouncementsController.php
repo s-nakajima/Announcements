@@ -67,6 +67,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 /**
  * view method
  *
+ * @throws NotFoundException
  * @return void
  */
 	public function view() {
@@ -102,6 +103,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 /**
  * edit method
  *
+ * @throws BadRequestException
  * @return void
  */
 	public function edit() {
@@ -117,7 +119,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 				var_dump(3);
 				if ($this->request->is('ajax')) {
 				var_dump(3.1);
-					$this->renderJson(['a'], __d('net_commons', 'Bad Request'), 400);
+					$this->renderJson([], __d('net_commons', 'Bad Request'), 400);
 					return;
 				} else {
 					throw new BadRequestException(__d('net_commons', 'Bad Request'));
