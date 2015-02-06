@@ -108,7 +108,9 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public function edit() {
 		$this->__initAnnouncement();
-		$backUrl = isset($this->request->query['back_url']) ? $this->request->query['back_url'] : null;
+		if ($this->request->isGet()) {
+			CakeSession::write('backUrl', $this->request->referer());
+		}
 
 		if ($this->request->isPost()) {
 				var_dump(1);
@@ -128,21 +130,15 @@ class AnnouncementsController extends AnnouncementsAppController {
 				return;
 			}
 
-			/* $data = array_merge_recursive( */
 			$data = Hash::merge(
 				$this->data,
 				['Announcement' => ['status' => $status]]
 			);
-			/* unset($data['save_1']); */
-			/* var_dump(1); */
 			if (!$announcement = $this->Announcement->getAnnouncement(
 				(int)$data['Frame']['id'],
 				isset($data['Block']['id']) ? (int)$data['Block']['id'] : null,
 				true
 			)) {
-		/* if (!isset($this->data[$this->name]['id']) && !isset($this->data[$this->name]['key'])) { */
-		/* 	$this->data[$this->name]['key'] = Security::hash($this->name . mt_rand() . microtime(), 'md5'); */
-		/* } */
 				$announcement = $this->Announcement->create(['key' => Security::hash('announcement' . mt_rand() . microtime(), 'md5')]);
 			}
 			/* var_dump(1); */
@@ -159,17 +155,11 @@ class AnnouncementsController extends AnnouncementsAppController {
 			if (is_array($ret)) {
 				var_dump(5);
 				$this->validationErrors = $ret;
-				/* if ($this->request->is('ajax')) { */
-				/* 	throw new BadRequestException(__d('net_commons', 'Bad Request')); */
-				/* } */
 				if ($this->request->is('ajax')) {
 					$results = ['error' => ['validationErrors' => $ret]];
 					$this->renderJson($results, __d('net_commons', 'Bad Request'), 400);
-					return;
-				} else {
-					throw new BadRequestException(__d('net_commons', 'Bad Request'));
 				}
-				return false;
+				return;
 			}
 				var_dump(6);
 			/* var_dump(1); */
@@ -193,16 +183,17 @@ class AnnouncementsController extends AnnouncementsAppController {
 					$results = ['error' => ['validationErrors' => $ret]];
 					$this->renderJson($results, __d('net_commons', 'Bad Request'), 400);
 					return;
-				} else {
-					throw new BadRequestException(__d('net_commons', 'Bad Request'));
 				}
-				return false;
+				return;
 			}
 				var_dump(8);
 
 			$announcement = $this->Announcement->saveAnnouncement($data);
 			$this->set('blockId', $announcement['Announcement']['block_id']);
 			if (!$this->request->is('ajax')) {
+				$backUrl = CakeSession::read('backUrl');
+				CakeSession::delete('backUrl');
+				var_dump($backUrl);
 				$this->redirect($backUrl);
 			}
 			return;
@@ -211,7 +202,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 
 		/* var_dump($this->viewVars); */
 		$results = array('announcements' => $this->viewVars['announcements']);
-		$this->set('backUrl', $backUrl);
+		/* $this->set('backUrl', $backUrl); */
 	}
 
 /**

@@ -153,7 +153,7 @@
  */
 NetCommonsApp.controller('Announcements',
   function($scope, NetCommonsBase, NetCommonsWysiwyg,
-           NetCommonsTab, NetCommonsUser) {
+           NetCommonsTab, NetCommonsUser, NetCommonsWorkflow) {
 
       /**
        * tab
@@ -176,6 +176,13 @@ NetCommonsApp.controller('Announcements',
        * @type {object}
        */
       $scope.tinymce = NetCommonsWysiwyg.new();
+
+      /**
+       * workflow
+       *
+       * @type {object}
+       */
+      $scope.workflow = NetCommonsWorkflow.new($scope);
 
       /**
        * serverValidationClear method
