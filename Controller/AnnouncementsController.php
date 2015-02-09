@@ -113,20 +113,15 @@ class AnnouncementsController extends AnnouncementsAppController {
 		}
 
 		if ($this->request->isPost()) {
-				var_dump(1);
 			if ($matches = preg_grep('/^save_\d/', array_keys($this->data))) {
 				list(, $status) = explode('_', array_shift($matches));
 			} else {
-				/* $results = array('validationErrors' => $this->Announcement->validationErrors); */
-				var_dump(3);
 				if ($this->request->is('ajax')) {
-				var_dump(3.1);
 					$this->renderJson([], __d('net_commons', 'Bad Request'), 400);
 					return;
 				} else {
 					throw new BadRequestException(__d('net_commons', 'Bad Request'));
 				}
-				var_dump(3.2);
 				return;
 			}
 
@@ -151,9 +146,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 			/* var_dump($announcement); */
 			$ret = $this->Announcement->validateAnnouncement($announcement);
 			/* var_dump($ret); */
-				var_dump(4);
 			if (is_array($ret)) {
-				var_dump(5);
 				$this->validationErrors = $ret;
 				if ($this->request->is('ajax')) {
 					$results = ['error' => ['validationErrors' => $ret]];
@@ -161,7 +154,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 				}
 				return;
 			}
-				var_dump(6);
 			/* var_dump(1); */
 			$comment = array_merge(
 				$this->Announcement->data,
@@ -170,14 +162,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 				]);
 			/* var_dump($comment); */
 			$ret = $this->Comment->validateByStatus($comment, array('caller' => 'Announcement'));
-		/* var_dump($comment); */
-		/* var_dump($data); */
-		/* var_dump($this->Announcement->data); */
-		/* var_dump($ret); */
-			/* var_dump(1); */
-				var_dump(6);
 			if (is_array($ret)) {
-				var_dump(7);
 				$this->validationErrors = $ret;
 				if ($this->request->is('ajax')) {
 					$results = ['error' => ['validationErrors' => $ret]];
@@ -186,7 +171,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 				}
 				return;
 			}
-				var_dump(8);
 
 			$announcement = $this->Announcement->saveAnnouncement($data);
 			$this->set('blockId', $announcement['Announcement']['block_id']);
@@ -197,11 +181,8 @@ class AnnouncementsController extends AnnouncementsAppController {
 			}
 			return;
 		}
-			/* var_dump(1); */
 
-		/* var_dump($this->viewVars); */
 		$results = array('announcements' => $this->viewVars['announcements']);
-		/* $this->set('backUrl', $backUrl); */
 	}
 
 /**
