@@ -73,9 +73,9 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public function view() {
 		$this->__initAnnouncement();
 
-		if (!$this->viewVars['announcements']['blockId']) {
-			throw new NotFoundException(__d('net_commons', 'Not Found'));
-		}
+		/* if (!$this->viewVars['announcements']['blockId']) { */
+		/* 	throw new NotFoundException(__d('net_commons', 'Not Found')); */
+		/* } */
 
 		if ($this->request->is('ajax')) {
 			$tokenFields = Hash::flatten($this->request->data);
@@ -113,15 +113,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		}
 
 		if ($this->request->isPost()) {
-			if ($matches = preg_grep('/^save_\d/', array_keys($this->data))) {
-				list(, $status) = explode('_', array_shift($matches));
-			} else {
-				if ($this->request->is('ajax')) {
-					$this->renderJson([], __d('net_commons', 'Bad Request'), 400);
-					return;
-				} else {
-					throw new BadRequestException(__d('net_commons', 'Bad Request'));
-				}
+			if (!$status = $this->__parseStatus()) {
 				return;
 			}
 
@@ -146,14 +138,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 			/* var_dump($announcement); */
 			$ret = $this->Announcement->validateAnnouncement($announcement);
 			/* var_dump($ret); */
-			if (is_array($ret)) {
-				$this->validationErrors = $ret;
-				if ($this->request->is('ajax')) {
-					$results = ['error' => ['validationErrors' => $ret]];
-					$this->renderJson($results, __d('net_commons', 'Bad Request'), 400);
-				}
-				return;
-			}
+			if (!$this->__handleValidationError($ret)) return;
 			/* var_dump(1); */
 			$comment = array_merge(
 				$this->Announcement->data,
@@ -162,15 +147,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 				]);
 			/* var_dump($comment); */
 			$ret = $this->Comment->validateByStatus($comment, array('caller' => 'Announcement'));
-			if (is_array($ret)) {
-				$this->validationErrors = $ret;
-				if ($this->request->is('ajax')) {
-					$results = ['error' => ['validationErrors' => $ret]];
-					$this->renderJson($results, __d('net_commons', 'Bad Request'), 400);
-					return;
-				}
-				return;
-			}
+			if (!$this->__handleValidationError($ret)) return;
 
 			$announcement = $this->Announcement->saveAnnouncement($data);
 			$this->set('blockId', $announcement['Announcement']['block_id']);
@@ -212,5 +189,44 @@ class AnnouncementsController extends AnnouncementsAppController {
 		);
 		$results = $this->camelizeKeyRecursive($results);
 		$this->set($results);
+	}
+
+/**
+ * Parse content status from request
+ *
+ * @throws BadRequestException
+ * @return mixed status on success, false on error
+ */
+	private function __parseStatus() {
+		if ($matches = preg_grep('/^save_\d/', array_keys($this->data))) {
+			list(, $status) = explode('_', array_shift($matches));
+		} else {
+			if ($this->request->is('ajax')) {
+				$this->renderJson([], __d('net_commons', 'Bad Request'), 400);
+			} else {
+				throw new BadRequestException(__d('net_commons', 'Bad Request'));
+			}
+			return false;
+		}
+
+		return $status;
+	}
+
+/**
+ * Handle validation error
+ *
+ * @return bool true on success, false on error
+ */
+	private function __handleValidationError($ret) {
+		if (is_array($ret)) {
+			$this->validationErrors = $ret;
+			if ($this->request->is('ajax')) {
+				$results = ['error' => ['validationErrors' => $ret]];
+				$this->renderJson($results, __d('net_commons', 'Bad Request'), 400);
+			}
+			return false;
+		}
+
+		return true;
 	}
 }

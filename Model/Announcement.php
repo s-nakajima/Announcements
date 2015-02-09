@@ -180,8 +180,6 @@ class Announcement extends AnnouncementsAppModel {
 
 			//トランザクションCommit
 			$dataSource->commit();
-			return $announcement;
-
 		} catch (Exception $ex) {
 			//トランザクションRollback
 			$dataSource->rollback();
@@ -189,6 +187,8 @@ class Announcement extends AnnouncementsAppModel {
 			CakeLog::write(LOG_ERR, $ex);
 			throw $ex;
 		}
+
+		return $announcement;
 	}
 
 /**

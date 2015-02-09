@@ -152,8 +152,8 @@
  * @param {function($scope, $modalStack)} Controller
  */
 NetCommonsApp.controller('Announcements',
-  function($scope, NetCommonsBase, NetCommonsWysiwyg,
-           NetCommonsTab, NetCommonsUser, NetCommonsWorkflow) {
+    function($scope, NetCommonsBase, NetCommonsWysiwyg,
+    NetCommonsTab, NetCommonsUser, NetCommonsWorkflow) {
 
       /**
        * tab
