@@ -73,7 +73,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public function view() {
 		$this->__initAnnouncement();
 
-		if (!isset($this->viewVars['announcements'])) {
+		if (!$this->viewVars['announcements']['blockId']) {
 			throw new NotFoundException(__d('net_commons', 'Not Found'));
 		}
 
@@ -193,7 +193,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 			if (!$this->request->is('ajax')) {
 				$backUrl = CakeSession::read('backUrl');
 				CakeSession::delete('backUrl');
-				var_dump($backUrl);
 				$this->redirect($backUrl);
 			}
 			return;

@@ -71,26 +71,25 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 
 		$this->assertTextContains('nc-announcements-1', $view, print_r($view, true));
 		$this->assertTextContains('ng-controller="Announcements"', $view, print_r($view, true));
-		/* $this->assertTextContains('ng-init="initialize(1,', $view, print_r($view, true)); */
 
 		$this->_logout();
 	}
 
 /**
- * testViewByNewFrameId method
+ * Expect view action to throw NotFoundException w/ unknown frame id
  *
  * @return void
  */
-	/* public function testViewByNewFrameId() { */
-	/* 	$view = $this->testAction( */
-	/* 			'/announcements/announcements/view/3', */
-	/* 			array( */
-	/* 				'method' => 'get', */
-	/* 				'return' => 'view', */
-	/* 			) */
-	/* 		); */
-	/* 	$this->assertEmpty($view, $view, print_r($view, true)); */
-	/* } */
+	public function testViewByUnknownFrameId() {
+		$this->setExpectedException('NotFoundException');
+		$this->testAction(
+				'/announcements/announcements/view/3',
+				array(
+					'method' => 'get',
+					'return' => 'view',
+				)
+			);
+	}
 
 /**
  * testEditPost method
@@ -159,49 +158,4 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 
 		$this->_logout();
 	}
-
-	/**
- * testEditPost method
- *
- * @return void
- */
-	/* public function testEditPost() { */
-	/* 	$this->_generateController('Announcements.Announcements'); */
-	/* 	$this->_loginAdmin(); */
-
-	/* 	$postData = array( */
-	/* 		'Announcement' => array( */
-	/* 			'block_id' => '1', */
-	/* 			'key' => 'announcement_1', */
-	/* 			'content' => 'edit content', */
-	/* 		), */
-	/* 		'Frame' => array( */
-	/* 			'id' => '1' */
-	/* 		), */
-	/* 		'Comment' => array( */
-	/* 			'comment' => 'edit comment', */
-	/* 		), */
-	/* 		sprintf('save_%s', NetCommonsBlockComponent::STATUS_PUBLISHED) => '', */
-	/* 	); */
-
-	/* 	$view = $this->testAction( */
-	/* 			'/announcements/announcements/edit/1.json', */
-	/* 			array( */
-	/* 				'method' => 'post', */
-	/* 				'data' => $postData, */
-	/* 				'return' => 'contents' */
-	/* 			) */
-	/* 		); */
-	/* 	$result = json_decode($view, true); */
-	/* 	var_dump($result); */
-
-	/* 	$this->assertArrayHasKey('code', $result, print_r($result, true)); */
-	/* 	$this->assertEquals(200, $result['code'], print_r($result, true)); */
-	/* 	$this->assertArrayHasKey('name', $result, print_r($result, true)); */
-	/* 	$this->assertArrayHasKey('results', $result, print_r($result, true)); */
-	/* 	$this->assertArrayHasKey('announcement', $result['results'], print_r($result, true)); */
-	/* 	$this->assertArrayHasKey('Announcement', $result['results']['announcement'], print_r($result, true)); */
-
-	/* 	$this->_logout(); */
-	/* } */
 }

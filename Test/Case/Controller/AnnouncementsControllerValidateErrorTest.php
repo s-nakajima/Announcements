@@ -18,7 +18,7 @@ App::uses('AnnouncementsAppTest', 'Announcements.Test/Case/Controller');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Controller
  */
-class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
+/* class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest { */
 
 /* /\** */
 /*  * testEditContentError method */
@@ -112,4 +112,4 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
 
 /* 		$this->_logout(); */
 /* 	} */
-}
+/* } */

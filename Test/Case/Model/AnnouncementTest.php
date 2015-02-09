@@ -11,7 +11,6 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('AnnouncementAppModelTest', 'Announcements.Test/Case/Model');
 
 /**
  *Announcement Model Test Case
@@ -54,7 +53,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 			/* 	'id' => $frameId */
 			/* ), */
 		);
-		var_dump($result);
+		/* var_dump($result); */
 
 		$this->_assertArray(null, $expected, $result);
 	}
