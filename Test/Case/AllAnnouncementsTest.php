@@ -28,10 +28,10 @@ class AllAnnouncementsTest extends CakeTestSuite {
 		$task = 'AnnouncementsControllerError';
 		/* $task = 'AnnouncementsApp'; */
 		/* $task = 'Announcement'; */
-		/* $task = 'AnnouncementsController'; */
-		/* $suite->addTestFile(CakePlugin::path($plugin) . 'Test' . DS . 'Case' . DS . 'Controller' . DS . $task . 'Test.php'); */
+		$task = 'AnnouncementsController';
+		$suite->addTestFile(CakePlugin::path($plugin) . 'Test' . DS . 'Case' . DS . 'Controller' . DS . $task . 'Test.php');
 		/* $suite->addTestFile(CakePlugin::path($plugin) . 'Test' . DS . 'Case' . DS . 'Model' . DS . $task . 'Test.php'); */
-		$suite->addTestDirectoryRecursive(CakePlugin::path($plugin) . 'Test' . DS . 'Case');
+		/* $suite->addTestDirectoryRecursive(CakePlugin::path($plugin) . 'Test' . DS . 'Case'); */
 		return $suite;
 	}
 }
