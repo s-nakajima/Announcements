@@ -140,7 +140,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 			/* var_dump($announcement); */
 			$ret = $this->Announcement->validateAnnouncement($announcement);
 			/* var_dump($ret); */
-			if (!$this->__handleValidationError($ret)) return;
+			if (!$this->__handleValidationError($ret)) { return; }
 			/* var_dump(1); */
 			$comment = array_merge(
 				$this->Announcement->data,
@@ -149,7 +149,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 				]);
 			/* var_dump($comment); */
 			$ret = $this->Comment->validateByStatus($comment, array('caller' => 'Announcement'));
-			if (!$this->__handleValidationError($ret)) return;
+			if (!$this->__handleValidationError($ret)) { return; }
 
 			$announcement = $this->Announcement->saveAnnouncement($data);
 			$this->set('blockId', $announcement['Announcement']['block_id']);
@@ -220,13 +220,14 @@ class AnnouncementsController extends AnnouncementsAppController {
 /**
  * Handle validation error
  *
+ * @param array $errors validation errors
  * @return bool true on success, false on error
  */
-	private function __handleValidationError($ret) {
-		if (is_array($ret)) {
-			$this->validationErrors = $ret;
+	private function __handleValidationError($errors) {
+		if (is_array($errors)) {
+			$this->validationErrors = $errors;
 			if ($this->request->is('ajax')) {
-				$results = ['error' => ['validationErrors' => $ret]];
+				$results = ['error' => ['validationErrors' => $errors]];
 				$this->renderJson($results, __d('net_commons', 'Bad Request'), 400);
 			}
 			return false;

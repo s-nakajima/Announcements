@@ -96,22 +96,6 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 		$this->_logout();
 	}
 
-/* /\** */
-/*  * Expect view action to throw NotFoundException w/ unknown frame id */
-/*  * */
-/*  * @return void */
-/*  *\/ */
-/* 	public function testViewByUnknownFrameId() { */
-/* 		$this->setExpectedException('NotFoundException'); */
-/* 		$this->testAction( */
-/* 				'/announcements/announcements/view/3', */
-/* 				array( */
-/* 					'method' => 'get', */
-/* 					'return' => 'view', */
-/* 				) */
-/* 			); */
-/* 	} */
-
 /**
  * testEditPost method
  *
