@@ -140,7 +140,9 @@ class AnnouncementsController extends AnnouncementsAppController {
 			/* var_dump($announcement); */
 			$ret = $this->Announcement->validateAnnouncement($announcement);
 			/* var_dump($ret); */
-			if (!$this->__handleValidationError($ret)) { return; }
+			if (!$this->__handleValidationError($ret)) {
+				return;
+			}
 			/* var_dump(1); */
 			$comment = array_merge(
 				$this->Announcement->data,
@@ -149,7 +151,9 @@ class AnnouncementsController extends AnnouncementsAppController {
 				]);
 			/* var_dump($comment); */
 			$ret = $this->Comment->validateByStatus($comment, array('caller' => 'Announcement'));
-			if (!$this->__handleValidationError($ret)) { return; }
+			if (!$this->__handleValidationError($ret)) {
+				return;
+			}
 
 			$announcement = $this->Announcement->saveAnnouncement($data);
 			$this->set('blockId', $announcement['Announcement']['block_id']);
