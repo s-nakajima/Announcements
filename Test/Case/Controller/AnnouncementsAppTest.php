@@ -12,6 +12,7 @@
 App::uses('NetCommonsFrameComponent', 'NetCommons.Controller/Component');
 App::uses('NetCommonsBlockComponent', 'NetCommons.Controller/Component');
 App::uses('NetCommonsRoomRoleComponent', 'NetCommons.Controller/Component');
+App::uses('YAControllerTestCase', 'NetCommons.TestSuite');
 
 /**
  * AnnouncementsController Test Case
@@ -20,7 +21,7 @@ App::uses('NetCommonsRoomRoleComponent', 'NetCommons.Controller/Component');
  * @package NetCommons\Announcements\Test\Case\Controller
  * @SuppressWarnings(PHPMD.LongVariable)
  */
-class AnnouncementsAppTest extends ControllerTestCase {
+class AnnouncementsAppTest extends YAControllerTestCase {
 
 /**
  * Fixtures

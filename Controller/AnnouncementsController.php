@@ -35,7 +35,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @var array
  */
 	public $components = array(
-		'NetCommons.NetCommonsBlock', //Use Announcement model
+		'NetCommons.NetCommonsBlock',
 		'NetCommons.NetCommonsFrame',
 		'NetCommons.NetCommonsRoomRole' => array(
 			//コンテンツの権限設定
@@ -85,6 +85,11 @@ class AnnouncementsController extends AnnouncementsAppController {
 			);
 			$this->set('tokenFields', $tokenFields);
 			$this->set('hiddenFields', $hiddenFields);
+			$this->renderJson();
+		} else {
+			if ($this->viewVars['contentEditable']) {
+				$this->view = 'Announcements/viewForEditor';
+			}
 		}
 
 		/* $results = array( */
@@ -92,12 +97,9 @@ class AnnouncementsController extends AnnouncementsAppController {
 		/* ); */
 		/* $this->set(compact('results')); */
 
-		if ($this->viewVars['contentEditable']) {
-			$this->view = 'Announcements/viewForEditor';
-		}
-		if (! $this->viewVars['announcements']) {
-			$this->autoRender = false;
-		}
+		/* if (! $this->viewVars['announcements']) { */
+		/* 	$this->autoRender = false; */
+		/* } */
 	}
 
 /**
@@ -202,7 +204,10 @@ class AnnouncementsController extends AnnouncementsAppController {
 			list(, $status) = explode('_', array_shift($matches));
 		} else {
 			if ($this->request->is('ajax')) {
-				$this->renderJson([], __d('net_commons', 'Bad Request'), 400);
+				$this->renderJson(
+					['error' => ['validationErrors' => ['status' => __d('net_commons', 'Invalid request.')]]],
+					__d('net_commons', 'Bad Request'), 400
+				);
 			} else {
 				throw new BadRequestException(__d('net_commons', 'Bad Request'));
 			}

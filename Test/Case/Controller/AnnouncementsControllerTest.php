@@ -26,7 +26,7 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
  * @return void
  */
 	public function testIndex() {
-		$view = $this->testAction(
+		$this->testAction(
 				'/announcements/announcements/index/1',
 				array(
 					'method' => 'get',
@@ -42,7 +42,7 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
  * @return void
  */
 	public function testView() {
-		$view = $this->testAction(
+		$this->testAction(
 				'/announcements/announcements/view/1',
 				array(
 					'method' => 'get',
@@ -50,6 +50,27 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 				)
 			);
 		$this->assertTextEquals('view', $this->controller->view);
+	}
+
+/**
+ * testViewJson method
+ *
+ * @return void
+ */
+	public function testViewJson() {
+		$ret = $this->testAction(
+				'/announcements/announcements/view/1.json',
+				array(
+					'method' => 'get',
+					'type' => 'json',
+					'return' => 'contents',
+				)
+			);
+		$result = json_decode($ret, true);
+
+		$this->assertTextEquals('view', $this->controller->view);
+		$this->assertArrayHasKey('code', $result, print_r($result, true));
+		$this->assertEquals(200, $result['code'], print_r($result, true));
 	}
 
 /**
@@ -75,21 +96,21 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 		$this->_logout();
 	}
 
-/**
- * Expect view action to throw NotFoundException w/ unknown frame id
- *
- * @return void
- */
-	public function testViewByUnknownFrameId() {
-		$this->setExpectedException('NotFoundException');
-		$this->testAction(
-				'/announcements/announcements/view/3',
-				array(
-					'method' => 'get',
-					'return' => 'view',
-				)
-			);
-	}
+/* /\** */
+/*  * Expect view action to throw NotFoundException w/ unknown frame id */
+/*  * */
+/*  * @return void */
+/*  *\/ */
+/* 	public function testViewByUnknownFrameId() { */
+/* 		$this->setExpectedException('NotFoundException'); */
+/* 		$this->testAction( */
+/* 				'/announcements/announcements/view/3', */
+/* 				array( */
+/* 					'method' => 'get', */
+/* 					'return' => 'view', */
+/* 				) */
+/* 			); */
+/* 	} */
 
 /**
  * testEditPost method
@@ -100,7 +121,8 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 		$this->_generateController('Announcements.Announcements');
 		$this->_loginAdmin();
 
-		$view = $this->testAction(
+		/* $view = $this->testAction( */
+		$this->testAction(
 				'/announcements/announcements/edit/1',
 				array(
 					'method' => 'get',
@@ -146,7 +168,7 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 			sprintf('save_%s', NetCommonsBlockComponent::STATUS_PUBLISHED) => '',
 		);
 
-		$view = $this->testAction(
+		$this->testAction(
 				'/announcements/announcements/edit/1',
 				array(
 					'method' => 'post',
