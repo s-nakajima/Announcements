@@ -11,6 +11,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
+App::uses('AnnouncementAppModelTest', 'Announcements.Test/Case/Model');
 
 /**
  *Announcement Model Test Case
