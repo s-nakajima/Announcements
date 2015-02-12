@@ -78,7 +78,7 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
 			)
 		);
 
-		/* $result = $this->Announcement->saveAnnouncement($postData); */
+		$this->Announcement->saveAnnouncement($postData);
 	}
 
 /**
