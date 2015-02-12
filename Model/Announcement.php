@@ -160,10 +160,6 @@ class Announcement extends AnnouncementsAppModel {
 				$this->validationErrors = Hash::merge($this->validationErrors, $this->Comment->validationErrors);
 				return false;
 			}
-			/* var_dump($this->Comment); */
-		/* $this->Comment->validateByStatus($data, array('caller' => $this->name)); */
-		/* $this->validationErrors = Hash::merge($this->validationErrors, $this->Comment->validationErrors); */
-
 
 			//ブロックの登録
 			$block = $this->Block->saveByFrameId($data['Frame']['id'], false);
