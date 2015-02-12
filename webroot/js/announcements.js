@@ -14,13 +14,6 @@
 //     function($scope, $sce, NetCommonsBase, NetCommonsWorkflow) {
 
 //       /**
-//        * plugin
-//        *
-//        * @type {object}
-//        */
-//       $scope.plugin = NetCommonsBase.initUrl('announcements', 'announcements');
-
-//       /**
 //        * workflow
 //        *
 //        * @type {object}
