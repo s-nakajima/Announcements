@@ -52,16 +52,6 @@ class Announcement extends AnnouncementsAppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'CreatedUser' => array(
-			'className' => 'Users.UserAttributesUser',
-			'foreignKey' => false,
-			'conditions' => array(
-				'Announcement.created_user = CreatedUser.user_id',
-				'CreatedUser.key' => 'nickname'
-			),
-			'fields' => array('CreatedUser.key', 'CreatedUser.value'),
-			'order' => ''
-		)
 	);
 
 /**
@@ -162,6 +152,19 @@ class Announcement extends AnnouncementsAppModel {
 		$dataSource->begin();
 
 		try {
+			/* var_dump($this->Comment); */
+			if (!$this->validateAnnouncement($data)) {
+				return false;
+			}
+			if (!$this->Comment->validateByStatus($data, array('caller' => $this->name))) {
+				$this->validationErrors = Hash::merge($this->validationErrors, $this->Comment->validationErrors);
+				return false;
+			}
+			/* var_dump($this->Comment); */
+		/* $this->Comment->validateByStatus($data, array('caller' => $this->name)); */
+		/* $this->validationErrors = Hash::merge($this->validationErrors, $this->Comment->validationErrors); */
+
+
 			//ブロックの登録
 			$block = $this->Block->saveByFrameId($data['Frame']['id'], false);
 
@@ -195,11 +198,11 @@ class Announcement extends AnnouncementsAppModel {
  * validate announcement
  *
  * @param array $data received post data
- * @return bool|array True on success, validation errors array on error
+ * @return bool True on success, false on error
  */
 	public function validateAnnouncement($data) {
 		$this->set($data);
 		$this->validates();
-		return $this->validationErrors ? $this->validationErrors : true;
+		return $this->validationErrors ? false : true;
 	}
 }

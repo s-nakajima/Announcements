@@ -136,26 +136,13 @@ class AnnouncementsController extends AnnouncementsAppController {
 			/* var_dump($announcement); */
 			/* exit; */
 			/* $this->set($data); */
-			$announcement = Hash::merge($announcement['Announcement'], $data['Announcement']);
-			/* var_dump($announcement); */
-			$ret = $this->Announcement->validateAnnouncement($announcement);
-			/* var_dump($ret); */
-			if (!$this->__handleValidationError($ret)) {
-				return;
+			/* $announcement = Hash::merge($announcement['Announcement'], $data['Announcement']); */
+			$data = Hash::merge($announcement, $data);
+			if (!$announcement = $this->Announcement->saveAnnouncement($data)) {
+				if (!$this->__handleValidationError($this->Announcement->validationErrors)) {
+					return;
+				}
 			}
-			/* var_dump(1); */
-			$comment = array_merge(
-				$this->Announcement->data,
-				[
-					'Comment' => $data['Comment'],
-				]);
-			/* var_dump($comment); */
-			$ret = $this->Comment->validateByStatus($comment, array('caller' => 'Announcement'));
-			if (!$this->__handleValidationError($ret)) {
-				return;
-			}
-
-			$announcement = $this->Announcement->saveAnnouncement($data);
 			$this->set('blockId', $announcement['Announcement']['block_id']);
 			if (!$this->request->is('ajax')) {
 				$backUrl = CakeSession::read('backUrl');
@@ -165,7 +152,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 			return;
 		}
 
-		$results = array('announcements' => $this->viewVars['announcements']);
+		/* $results = array('announcements' => $this->viewVars['announcements']); */
 	}
 
 /**

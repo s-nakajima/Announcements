@@ -137,7 +137,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'comment' => 'edit comment',
 			)
 		);
-		$this->Announcement->validateAnnouncement($postData);
+		/* $this->Announcement->validateAnnouncement($postData); */
 		$this->Announcement->saveAnnouncement($postData);
 
 		$result = $this->Announcement->getAnnouncement($frameId, $blockId, true);
@@ -182,7 +182,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'comment' => 'add comment',
 			)
 		);
-		$this->Announcement->validateAnnouncement($postData);
+		/* $this->Announcement->validateAnnouncement($postData); */
 		$this->Announcement->saveAnnouncement($postData);
 
 		$blockId = 3;
@@ -227,7 +227,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'comment' => 'edit comment',
 			)
 		);
-		$this->Announcement->validateAnnouncement($postData);
+		/* $this->Announcement->validateAnnouncement($postData); */
 		$result = $this->Announcement->saveAnnouncement($postData);
 
 		$result = $this->Announcement->getAnnouncement($frameId, $blockId, true);
@@ -280,7 +280,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'comment' => '',
 			)
 		);
-		$this->Announcement->validateAnnouncement($postData);
+		/* $this->Announcement->validateAnnouncement($postData); */
 		$this->Announcement->saveAnnouncement($postData);
 
 		$result = $this->Announcement->getAnnouncement($frameId, $blockId, true);
