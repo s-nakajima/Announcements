@@ -25,6 +25,12 @@ class AllAnnouncementsTest extends CakeTestSuite {
 	public static function suite() {
 		$plugin = preg_replace('/^All([\w]+)Test$/', '$1', __CLASS__);
 		$suite = new CakeTestSuite(sprintf('All %s Plugin tests', $plugin));
+		$task = 'AnnouncementsApp';
+		var_dump($task);
+		$suite->addTestFile(CakePlugin::path($plugin) . 'Test' . DS . 'Case' . DS . 'Controller' . DS . $task . 'Test.php');
+		$task = 'AnnouncementAppModel';
+		var_dump($task);
+		$suite->addTestFile(CakePlugin::path($plugin) . 'Test' . DS . 'Case' . DS . 'Model' . DS . $task . 'Test.php');
 		/* $task = 'AnnouncementsControllerError'; */
 		/* var_dump($task); */
 		/* $suite->addTestFile(CakePlugin::path($plugin) . 'Test' . DS . 'Case' . DS . 'Controller' . DS . $task . 'Test.php'); */
@@ -34,15 +40,9 @@ class AllAnnouncementsTest extends CakeTestSuite {
 		/* $task = 'AnnouncementsControllerValidateError'; */
 		/* var_dump($task); */
 		/* $suite->addTestFile(CakePlugin::path($plugin) . 'Test' . DS . 'Case' . DS . 'Controller' . DS . $task . 'Test.php'); */
-		/* $task = 'AnnouncementsApp'; */
-		/* var_dump($task); */
-		/* $suite->addTestFile(CakePlugin::path($plugin) . 'Test' . DS . 'Case' . DS . 'Controller' . DS . $task . 'Test.php'); */
-		/* $task = 'AnnouncementAppModel'; */
-		/* var_dump($task); */
-		/* $suite->addTestFile(CakePlugin::path($plugin) . 'Test' . DS . 'Case' . DS . 'Model' . DS . $task . 'Test.php'); */
-		/* $task = 'Announcement'; */
-		/* var_dump($task); */
-		/* $suite->addTestFile(CakePlugin::path($plugin) . 'Test' . DS . 'Case' . DS . 'Model' . DS . $task . 'Test.php'); */
+		$task = 'Announcement';
+		var_dump($task);
+		$suite->addTestFile(CakePlugin::path($plugin) . 'Test' . DS . 'Case' . DS . 'Model' . DS . $task . 'Test.php');
 		/* $suite->addTestDirectoryRecursive(CakePlugin::path($plugin) . 'Test' . DS . 'Case'); */
 		return $suite;
 	}
