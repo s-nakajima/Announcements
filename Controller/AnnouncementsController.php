@@ -91,15 +91,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 				$this->view = 'Announcements/viewForEditor';
 			}
 		}
-
-		/* $results = array( */
-		/* 	'announcements' => $this->viewVars['announcements'], */
-		/* ); */
-		/* $this->set(compact('results')); */
-
-		/* if (! $this->viewVars['announcements']) { */
-		/* 	$this->autoRender = false; */
-		/* } */
 	}
 
 /**
