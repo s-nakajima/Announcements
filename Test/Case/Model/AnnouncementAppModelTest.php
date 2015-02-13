@@ -34,6 +34,7 @@ class AnnouncementAppModelTest extends CakeTestCase {
 		'plugin.announcements.comment',
 		'plugin.frames.box',
 		/* 'plugin.frames.language', */
+		'plugin.m17n.language',
 		'plugin.rooms.room',
 		'plugin.announcements.user_attributes_user',
 		'plugin.announcements.user',
