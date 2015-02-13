@@ -189,7 +189,7 @@ class AnnouncementsAppTest extends YAControllerTestCase {
 			'data' => array(
 			),
 		));
-		$this->assertFalse(CakeSession::read('Auth.User'), '_logout()');
+		$this->assertNull(CakeSession::read('Auth.User'), '_logout()');
 	}
 
 /**
