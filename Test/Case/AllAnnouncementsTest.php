@@ -34,7 +34,7 @@ class AllAnnouncementsTest extends CakeTestSuite {
 		$task = 'AnnouncementsControllerValidateError';
 		var_dump($task);
 		$suite->addTestFile(CakePlugin::path($plugin) . 'Test' . DS . 'Case' . DS . 'Controller' . DS . $task . 'Test.php');
-		$task = 'AnnouncementsApp';
+		$task = 'AnnouncementApp';
 		var_dump($task);
 		$suite->addTestFile(CakePlugin::path($plugin) . 'Test' . DS . 'Case' . DS . 'Model' . DS . $task . 'Test.php');
 		$task = 'Announcement';
