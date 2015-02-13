@@ -43,7 +43,7 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 
 		$this->testAction('/announcements/announcements/edit/1.json', array('method' => 'get'));
 
-		$this->_logout();
+		/* $this->_logout(); */
 	}
 
 /**
@@ -83,22 +83,21 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 			),
 		);
 
-		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 		$view = $this->testAction(
 				'/announcements/announcements/edit/1.json',
 				array(
 					'method' => 'post',
+					'type' => 'json',
 					'data' => $postData,
 					'return' => 'contents'
 				)
 			);
-		unset($_ENV['HTTP_X_REQUESTED_WITH']);
 
 		$result = json_decode($view, true);
 		$this->assertArrayHasKey('code', $result, print_r($result, true));
 		$this->assertEquals(400, $result['code'], print_r($result, true));
 
-		$this->_logout();
+		/* $this->_logout(); */
 	}
 
 /**
@@ -125,23 +124,21 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 			sprintf('save_%s', NetCommonsBlockComponent::STATUS_PUBLISHED) => '',
 		);
 
-		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 		$view = $this->testAction(
 				'/announcements/announcements/edit/1.json',
 				array(
 					'method' => 'post',
+					'type' => 'json',
 					'data' => $postData,
 					'return' => 'contents'
 				)
 			);
-		unset($_ENV['HTTP_X_REQUESTED_WITH']);
-		var_dump($view);
 
 		$result = json_decode($view, true);
 		$this->assertArrayHasKey('code', $result, print_r($result, true));
 		$this->assertEquals(400, $result['code'], print_r($result, true));
 
-		$this->_logout();
+		/* $this->_logout(); */
 	}
 
 /**
@@ -168,20 +165,19 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 			sprintf('save_%s', NetCommonsBlockComponent::STATUS_DISAPPROVED) => '',
 		);
 
-		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 		$view = $this->testAction(
 				'/announcements/announcements/edit/1.json',
 				array(
 					'method' => 'post',
+					'type' => 'json',
 					'data' => $postData,
 					'return' => 'contents'
 				)
 			);
-		unset($_ENV['HTTP_X_REQUESTED_WITH']);
 		$result = json_decode($view, true);
 		$this->assertArrayHasKey('code', $result, print_r($result, true));
 		$this->assertEquals(400, $result['code'], print_r($result, true));
 
-		$this->_logout();
+		/* $this->_logout(); */
 	}
 }
