@@ -86,31 +86,31 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
  *
  * @return void
  */
-	public function testSaveAnnouncementByFrameSaveError() {
-		$this->setExpectedException('InternalErrorException');
+	/* public function testSaveAnnouncementByFrameSaveError() { */
+	/* 	$this->setExpectedException('InternalErrorException'); */
 
-		$this->Frame = $this->getMockForModel('Frames.Frame', array('save'));
-		$this->Frame->expects($this->any())
-			->method('save')
-			->will($this->returnValue(false));
+	/* 	$this->Frame = $this->getMockForModel('Frames.Frame', array('save')); */
+	/* 	$this->Frame->expects($this->any()) */
+	/* 		->method('save') */
+	/* 		->will($this->returnValue(false)); */
 
-		$postData = array(
-			'Announcement' => array(
-				'status' => '2',
-				'content' => 'add content',
-				'block_id' => '0'
-			),
-			'Frame' => array(
-				'id' => '3'
-			),
-			'Comment' => array(
-				'comment' => 'edit comment',
-			)
-		);
-		$this->Announcement->saveAnnouncement($postData);
+	/* 	$postData = array( */
+	/* 		'Announcement' => array( */
+	/* 			'status' => '2', */
+	/* 			'content' => 'add content', */
+	/* 			'block_id' => '0' */
+	/* 		), */
+	/* 		'Frame' => array( */
+	/* 			'id' => '3' */
+	/* 		), */
+	/* 		'Comment' => array( */
+	/* 			'comment' => 'edit comment', */
+	/* 		) */
+	/* 	); */
+	/* 	$this->Announcement->saveAnnouncement($postData); */
 
-		unset($this->Frame);
-	}
+	/* 	unset($this->Frame); */
+	/* } */
 
 /**
  * testSaveAnnouncementBySaveError method
