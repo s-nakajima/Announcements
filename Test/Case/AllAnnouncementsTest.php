@@ -37,9 +37,9 @@ class AllAnnouncementsTest extends CakeTestSuite {
 		$task = 'AnnouncementsController';
 		var_dump($task);
 		$suite->addTestFile(CakePlugin::path($plugin) . 'Test' . DS . 'Case' . DS . 'Controller' . DS . $task . 'Test.php');
-		/* $task = 'AnnouncementsControllerValidateError'; */
-		/* var_dump($task); */
-		/* $suite->addTestFile(CakePlugin::path($plugin) . 'Test' . DS . 'Case' . DS . 'Controller' . DS . $task . 'Test.php'); */
+		$task = 'AnnouncementsControllerValidateError';
+		var_dump($task);
+		$suite->addTestFile(CakePlugin::path($plugin) . 'Test' . DS . 'Case' . DS . 'Controller' . DS . $task . 'Test.php');
 		$task = 'Announcement';
 		var_dump($task);
 		$suite->addTestFile(CakePlugin::path($plugin) . 'Test' . DS . 'Case' . DS . 'Model' . DS . $task . 'Test.php');
