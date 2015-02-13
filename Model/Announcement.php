@@ -136,23 +136,17 @@ class Announcement extends AnnouncementsAppModel {
  */
 
 	public function saveAnnouncement($data) {
-		//モデル定義
-		$this->setDataSource('master');
-		$models = array(
+		$this->loadModels([
+			'Announcement' => 'Announcements.Announcement',
 			'Block' => 'Blocks.Block',
 			'Comment' => 'Comments.Comment',
-		);
-		foreach ($models as $model => $class) {
-			$this->$model = ClassRegistry::init($class);
-			$this->$model->setDataSource('master');
-		}
+		]);
 
 		//トランザクションBegin
 		$dataSource = $this->getDataSource();
 		$dataSource->begin();
 
 		try {
-			/* var_dump($this->Comment); */
 			if (!$this->validateAnnouncement($data)) {
 				return false;
 			}
