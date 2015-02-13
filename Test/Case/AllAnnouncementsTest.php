@@ -27,12 +27,12 @@ class AllAnnouncementsTest extends CakeTestSuite {
 		$suite = new CakeTestSuite(sprintf('All %s Plugin tests', $plugin));
 		$task = 'AnnouncementsControllerError';
 		/* $task = 'AnnouncementsApp'; */
-		/* $task = 'Announcement'; */
-		$task = 'AnnouncementsController';
-		$task = 'AnnouncementsControllerValidateError';
+		$task = 'Announcement';
+		/* $task = 'AnnouncementsController'; */
+		/* $task = 'AnnouncementsControllerValidateError'; */
 		/* $suite->addTestFile(CakePlugin::path($plugin) . 'Test' . DS . 'Case' . DS . 'Controller' . DS . $task . 'Test.php'); */
-		/* $suite->addTestFile(CakePlugin::path($plugin) . 'Test' . DS . 'Case' . DS . 'Model' . DS . $task . 'Test.php'); */
-		$suite->addTestDirectoryRecursive(CakePlugin::path($plugin) . 'Test' . DS . 'Case');
+		$suite->addTestFile(CakePlugin::path($plugin) . 'Test' . DS . 'Case' . DS . 'Model' . DS . $task . 'Test.php');
+		/* $suite->addTestDirectoryRecursive(CakePlugin::path($plugin) . 'Test' . DS . 'Case'); */
 		return $suite;
 	}
 }
