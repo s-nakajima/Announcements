@@ -129,10 +129,9 @@ class AnnouncementsController extends AnnouncementsAppController {
 			/* $this->set($data); */
 			/* $announcement = Hash::merge($announcement['Announcement'], $data['Announcement']); */
 			$data = Hash::merge($announcement, $data);
-			if (!$announcement = $this->Announcement->saveAnnouncement($data)) {
-				if (!$this->__handleValidationError($this->Announcement->validationErrors)) {
-					return;
-				}
+			$announcement = $this->Announcement->saveAnnouncement($data);
+			if (!$this->__handleValidationError($this->Announcement->validationErrors)) {
+				return;
 			}
 			$this->set('blockId', $announcement['Announcement']['block_id']);
 			if (!$this->request->is('ajax')) {
@@ -206,7 +205,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return bool true on success, false on error
  */
 	private function __handleValidationError($errors) {
-		if (is_array($errors)) {
+		if ($errors) {
 			$this->validationErrors = $errors;
 			if ($this->request->is('ajax')) {
 				$results = ['error' => ['validationErrors' => $errors]];

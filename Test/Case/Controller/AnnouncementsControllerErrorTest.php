@@ -13,7 +13,7 @@ App::uses('AnnouncementsController', 'Announcements.Controller');
 App::uses('AnnouncementsAppTest', 'Announcements.Test/Case/Controller');
 
 /**
- * AnnouncementsController Test Case
+ * AnnouncementsController Error Test Case w/o model based validation errors
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Controller
@@ -21,7 +21,7 @@ App::uses('AnnouncementsAppTest', 'Announcements.Test/Case/Controller');
 class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 
 /**
- * testEditLoginError method
+ * Expect unauthenticated user cannot view edit action
  *
  * @return void
  */
@@ -31,7 +31,7 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 	}
 
 /**
- * testContentEditableError method
+ * Expect visitor cannot view edit action
  *
  * @return void
  */
@@ -47,7 +47,7 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 	}
 
 /**
- * testLogin method
+ * Expect user can authenticated as default roles
  *
  * @return void
  */
@@ -61,47 +61,7 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 	}
 
 /**
- * testEditStatusError method
- *
- * @return void
- */
-	public function testEditStatusError() {
-		$this->_generateController('Announcements.Announcements');
-		$this->_loginAdmin();
-
-		$postData = array(
-			'Announcement' => array(
-				'block_id' => '1',
-				'key' => 'announcement_1',
-				'content' => 'edit content',
-			),
-			'Comment' => array(
-				'comment' => 'edit comment',
-			),
-			'Frame' => array(
-				'id' => '1'
-			),
-		);
-
-		$view = $this->testAction(
-				'/announcements/announcements/edit/1.json',
-				array(
-					'method' => 'post',
-					'type' => 'json',
-					'data' => $postData,
-					'return' => 'contents'
-				)
-			);
-
-		$result = json_decode($view, true);
-		$this->assertArrayHasKey('code', $result, print_r($result, true));
-		$this->assertEquals(400, $result['code'], print_r($result, true));
-
-		/* $this->_logout(); */
-	}
-
-/**
- * testEditContentPublishedError method
+ * Expect editor cannot publish announcement
  *
  * @return void
  */
@@ -142,7 +102,7 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 	}
 
 /**
- * testEditContentDisapprovedError method
+ * Expect editor cannot disapprove announcement
  *
  * @return void
  */

@@ -21,51 +21,51 @@ App::uses('AnnouncementsAppTest', 'Announcements.Test/Case/Controller');
 class AnnouncementsControllerTest extends AnnouncementsAppTest {
 
 /**
- * testIndex method
+ * Expect visitor can access index action
  *
  * @return void
  */
 	public function testIndex() {
 		$this->testAction(
-				'/announcements/announcements/index/1',
-				array(
-					'method' => 'get',
-					'return' => 'view',
-				)
-			);
+			'/announcements/announcements/index/1',
+			array(
+				'method' => 'get',
+				'return' => 'view',
+			)
+		);
 		$this->assertTextEquals('Announcements/view', $this->controller->view);
 	}
 
 /**
- * testView method
+ * Expect visitor can access view action
  *
  * @return void
  */
 	public function testView() {
 		$this->testAction(
-				'/announcements/announcements/view/1',
-				array(
-					'method' => 'get',
-					'return' => 'view',
-				)
-			);
+			'/announcements/announcements/view/1',
+			array(
+				'method' => 'get',
+				'return' => 'view',
+			)
+		);
 		$this->assertTextEquals('view', $this->controller->view);
 	}
 
 /**
- * testViewJson method
+ * Expect visitor can access view action by json
  *
  * @return void
  */
 	public function testViewJson() {
 		$ret = $this->testAction(
-				'/announcements/announcements/view/1.json',
-				array(
-					'method' => 'get',
-					'type' => 'json',
-					'return' => 'contents',
-				)
-			);
+			'/announcements/announcements/view/1.json',
+			array(
+				'method' => 'get',
+				'type' => 'json',
+				'return' => 'contents',
+			)
+		);
 		$result = json_decode($ret, true);
 
 		$this->assertTextEquals('view', $this->controller->view);
@@ -74,7 +74,7 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 	}
 
 /**
- * testView method
+ * Expect admin user can access view action
  *
  * @return void
  */
@@ -83,12 +83,12 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 		$this->_loginAdmin();
 
 		$view = $this->testAction(
-				'/announcements/announcements/view/1',
-				array(
-					'method' => 'get',
-					'return' => 'view',
-				)
-			);
+			'/announcements/announcements/view/1',
+			array(
+				'method' => 'get',
+				'return' => 'view',
+			)
+		);
 
 		$this->assertTextContains('nc-announcements-1', $view, print_r($view, true));
 		$this->assertTextContains('ng-controller="Announcements"', $view, print_r($view, true));
@@ -97,7 +97,7 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 	}
 
 /**
- * testEditPost method
+ * Expect admin user can access edit action
  *
  * @return void
  */
@@ -105,31 +105,21 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 		$this->_generateController('Announcements.Announcements');
 		$this->_loginAdmin();
 
-		/* $view = $this->testAction( */
 		$this->testAction(
-				'/announcements/announcements/edit/1',
-				array(
-					'method' => 'get',
-					'return' => 'contents'
-				)
-			);
-		/* $result = json_decode($view, true); */
+			'/announcements/announcements/edit/1',
+			array(
+				'method' => 'get',
+				'return' => 'contents'
+			)
+		);
 
 		$this->assertTextEquals('edit', $this->controller->view);
-		/* $this->assertArrayHasKey('code', $result, print_r($result, true)); */
-		/* $this->assertEquals(200, $result['code'], print_r($result, true)); */
-		/* $this->assertEquals(200, $, print_r($result, true)); */
-		/* $this->assertArrayHasKey('name', $result, print_r($result, true)); */
-		/* $this->assertArrayHasKey('results', $result, print_r($result, true)); */
-		/* $this->assertArrayHasKey('announcement', $result['results'], print_r($result, true)); */
-		/* $this->assertArrayHasKey('Announcement', $result['results']['announcement'], print_r($result, true)); */
-		/* $this->assertArrayHasKey('comments', $result['results'], print_r($result, true)); */
 
 		$this->_logout();
 	}
 
 /**
- * testEditPost method
+ * Expect admin user can publish announcements
  *
  * @return void
  */
@@ -153,13 +143,13 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 		);
 
 		$this->testAction(
-				'/announcements/announcements/edit/1',
-				array(
-					'method' => 'post',
-					'data' => $postData,
-					'return' => 'contents'
-				)
-			);
+			'/announcements/announcements/edit/1',
+			array(
+				'method' => 'post',
+				'data' => $postData,
+				'return' => 'contents'
+			)
+		);
 		$this->assertTextEquals('edit', $this->controller->view);
 
 		$this->_logout();

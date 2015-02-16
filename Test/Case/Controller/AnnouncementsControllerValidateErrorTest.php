@@ -13,7 +13,7 @@ App::uses('AnnouncementsController', 'Announcements.Controller');
 App::uses('AnnouncementsAppTest', 'Announcements.Test/Case/Controller');
 
 /**
- * AnnouncementEditController Test Case
+ * AnnouncementsController Validation Error Test Case based on models
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Controller
@@ -21,7 +21,7 @@ App::uses('AnnouncementsAppTest', 'Announcements.Test/Case/Controller');
 class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
 
 /**
- * testEditContentError method
+ * Expect user cannot edit w/o valid announcements.status
  *
  * @return void
  */
@@ -58,7 +58,7 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
 	}
 
 /**
- * testEditContentError method
+ * Expect user cannot edit w/o valid announcements.status as ajax request
  *
  * @return void
  */
@@ -70,7 +70,7 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
 			'Announcement' => array(
 				'block_id' => '1',
 				'key' => 'announcement_1',
-				'content' => '',
+				'content' => 'announcement',
 			),
 			'Frame' => array(
 				'id' => '1'
@@ -99,7 +99,7 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
 	}
 
 /**
- * testEditContentError method
+ * Expect user cannot edit w/o valid announcements.content
  *
  * @return void
  */
@@ -146,7 +146,7 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
 	}
 
 /**
- * testEditCommentError method
+ * Expect admin user cannot disapprove publish request from editor w/o comments.comment
  *
  * @return void
  */

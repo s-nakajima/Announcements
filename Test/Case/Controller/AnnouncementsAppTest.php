@@ -34,7 +34,6 @@ class AnnouncementsAppTest extends YAControllerTestCase {
 		'plugin.announcements.block',
 		'plugin.announcements.comment',
 		'plugin.frames.box',
-		/* 'plugin.frames.language', */
 		'plugin.announcements.user_attributes_user',
 		'plugin.announcements.user',
 		'plugin.announcements.frame',

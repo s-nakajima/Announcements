@@ -118,11 +118,10 @@ class Announcement extends AnnouncementsAppModel {
 		}
 
 		$announcement = $this->find('first', array(
-				'recursive' => -1,
-				'conditions' => $conditions,
-				'order' => 'Announcement.id DESC',
-			)
-		);
+			'recursive' => -1,
+			'conditions' => $conditions,
+			'order' => 'Announcement.id DESC',
+		));
 
 		return $announcement;
 	}
@@ -162,12 +161,16 @@ class Announcement extends AnnouncementsAppModel {
 			$this->data['Announcement']['block_id'] = (int)$block['Block']['id'];
 			$announcement = $this->save(null, false);
 			if (! $announcement) {
+				// @codeCoverageIgnoreStart
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+				// @codeCoverageIgnoreEnd
 			}
 			//コメントの登録
 			if ($this->Comment->data) {
 				if (! $this->Comment->save(null, false)) {
+					// @codeCoverageIgnoreStart
 					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+					// @codeCoverageIgnoreEnd
 				}
 			}
 
