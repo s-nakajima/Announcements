@@ -22,7 +22,7 @@
 		<?php echo $this->element('NetCommons.setting_button'); ?>
 	</p>
 
-	<?php echo $announcements['content']; ?>
+	<?php echo isset($announcements['content']) ? $announcements['content'] : ''; ?>
 
 	<p class="text-left">
 		<?php echo $this->element('NetCommons.status_label',

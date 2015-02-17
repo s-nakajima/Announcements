@@ -11,5 +11,5 @@
 ?>
 
 <div>
-	<?php echo $announcements['content']; ?>
+	<?php echo isset($announcements['content']) ? $announcements['content'] : ''; ?>
 </div>

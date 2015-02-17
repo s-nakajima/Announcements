@@ -174,13 +174,10 @@ class Announcement extends AnnouncementsAppModel {
 				}
 			}
 
-			//トランザクションCommit
 			$dataSource->commit();
 		} catch (Exception $ex) {
-			//トランザクションRollback
 			$dataSource->rollback();
-			//エラー出力
-			CakeLog::write(LOG_ERR, $ex);
+			CakeLog::error($ex);
 			throw $ex;
 		}
 

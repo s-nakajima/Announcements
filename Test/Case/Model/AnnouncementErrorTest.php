@@ -12,6 +12,8 @@
  */
 
 App::uses('AnnouncementAppModelTest', 'Announcements.Test/Case/Model');
+CakeLog::drop('stdout');
+CakeLog::drop('stderr');
 
 /**
  *Announcement Model Test Case
@@ -26,7 +28,7 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
  *
  * @var array
  */
-	public $logLevels = array();
+	/* public $logLevels = array(); */
 
 /**
  * setUp method
@@ -35,13 +37,6 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
  */
 	public function setUp() {
 		parent::setUp();
-
-		//異常(catch)テストでエラーTraceが必ず出力されてしまうため、ログ出力をOFFにする
-		//また、Modelでは、CakeLog::error()を使うとNoticeが発生するため、CakeLog::write()を使って出力する
-		$this->logLevels = CakeLog::levels();
-		$setLevels = $this->logLevels;
-		$setLevels[LOG_ERR] = '';
-		CakeLog::levels($setLevels, false);
 	}
 
 /**
@@ -50,8 +45,6 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
  * @return void
  */
 	public function tearDown() {
-		//ログ出力をONにする
-		CakeLog::levels($this->logLevels, false);
 		parent::tearDown();
 	}
 
