@@ -14,14 +14,15 @@
 App::uses('Announcement', 'Announcements.Model');
 App::uses('NetCommonsBlockComponent', 'NetCommons.Controller/Component');
 App::uses('NetCommonsRoomRoleComponent', 'NetCommons.Controller/Component');
+App::uses('YACakeTestCase', 'NetCommons.TestSuite');
 
 /**
- *Announcement Model Test Case
+ * Announcement Model Test Case
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Model
  */
-class AnnouncementAppModelTest extends CakeTestCase {
+class AnnouncementAppModelTest extends YACakeTestCase {
 
 /**
  * Fixtures
@@ -33,7 +34,6 @@ class AnnouncementAppModelTest extends CakeTestCase {
 		'plugin.announcements.block',
 		'plugin.announcements.comment',
 		'plugin.frames.box',
-		/* 'plugin.frames.language', */
 		'plugin.m17n.language',
 		'plugin.rooms.room',
 		'plugin.announcements.user_attributes_user',
