@@ -9,6 +9,8 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 ?>
+<?php echo $this->element('Wysiwyg.mathjax_config'); ?>
+<?php echo $this->element('Wysiwyg.include_javascript'); ?>
 
 <?php echo $this->Html->script('/net_commons/base/js/workflow.js', false); ?>
 <?php echo $this->Html->script('/net_commons/base/js/wysiwyg.js', false); ?>

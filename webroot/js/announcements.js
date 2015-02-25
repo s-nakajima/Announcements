@@ -145,7 +145,7 @@
  * @param {function($scope, $modalStack)} Controller
  */
 NetCommonsApp.controller('Announcements',
-    function($scope, NetCommonsBase, NetCommonsWysiwyg,
+    function($scope, NetCommonsBase, NetCommonsWysiwyg, WysiwygOptions,
     NetCommonsTab, NetCommonsUser, NetCommonsWorkflow) {
 
       /**
@@ -169,6 +169,11 @@ NetCommonsApp.controller('Announcements',
        * @type {object}
        */
       $scope.tinymce = NetCommonsWysiwyg.new();
+      $scope.tinymce.options = WysiwygOptions;
+      $scope.tinymce.options.ncUpload = {
+          roomId: '1',
+          pluginKey: 'announcements'
+      };
 
       /**
        * workflow

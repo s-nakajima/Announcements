@@ -9,6 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 ?>
+<?php echo $this->element('Wysiwyg.mathjax_config'); ?>
 
 <div>
 	<?php echo isset($announcements['content']) ? $announcements['content'] : ''; ?>
