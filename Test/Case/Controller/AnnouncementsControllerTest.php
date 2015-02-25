@@ -102,6 +102,7 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
  * @return void
  */
 	public function testViewByUnkownFrameId() {
+		$this->setExpectedException('InternalServerException');
 		$this->testAction(
 			'/announcements/announcements/view/999',
 			array(
@@ -109,7 +110,6 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 				'return' => 'view',
 			)
 		);
-		$this->assertTextEquals('view', $this->controller->view);
 	}
 
 /**
