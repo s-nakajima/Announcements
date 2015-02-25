@@ -35,7 +35,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @var array
  */
 	public $components = array(
-		'NetCommons.NetCommonsBlock',
+		/* 'NetCommons.NetCommonsBlock', */
 		'NetCommons.NetCommonsFrame',
 		'NetCommons.NetCommonsRoomRole' => array(
 			//コンテンツの権限設定
@@ -121,13 +121,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 			)) {
 				$announcement = $this->Announcement->create(['key' => Security::hash('announcement' . mt_rand() . microtime(), 'md5')]);
 			}
-			/* var_dump(1); */
-			/* var_dump($this->request->data); */
-			/* var_dump($data); */
-			/* var_dump($announcement); */
-			/* exit; */
-			/* $this->set($data); */
-			/* $announcement = Hash::merge($announcement['Announcement'], $data['Announcement']); */
+
 			$data = Hash::merge($announcement, $data);
 			$announcement = $this->Announcement->saveAnnouncement($data);
 			if (!$this->__handleValidationError($this->Announcement->validationErrors)) {
@@ -141,8 +135,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 			}
 			return;
 		}
-
-		/* $results = array('announcements' => $this->viewVars['announcements']); */
 	}
 
 /**

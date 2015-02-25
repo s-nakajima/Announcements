@@ -97,6 +97,22 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 	}
 
 /**
+ * Expect user cannot access view action with unknown frame id
+ *
+ * @return void
+ */
+	public function testViewByUnkownFrameId() {
+		$this->testAction(
+			'/announcements/announcements/view/999',
+			array(
+				'method' => 'get',
+				'return' => 'view',
+			)
+		);
+		$this->assertTextEquals('view', $this->controller->view);
+	}
+
+/**
  * Expect admin user can access edit action
  *
  * @return void
@@ -116,6 +132,23 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 		$this->assertTextEquals('edit', $this->controller->view);
 
 		$this->_logout();
+	}
+
+/**
+ * Expect view action to be successfully handled w/ null frame.block_id
+ * This situation typically occur after placing new plugin into page
+ *
+ * @return void
+ */
+	public function testAddFrameWithoutBlock() {
+		$this->testAction(
+			'/announcements/announcements/view/3',
+			array(
+				'method' => 'get',
+				'return' => 'contents'
+			)
+		);
+		$this->assertTextEquals('view', $this->controller->view);
 	}
 
 /**
