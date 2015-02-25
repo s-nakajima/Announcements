@@ -10,7 +10,7 @@
  */
 ?>
 <?php echo $this->Html->meta(
-		array('name' => 'viewport', 'content' => 'user-scalable=no'),
+		array('name' => 'viewport', 'content' => 'width=device-width, initial-scale=1, user-scalable=no'),
 		null,
 		array('inline' => false)
 	); ?>
