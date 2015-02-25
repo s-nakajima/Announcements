@@ -93,7 +93,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
  */
 	public function testGetAnnouncementByNoBlockId() {
 		$frameId = 3;
-		$blockId = 0;
+		$blockId = null;
 		$contentEditable = true;
 		$result = $this->Announcement->getAnnouncement($frameId, $blockId, $contentEditable);
 
@@ -122,7 +122,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 		$frameId = 1;
 		$blockId = 1;
 
-		$postData = array(
+		$data = array(
 			'Announcement' => array(
 				'block_id' => $blockId,
 				'key' => 'announcement_1',
@@ -138,8 +138,8 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'comment' => 'edit comment',
 			)
 		);
-		/* $this->Announcement->validateAnnouncement($postData); */
-		$this->Announcement->saveAnnouncement($postData);
+		/* $this->Announcement->validateAnnouncement($data); */
+		$this->Announcement->saveAnnouncement($data);
 
 		$result = $this->Announcement->getAnnouncement($frameId, $blockId, true);
 
@@ -165,9 +165,9 @@ class AnnouncementTest extends AnnouncementAppModelTest {
  */
 	public function testSaveAnnouncementByNoBlockId() {
 		$frameId = 3;
-		$blockId = 0;
+		$blockId = null;
 
-		$postData = array(
+		$data = array(
 			'Announcement' => array(
 				'block_id' => $blockId,
 				'status' => NetCommonsBlockComponent::STATUS_PUBLISHED,
@@ -183,8 +183,8 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'comment' => 'add comment',
 			)
 		);
-		/* $this->Announcement->validateAnnouncement($postData); */
-		$this->Announcement->saveAnnouncement($postData);
+		/* $this->Announcement->validateAnnouncement($data); */
+		$this->Announcement->saveAnnouncement($data);
 
 		$blockId = 3;
 		$result = $this->Announcement->getAnnouncement($frameId, $blockId, true);
@@ -212,7 +212,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 	/* 	$frameId = 1; */
 	/* 	$blockId = 1; */
 
-	/* 	$postData = array( */
+	/* 	$data = array( */
 	/* 		'Announcement' => array( */
 	/* 			'block_id' => $blockId, */
 	/* 			'key' => 'announcement_1', */
@@ -228,8 +228,8 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 	/* 			'comment' => 'edit comment', */
 	/* 		) */
 	/* 	); */
-	/* 	/\* $this->Announcement->validateAnnouncement($postData); *\/ */
-	/* 	$result = $this->Announcement->saveAnnouncement($postData); */
+	/* 	/\* $this->Announcement->validateAnnouncement($data); *\/ */
+	/* 	$result = $this->Announcement->saveAnnouncement($data); */
 
 	/* 	$result = $this->Announcement->getAnnouncement($frameId, $blockId, true); */
 
@@ -258,7 +258,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 		$frameId = 1;
 		$blockId = 1;
 
-		$postData = array(
+		$data = array(
 			'Announcement' => array(
 				'block_id' => $blockId,
 				'key' => 'announcement_1',
@@ -281,8 +281,8 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'comment' => '',
 			)
 		);
-		/* $this->Announcement->validateAnnouncement($postData); */
-		$this->Announcement->saveAnnouncement($postData);
+		/* $this->Announcement->validateAnnouncement($data); */
+		$this->Announcement->saveAnnouncement($data);
 
 		$result = $this->Announcement->getAnnouncement($frameId, $blockId, true);
 

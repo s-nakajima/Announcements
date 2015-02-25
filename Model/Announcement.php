@@ -155,6 +155,7 @@ class Announcement extends AnnouncementsAppModel {
 			}
 
 			//ブロックの登録
+			var_dump($data['Frame']['id']);
 			$block = $this->Block->saveByFrameId($data['Frame']['id'], false);
 
 			//お知らせの登録

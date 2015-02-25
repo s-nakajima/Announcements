@@ -160,7 +160,7 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 		$this->_generateController('Announcements.Announcements');
 		$this->_loginAdmin();
 
-		$postData = array(
+		$data = array(
 			'Announcement' => array(
 				'block_id' => '1',
 				'key' => 'announcement_1',
@@ -179,7 +179,7 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 			'/announcements/announcements/edit/1',
 			array(
 				'method' => 'post',
-				'data' => $postData,
+				'data' => $data,
 				'return' => 'contents'
 			)
 		);
