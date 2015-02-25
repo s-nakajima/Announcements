@@ -9,6 +9,11 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 ?>
+<?php echo $this->Html->meta(
+		array('name' => 'viewport', 'content' => 'user-scalable=no'),
+		null,
+		array('inline' => false)
+	); ?>
 <?php echo $this->element('Wysiwyg.mathjax_config'); ?>
 <?php echo $this->element('Wysiwyg.include_javascript'); ?>
 
