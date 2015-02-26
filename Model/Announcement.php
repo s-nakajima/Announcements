@@ -152,6 +152,8 @@ class Announcement extends AnnouncementsAppModel {
 			'Block' => 'Blocks.Block',
 			'Comment' => 'Comments.Comment',
 		]);
+		unset($this->Block);
+		$this->Block = ClassRegistry::init('Blocks.Block', true);
 
 		//トランザクションBegin
 		$dataSource = $this->getDataSource();
