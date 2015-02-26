@@ -127,8 +127,8 @@ class Announcement extends AnnouncementsAppModel {
 	}
 
 	public function loadModels2(array $models = []) {
+		ClassRegistry::flush();
 		foreach ($models as $model => $class) {
-			var_dump(ClassRegistry::keys());
 			$this->$model = ClassRegistry::init($class, true);
 			/* var_dump(ClassRegistry::init($class, true)); */
 			var_dump(get_class($this->$model));
@@ -136,6 +136,7 @@ class Announcement extends AnnouncementsAppModel {
 				$this->$model->setDataSource('master');
 			}
 		}
+		var_dump(ClassRegistry::keys());
 	}
 
 /**
@@ -154,6 +155,9 @@ class Announcement extends AnnouncementsAppModel {
 		]);
 		unset($this->Block);
 		$this->Block = ClassRegistry::init('Blocks.Block', true);
+		if ($this->Block->useDbConfig !== 'test') {
+			$this->Block->setDataSource('master');
+		}
 
 		//トランザクションBegin
 		$dataSource = $this->getDataSource();
