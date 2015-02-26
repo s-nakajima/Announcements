@@ -128,9 +128,9 @@ class Announcement extends AnnouncementsAppModel {
 
 	public function loadModels2(array $models = []) {
 		foreach ($models as $model => $class) {
-			$this->$model = ClassRegistry::init($class);
-			var_dump(ClassRegistry::init($class, true));
-			var_dump(get_class($this->$model));
+			$this->$model = ClassRegistry::init($class, true);
+			/* var_dump(ClassRegistry::init($class, true)); */
+			var_dump($this->$model);
 			if ($this->$model->useDbConfig !== 'test') {
 				$this->$model->setDataSource('master');
 			}
