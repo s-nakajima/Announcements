@@ -126,7 +126,7 @@ class Announcement extends AnnouncementsAppModel {
 		return $announcement;
 	}
 
-	public function loadModels(array $models = []) {
+	public function loadModels2(array $models = []) {
 		foreach ($models as $model => $class) {
 			$this->$model = ClassRegistry::init($class);
 			var_dump(ClassRegistry::init($class, true));
@@ -146,7 +146,7 @@ class Announcement extends AnnouncementsAppModel {
  */
 
 	public function saveAnnouncement($data) {
-		$this->loadModels([
+		$this->loadModels2([
 			'Announcement' => 'Announcements.Announcement',
 			'Block' => 'Blocks.Block',
 			'Comment' => 'Comments.Comment',
