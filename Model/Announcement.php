@@ -128,6 +128,7 @@ class Announcement extends AnnouncementsAppModel {
 
 	public function loadModels2(array $models = []) {
 		foreach ($models as $model => $class) {
+			var_dump(ClassRegistry::mapKeys());
 			$this->$model = ClassRegistry::init($class, true);
 			/* var_dump(ClassRegistry::init($class, true)); */
 			var_dump(get_class($this->$model));
