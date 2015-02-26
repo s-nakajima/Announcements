@@ -126,18 +126,6 @@ class Announcement extends AnnouncementsAppModel {
 		return $announcement;
 	}
 
-	/* public function loadModels2(array $models = []) { */
-	/* 	foreach ($models as $model => $class) { */
-	/* 		$this->$model = ClassRegistry::init($class, true); */
-	/* 		/\* var_dump(ClassRegistry::init($class, true)); *\/ */
-	/* 		var_dump(get_class($this->$model)); */
-	/* 		if ($this->$model->useDbConfig !== 'test') { */
-	/* 			$this->$model->setDataSource('master'); */
-	/* 		} */
-	/* 	} */
-	/* 	var_dump(ClassRegistry::keys()); */
-	/* } */
-
 /**
  * save announcement
  *
@@ -167,8 +155,6 @@ class Announcement extends AnnouncementsAppModel {
 			}
 
 			//ブロックの登録
-			var_dump($data['Frame']['id']);
-			var_dump($this->Block);
 			$block = $this->Block->saveByFrameId($data['Frame']['id'], false);
 
 			//お知らせの登録
