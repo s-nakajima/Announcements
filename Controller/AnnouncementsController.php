@@ -122,7 +122,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 				$announcement = $this->Announcement->create(['key' => Security::hash('announcement' . mt_rand() . microtime(), 'md5')]);
 			}
 
-			var_dump($announcement, $data);
+			/* var_dump($announcement, $data); */
 			$data = Hash::merge($announcement, $data);
 			$announcement = $this->Announcement->saveAnnouncement($data);
 			if (!$this->__handleValidationError($this->Announcement->validationErrors)) {

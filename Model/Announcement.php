@@ -126,6 +126,17 @@ class Announcement extends AnnouncementsAppModel {
 		return $announcement;
 	}
 
+	public function loadModels(array $models = []) {
+		foreach ($models as $model => $class) {
+			$this->$model = ClassRegistry::init($class);
+			var_dump(ClassRegistry::init($class, true));
+			var_dump(get_class($this->$model));
+			if ($this->$model->useDbConfig !== 'test') {
+				$this->$model->setDataSource('master');
+			}
+		}
+	}
+
 /**
  * save announcement
  *
