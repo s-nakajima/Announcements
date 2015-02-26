@@ -130,7 +130,7 @@ class Announcement extends AnnouncementsAppModel {
 		foreach ($models as $model => $class) {
 			$this->$model = ClassRegistry::init($class, true);
 			/* var_dump(ClassRegistry::init($class, true)); */
-			var_dump($this->$model);
+			var_dump(get_class($this->$model));
 			if ($this->$model->useDbConfig !== 'test') {
 				$this->$model->setDataSource('master');
 			}
