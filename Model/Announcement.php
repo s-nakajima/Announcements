@@ -126,18 +126,17 @@ class Announcement extends AnnouncementsAppModel {
 		return $announcement;
 	}
 
-	public function loadModels2(array $models = []) {
-		ClassRegistry::flush();
-		foreach ($models as $model => $class) {
-			$this->$model = ClassRegistry::init($class, true);
-			/* var_dump(ClassRegistry::init($class, true)); */
-			var_dump(get_class($this->$model));
-			if ($this->$model->useDbConfig !== 'test') {
-				$this->$model->setDataSource('master');
-			}
-		}
-		var_dump(ClassRegistry::keys());
-	}
+	/* public function loadModels2(array $models = []) { */
+	/* 	foreach ($models as $model => $class) { */
+	/* 		$this->$model = ClassRegistry::init($class, true); */
+	/* 		/\* var_dump(ClassRegistry::init($class, true)); *\/ */
+	/* 		var_dump(get_class($this->$model)); */
+	/* 		if ($this->$model->useDbConfig !== 'test') { */
+	/* 			$this->$model->setDataSource('master'); */
+	/* 		} */
+	/* 	} */
+	/* 	var_dump(ClassRegistry::keys()); */
+	/* } */
 
 /**
  * save announcement
@@ -148,16 +147,11 @@ class Announcement extends AnnouncementsAppModel {
  */
 
 	public function saveAnnouncement($data) {
-		$this->loadModels2([
+		$this->loadModels([
 			'Announcement' => 'Announcements.Announcement',
 			'Block' => 'Blocks.Block',
 			'Comment' => 'Comments.Comment',
 		]);
-		unset($this->Block);
-		$this->Block = ClassRegistry::init('Blocks.Block', true);
-		if ($this->Block->useDbConfig !== 'test') {
-			$this->Block->setDataSource('master');
-		}
 
 		//トランザクションBegin
 		$dataSource = $this->getDataSource();

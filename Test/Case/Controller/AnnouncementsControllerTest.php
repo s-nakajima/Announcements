@@ -185,6 +185,6 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 		);
 		$this->assertTextEquals('edit', $this->controller->view);
 
-		$this->_logout();
+		/* $this->_logout(); */
 	}
 }
