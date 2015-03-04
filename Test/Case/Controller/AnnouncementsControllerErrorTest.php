@@ -47,20 +47,6 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 	}
 
 /**
- * Expect user can authenticated as default roles
- *
- * @return void
- */
-	public function testLogin() {
-		$this->_generateController('Announcements.Announcements');
-		$roles = ['admin', 'editor', 'visitor'];
-		foreach ($roles as $role) {
-			$method = sprintf('_login%s', ucfirst($role));
-			$this->$method();
-		}
-	}
-
-/**
  * Expect editor cannot publish announcement
  *
  * @return void

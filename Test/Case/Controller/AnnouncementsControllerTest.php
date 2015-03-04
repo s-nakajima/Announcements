@@ -80,7 +80,7 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
  */
 	public function testViewByAdmin() {
 		$this->_generateController('Announcements.Announcements');
-		$this->_loginAdmin();
+		RolesControllerTest::login();
 
 		$view = $this->testAction(
 			'/announcements/announcements/view/1',
@@ -119,7 +119,7 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
  */
 	public function testEditGet() {
 		$this->_generateController('Announcements.Announcements');
-		$this->_loginAdmin();
+		RolesControllerTest::login();
 
 		$this->testAction(
 			'/announcements/announcements/edit/1',
@@ -158,7 +158,7 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
  */
 	public function testEditPost() {
 		$this->_generateController('Announcements.Announcements');
-		$this->_loginAdmin();
+		RolesControllerTest::login();
 
 		$data = array(
 			'Announcement' => array(

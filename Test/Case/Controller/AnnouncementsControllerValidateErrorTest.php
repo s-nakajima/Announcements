@@ -27,7 +27,7 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
  */
 	public function testEditWithInvalidStatus() {
 		$this->_generateController('Announcements.Announcements');
-		$this->_loginAdmin();
+		RolesControllerTest::login();
 
 		$postData = array(
 			'Announcement' => array(
@@ -64,7 +64,7 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
  */
 	public function testEditWithInvalidStatusJson() {
 		$this->_generateController('Announcements.Announcements');
-		$this->_loginAdmin();
+		RolesControllerTest::login();
 
 		$postData = array(
 			'Announcement' => array(
@@ -105,7 +105,7 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
  */
 	public function testEditContentError() {
 		$this->_generateController('Announcements.Announcements');
-		$this->_loginAdmin();
+		RolesControllerTest::login();
 
 		$postData = array(
 			'Announcement' => array(
@@ -152,7 +152,7 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
  */
 	public function testEditCommentError() {
 		$this->_generateController('Announcements.Announcements');
-		$this->_loginAdmin();
+		RolesControllerTest::login();
 
 		$postData = array(
 			'Announcement' => array(

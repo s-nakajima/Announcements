@@ -121,6 +121,13 @@ class Announcements extends CakeMigration {
 	);
 
 /**
+ * recodes
+ *
+ * @var array $migration
+ */
+	public $records = array();
+
+/**
  * Before migration callback
  *
  * @param string $direction up or down direction of migration process

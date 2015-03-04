@@ -13,6 +13,7 @@ App::uses('NetCommonsFrameComponent', 'NetCommons.Controller/Component');
 App::uses('NetCommonsBlockComponent', 'NetCommons.Controller/Component');
 App::uses('NetCommonsRoomRoleComponent', 'NetCommons.Controller/Component');
 App::uses('YAControllerTestCase', 'NetCommons.TestSuite');
+App::uses('RolesControllerTest', 'Roles.Test/Case/Controller');
 
 /**
  * AnnouncementsController Test Case
@@ -94,90 +95,6 @@ class AnnouncementsAppTest extends YAControllerTestCase {
 	}
 
 /**
- * _loginAdmin method
- *
- * @return void
- */
-	protected function _loginAdmin() {
-		//ログイン処理
-		$this->controller->Auth
-			->staticExpects($this->any())
-			->method('user')
-			->will($this->returnCallback(function () {
-				$array = array(
-					'id' => 1,
-					'username' => 'admin',
-					'role_key' => 'system_administrator',
-				);
-				CakeSession::write('Auth.User', $array);
-				return $array;
-			}));
-
-		$this->controller->Auth->login(array(
-				'username' => 'admin',
-				'password' => 'admin',
-			)
-		);
-		$this->assertTrue($this->controller->Auth->loggedIn(), '_loginAdmin()');
-	}
-
-/**
- * _loginAdmin method
- *
- * @return void
- */
-	protected function _loginEditor() {
-		//ログイン処理
-		$this->controller->Auth
-			->staticExpects($this->any())
-			->method('user')
-			->will($this->returnCallback(function () {
-				$array = array(
-					'id' => 3,
-					'username' => 'editor',
-					'role_key' => 'editor',
-				);
-				CakeSession::write('Auth.User', $array);
-				return $array;
-			}));
-
-		$this->controller->Auth->login(array(
-				'username' => 'editor',
-				'password' => 'editor',
-			)
-		);
-		$this->assertTrue($this->controller->Auth->loggedIn(), '_loginEditor()');
-	}
-
-/**
- * _loginAdmin method
- *
- * @return void
- */
-	protected function _loginVisitor() {
-		//ログイン処理
-		$this->controller->Auth
-			->staticExpects($this->any())
-			->method('user')
-			->will($this->returnCallback(function () {
-				$array = array(
-					'id' => 5,
-					'username' => 'visitor',
-					'role_key' => 'visitor',
-				);
-				CakeSession::write('Auth.User', $array);
-				return $array;
-			}));
-
-		$this->controller->Auth->login(array(
-				'username' => 'visitor',
-				'password' => 'visitor',
-			)
-		);
-		$this->assertTrue($this->controller->Auth->loggedIn(), '_loginVisitor()');
-	}
-
-/**
  * _logout method
  *
  * @return void
@@ -188,7 +105,7 @@ class AnnouncementsAppTest extends YAControllerTestCase {
 			'data' => array(
 			),
 		));
-		$this->assertNull(CakeSession::read('Auth.User'), '_logout()');
+		$this->assertFalse(CakeSession::read('Auth.User'), '_logout()');
 	}
 
 /**
