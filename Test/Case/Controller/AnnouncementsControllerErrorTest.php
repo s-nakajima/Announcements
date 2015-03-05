@@ -39,11 +39,11 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 		$this->setExpectedException('ForbiddenException');
 
 		$this->_generateController('Announcements.Announcements');
-		$this->_loginVisitor();
+		RolesControllerTest::login($this, Role::ROLE_KEY_VISITOR);
 
 		$this->testAction('/announcements/announcements/edit/1.json', array('method' => 'get'));
 
-		/* $this->_logout(); */
+		AuthGeneralControllerTest::logout($this);
 	}
 
 /**
@@ -53,7 +53,7 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
  */
 	public function testEditContentPublishedError() {
 		$this->_generateController('Announcements.Announcements');
-		$this->_loginEditor();
+		RolesControllerTest::login($this, Role::ROLE_KEY_EDITOR);
 
 		$postData = array(
 			'Announcement' => array(
@@ -84,7 +84,7 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 		$this->assertArrayHasKey('code', $result, print_r($result, true));
 		$this->assertEquals(400, $result['code'], print_r($result, true));
 
-		/* $this->_logout(); */
+		AuthGeneralControllerTest::logout($this);
 	}
 
 /**
@@ -94,7 +94,7 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
  */
 	public function testEditContentDisapprovedError() {
 		$this->_generateController('Announcements.Announcements');
-		$this->_loginEditor();
+		RolesControllerTest::login($this, Role::ROLE_KEY_EDITOR);
 
 		$postData = array(
 			'Announcement' => array(
@@ -124,6 +124,6 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 		$this->assertArrayHasKey('code', $result, print_r($result, true));
 		$this->assertEquals(400, $result['code'], print_r($result, true));
 
-		/* $this->_logout(); */
+		AuthGeneralControllerTest::logout($this);
 	}
 }

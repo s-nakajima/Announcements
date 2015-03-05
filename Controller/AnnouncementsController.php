@@ -73,10 +73,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public function view() {
 		$this->__initAnnouncement();
 
-		/* if (!$this->viewVars['announcements']['blockId']) { */
-		/* 	throw new NotFoundException(__d('net_commons', 'Not Found')); */
-		/* } */
-
 		if ($this->request->is('ajax')) {
 			$tokenFields = Hash::flatten($this->request->data);
 			$hiddenFields = array(
@@ -122,7 +118,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 				$announcement = $this->Announcement->create(['key' => Security::hash('announcement' . mt_rand() . microtime(), 'md5')]);
 			}
 
-			/* var_dump($announcement, $data); */
 			$data = Hash::merge($announcement, $data);
 			$announcement = $this->Announcement->saveAnnouncement($data);
 			if (!$this->__handleValidationError($this->Announcement->validationErrors)) {

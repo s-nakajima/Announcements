@@ -27,7 +27,7 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
  */
 	public function testEditWithInvalidStatus() {
 		$this->_generateController('Announcements.Announcements');
-		RolesControllerTest::login();
+		RolesControllerTest::login($this);
 
 		$postData = array(
 			'Announcement' => array(
@@ -54,7 +54,7 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
 					'return' => 'contents'
 				)
 			);
-		/* $this->_logout(); */
+		AuthGeneralControllerTest::logout($this);
 	}
 
 /**
@@ -64,7 +64,7 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
  */
 	public function testEditWithInvalidStatusJson() {
 		$this->_generateController('Announcements.Announcements');
-		RolesControllerTest::login();
+		RolesControllerTest::login($this);
 
 		$postData = array(
 			'Announcement' => array(
@@ -95,7 +95,7 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
 
 		$this->assertArrayHasKey('code', $result, print_r($result, true));
 		$this->assertEquals(400, $result['code'], print_r($result, true));
-		/* $this->_logout(); */
+		AuthGeneralControllerTest::logout($this);
 	}
 
 /**
@@ -105,7 +105,7 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
  */
 	public function testEditContentError() {
 		$this->_generateController('Announcements.Announcements');
-		RolesControllerTest::login();
+		RolesControllerTest::login($this);
 
 		$postData = array(
 			'Announcement' => array(
@@ -142,7 +142,7 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
 		$this->assertArrayHasKey('validationErrors', $result['error'], print_r($result, true));
 		$this->assertArrayHasKey('content', $result['error']['validationErrors'], print_r($result, true));
 
-		/* $this->_logout(); */
+		AuthGeneralControllerTest::logout($this);
 	}
 
 /**
@@ -152,7 +152,7 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
  */
 	public function testEditCommentError() {
 		$this->_generateController('Announcements.Announcements');
-		RolesControllerTest::login();
+		RolesControllerTest::login($this);
 
 		$postData = array(
 			'Announcement' => array(
@@ -188,6 +188,6 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
 		$this->assertArrayHasKey('error', $result, print_r($result, true));
 		$this->assertArrayHasKey('validationErrors', $result['error'], print_r($result, true));
 
-		/* $this->_logout(); */
+		AuthGeneralControllerTest::logout($this);
 	}
 }

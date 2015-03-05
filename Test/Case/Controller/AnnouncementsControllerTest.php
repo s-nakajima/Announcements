@@ -11,7 +11,7 @@
 
 App::uses('AnnouncementsController', 'Announcements.Controller');
 App::uses('AnnouncementsAppTest', 'Announcements.Test/Case/Controller');
-App::uses('RolesControllerTest', 'Roles.Test/Case/Controller');
+/* App::uses('RolesControllerTest', 'Roles.Test/Case/Controller'); */
 
 /**
  * AnnouncementsController Test Case
@@ -81,7 +81,7 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
  */
 	public function testViewByAdmin() {
 		$this->_generateController('Announcements.Announcements');
-		RolesControllerTest::login();
+		RolesControllerTest::login($this);
 
 		$view = $this->testAction(
 			'/announcements/announcements/view/1',
@@ -94,7 +94,7 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 		$this->assertTextContains('nc-announcements-1', $view, print_r($view, true));
 		$this->assertTextContains('ng-controller="Announcements"', $view, print_r($view, true));
 
-		$this->_logout();
+		AuthGeneralControllerTest::logout($this);
 	}
 
 /**
@@ -120,7 +120,7 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
  */
 	public function testEditGet() {
 		$this->_generateController('Announcements.Announcements');
-		RolesControllerTest::login();
+		RolesControllerTest::login($this);
 
 		$this->testAction(
 			'/announcements/announcements/edit/1',
@@ -132,7 +132,7 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 
 		$this->assertTextEquals('edit', $this->controller->view);
 
-		$this->_logout();
+		AuthGeneralControllerTest::logout($this);
 	}
 
 /**
@@ -159,7 +159,7 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
  */
 	public function testEditPost() {
 		$this->_generateController('Announcements.Announcements');
-		RolesControllerTest::login();
+		RolesControllerTest::login($this);
 
 		$data = array(
 			'Announcement' => array(
@@ -186,6 +186,6 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 		);
 		$this->assertTextEquals('edit', $this->controller->view);
 
-		/* $this->_logout(); */
+		AuthGeneralControllerTest::logout($this);
 	}
 }
