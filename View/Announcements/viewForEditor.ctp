@@ -19,7 +19,11 @@
 	 ng-init="initialize(<?php echo h(json_encode($this->viewVars)); ?>)">
 
 	<p class="text-right">
-		<?php echo $this->element('NetCommons.setting_button'); ?>
+		<span class="nc-tooltip" tooltip="<?php echo __d('net_commons', 'Edit'); ?>">
+			<a href="<?php echo $this->Html->url('/announcements/announcements/edit/' . $frameId) ?>" class="btn btn-primary">
+				<span class="glyphicon glyphicon-edit"> </span>
+			</a>
+		</span>
 	</p>
 
 	<?php echo isset($announcements['content']) ? $announcements['content'] : ''; ?>
