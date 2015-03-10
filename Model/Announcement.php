@@ -130,7 +130,7 @@ class Announcement extends AnnouncementsAppModel {
  * save announcement
  *
  * @param array $data received post data
- * @param boolean|array $validate Either a boolean, or an array.
+ * @param bool|array $validate Either a boolean, or an array.
  *   If a boolean, indicates whether or not to validate before saving.
  *   If an array, can have following keys:
  *
