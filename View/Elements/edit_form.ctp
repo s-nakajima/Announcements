@@ -8,10 +8,6 @@
  * @license http://www.netcommons.org/license.txt NetCommons License
  * @copyright Copyright 2014, NetCommons Project
  */
-		/* <textarea name="content" class="form-control" rows="5" */
-		/* 		ui-tinymce="tinymce.options" required */
-		/* 		ng-change="serverValidationClear(form, 'content')" */
-		/* 		ng-model="announcement.content"><?php echo $announcement['content']; ?></textarea> */
 ?>
 
 <div class="form-group">

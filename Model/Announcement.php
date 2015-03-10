@@ -157,7 +157,7 @@ class Announcement extends AnnouncementsAppModel {
 		$dataSource->begin();
 
 		try {
-			if ($validate && !$this->validateAnnouncement($data)) {
+			if (!$this->validateAnnouncement($data)) {
 				return false;
 			}
 			if (!$this->Comment->validateByStatus($data, array('caller' => $this->name))) {
