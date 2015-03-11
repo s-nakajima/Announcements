@@ -38,7 +38,6 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
 	public function testContentEditableError() {
 		$this->setExpectedException('ForbiddenException');
 
-		$this->_generateController('Announcements.Announcements');
 		RolesControllerTest::login($this, Role::ROLE_KEY_VISITOR);
 
 		$this->testAction('/announcements/announcements/edit/1.json', array('method' => 'get'));
@@ -52,7 +51,6 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
  * @return void
  */
 	public function testEditContentPublishedError() {
-		$this->_generateController('Announcements.Announcements');
 		RolesControllerTest::login($this, Role::ROLE_KEY_EDITOR);
 
 		$postData = array(
@@ -93,7 +91,6 @@ class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
  * @return void
  */
 	public function testEditContentDisapprovedError() {
-		$this->_generateController('Announcements.Announcements');
 		RolesControllerTest::login($this, Role::ROLE_KEY_EDITOR);
 
 		$postData = array(

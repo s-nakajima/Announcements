@@ -26,7 +26,6 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
  * @return void
  */
 	public function testEditWithInvalidStatus() {
-		$this->_generateController('Announcements.Announcements');
 		RolesControllerTest::login($this);
 
 		$postData = array(
@@ -63,7 +62,6 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
  * @return void
  */
 	public function testEditWithInvalidStatusJson() {
-		$this->_generateController('Announcements.Announcements');
 		RolesControllerTest::login($this);
 
 		$postData = array(
@@ -104,7 +102,6 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
  * @return void
  */
 	public function testEditContentError() {
-		$this->_generateController('Announcements.Announcements');
 		RolesControllerTest::login($this);
 
 		$postData = array(
@@ -151,7 +148,6 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
  * @return void
  */
 	public function testEditCommentError() {
-		$this->_generateController('Announcements.Announcements');
 		RolesControllerTest::login($this);
 
 		$postData = array(

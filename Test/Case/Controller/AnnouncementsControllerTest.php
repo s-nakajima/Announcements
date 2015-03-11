@@ -80,7 +80,6 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
  * @return void
  */
 	public function testViewByAdmin() {
-		$this->_generateController('Announcements.Announcements');
 		RolesControllerTest::login($this);
 
 		$view = $this->testAction(
@@ -119,7 +118,6 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
  * @return void
  */
 	public function testEditGet() {
-		$this->_generateController('Announcements.Announcements');
 		RolesControllerTest::login($this);
 
 		$this->testAction(
@@ -158,7 +156,6 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
  * @return void
  */
 	public function testEditPost() {
-		$this->_generateController('Announcements.Announcements');
 		RolesControllerTest::login($this);
 
 		$data = array(

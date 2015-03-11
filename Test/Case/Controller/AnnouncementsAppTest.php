@@ -62,6 +62,16 @@ class AnnouncementsAppTest extends YAControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 		Configure::write('Config.language', 'ja');
+		$this->generate(
+			'Announcements.Announcements',
+			[
+				'components' => [
+					'Auth' => ['user'],
+					'Session',
+					'Security',
+				]
+			]
+		);
 	}
 
 /**
@@ -73,78 +83,6 @@ class AnnouncementsAppTest extends YAControllerTestCase {
 		Configure::write('Config.language', null);
 		CakeSession::write('Auth.User', null);
 		parent::tearDown();
-	}
-
-/**
- * _generateController method
- *
- * @param string $controllerName controller name
- * @param array $addMocks generate options
- * @return void
- */
-	protected function _generateController($controllerName, $addMocks = array()) {
-		$mocks = array(
-			'components' => array(
-				'Auth' => array('user'),
-				'Session',
-				'Security',
-			)
-		);
-		$params = array_merge_recursive($mocks, $addMocks);
-
-		$this->generate($controllerName, $params);
-	}
-
-/**
- * _logout method
- *
- * @return void
- */
-	protected function _logout() {
-		//ログアウト処理
-		$this->testAction('/auth/logout', array(
-			'data' => array(
-			),
-		));
-		$this->assertFalse(CakeSession::read('Auth.User'), '_logout()');
-	}
-
-/**
- * _setComponentError method
- *
- * @param string $componentName component name
- * @param string $methodName method name
- * @return void
- */
-	protected function _setComponentError($componentName, $methodName) {
-		$this->controller->$componentName
-			->staticExpects($this->any())
-			->method($methodName)
-			->will($this->returnValue(false));
-
-		$this->assertTrue(
-				method_exists($this->controller->$componentName, $methodName),
-				get_class($this->controller->$componentName) . '::' . $methodName
-			);
-	}
-
-/**
- * _setModelError method
- *
- * @param string $modelName model name
- * @param string $methodName method name
- * @return void
- */
-	protected function _setModelError($modelName, $methodName) {
-		$this->controller->$modelName = $this->getMockForModel($modelName, array($methodName));
-		$this->controller->$modelName->expects($this->any())
-			->method($methodName)
-			->will($this->returnValue(false));
-
-		$this->assertTrue(
-				method_exists($this->controller->$modelName, $methodName),
-				get_class($this->controller->$modelName) . '::' . $methodName
-			);
 	}
 
 /**
