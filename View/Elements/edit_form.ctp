@@ -17,24 +17,21 @@
 	<?php echo $this->element('NetCommons.required'); ?>
 
 	<div class="nc-wysiwyg-alert">
-		<?php echo $this->Form->textarea('content',
-					array(
-						'class' => 'form-control',
-						'ui-tinymce' => 'tinymce.options',
-						'ng-model' => 'announcements.content',
-						'rows' => 5,
-						'required' => 'required',
-					)) ?>
+		<?php echo $this->Form->textarea(
+			'content', [
+				'class' => 'form-control',
+				'ui-tinymce' => 'tinymce.options',
+				'ng-model' => 'announcements.content',
+				'rows' => 5,
+				'required' => 'required',
+			]) ?>
 	</div>
 
-	<div class="has-error">
-		<?php if ($this->validationErrors['Announcement']): ?>
-		<?php foreach ($this->validationErrors['Announcement']['content'] as $message): ?>
-			<div class="help-block">
-				<?php echo $message ?>
-			</div>
-		<?php endforeach ?>
-		<?php endif ?>
-	</div>
+	<?php echo $this->element(
+		'NetCommons.errors', [
+			'errors' => $this->validationErrors,
+			'model' => 'Announcement',
+			'field' => 'content',
+		]) ?>
 </div>
 

@@ -14,10 +14,7 @@
 <?php echo $this->Html->script('/net_commons/base/js/wysiwyg.js', false); ?>
 <?php echo $this->Html->script('/announcements/js/announcements.js', false); ?>
 
-<div id="nc-announcements-<?php echo (int)$frameId; ?>"
-	 ng-controller="Announcements"
-	 ng-init="initialize(<?php echo h(json_encode($this->viewVars)); ?>)">
-
+<div id="nc-announcements-<?php echo (int)$frameId; ?>">
 	<p class="text-right">
 		<span class="nc-tooltip" tooltip="<?php echo __d('net_commons', 'Edit'); ?>">
 			<a href="<?php echo $this->Html->url('/announcements/announcements/edit/' . $frameId) ?>" class="btn btn-primary">
@@ -30,6 +27,6 @@
 
 	<p class="text-left">
 		<?php echo $this->element('NetCommons.status_label',
-				array('status' => 'announcements.status')); ?>
+				array('status' => $announcements['status'])); ?>
 	</p>
 </div>
