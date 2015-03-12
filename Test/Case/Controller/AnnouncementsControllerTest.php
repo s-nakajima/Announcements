@@ -91,7 +91,6 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 		);
 
 		$this->assertTextContains('nc-announcements-1', $view, print_r($view, true));
-		$this->assertTextContains('ng-controller="Announcements"', $view, print_r($view, true));
 
 		AuthGeneralControllerTest::logout($this);
 	}
