@@ -75,13 +75,13 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->__initAnnouncement();
 
 		if ($this->request->is('ajax')) {
-			$tokenFields = Hash::flatten($this->request->data);
-			$hiddenFields = array(
-				'Announcement.block_id',
-				'Announcement.key'
-			);
-			$this->set('tokenFields', $tokenFields);
-			$this->set('hiddenFields', $hiddenFields);
+			/* $tokenFields = Hash::flatten($this->request->data); */
+			/* $hiddenFields = array( */
+			/* 	'Announcement.block_id', */
+			/* 	'Announcement.key' */
+			/* ); */
+			/* $this->set('tokenFields', $tokenFields); */
+			/* $this->set('hiddenFields', $hiddenFields); */
 			$this->renderJson();
 		} else {
 			if ($this->viewVars['contentEditable']) {
@@ -97,7 +97,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	public function edit() {
-		$this->__initAnnouncement();
+		$this->__initAnnouncement(['comments']);
 		if ($this->request->isGet()) {
 			CakeSession::write('backUrl', $this->request->referer());
 		}
@@ -121,7 +121,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 
 			$data = Hash::merge($announcement, $data);
 			$announcement = $this->Announcement->saveAnnouncement($data, false);
-			if (!$this->__handleValidationError($this->Announcement->validationErrors)) {
+			if (!$this->handleValidationError($this->Announcement->validationErrors)) {
 				return;
 			}
 			$this->set('blockId', $announcement['Announcement']['block_id']);
@@ -137,9 +137,10 @@ class AnnouncementsController extends AnnouncementsAppController {
 /**
  * __initAnnouncement method
  *
+ * @param array $contains Optional result sets
  * @return void
  */
-	private function __initAnnouncement() {
+	private function __initAnnouncement($contains = []) {
 		if (!$announcements = $this->Announcement->getAnnouncement(
 			$this->viewVars['frameId'],
 			$this->viewVars['blockId'],
@@ -147,38 +148,21 @@ class AnnouncementsController extends AnnouncementsAppController {
 		)) {
 			$announcements = $this->Announcement->create();
 		}
-		$comments = $this->Comment->getComments(
-			array(
-				'plugin_key' => 'announcements',
-				'content_key' => isset($announcements['Announcement']['key']) ? $announcements['Announcement']['key'] : null,
-			)
-		);
-
 		$results = array(
 			'announcements' => $announcements['Announcement'],
-			'comments' => $comments,
 			'contentStatus' => $announcements['Announcement']['status'],
 		);
-		$results = $this->camelizeKeyRecursive($results);
-		$this->set($results);
-	}
 
-/**
- * Handle validation error
- *
- * @param array $errors validation errors
- * @return bool true on success, false on error
- */
-	private function __handleValidationError($errors) {
-		if ($errors) {
-			$this->validationErrors = $errors;
-			if ($this->request->is('ajax')) {
-				$results = ['error' => ['validationErrors' => $errors]];
-				$this->renderJson($results, __d('net_commons', 'Bad Request'), 400);
-			}
-			return false;
+		if (in_array('comments', $contains, true)) {
+			$results['comments'] = $this->Comment->getComments(
+				array(
+					'plugin_key' => 'announcements',
+					'content_key' => isset($announcements['Announcement']['key']) ? $announcements['Announcement']['key'] : null,
+				)
+			);
 		}
 
-		return true;
+		$results = $this->camelizeKeyRecursive($results);
+		$this->set($results);
 	}
 }
