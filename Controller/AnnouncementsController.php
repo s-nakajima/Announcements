@@ -55,6 +55,11 @@ class AnnouncementsController extends AnnouncementsAppController {
 		'NetCommons.Token'
 	);
 
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->Announcement->locale = 'en';
+	}
+
 /**
  * index method
  *
@@ -119,6 +124,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 				$announcement = $this->Announcement->create(['key' => Security::hash('announcement' . mt_rand() . microtime(), 'md5')]);
 			}
 
+			$data['Announcement']['title1'] = Security::hash($announcement['Announcement']['content'], 'md5');
 			$data = Hash::merge($announcement, $data);
 			$announcement = $this->Announcement->saveAnnouncement($data, false);
 			if (!$this->__handleValidationError($this->Announcement->validationErrors)) {

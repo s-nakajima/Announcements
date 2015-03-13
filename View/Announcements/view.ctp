@@ -10,6 +10,9 @@
  */
 ?>
 
+
+title1: <?php echo isset($announcements['title1']) ? $announcements['title1'] : ''; ?>
+
 <div>
 	<?php echo isset($announcements['content']) ? $announcements['content'] : ''; ?>
 </div>

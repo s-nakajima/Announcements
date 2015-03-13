@@ -27,8 +27,15 @@ class Announcement extends AnnouncementsAppModel {
  * @var array
  */
 	public $actsAs = array(
-		'NetCommons.Publishable'
+		'NetCommons.Publishable',
+		'Translate' => array(
+			'title1',
+			'content'
+		)
 	);
+
+	public $translateModel = 'Announcements.AnnouncementI18n';
+	//public $translateTable = 'announcements_i18n';
 
 /**
  * Validation rules

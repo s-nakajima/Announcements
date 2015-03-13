@@ -9,6 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 ?>
+title1: <?php echo isset($announcements['title1']) ? $announcements['title1'] : ''; ?>
 
 <?php echo $this->Html->script('/net_commons/base/js/workflow.js', false); ?>
 <?php echo $this->Html->script('/net_commons/base/js/wysiwyg.js', false); ?>
