@@ -10,10 +10,6 @@
  */
 ?>
 
-<?php echo $this->Html->script('/net_commons/base/js/workflow.js', false); ?>
-<?php echo $this->Html->script('/net_commons/base/js/wysiwyg.js', false); ?>
-<?php echo $this->Html->script('/announcements/js/announcements.js', false); ?>
-
 <div id="nc-announcements-<?php echo (int)$frameId; ?>">
 	<p class="text-right">
 		<span class="nc-tooltip" tooltip="<?php echo __d('net_commons', 'Edit'); ?>">

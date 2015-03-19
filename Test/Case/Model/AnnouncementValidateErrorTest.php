@@ -67,7 +67,7 @@ class AnnouncementValidateErrorTest extends AnnouncementAppModelTest {
 			'Announcement' => array(
 				'block_id' => 1,
 				'key' => 'announcement_1',
-				'status' => '1',
+				'status' => NetCommonsBlockComponent::STATUS_IN_DRAFT,
 				'is_auto_translated' => true,
 				'translation_engine' => 'edit translation_engine',
 			),

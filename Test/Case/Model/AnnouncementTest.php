@@ -50,11 +50,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'status' => NetCommonsBlockComponent::STATUS_IN_DRAFT,
 				'key' => 'announcement_1',
 			),
-			/* 'Frame' => array( */
-			/* 	'id' => $frameId */
-			/* ), */
 		);
-		/* var_dump($result); */
 
 		$this->_assertArray(null, $expected, $result);
 	}
@@ -77,44 +73,13 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'key' => 'announcement_1',
 				'status' => NetCommonsBlockComponent::STATUS_PUBLISHED,
 			),
-			/* 'Frame' => array( */
-			/* 	'id' => $frameId */
-			/* ), */
 		);
-		/* var_dump($result); */
 
 		$this->_assertArray(null, $expected, $result);
 	}
 
 /**
- * testGetAnnouncementByNoBlockId method
- *
- * @return void
- */
-	public function testGetAnnouncementByNoBlockId() {
-		$frameId = 3;
-		$blockId = null;
-		$contentEditable = true;
-		$result = $this->Announcement->getAnnouncement($frameId, $blockId, $contentEditable);
-
-		$expected = array(
-			/* 'Announcement' => array( */
-			/* 	'id' => '0', */
-			/* 	'block_id' => '0', */
-			/* 	'key' => '', */
-			/* 	'status' => '0', */
-			/* ), */
-			/* 'Frame' => array( */
-			/* 	'id' => $frameId */
-			/* ), */
-		);
-		/* var_dump($result); */
-
-		$this->_assertArray(null, $expected, $result);
-	}
-
-/**
- * testSaveAnnouncement method
+ * Expect Announcement->saveAnnouncement() saves data w/ numeric block_id
  *
  * @return void
  */
@@ -126,7 +91,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 			'Announcement' => array(
 				'block_id' => $blockId,
 				'key' => 'announcement_1',
-				'status' => NetCommonsBlockComponent::STATUS_PUBLISHED,
+				'status' => NetCommonsBlockComponent::STATUS_IN_DRAFT,
 				'content' => 'edit content',
 				'is_auto_translated' => true,
 				'translation_engine' => 'edit translation_engine',
@@ -136,30 +101,25 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 			),
 			'Comment' => array(
 				'comment' => 'edit comment',
-			)
+			),
 		);
-		/* $this->Announcement->validateAnnouncement($data); */
-		$this->Announcement->saveAnnouncement($data);
+		$this->Announcement->saveAnnouncement($data, false);
 
 		$result = $this->Announcement->getAnnouncement($frameId, $blockId, true);
 
 		$expected = array(
 			'Announcement' => array(
-				'id' => '2',
+				'id' => '4',
 				'block_id' => $blockId,
 				'key' => 'announcement_1',
 			),
-			/* 'Frame' => array( */
-			/* 	'id' => $frameId */
-			/* ), */
 		);
-		/* var_dump($result); */
 
 		$this->_assertArray(null, $expected, $result);
 	}
 
 /**
- * testSaveAnnouncementByNoBlockId method
+ * Expect Announcement->saveAnnouncement() saves data w/ null block_id
  *
  * @return void
  */
@@ -170,11 +130,11 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 		$data = array(
 			'Announcement' => array(
 				'block_id' => $blockId,
-				'status' => NetCommonsBlockComponent::STATUS_PUBLISHED,
+				'status' => NetCommonsBlockComponent::STATUS_IN_DRAFT,
 				'content' => 'add content',
 				'is_auto_translated' => true,
 				'translation_engine' => 'add translation_engine',
-				'key' => '',
+				'key' => 'announcement_1',
 			),
 			'Frame' => array(
 				'id' => $frameId
@@ -183,71 +143,20 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'comment' => 'add comment',
 			)
 		);
-		/* $this->Announcement->validateAnnouncement($data); */
-		$this->Announcement->saveAnnouncement($data);
+		$this->Announcement->saveAnnouncement($data, false);
 
 		$blockId = 3;
 		$result = $this->Announcement->getAnnouncement($frameId, $blockId, true);
 
 		$expected = array(
-			/* 'Announcement' => array( */
-			/* 	'id' => '4', */
-			/* 	'block_id' => $blockId, */
-			/* ), */
-			/* 'Frame' => array( */
-			/* 	'id' => $frameId */
-			/* ), */
+			'Announcement' => array(
+				'id' => '4',
+				'block_id' => $blockId,
+			),
 		);
-		/* var_dump($result); */
 
 		$this->_assertArray(null, $expected, $result);
 	}
-
-/**
- * testSaveAnnouncementByStatusDisapproved method
- *
- * @return void
- */
-	/* public function testSaveAnnouncementByStatusDisapproved() { */
-	/* 	$frameId = 1; */
-	/* 	$blockId = 1; */
-
-	/* 	$data = array( */
-	/* 		'Announcement' => array( */
-	/* 			'block_id' => $blockId, */
-	/* 			'key' => 'announcement_1', */
-	/* 			'status' => NetCommonsBlockComponent::STATUS_DISAPPROVED, */
-	/* 			'content' => 'edit content', */
-	/* 			'is_auto_translated' => true, */
-	/* 			'translation_engine' => 'edit translation_engine', */
-	/* 		), */
-	/* 		'Frame' => array( */
-	/* 			'id' => $frameId */
-	/* 		), */
-	/* 		'Comment' => array( */
-	/* 			'comment' => 'edit comment', */
-	/* 		) */
-	/* 	); */
-	/* 	/\* $this->Announcement->validateAnnouncement($data); *\/ */
-	/* 	$result = $this->Announcement->saveAnnouncement($data); */
-
-	/* 	$result = $this->Announcement->getAnnouncement($frameId, $blockId, true); */
-
-	/* 	$expected = array( */
-	/* 		'Announcement' => array( */
-	/* 			'id' => '2', */
-	/* 			'block_id' => $blockId, */
-	/* 			'key' => 'announcement_1', */
-	/* 			'status' => NetCommonsBlockComponent::STATUS_DISAPPROVED, */
-	/* 		), */
-	/* 		/\* 'Frame' => array( *\/ */
-	/* 		/\* 	'id' => $frameId, *\/ */
-	/* 		/\* ), *\/ */
-	/* 	); */
-	/* 	/\* var_dump($result); *\/ */
-
-	/* 	$this->_assertArray(null, $expected, $result); */
-	/* } */
 
 /**
  * testSaveAnnouncement method
@@ -281,22 +190,10 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 				'comment' => '',
 			)
 		);
-		/* $this->Announcement->validateAnnouncement($data); */
 		$this->Announcement->saveAnnouncement($data);
 
 		$result = $this->Announcement->getAnnouncement($frameId, $blockId, true);
 
-		/* $expected = array( */
-		/* 	'Announcement' => array( */
-		/* 		'id' => '4', */
-		/* 		'block_id' => $blockId, */
-		/* 		'key' => 'announcement_1', */
-		/* 		'status' => NetCommonsBlockComponent::STATUS_APPROVED, */
-		/* 	), */
-		/* 	'Frame' => array( */
-		/* 		'id' => $frameId, */
-		/* 	) */
-		/* ); */
 		$expected = array(
 			'Announcement' => array(
 				'id' => '4',

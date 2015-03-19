@@ -69,7 +69,7 @@ class Announcement extends AnnouncementsAppModel {
 				'numeric' => array(
 					'rule' => array('numeric'),
 					'message' => __d('net_commons', 'Invalid request.'),
-					'allowEmpty' => false,
+					'allowEmpty' => true,
 					'required' => true,
 				)
 			),
