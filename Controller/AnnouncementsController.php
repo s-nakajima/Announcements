@@ -104,7 +104,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 				$this->data,
 				['Announcement' => ['status' => $status]]
 			);
-			$this->Announcement->useDbConfig = 'master';
+			$this->Announcement->setDataSource('master');
 			if (!$announcement = $this->Announcement->getAnnouncement(
 				(int)$data['Frame']['id'],
 				isset($data['Block']['id']) ? (int)$data['Block']['id'] : null,
