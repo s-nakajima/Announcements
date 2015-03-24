@@ -55,7 +55,7 @@ class AnnouncementErrorTest extends AnnouncementAppModelTest {
 				'content' => 'edit content',
 			),
 			'Frame' => array(
-				'id' => '10'
+				'id' => -1
 			),
 			'Comment' => array(
 				'comment' => 'edit comment',

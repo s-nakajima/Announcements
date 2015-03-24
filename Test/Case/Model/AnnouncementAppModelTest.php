@@ -31,15 +31,15 @@ class AnnouncementAppModelTest extends YACakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.announcements.announcement',
-		'plugin.announcements.block',
-		'plugin.announcements.comment',
-		'plugin.frames.box',
+		'plugin.announcements.plugin',
+		'plugin.blocks.block',
+		'plugin.boxes.box',
+		'plugin.comments.comment',
+		'plugin.frames.frame',
 		'plugin.m17n.language',
 		'plugin.rooms.room',
-		'plugin.announcements.user_attributes_user',
-		'plugin.announcements.user',
-		'plugin.announcements.frame',
-		'plugin.announcements.plugin',
+		'plugin.users.user',
+		'plugin.users.user_attributes_user',
 	);
 
 /**

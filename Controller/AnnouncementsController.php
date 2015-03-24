@@ -75,13 +75,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->__initAnnouncement();
 
 		if ($this->request->is('ajax')) {
-			/* $tokenFields = Hash::flatten($this->request->data); */
-			/* $hiddenFields = array( */
-			/* 	'Announcement.block_id', */
-			/* 	'Announcement.key' */
-			/* ); */
-			/* $this->set('tokenFields', $tokenFields); */
-			/* $this->set('hiddenFields', $hiddenFields); */
 			$this->renderJson();
 		} else {
 			if ($this->viewVars['contentEditable']) {
@@ -123,14 +116,14 @@ class AnnouncementsController extends AnnouncementsAppController {
 			$data = Hash::merge($announcement, $data);
 			$announcement = $this->Announcement->saveAnnouncement($data, false);
 			if (!$this->handleValidationError($this->Announcement->validationErrors)) {
+				$results = $this->camelizeKeyRecursive($this->Announcement->data);
+				$this->set([
+					'announcements' => $results['announcement'],
+				]);
 				return;
 			}
 			$this->set('blockId', $announcement['Announcement']['block_id']);
-			if (!$this->request->is('ajax')) {
-				$backUrl = CakeSession::read('backUrl');
-				CakeSession::delete('backUrl');
-				$this->redirect($backUrl);
-			}
+			$this->redirectByFrameId();
 			return;
 		}
 	}

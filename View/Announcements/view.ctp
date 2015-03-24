@@ -9,7 +9,8 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 ?>
-
+<?php if (isset($announcements['content'])): ?>
 <div>
 	<?php echo isset($announcements['content']) ? $announcements['content'] : ''; ?>
 </div>
+<?php endif ?>

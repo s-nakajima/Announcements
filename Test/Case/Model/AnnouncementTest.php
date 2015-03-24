@@ -109,7 +109,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 
 		$expected = array(
 			'Announcement' => array(
-				'id' => '4',
+				'id' => '2',
 				'block_id' => $blockId,
 				'key' => 'announcement_1',
 			),
@@ -150,60 +150,10 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 
 		$expected = array(
 			'Announcement' => array(
-				'id' => '4',
 				'block_id' => $blockId,
 			),
 		);
 
 		$this->_assertArray(null, $expected, $result);
 	}
-
-/**
- * testSaveAnnouncement method
- *
- * @return void
- */
-	public function testSaveAnnouncementStatusModify() {
-		$frameId = 1;
-		$blockId = 1;
-
-		$data = array(
-			'Announcement' => array(
-				'block_id' => $blockId,
-				'key' => 'announcement_1',
-				'status' => NetCommonsBlockComponent::STATUS_APPROVED,
-				'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. ' .
-							'Convallis morbi fringilla gravida, ' .
-							'phasellus feugiat dapibus velit nunc, ' .
-							'pulvinar eget sollicitudin venenatis cum nullam, ' .
-							'vivamus ut a sed, mollitia lectus. ' .
-							'Nulla vestibulum massa neque ut et, id hendrerit sit, ' .
-							'feugiat in taciti enim proin nibh, ' .
-							'tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-				'is_auto_translated' => true,
-				'translation_engine' => 'edit translation_engine',
-			),
-			'Frame' => array(
-				'id' => $frameId
-			),
-			'Comment' => array(
-				'comment' => '',
-			)
-		);
-		$this->Announcement->saveAnnouncement($data);
-
-		$result = $this->Announcement->getAnnouncement($frameId, $blockId, true);
-
-		$expected = array(
-			'Announcement' => array(
-				'id' => '4',
-				'block_id' => $blockId,
-				'key' => 'announcement_1',
-				'status' => NetCommonsBlockComponent::STATUS_APPROVED,
-			)
-		);
-
-		$this->_assertArray(null, $expected, $result);
-	}
-
 }
