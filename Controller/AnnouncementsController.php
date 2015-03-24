@@ -68,7 +68,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 /**
  * view method
  *
- * @throws NotFoundException
  * @return void
  */
 	public function view() {
@@ -86,14 +85,10 @@ class AnnouncementsController extends AnnouncementsAppController {
 /**
  * edit method
  *
- * @throws BadRequestException
  * @return void
  */
 	public function edit() {
 		$this->__initAnnouncement(['comments']);
-		if ($this->request->isGet()) {
-			CakeSession::write('backUrl', $this->request->referer());
-		}
 
 		if ($this->request->isPost()) {
 			if (!$status = $this->NetCommonsWorkflow->parseStatus()) {
@@ -129,7 +124,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 	}
 
 /**
- * __initAnnouncement method
+ * Initialize announcement related data
  *
  * @param array $contains Optional result sets
  * @return void

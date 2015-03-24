@@ -11,7 +11,6 @@
 
 App::uses('AnnouncementsController', 'Announcements.Controller');
 App::uses('AnnouncementsAppTest', 'Announcements.Test/Case/Controller');
-/* App::uses('RolesControllerTest', 'Roles.Test/Case/Controller'); */
 
 /**
  * AnnouncementsController Test Case

@@ -14,7 +14,7 @@
 App::uses('AnnouncementAppModelTest', 'Announcements.Test/Case/Model');
 
 /**
- *Announcement Model Test Case
+ * Announcement Model Test Case
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Model
@@ -33,7 +33,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 	}
 
 /**
- * testGetAnnouncement method
+ * Expect user w/ content_editable privilege can read content yet published
  *
  * @return void
  */
@@ -56,7 +56,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 	}
 
 /**
- * testGetAnnouncementByNoEditable method
+ * Expect user w/o content_editable privilege cannot read content yet published
  *
  * @return void
  */
