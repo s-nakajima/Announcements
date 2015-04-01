@@ -82,5 +82,18 @@ class AnnouncementFixture extends CakeTestFixture {
 			'modified_user' => '1',
 			'modified' => '2014-10-09 16:07:57'
 		),
+		array(
+			'id' => '4',
+			'block_id' => '4',
+			'key' => 'announcement_11',
+			'status' => '2',
+			'content' => 'Content 11',
+			'is_auto_translated' => true,
+			'translation_engine' => 'Lorem ipsum dolor sit amet',
+			'created_user' => '1',
+			'created' => '2014-10-09 16:07:57',
+			'modified_user' => '1',
+			'modified' => '2014-10-09 16:07:57'
+		),
 	);
 }

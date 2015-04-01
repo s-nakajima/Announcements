@@ -39,10 +39,22 @@ class AnnouncementTest extends AnnouncementAppModelTest {
  * @return void
  */
 	public function testGetAnnouncementByNoEditable() {
-		$blockId = 1;
+		$blockId = 4;
 		$contentEditable = false;
 		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
 		$this->assertEmpty($result);
+	}
+
+/**
+ * Expect user w/o content_editable privilege can read content published
+ *
+ * @return void
+ */
+	public function testGetAnnouncementByNoEditable2() {
+		$blockId = 1;
+		$contentEditable = false;
+		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
+		$this->assertNotEmpty($result);
 	}
 
 /**
