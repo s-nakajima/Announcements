@@ -22,37 +22,15 @@ App::uses('AnnouncementAppModelTest', 'Announcements.Test/Case/Model');
 class AnnouncementTest extends AnnouncementAppModelTest {
 
 /**
- * setUp method
- *
- * @return void
- */
-	public function setUp() {
-		parent::setUp();
-		$this->Announcement = ClassRegistry::init('Announcements.Announcement');
-		$this->Comment = ClassRegistry::init('Comments.Comment');
-	}
-
-/**
  * Expect user w/ content_editable privilege can read content yet published
  *
  * @return void
  */
 	public function testGetAnnouncement() {
-		$frameId = 1;
 		$blockId = 1;
 		$contentEditable = true;
-		$result = $this->Announcement->getAnnouncement($frameId, $blockId, $contentEditable);
-
-		$expected = array(
-			'Announcement' => array(
-				'id' => '2',
-				'block_id' => $blockId,
-				'status' => NetCommonsBlockComponent::STATUS_IN_DRAFT,
-				'key' => 'announcement_1',
-			),
-		);
-
-		$this->_assertArray(null, $expected, $result);
+		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
+		$this->assertEqual(2, $result['Announcement']['id']);
 	}
 
 /**
@@ -61,21 +39,10 @@ class AnnouncementTest extends AnnouncementAppModelTest {
  * @return void
  */
 	public function testGetAnnouncementByNoEditable() {
-		$frameId = 1;
 		$blockId = 1;
 		$contentEditable = false;
-		$result = $this->Announcement->getAnnouncement($frameId, $blockId, $contentEditable);
-
-		$expected = array(
-			'Announcement' => array(
-				'id' => '1',
-				'block_id' => $blockId,
-				'key' => 'announcement_1',
-				'status' => NetCommonsBlockComponent::STATUS_PUBLISHED,
-			),
-		);
-
-		$this->_assertArray(null, $expected, $result);
+		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
+		$this->assertEmpty($result);
 	}
 
 /**
@@ -85,37 +52,27 @@ class AnnouncementTest extends AnnouncementAppModelTest {
  */
 	public function testSaveAnnouncement() {
 		$frameId = 1;
-		$blockId = 1;
+		$blockId = 3;
 
-		$data = array(
-			'Announcement' => array(
+		$data = [
+			'Announcement' => [
 				'block_id' => $blockId,
 				'key' => 'announcement_1',
 				'status' => NetCommonsBlockComponent::STATUS_IN_DRAFT,
 				'content' => 'edit content',
 				'is_auto_translated' => true,
 				'translation_engine' => 'edit translation_engine',
-			),
-			'Frame' => array(
+			],
+			'Frame' => [
 				'id' => $frameId
-			),
-			'Comment' => array(
+			],
+			'Comment' => [
 				'comment' => 'edit comment',
-			),
-		);
-		$this->Announcement->saveAnnouncement($data, false);
-
-		$result = $this->Announcement->getAnnouncement($frameId, $blockId, true);
-
-		$expected = array(
-			'Announcement' => array(
-				'id' => '2',
-				'block_id' => $blockId,
-				'key' => 'announcement_1',
-			),
-		);
-
-		$this->_assertArray(null, $expected, $result);
+			],
+		];
+		$expectCount = $this->Announcement->find('count', ['recursive' => -1]) + 1;
+		$this->Announcement->saveAnnouncement($data);
+		$this->assertEquals($expectCount, $this->Announcement->find('count', ['recursive' => -1]));
 	}
 
 /**
@@ -127,33 +84,92 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 		$frameId = 3;
 		$blockId = null;
 
-		$data = array(
-			'Announcement' => array(
+		$data = [
+			'Announcement' => [
 				'block_id' => $blockId,
 				'status' => NetCommonsBlockComponent::STATUS_IN_DRAFT,
 				'content' => 'add content',
 				'is_auto_translated' => true,
 				'translation_engine' => 'add translation_engine',
 				'key' => 'announcement_1',
-			),
-			'Frame' => array(
+			],
+			'Frame' => [
 				'id' => $frameId
-			),
-			'Comment' => array(
+			],
+			'Comment' => [
 				'comment' => 'add comment',
-			)
-		);
-		$this->Announcement->saveAnnouncement($data, false);
+			]
+		];
+		$expectCount = $this->Announcement->find('count', ['recursive' => -1]) + 1;
+		$this->Announcement->saveAnnouncement($data);
+		$this->assertEquals($expectCount, $this->Announcement->find('count', ['recursive' => -1]));
+	}
 
-		$blockId = 3;
-		$result = $this->Announcement->getAnnouncement($frameId, $blockId, true);
+/**
+ * Expect Announcement->saveAnnouncement() fail on announcement save
+ * e.g.) connection error
+ *
+ * @return void
+ */
+	public function testSaveAnnouncementFailOnAnnouncementSave() {
+		$this->setExpectedException('InternalErrorException');
 
-		$expected = array(
-			'Announcement' => array(
-				'block_id' => $blockId,
-			),
-		);
+		$announcementMock = $this->getMockForModel('Announcements.Announcement', ['save']);
+		$announcementMock->expects($this->any())
+			->method('save')
+			->will($this->returnValue(false));
 
-		$this->_assertArray(null, $expected, $result);
+		$announcementMock->saveAnnouncement([
+			'Announcement' => [
+				'block_id' => null,
+				'key' => 'announcement_1',
+				'status' => NetCommonsBlockComponent::STATUS_IN_DRAFT,
+				'content' => 'edit content',
+				'is_auto_translated' => true,
+				'translation_engine' => 'edit translation_engine',
+			],
+			'Frame' => [
+				'id' => 4
+			],
+			'Comment' => [
+				'comment' => 'edit comment',
+			]
+		]);
+	}
+
+/**
+ * Expect Announcement->saveAnnouncement() fail on comment save
+ * e.g.) connection error
+ *
+ * @return void
+ */
+	public function testSaveAnnouncementFailOnCommentSave() {
+		$this->setExpectedException('InternalErrorException');
+		$announcementMock = $this->getMockForModel('Announcements.Announcement', ['save']);
+		$announcementMock->expects($this->any())
+			->method('save')
+			->will($this->returnValue(true));
+
+		$commentMock = $this->getMockForModel('Comments.Comment', ['save']);
+		$commentMock->expects($this->any())
+			->method('save')
+			->will($this->returnValue(false));
+
+		$announcementMock->saveAnnouncement([
+			'Announcement' => [
+				'block_id' => null,
+				'key' => 'announcement_1',
+				'status' => NetCommonsBlockComponent::STATUS_IN_DRAFT,
+				'content' => 'edit content',
+				'is_auto_translated' => true,
+				'translation_engine' => 'edit translation_engine',
+			],
+			'Frame' => [
+				'id' => 4
+			],
+			'Comment' => [
+				'comment' => 'edit comment',
+			]
+		]);
 	}
 }

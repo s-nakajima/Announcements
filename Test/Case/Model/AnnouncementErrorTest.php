@@ -22,24 +22,6 @@ App::uses('AnnouncementAppModelTest', 'Announcements.Test/Case/Model');
 class AnnouncementErrorTest extends AnnouncementAppModelTest {
 
 /**
- * setUp method
- *
- * @return void
- */
-	public function setUp() {
-		parent::setUp();
-	}
-
-/**
- * tearDown method
- *
- * @return void
- */
-	public function tearDown() {
-		parent::tearDown();
-	}
-
-/**
  * Expect Announcement->saveAnnouncement() to validate frames.id and throw exception on error
  *
  * @return void

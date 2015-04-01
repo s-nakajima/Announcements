@@ -104,12 +104,11 @@ class Announcement extends AnnouncementsAppModel {
 /**
  * get content data
  *
- * @param int $frameId frames.id
  * @param int $blockId blocks.id
  * @param bool $contentEditable true can edit the content, false not can edit the content.
  * @return array
  */
-	public function getAnnouncement($frameId, $blockId, $contentEditable) {
+	public function getAnnouncement($blockId, $contentEditable) {
 		$conditions = array(
 			'block_id' => $blockId,
 		);
@@ -130,22 +129,10 @@ class Announcement extends AnnouncementsAppModel {
  * save announcement
  *
  * @param array $data received post data
- * @param bool|array $validate Either a boolean, or an array.
- *   If a boolean, indicates whether or not to validate before saving.
- *   If an array, can have following keys:
- *
- *   - validate: Set to true/false to enable or disable validation.
- *   - fieldList: An array of fields you want to allow for saving.
- *   - callbacks: Set to false to disable callbacks. Using 'before' or 'after'
- *      will enable only those callbacks.
- *   - `counterCache`: Boolean to control updating of counter caches (if any)
- *
- * @param array $fieldList List of fields to allow to be saved
  * @return mixed On success Model::$data if its not empty or true, false on failure
  * @throws InternalErrorException
- * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function saveAnnouncement($data, $validate = true, $fieldList = array()) {
+	public function saveAnnouncement($data) {
 		$this->loadModels([
 			'Announcement' => 'Announcements.Announcement',
 			'Block' => 'Blocks.Block',
@@ -166,22 +153,18 @@ class Announcement extends AnnouncementsAppModel {
 			}
 
 			//ブロックの登録
-			$block = $this->Block->saveByFrameId($data['Frame']['id'], $validate);
+			$block = $this->Block->saveByFrameId($data['Frame']['id'], false);
 
 			//お知らせの登録
 			$this->data['Announcement']['block_id'] = (int)$block['Block']['id'];
-			$announcement = $this->save(null, $validate);
+			$announcement = $this->save(null, false);
 			if (! $announcement) {
-				// @codeCoverageIgnoreStart
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-				// @codeCoverageIgnoreEnd
 			}
 			//コメントの登録
 			if ($this->Comment->data) {
-				if (! $this->Comment->save(null, $validate)) {
-					// @codeCoverageIgnoreStart
+				if (! $this->Comment->save(null, false)) {
 					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-					// @codeCoverageIgnoreEnd
 				}
 			}
 

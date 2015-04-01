@@ -65,30 +65,6 @@ class AnnouncementAppModelTest extends YACakeTestCase {
 	}
 
 /**
- * _assertArray method
- *
- * @param string $key target key
- * @param mixed $value array or string, number
- * @param array $result result data
- * @return void
- */
-	protected function _assertArray($key, $value, $result) {
-		if ($key !== null) {
-			$this->assertArrayHasKey($key, $result);
-			$target = $result[$key];
-		} else {
-			$target = $result;
-		}
-		if (is_array($value)) {
-			foreach ($value as $nextKey => $nextValue) {
-				$this->_assertArray($nextKey, $nextValue, $target);
-			}
-		} elseif (isset($value)) {
-			$this->assertEquals($value, $target, 'key=' . print_r($key, true) . 'value=' . print_r($value, true) . 'result=' . print_r($result, true));
-		}
-	}
-
-/**
  * testIndex method
  *
  * @return void

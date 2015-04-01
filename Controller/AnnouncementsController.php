@@ -101,7 +101,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 			);
 			$this->Announcement->setDataSource('master');
 			if (!$announcement = $this->Announcement->getAnnouncement(
-				(int)$data['Frame']['id'],
 				isset($data['Block']['id']) ? (int)$data['Block']['id'] : null,
 				true
 			)) {
@@ -109,7 +108,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 			}
 
 			$data = Hash::merge($announcement, $data);
-			$announcement = $this->Announcement->saveAnnouncement($data, false);
+			$announcement = $this->Announcement->saveAnnouncement($data);
 			if (!$this->handleValidationError($this->Announcement->validationErrors)) {
 				$results = $this->camelizeKeyRecursive($this->Announcement->data);
 				$this->set([
@@ -131,7 +130,6 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	private function __initAnnouncement($contains = []) {
 		if (!$announcements = $this->Announcement->getAnnouncement(
-			$this->viewVars['frameId'],
 			$this->viewVars['blockId'],
 			$this->viewVars['contentEditable']
 		)) {
