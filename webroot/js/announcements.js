@@ -3,6 +3,7 @@
  * @author nakajimashouhei@gmail.com (Shohei Nakajima)
  */
 
+
 /**
  * Announcements.edit Javascript
  *

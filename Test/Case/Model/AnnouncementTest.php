@@ -30,7 +30,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 		$blockId = 1;
 		$contentEditable = true;
 		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
-		$this->assertEqual(2, $result['Announcement']['id']);
+		$this->assertNotEmpty($result);
 	}
 
 /**
@@ -38,7 +38,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
  *
  * @return void
  */
-	public function testGetAnnouncementByNoEditable() {
+	public function testUserWOContentEditableCannotReadYetPublishedContent() {
 		$blockId = 4;
 		$contentEditable = false;
 		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
@@ -50,7 +50,7 @@ class AnnouncementTest extends AnnouncementAppModelTest {
  *
  * @return void
  */
-	public function testGetAnnouncementByNoEditable2() {
+	public function testUserWOContentEditableCanReadPublishedContent() {
 		$blockId = 1;
 		$contentEditable = false;
 		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
