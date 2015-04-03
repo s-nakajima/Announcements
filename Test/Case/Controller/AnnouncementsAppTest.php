@@ -31,7 +31,7 @@ class AnnouncementsAppTest extends YAControllerTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'site_setting',
+		'plugin.net_commons.site_setting',
 		'plugin.announcements.announcement',
 		'plugin.announcements.plugin',
 		'plugin.blocks.block',
