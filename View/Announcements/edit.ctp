@@ -10,9 +10,19 @@
  */
 ?>
 
-<?php echo $this->Html->script('/net_commons/base/js/workflow.js', false); ?>
-<?php echo $this->Html->script('/net_commons/base/js/wysiwyg.js', false); ?>
-<?php echo $this->Html->script('/announcements/js/announcements.js', false); ?>
+<?php 
+	$this->Html->script(
+		array(
+			'/net_commons/js/workflow.js',
+			'/net_commons/js/wysiwyg.js',
+			'/announcements/js/announcements.js'
+		),
+		array(
+			'plugin' => false,
+			'inline' => false
+		)
+	);
+?>
 
 <div id="nc-announcements-<?php echo (int)$frameId; ?>"
 	ng-controller="Announcements"
