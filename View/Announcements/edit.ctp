@@ -10,7 +10,7 @@
  */
 ?>
 
-<?php 
+<?php
 	$this->Html->script(
 		array(
 			'/net_commons/js/workflow.js',
@@ -57,38 +57,39 @@
 			</ul>
 			<br />
 			<?php $tabId = $this->fetch('tabIndex'); ?>
-			<div class="tab-content" ng-init="tab.setTab(<?php echo (int)$tabId; ?>)">
+			<div class="tab-content" ng-init="tab.setTab(<?php echo (int)$tabId; ?>)"></div>
 		<?php endif; ?>
 
 		<div>
-		<?php echo $this->Form->create('Announcement', array(
-				'name' => 'form',
-				'novalidate' => true,
-			)); ?>
-			<?php echo $this->Form->hidden('id'); ?>
-			<?php echo $this->Form->hidden('Frame.id', array(
-				'value' => $frameId,
-			)); ?>
-			<?php echo $this->Form->hidden('Block.id', array(
-				'value' => $blockId,
-			)); ?>
+			<?php echo $this->Form->create('Announcement', array(
+					'name' => 'form',
+					'novalidate' => true,
+				)); ?>
+				<?php echo $this->Form->hidden('id'); ?>
+				<?php echo $this->Form->hidden('Frame.id', array(
+					'value' => $frameId,
+				)); ?>
+				<?php echo $this->Form->hidden('Block.id', array(
+					'value' => $blockId,
+				)); ?>
 
-			<div class="panel panel-default" >
-				<div class="panel-body has-feedback">
-					<?php echo $this->element('edit_form'); ?>
+				<div class="panel panel-default" >
+					<div class="panel-body has-feedback">
+						<?php echo $this->element('edit_form'); ?>
 
-					<hr />
+						<hr />
 
-					<?php echo $this->element('Comments.form'); ?>
+						<?php echo $this->element('Comments.form'); ?>
+					</div>
+
+					<div class="panel-footer text-center">
+						<?php echo $this->element('NetCommons.workflow_buttons'); ?>
+					</div>
 				</div>
 
-				<div class="panel-footer text-center">
-					<?php echo $this->element('NetCommons.workflow_buttons'); ?>
-				</div>
-			</div>
+				<?php echo $this->element('Comments.index'); ?>
 
-			<?php echo $this->element('Comments.index'); ?>
-
-		<?php echo $this->Form->end(); ?>
+			<?php echo $this->Form->end(); ?>
+		</div>
 	</div>
 </div>
