@@ -1,6 +1,6 @@
 <?php
 /**
- * announcements view template
+ * Blocks edit template
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -9,8 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 ?>
-<?php if (isset($announcements['content'])): ?>
-	<div>
-		<?php echo isset($announcements['content']) ? $announcements['content'] : ''; ?>
-	</div>
-<?php endif;
+
+<?php echo $this->element('Announcements/edit_form'); ?>
+
+<?php echo $this->element('Blocks.public_type');

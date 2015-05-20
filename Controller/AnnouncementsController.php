@@ -97,9 +97,10 @@ class AnnouncementsController extends AnnouncementsAppController {
 				$this->data,
 				['Announcement' => ['status' => $status]]
 			);
-			$this->Announcement->setDataSource('master');
+			//$this->Announcement->setDataSource('master');
 			if (!$announcement = $this->Announcement->getAnnouncement(
 				isset($data['Block']['id']) ? (int)$data['Block']['id'] : null,
+				$this->viewVars['roomId'],
 				true
 			)) {
 				$announcement = $this->Announcement->create(['key' => Security::hash('announcement' . mt_rand() . microtime(), 'md5')]);
@@ -129,6 +130,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 	private function __initAnnouncement($contains = []) {
 		if (!$announcements = $this->Announcement->getAnnouncement(
 			$this->viewVars['blockId'],
+			$this->viewVars['roomId'],
 			$this->viewVars['contentEditable']
 		)) {
 			$announcements = $this->Announcement->create();

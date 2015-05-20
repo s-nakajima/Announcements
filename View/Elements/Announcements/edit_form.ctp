@@ -18,7 +18,7 @@
 
 	<div class="nc-wysiwyg-alert">
 		<?php echo $this->Form->textarea(
-			'content', [
+			'Announcement.content', [
 				'class' => 'form-control',
 				'ui-tinymce' => 'tinymce.options',
 				'ng-model' => 'announcements.content',

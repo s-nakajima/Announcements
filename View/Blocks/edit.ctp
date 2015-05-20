@@ -1,0 +1,51 @@
+<?php
+/**
+ * Blocks edit template
+ *
+ * @author Noriko Arai <arai@nii.ac.jp>
+ * @author Shohei Nakajima <nakajimashouhei@gmail.com>
+ * @link http://www.netcommons.org NetCommons Project
+ * @license http://www.netcommons.org/license.txt NetCommons License
+ * @copyright Copyright 2014, NetCommons Project
+ */
+?>
+
+<?php
+	$this->Html->script(
+		array(
+			'/net_commons/js/workflow.js',
+			'/net_commons/js/wysiwyg.js',
+			'/announcements/js/announcements.js'
+		),
+		array(
+			'plugin' => false,
+			'inline' => false
+		)
+	);
+?>
+
+<div id="nc-announcements-<?php echo (int)$frameId; ?>" class="modal-body"
+		ng-controller="Announcements"
+		ng-init="initialize(<?php echo h(json_encode(array('announcements' => $this->viewVars['announcement']))); ?>)">
+
+	<?php echo $this->element('NetCommons.setting_tabs', $settingTabs); ?>
+
+	<div class="tab-content">
+		<?php echo $this->element('Blocks.setting_tabs', $blockSettingTabs); ?>
+
+		<?php echo $this->element('Blocks.edit_form', array(
+				'controller' => 'Blocks',
+				'action' => h($this->request->params['action']) . '/' . $frameId . '/' . $blockId,
+				'callback' => 'Announcements.Blocks/edit_form',
+				'cancelUrl' => '/announcements/blocks/index/' . $frameId
+			)); ?>
+
+		<?php if ($this->request->params['action'] === 'edit') : ?>
+			<?php echo $this->element('Blocks.delete_form', array(
+					'controller' => 'Blocks',
+					'action' => 'delete/' . $frameId . '/' . (int)$announcement['blockId'],
+					'callback' => 'Announcements.Blocks/delete_form'
+				)); ?>
+		<?php endif; ?>
+	</div>
+</div>

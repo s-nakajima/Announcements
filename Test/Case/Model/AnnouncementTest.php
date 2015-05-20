@@ -28,8 +28,9 @@ class AnnouncementTest extends AnnouncementAppModelTest {
  */
 	public function testGetAnnouncement() {
 		$blockId = 1;
+		$roomId = 1;
 		$contentEditable = true;
-		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
+		$result = $this->Announcement->getAnnouncement($blockId, $roomId, $contentEditable);
 		$this->assertNotEmpty($result);
 	}
 
@@ -40,8 +41,9 @@ class AnnouncementTest extends AnnouncementAppModelTest {
  */
 	public function testUserWOContentEditableCannotReadYetPublishedContent() {
 		$blockId = 4;
+		$roomId = 4;
 		$contentEditable = false;
-		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
+		$result = $this->Announcement->getAnnouncement($blockId, $roomId, $contentEditable);
 		$this->assertEmpty($result);
 	}
 
@@ -52,8 +54,9 @@ class AnnouncementTest extends AnnouncementAppModelTest {
  */
 	public function testUserWOContentEditableCanReadPublishedContent() {
 		$blockId = 1;
+		$roomId = 1;
 		$contentEditable = false;
-		$result = $this->Announcement->getAnnouncement($blockId, $contentEditable);
+		$result = $this->Announcement->getAnnouncement($blockId, $roomId, $contentEditable);
 		$this->assertNotEmpty($result);
 	}
 

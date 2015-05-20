@@ -10,6 +10,7 @@
  */
 
 App::uses('AnnouncementsAppController', 'Announcements.Controller');
+App::uses('String', 'Utility');
 
 /**
  * Blocks Controller
@@ -96,7 +97,7 @@ class BlocksController extends AnnouncementsAppController {
 		);
 
 		try {
-			$rssReaders = $this->Paginator->paginate('Announcement');
+			$announcements = $this->Paginator->paginate('Announcement');
 		} catch (Exception $ex) {
 			if (isset($this->request['paging']) && $this->params['named']) {
 				$this->redirect('/announcements/blocks/index/' . $this->viewVars['frameId']);
@@ -106,13 +107,13 @@ class BlocksController extends AnnouncementsAppController {
 			throw $ex;
 		}
 
-		if (! $rssReaders) {
+		if (! $announcements) {
 			$this->view = 'Blocks/not_found';
 			return;
 		}
 
 		$results = array(
-			'announcements' => $rssReaders
+			'announcements' => $announcements
 		);
 		$results = $this->camelizeKeyRecursive($results);
 		$this->set($results);
@@ -127,7 +128,7 @@ class BlocksController extends AnnouncementsAppController {
 		$this->view = 'edit';
 
 		$this->set('blockId', null);
-		$rssReader = $this->Announcement->create(
+		$announcement = $this->Announcement->create(
 			array(
 				'id' => null,
 				'key' => null,
@@ -143,8 +144,7 @@ class BlocksController extends AnnouncementsAppController {
 			$data = $this->__parseRequestData();
 			$data['Announcement']['status'] = NetCommonsBlockComponent::STATUS_PUBLISHED;
 
-			$rssReader = $this->Announcement->saveAnnouncement($data);
-
+			$this->Announcement->saveAnnouncement($data);
 			if ($this->handleValidationError($this->Announcement->validationErrors)) {
 				if (! $this->request->is('ajax')) {
 					$this->redirect('/announcements/blocks/index/' . $this->viewVars['frameId']);
@@ -152,12 +152,14 @@ class BlocksController extends AnnouncementsAppController {
 				return;
 			}
 
+			var_dump($this->Announcement->validationErrors);
+
 			$data['Block']['id'] = null;
 			$data['Block']['key'] = null;
 			unset($data['Frame']);
 		}
-
-		$data = Hash::merge($rssReader, $block, $data);
+var_dump($announcement, $block, $data);
+		$data = Hash::merge($announcement, $block, $data);
 		$results = $this->camelizeKeyRecursive($data);
 		$this->set($results);
 	}
@@ -230,7 +232,7 @@ class BlocksController extends AnnouncementsAppController {
  */
 	private function __initAnnouncement() {
 		if ($this->viewVars['blockId']) {
-			if (! $rssReader = $this->Announcement->getAnnouncement(
+			if (! $announcement = $this->Announcement->getAnnouncement(
 					$this->viewVars['blockId'],
 					$this->viewVars['roomId'],
 					$this->viewVars['contentEditable']
@@ -238,8 +240,8 @@ class BlocksController extends AnnouncementsAppController {
 				$this->throwBadRequest();
 				return false;
 			}
-			$rssReader = $this->camelizeKeyRecursive($rssReader);
-			$this->set($rssReader);
+			$announcement = $this->camelizeKeyRecursive($announcement);
+			$this->set($announcement);
 		}
 
 		return true;

@@ -22,11 +22,19 @@ App::uses('AnnouncementsAppModel', 'Announcements.Model');
 class Announcement extends AnnouncementsAppModel {
 
 /**
+ * Max length of content
+ *
+ * @var int
+ */
+	const LIST_TITLE_LENGTH = 50;
+
+/**
  * use behaviors
  *
  * @var array
  */
 	public $actsAs = array(
+		'NetCommons.OriginalKey',
 		'NetCommons.Publishable'
 	);
 
@@ -70,16 +78,12 @@ class Announcement extends AnnouncementsAppModel {
 					'rule' => array('numeric'),
 					'message' => __d('net_commons', 'Invalid request.'),
 					'allowEmpty' => true,
-					'required' => true,
+					//'required' => true,
+					'on' => 'update', // Limit validation to 'create' or 'update' operations
 				)
 			),
-			'key' => array(
-				'notEmpty' => array(
-					'rule' => array('notEmpty'),
-					'message' => __d('net_commons', 'Invalid request.'),
-					'required' => true,
-				)
-			),
+
+			//key to set in OriginalKeyBehavior.
 
 			//status to set in PublishableBehavior.
 
@@ -102,31 +106,35 @@ class Announcement extends AnnouncementsAppModel {
 	}
 
 /**
- * get content data
+ * Get announcement data
  *
  * @param int $blockId blocks.id
+ * @param int $roomId rooms.id
  * @param bool $contentEditable true can edit the content, false not can edit the content.
  * @return array
  */
-	public function getAnnouncement($blockId, $contentEditable) {
+	public function getAnnouncement($blockId, $roomId, $contentEditable) {
 		$conditions = array(
-			'block_id' => $blockId,
+			'Block.id' => $blockId,
+			'Block.room_id' => $roomId,
 		);
-		if (! $contentEditable) {
-			$conditions['status'] = NetCommonsBlockComponent::STATUS_PUBLISHED;
+		if ($contentEditable) {
+			$conditions[$this->alias . '.is_latest'] = true;
+		} else {
+			$conditions[$this->alias . '.is_active'] = true;
 		}
 
 		$announcement = $this->find('first', array(
-			'recursive' => -1,
+			'recursive' => 0,
 			'conditions' => $conditions,
-			'order' => 'Announcement.id DESC',
+			//'order' => 'Announcement.id DESC',
 		));
 
 		return $announcement;
 	}
 
 /**
- * save announcement
+ * Save announcement
  *
  * @param array $data received post data
  * @return mixed On success Model::$data if its not empty or true, false on failure
@@ -140,20 +148,17 @@ class Announcement extends AnnouncementsAppModel {
 		]);
 
 		//トランザクションBegin
+		$this->setDataSource('master');
 		$dataSource = $this->getDataSource();
 		$dataSource->begin();
 
 		try {
-			if (!$this->validateAnnouncement($data)) {
-				return false;
-			}
-			if (!$this->Comment->validateByStatus($data, array('caller' => $this->name))) {
-				$this->validationErrors = Hash::merge($this->validationErrors, $this->Comment->validationErrors);
+			if (!$this->validateAnnouncement($data, ['comment'])) {
 				return false;
 			}
 
 			//ブロックの登録
-			$block = $this->Block->saveByFrameId($data['Frame']['id'], false);
+			$block = $this->Block->saveByFrameId($data['Frame']['id']);
 
 			//お知らせの登録
 			$this->data['Announcement']['block_id'] = (int)$block['Block']['id'];
@@ -163,6 +168,7 @@ class Announcement extends AnnouncementsAppModel {
 			}
 			//コメントの登録
 			if ($this->Comment->data) {
+				$this->Comment->data[$this->Comment->name]['content_key'] = $announcement[$this->alias]['key'];
 				if (! $this->Comment->save(null, false)) {
 					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 				}
@@ -182,11 +188,23 @@ class Announcement extends AnnouncementsAppModel {
  * validate announcement
  *
  * @param array $data received post data
+ * @param array $contains Optional validate sets
  * @return bool True on success, false on error
  */
-	public function validateAnnouncement($data) {
+	public function validateAnnouncement($data, $contains = []) {
 		$this->set($data);
 		$this->validates();
-		return $this->validationErrors ? false : true;
+		if ($this->validationErrors) {
+			return false;
+		}
+
+		if (in_array('comment', $contains, true) && isset($data['Comment'])) {
+			if (! $this->Comment->validateByStatus($data, array('plugin' => $this->plugin, 'caller' => $this->name))) {
+				$this->validationErrors = Hash::merge($this->validationErrors, $this->Comment->validationErrors);
+				return false;
+			}
+		}
+		
+		return true;
 	}
 }
