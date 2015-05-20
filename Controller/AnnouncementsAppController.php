@@ -25,6 +25,17 @@ class AnnouncementsAppController extends AppController {
  * @var array
  */
 	public $components = array(
+		'NetCommons.NetCommonsFrame',
 		'Security'
 	);
+
+/**
+ * use models
+ *
+ * @var array
+ */
+	public $uses = array(
+		'Announcements.Announcement',
+	);
+
 }

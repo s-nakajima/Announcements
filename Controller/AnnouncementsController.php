@@ -25,7 +25,6 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @var array
  */
 	public $uses = array(
-		'Announcements.Announcement',
 		'Comments.Comment',
 	);
 
@@ -36,7 +35,6 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public $components = array(
 		/* 'NetCommons.NetCommonsBlock', */
-		'NetCommons.NetCommonsFrame',
 		'NetCommons.NetCommonsWorkflow',
 		'NetCommons.NetCommonsRoomRole' => array(
 			//コンテンツの権限設定
