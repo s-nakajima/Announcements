@@ -5,29 +5,13 @@
 
 
 /**
- * Announcements.edit Javascript
+ * Announcements Javascript
  *
  * @param {string} Controller name
- * @param {function($scope, $modalStack)} Controller
+ * @param {function($scope, NetCommonsWysiwyg)} Controller
  */
 NetCommonsApp.controller('Announcements',
-    function($scope, NetCommonsBase, NetCommonsWysiwyg,
-    NetCommonsTab, NetCommonsUser, NetCommonsWorkflow) {
-
-      /**
-       * tab
-       *
-       * @type {object}
-       */
-      $scope.tab = NetCommonsTab.new();
-
-      /**
-       * show user information method
-       *
-       * @param {number} users.id
-       * @return {string}
-       */
-      $scope.user = NetCommonsUser.new();
+    function($scope, NetCommonsWysiwyg) {
 
       /**
        * tinymce
@@ -42,6 +26,6 @@ NetCommonsApp.controller('Announcements',
        * @return {void}
        */
       $scope.initialize = function(data) {
-        $scope.announcements = angular.copy(data.announcements);
+        $scope.announcement = angular.copy(data.announcement);
       };
     });

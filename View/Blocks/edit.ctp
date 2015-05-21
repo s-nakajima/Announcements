@@ -13,7 +13,6 @@
 <?php
 	$this->Html->script(
 		array(
-			'/net_commons/js/workflow.js',
 			'/net_commons/js/wysiwyg.js',
 			'/announcements/js/announcements.js'
 		),
@@ -26,7 +25,7 @@
 
 <div id="nc-announcements-<?php echo (int)$frameId; ?>" class="modal-body"
 		ng-controller="Announcements"
-		ng-init="initialize(<?php echo h(json_encode(array('announcements' => $this->viewVars['announcement']))); ?>)">
+		ng-init="initialize(<?php echo h(json_encode(array('announcement' => $this->viewVars['announcement']))); ?>)">
 
 	<?php echo $this->element('NetCommons.setting_tabs', $settingTabs); ?>
 

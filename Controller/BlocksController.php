@@ -43,6 +43,7 @@ class BlocksController extends AnnouncementsAppController {
  */
 	public $components = array(
 		'NetCommons.NetCommonsBlock',
+		'NetCommons.NetCommonsWorkflow',
 		'NetCommons.NetCommonsRoomRole' => array(
 			//コンテンツの権限設定
 			'allowedActions' => array(
@@ -142,7 +143,6 @@ class BlocksController extends AnnouncementsAppController {
 		$data = array();
 		if ($this->request->isPost()) {
 			$data = $this->__parseRequestData();
-			$data['Announcement']['status'] = NetCommonsBlockComponent::STATUS_PUBLISHED;
 
 			$this->Announcement->saveAnnouncement($data);
 			if ($this->handleValidationError($this->Announcement->validationErrors)) {
@@ -152,13 +152,11 @@ class BlocksController extends AnnouncementsAppController {
 				return;
 			}
 
-			var_dump($this->Announcement->validationErrors);
-
 			$data['Block']['id'] = null;
 			$data['Block']['key'] = null;
+			$data['Announcement']['status'] = null;
 			unset($data['Frame']);
 		}
-var_dump($announcement, $block, $data);
 		$data = Hash::merge($announcement, $block, $data);
 		$results = $this->camelizeKeyRecursive($data);
 		$this->set($results);
@@ -191,6 +189,8 @@ var_dump($announcement, $block, $data);
 				return;
 			}
 
+			$data['Announcement']['status'] = $this->viewVars['announcement']['status'];
+			unset($data['Frame']);
 			$results = $this->camelizeKeyRecursive($data);
 			$this->set($results);
 		}
@@ -254,6 +254,10 @@ var_dump($announcement, $block, $data);
  */
 	private function __parseRequestData() {
 		$data = $this->data;
+		if (! $status = $this->NetCommonsWorkflow->parseStatus()) {
+			return;
+		}
+		$data['Announcement']['status'] = $status;
 		if ($data['Block']['public_type'] === Block::TYPE_LIMITED) {
 			//$data['Block']['from'] = implode('-', $data['Block']['from']);
 			//$data['Block']['to'] = implode('-', $data['Block']['to']);

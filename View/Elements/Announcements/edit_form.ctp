@@ -10,6 +10,24 @@
  */
 ?>
 
+<?php echo $this->element('Blocks.form_hidden'); ?>
+
+<?php echo $this->Form->hidden('Announcement.id', array(
+		'value' => isset($announcement['id']) ? (int)$announcement['id'] : null,
+	)); ?>
+
+<?php echo $this->Form->hidden('Announcement.key', array(
+		'value' => isset($announcement['key']) ? $announcement['key'] : null,
+	)); ?>
+
+<?php echo $this->Form->hidden('Announcement.block_id', array(
+		'value' => isset($announcement['blockId']) ? $announcement['blockId'] : null,
+	)); ?>
+
+<?php echo $this->Form->hidden('Announcement.language_id', array(
+		'value' => $languageId,
+	)); ?>
+
 <div class="form-group">
 	<label class="control-label">
 		<?php echo __d('announcements', 'Content'); ?>
@@ -21,7 +39,7 @@
 			'Announcement.content', [
 				'class' => 'form-control',
 				'ui-tinymce' => 'tinymce.options',
-				'ng-model' => 'announcements.content',
+				'ng-model' => 'announcement.content',
 				'rows' => 5,
 				'required' => 'required',
 			]) ?>

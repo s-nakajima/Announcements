@@ -33,7 +33,7 @@ class AnnouncementsControllerTest extends AnnouncementsAppTest {
 				'return' => 'view',
 			)
 		);
-		$this->assertTextEquals('Announcements/view', $this->controller->view);
+		$this->assertTextEquals('view', $this->controller->view);
 	}
 
 /**

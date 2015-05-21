@@ -153,7 +153,7 @@ class Announcement extends AnnouncementsAppModel {
 		$dataSource->begin();
 
 		try {
-			if (!$this->validateAnnouncement($data, ['comment'])) {
+			if (!$this->validateAnnouncement($data, ['block', 'comment'])) {
 				return false;
 			}
 
@@ -168,6 +168,7 @@ class Announcement extends AnnouncementsAppModel {
 			}
 			//コメントの登録
 			if ($this->Comment->data) {
+				$this->Comment->data[$this->Comment->name]['block_key'] = $block['Block']['key'];
 				$this->Comment->data[$this->Comment->name]['content_key'] = $announcement[$this->alias]['key'];
 				if (! $this->Comment->save(null, false)) {
 					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
@@ -204,7 +205,62 @@ class Announcement extends AnnouncementsAppModel {
 				return false;
 			}
 		}
-		
+
+		if (in_array('block', $contains, true)) {
+			//ブロックのvalidate
+			if (! $this->Block->validateBlock($data)) {
+				$this->validationErrors = Hash::merge($this->validationErrors, $this->Block->validationErrors);
+				return false;
+			}
+		}
+
 		return true;
 	}
+
+/**
+ * Delete Announcement
+ *
+ * @param array $data received post data
+ * @return mixed On success Model::$data if its not empty or true, false on failure
+ * @throws InternalErrorException
+ */
+	public function deleteAnnouncement($data) {
+		$this->loadModels([
+			'Announcement' => 'Announcements.Announcement',
+			'Block' => 'Blocks.Block',
+			'Comment' => 'Comments.Comment',
+		]);
+
+		//トランザクションBegin
+		$this->setDataSource('master');
+		$dataSource = $this->getDataSource();
+		$dataSource->begin();
+
+		try {
+			//Announcementの削除
+			if (! $this->deleteAll(array($this->alias . '.key' => $data[$this->alias]['key']), false)) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+
+			//コメントの削除
+			if (! $this->Comment->deleteAll(array($this->Comment->alias . '.block_key' => $data['Block']['key']), false)) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+
+			//Blockデータ削除
+			$this->Block->deleteBlock($data['Block']['key']);
+
+			//トランザクションCommit
+			$dataSource->commit();
+
+		} catch (Exception $ex) {
+			//トランザクションRollback
+			$dataSource->rollback();
+			CakeLog::error($ex);
+			throw $ex;
+		}
+
+		return true;
+	}
+
 }

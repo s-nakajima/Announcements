@@ -25,6 +25,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @var array
  */
 	public $uses = array(
+		'Blocks.Block',
 		'Comments.Comment',
 	);
 
@@ -59,8 +60,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	public function index() {
-		$this->view = 'Announcements/view';
-		$this->view();
+		$this->setAction('view');
 	}
 
 /**
@@ -74,8 +74,8 @@ class AnnouncementsController extends AnnouncementsAppController {
 		if ($this->request->is('ajax')) {
 			$this->renderJson();
 		} else {
-			if ($this->viewVars['contentEditable']) {
-				$this->view = 'Announcements/viewForEditor';
+			if (! $this->viewVars['announcement']['key'] && ! $this->viewVars['contentEditable']) {
+				$this->autoRender = false;
 			}
 		}
 	}
@@ -89,7 +89,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$this->__initAnnouncement(['comments']);
 
 		if ($this->request->isPost()) {
-			if (!$status = $this->NetCommonsWorkflow->parseStatus()) {
+			if (! $status = $this->NetCommonsWorkflow->parseStatus()) {
 				return;
 			}
 
@@ -97,21 +97,16 @@ class AnnouncementsController extends AnnouncementsAppController {
 				$this->data,
 				['Announcement' => ['status' => $status]]
 			);
-			//$this->Announcement->setDataSource('master');
-			if (!$announcement = $this->Announcement->getAnnouncement(
-				isset($data['Block']['id']) ? (int)$data['Block']['id'] : null,
-				$this->viewVars['roomId'],
-				true
-			)) {
-				$announcement = $this->Announcement->create(['key' => Security::hash('announcement' . mt_rand() . microtime(), 'md5')]);
+			if (isset($this->viewVars['announcement']['key'])) {
+				$data['Announcement']['key'] = $this->viewVars['announcement']['key'];
 			}
+			unset($data['Announcement']['id']);
 
-			$data = Hash::merge($announcement, $data);
 			$announcement = $this->Announcement->saveAnnouncement($data);
-			if (!$this->handleValidationError($this->Announcement->validationErrors)) {
+			if (! $this->handleValidationError($this->Announcement->validationErrors)) {
 				$results = $this->camelizeKeyRecursive($this->Announcement->data);
 				$this->set([
-					'announcements' => $results['announcement'],
+					'announcement' => $results['announcement'],
 				]);
 				return;
 			}
@@ -128,27 +123,40 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	private function __initAnnouncement($contains = []) {
-		if (!$announcements = $this->Announcement->getAnnouncement(
+		if (! $announcement = $this->Announcement->getAnnouncement(
 			$this->viewVars['blockId'],
 			$this->viewVars['roomId'],
 			$this->viewVars['contentEditable']
 		)) {
-			$announcements = $this->Announcement->create();
+			$announcement = $this->Announcement->create(
+				array(
+					'id' => null,
+					'key' => null,
+					'block_id' => null,
+				)
+			);
+
+			$block = $this->Block->create([
+				'id' => $this->viewVars['blockId'],
+				'key' => $this->viewVars['blockKey'],
+			]);
+
+			$announcement['Block'] = $block['Block'];
 		}
 		$results = array(
-			'announcements' => $announcements['Announcement'],
-			'contentStatus' => $announcements['Announcement']['status'],
+			'contentStatus' => $announcement['Announcement']['status'],
 		);
 
 		if (in_array('comments', $contains, true)) {
 			$results['comments'] = $this->Comment->getComments(
 				array(
-					'plugin_key' => 'announcements',
-					'content_key' => isset($announcements['Announcement']['key']) ? $announcements['Announcement']['key'] : null,
+					'plugin_key' => $this->params['plugin'],
+					'content_key' => isset($announcement['Announcement']['key']) ? $announcement['Announcement']['key'] : null,
 				)
 			);
 		}
 
+		$results = Hash::merge($announcement, $results);
 		$results = $this->camelizeKeyRecursive($results);
 		$this->set($results);
 	}

@@ -10,23 +10,26 @@
  */
 ?>
 
-<div class="panel panel-default" >
-	<div class="panel-body has-feedback">
-		<?php echo $this->element('Announcements/edit_form'); ?>
+<?php echo $this->Form->create('Blocks', array('novalidate' => true)); ?>
 
-		<?php echo $this->element('Blocks.public_type'); ?>
+	<div class="panel panel-default" >
+		<div class="panel-body has-feedback">
+			<?php echo $this->element('Announcements/edit_form'); ?>
 
-		<hr />
+			<?php echo $this->element('Blocks.public_type'); ?>
 
-		<?php echo $this->element('Comments.form', array(
-			'contentStatus' => $announcement['status']
-		)); ?>
+			<hr />
+
+			<?php echo $this->element('Comments.form', array(
+				'contentStatus' => $announcement['status']
+			)); ?>
+		</div>
+
+		<div class="panel-footer text-center">
+			<?php echo $this->element('NetCommons.workflow_buttons', array(
+				'cancelUrl' => 'announcements/blocks/index/' . $frameId,
+				'contentStatus' => $announcement['status']
+			)); ?>
+		</div>
 	</div>
-
-	<div class="panel-footer text-center">
-		<?php echo $this->element('NetCommons.workflow_buttons', array(
-			'cancelUrl' => '/announcements/blocks/index/' . $frameId,
-			'contentStatus' => $announcement['status']
-		)); ?>
-	</div>
-</div>
+<?php echo $this->Form->end();
