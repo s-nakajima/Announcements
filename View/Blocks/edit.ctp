@@ -33,12 +33,7 @@
 	<div class="tab-content">
 		<?php echo $this->element('Blocks.setting_tabs', $blockSettingTabs); ?>
 
-		<?php echo $this->element('Blocks.edit_form', array(
-				'controller' => 'Blocks',
-				'action' => h($this->request->params['action']) . '/' . $frameId . '/' . $blockId,
-				'callback' => 'Announcements.Blocks/edit_form',
-				'cancelUrl' => '/announcements/blocks/index/' . $frameId
-			)); ?>
+		<?php echo $this->element('Announcements.Blocks/edit_form'); ?>
 
 		<?php if ($this->request->params['action'] === 'edit') : ?>
 			<?php echo $this->element('Blocks.delete_form', array(

@@ -68,6 +68,7 @@ class AddIsActiveIsLatest extends CakeMigration {
 		'announcements' => array(
 			array (
 				'id' => 1,
+				'language_id' => '2',
 				'block_id' => '1',
 				'status' => '1',
 				'is_active' => '1',
