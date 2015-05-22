@@ -243,9 +243,7 @@ class Announcement extends AnnouncementsAppModel {
 			}
 
 			//コメントの削除
-			if (! $this->Comment->deleteAll(array($this->Comment->alias . '.block_key' => $data['Block']['key']), false)) {
-				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-			}
+			$this->Comment->deleteByBlock($data['Block']['key']);
 
 			//Blockデータ削除
 			$this->Block->deleteBlock($data['Block']['key']);
