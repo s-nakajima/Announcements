@@ -181,6 +181,9 @@ class BlocksController extends AnnouncementsAppController {
 		if ($this->request->isPost()) {
 			$data = $this->__parseRequestData();
 
+			$data['Announcement']['key'] = $this->viewVars['announcement']['key'];
+			unset($data['Announcement']['id']);
+
 			$this->Announcement->saveAnnouncement($data);
 			if ($this->handleValidationError($this->Announcement->validationErrors)) {
 				if (! $this->request->is('ajax')) {
