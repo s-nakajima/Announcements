@@ -51,7 +51,8 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @var array
  */
 	public $helpers = array(
-		'NetCommons.Token'
+		'NetCommons.Token',
+		'Pages.Layout'
 	);
 
 /**

@@ -33,14 +33,6 @@
 				'novalidate' => true,
 			)); ?>
 
-			<?php echo $this->Form->hidden('id'); ?>
-			<?php echo $this->Form->hidden('Frame.id', array(
-				'value' => $frameId,
-			)); ?>
-			<?php echo $this->Form->hidden('Block.id', array(
-				'value' => $blockId,
-			)); ?>
-
 			<div class="panel panel-default" >
 				<div class="panel-body has-feedback">
 					<?php echo $this->element('Announcements/edit_form'); ?>
