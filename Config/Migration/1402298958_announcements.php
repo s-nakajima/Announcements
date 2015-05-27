@@ -31,101 +31,58 @@ class Announcements extends CakeMigration {
 		'up' => array(
 			'create_table' => array(
 				'announcements' => array(
-					'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
-					'announcements_block_id' => array('type' => 'integer', 'null' => false, 'default' => null),
-					'status' => array('type' => 'integer', 'null' => false, 'default' => '1', 'length' => 3),
-					'language_id' => array('type' => 'integer', 'null' => false, 'default' => '1'),
-					'is_auto_translation' => array('type' => 'boolean', 'null' => true),
-					'translation_engine' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'content' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
-					'created_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-					'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
-					'modified_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+					'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary', 'comment' => 'ID |  |  | '),
+					'language_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 6, 'after' => 'id'),
+					'block_id' => array('type' => 'integer', 'null' => false, 'default' => null),
+					'key' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'announcement content key | お知らせコンテンツキー | Hash値 | ', 'charset' => 'utf8'),
+					'status' => array('type' => 'integer', 'null' => false, 'length' => 4, 'comment' => 'public status, 1: public, 2: public pending, 3: draft during 4: remand | 公開状況  1:公開中、2:公開申請中、3:下書き中、4:差し戻し |  | '),
+					'is_active' => array('type' => 'boolean', 'null' => false, 'comment' => '', 'after' => 'status'),
+					'is_latest' => array('type' => 'boolean', 'null' => false, 'comment' => '', 'after' => 'is_active'),
+					'content' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'content | コンテンツ |  | ', 'charset' => 'utf8'),
+					'is_first_auto_translation' => array('type' => 'boolean', 'null' => false, 'after' => 'content'),
+					'is_auto_translated' => array('type' => 'boolean', 'null' => false, 'comment' => 'translation type. 0:original , 1:auto translation | 翻訳タイプ  0:オリジナル、1:自動翻訳 |  | '),
+					'translation_engine' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'translation engine | 翻訳エンジン |  | ', 'charset' => 'utf8'),
+					'created_user' => array('type' => 'integer', 'null' => true, 'default' => '0', 'comment' => 'created user | 作成者 | users.id | '),
+					'created' => array('type' => 'datetime', 'null' => true, 'default' => null, 'comment' => 'created datetime | 作成日時 |  | '),
+					'modified_user' => array('type' => 'integer', 'null' => true, 'default' => '0', 'comment' => 'modified user | 更新者 | users.id | '),
+					'modified' => array('type' => 'datetime', 'null' => true, 'default' => null, 'comment' => 'modified datetime | 更新日時 |  | '),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1),
 					),
 					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
 				),
-				'announcements_blocks' => array(
-					'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
-					'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'unique'),
-					'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
-					'created_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-					'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
-					'modified_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-					'indexes' => array(
-						'PRIMARY' => array('column' => 'id', 'unique' => 1)
-					),
-					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
-				),
-				'announcement_settings' => array(
-					'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
-					'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'unique'),
-					'sendable_request' => array('type' => 'boolean', 'null' => true),
-					'sendable_update' => array('type' => 'boolean', 'null' => true),
-					'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
-					'created_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-					'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
-					'modified_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-					'indexes' => array(
-						'PRIMARY' => array('column' => 'id', 'unique' => 1)
-					),
-					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
-				),
-				'announcement_part_settings' => array(
-					'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
-					'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'unique'),
-					'part_id' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-					'readable_content' => array('type' => 'boolean', 'null' => true),
-					'createable_content' => array('type' => 'boolean', 'null' => true),
-					'editable_content' => array('type' => 'boolean', 'null' => false),
-					'publishable_content' => array('type' => 'boolean', 'null' => false),
-					'mail_sendable' => array('type' => 'boolean', 'null' => true),
-					'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
-					'created_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-					'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
-					'modified_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-					'indexes' => array(
-						'PRIMARY' => array('column' => 'id', 'unique' => 1)
-					),
-					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
-				),
-				'announcement_notifications' => array(
-					'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
-					'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'unique'),
-					'language_id' => array('type' => 'integer', 'null' => false, 'default' => '1'),
-					'notification_type' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-					'mail_subject' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'mail_body' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
-					'created_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-					'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
-					'modified_user' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-					'indexes' => array(
-						'PRIMARY' => array('column' => 'id', 'unique' => 1)
-					),
-					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
-				)
 			)
 		),
 		'down' => array(
 			'drop_table' => array(
 				'announcements',
-				'announcements_blocks',
-				'announcement_settings',
-				'announcement_part_settings',
-				'announcement_notifications',
 			)
 		)
 	);
 
 /**
- * recodes
+ * records
  *
  * @var array $migration
  */
-	public $records = array();
+	public $records = array(
+		'announcements' => array(
+			array (
+				'id' => 1,
+				'block_id' => '1',
+				'status' => '1',
+				'key' => 'announcments_1',
+				'is_auto_translated' => 0,
+				'is_first_auto_translation' => 0,
+				'is_latest' => 0,
+				'is_active' => 0,
+				'content' => '<div class="jumbotron">
+<h1 class="text-center">NetCommons 3!</h1>
+<p><a class="btn btn-primary btn-lg container" href="setting">セッティングモードで編集しよう<span class="glyphicon glyphicon-pencil">.</span></a></p>
+ようこそ NetCommons3へ！<br /> NetCommons3は国立情報学研究所が次世代情報共有基盤システムとして開発したCMSです。</div>',
+			)
+		),
+	);
 
 /**
  * Before migration callback
@@ -150,6 +107,26 @@ class Announcements extends CakeMigration {
 
 		foreach ($this->records as $model => $records) {
 			if (!$this->updateRecords($model, $records)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+/**
+ * Update model records
+ *
+ * @param string $model model name to update
+ * @param string $records records to be stored
+ * @param string $scope ?
+ * @return bool Should process continue
+ */
+	public function updateRecords($model, $records, $scope = null) {
+		$Model = $this->generateModel($model);
+		foreach ($records as $record) {
+			$Model->create();
+			if (!$Model->save($record, false)) {
 				return false;
 			}
 		}
