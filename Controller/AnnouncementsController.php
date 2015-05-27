@@ -56,15 +56,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 	);
 
 /**
- * index method
- *
- * @return void
- */
-	public function index() {
-		$this->setAction('view');
-	}
-
-/**
  * view method
  *
  * @return void
@@ -139,6 +130,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 					'id' => null,
 					'key' => null,
 					'block_id' => null,
+					'status' => null
 				)
 			);
 
