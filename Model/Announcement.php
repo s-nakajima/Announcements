@@ -12,6 +12,7 @@
  */
 
 App::uses('AnnouncementsAppModel', 'Announcements.Model');
+App::uses('Search', 'Search.Utility');
 
 /**
  * Announcement Model
@@ -70,7 +71,6 @@ class Announcement extends AnnouncementsAppModel {
 					'rule' => array('numeric'),
 					'message' => __d('net_commons', 'Invalid request.'),
 					'allowEmpty' => true,
-					'required' => true,
 				)
 			),
 			'key' => array(
@@ -84,6 +84,12 @@ class Announcement extends AnnouncementsAppModel {
 			//status to set in PublishableBehavior.
 
 			'is_auto_translated' => array(
+				'boolean' => array(
+					'rule' => array('boolean'),
+					'message' => __d('net_commons', 'Invalid request.'),
+				)
+			),
+			'is_first_auto_translation' => array(
 				'boolean' => array(
 					'rule' => array('boolean'),
 					'message' => __d('net_commons', 'Invalid request.'),
@@ -137,6 +143,7 @@ class Announcement extends AnnouncementsAppModel {
 			'Announcement' => 'Announcements.Announcement',
 			'Block' => 'Blocks.Block',
 			'Comment' => 'Comments.Comment',
+			'Topic' => 'Topics.Topic',
 		]);
 
 		//トランザクションBegin
@@ -166,6 +173,26 @@ class Announcement extends AnnouncementsAppModel {
 				if (! $this->Comment->save(null, false)) {
 					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 				}
+			}
+
+			$plugin = strtolower($this->plugin);
+			if (!$this->Topic->validateTopic([
+				'status' => $announcement[$this->alias]['status'],
+				'is_active' => $announcement[$this->alias]['is_active'],
+				'is_latest' => $announcement[$this->alias]['is_latest'],
+				'is_auto_translated' => $announcement[$this->alias]['is_auto_translated'],
+				'is_first_auto_translation' => $announcement[$this->alias]['is_first_auto_translation'],
+				'translation_engine' => $announcement[$this->alias]['translation_engine'],
+				'title' => Search::prepareTitle($announcement[$this->alias]['content']),
+				'contents' => Search::prepareContents([$announcement[$this->alias]['content']]),
+				'plugin_key' => $plugin,
+				'path' => $plugin . '/' . $plugin . '/view/' . $data['Frame']['id'],
+			])) {
+				$this->validationErrors = Hash::merge($this->validationErrors, $this->Topic->validationErrors);
+				return false;
+			}
+			if (! $this->Topic->save(null, false)) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 
 			$dataSource->commit();
