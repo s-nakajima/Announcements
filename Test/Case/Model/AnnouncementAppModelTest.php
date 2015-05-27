@@ -38,6 +38,7 @@ class AnnouncementAppModelTest extends YACakeTestCase {
 		'plugin.frames.frame',
 		'plugin.m17n.language',
 		'plugin.rooms.room',
+		'plugin.topics.topic',
 		'plugin.users.user',
 		'plugin.users.user_attributes_user',
 	);

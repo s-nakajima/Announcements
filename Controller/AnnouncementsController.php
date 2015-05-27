@@ -95,8 +95,15 @@ class AnnouncementsController extends AnnouncementsAppController {
 			}
 
 			$data = Hash::merge(
-				$this->data,
-				['Announcement' => ['status' => $status]]
+				$this->data, [
+					'Announcement' => [
+						'status' => $status,
+						'is_active' => true,
+						'is_latest' => true,
+						'is_auto_translated' => true,
+						'is_first_auto_translation' => true,
+					]
+				]
 			);
 			if (isset($this->viewVars['announcement']['key'])) {
 				$data['Announcement']['key'] = $this->viewVars['announcement']['key'];
