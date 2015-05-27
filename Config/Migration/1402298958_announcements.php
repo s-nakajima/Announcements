@@ -74,13 +74,39 @@ class Announcements extends CakeMigration {
 				'key' => 'announcments_1',
 				'is_auto_translated' => 0,
 				'is_first_auto_translation' => 0,
-				'is_latest' => 0,
-				'is_active' => 0,
+				'is_latest' => '1',
+				'is_active' => '1',
 				'content' => '<div class="jumbotron">
 <h1 class="text-center">NetCommons 3!</h1>
 <p><a class="btn btn-primary btn-lg container" href="setting">セッティングモードで編集しよう<span class="glyphicon glyphicon-pencil">.</span></a></p>
 ようこそ NetCommons3へ！<br /> NetCommons3は国立情報学研究所が次世代情報共有基盤システムとして開発したCMSです。</div>',
-			)
+			),
+		),
+
+		'Plugin' => array(
+			array(
+				'language_id' => 2,
+				'key' => 'announcements',
+				'namespace' => 'netcommons/announcements',
+				'name' => 'お知らせ',
+				'type' => 1,
+				'default_action' => 'announcements/view',
+				'default_setting_action' => 'blocks/index',
+			),
+		),
+
+		'PluginsRole' => array(
+			array(
+				'role_key' => 'room_administrator',
+				'plugin_key' => 'announcements'
+			),
+		),
+
+		'PluginsRoom' => array(
+			array(
+				'room_id' => '1',
+				'plugin_key' => 'announcements'
+			),
 		),
 	);
 
