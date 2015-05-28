@@ -103,6 +103,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 						'is_latest' => true,
 						'is_auto_translated' => true,
 						'is_first_auto_translation' => true,
+						'translation_engine' => 'microsoft',
 					]
 				]
 			);
