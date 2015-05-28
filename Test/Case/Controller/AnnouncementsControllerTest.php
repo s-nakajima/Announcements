@@ -21,22 +21,6 @@ App::uses('AnnouncementsAppTest', 'Announcements.Test/Case/Controller');
 class AnnouncementsControllerTest extends AnnouncementsAppTest {
 
 /**
- * Expect visitor can access index action
- *
- * @return void
- */
-	public function testIndex() {
-		$this->testAction(
-			'/announcements/announcements/index/1',
-			array(
-				'method' => 'get',
-				'return' => 'view',
-			)
-		);
-		$this->assertTextEquals('view', $this->controller->view);
-	}
-
-/**
  * Expect visitor can access view action
  *
  * @return void

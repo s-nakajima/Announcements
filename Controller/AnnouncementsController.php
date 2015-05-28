@@ -91,6 +91,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 						'status' => $status,
 						'is_auto_translated' => true,
 						'is_first_auto_translation' => true,
+						'translation_engine' => ''
 					]
 				]
 			);

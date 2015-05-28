@@ -191,8 +191,8 @@ class Announcement extends AnnouncementsAppModel {
 				'is_auto_translated' => $announcement[$this->alias]['is_auto_translated'],
 				'is_first_auto_translation' => $announcement[$this->alias]['is_first_auto_translation'],
 				'translation_engine' => $announcement[$this->alias]['translation_engine'],
-				'title' => Search::prepareTitle($announcement[$this->alias]['content']),
-				'contents' => Search::prepareContents([$announcement[$this->alias]['content']]),
+				//'title' => Search::prepareTitle($announcement[$this->alias]['content']),
+				//'contents' => Search::prepareContents([$announcement[$this->alias]['content']]),
 				'plugin_key' => $plugin,
 				'path' => $plugin . '/' . $plugin . '/view/' . $data['Frame']['id'],
 			])) {

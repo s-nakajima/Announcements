@@ -72,10 +72,12 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 		$data = [
 			'Announcement' => [
 				'block_id' => $blockId,
+				'language_id' => 2,
 				'key' => 'announcement_1',
 				'status' => NetCommonsBlockComponent::STATUS_IN_DRAFT,
 				'content' => 'edit content',
 				'is_auto_translated' => true,
+				'is_first_auto_translation' => true,
 				'translation_engine' => 'edit translation_engine',
 			],
 			'Frame' => [
@@ -102,9 +104,11 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 		$data = [
 			'Announcement' => [
 				'block_id' => $blockId,
+				'language_id' => 2,
 				'status' => NetCommonsBlockComponent::STATUS_IN_DRAFT,
 				'content' => 'add content',
 				'is_auto_translated' => true,
+				'is_first_auto_translation' => true,
 				'translation_engine' => 'add translation_engine',
 				'key' => 'announcement_1',
 			],
@@ -137,10 +141,12 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 		$announcementMock->saveAnnouncement([
 			'Announcement' => [
 				'block_id' => null,
+				'language_id' => 2,
 				'key' => 'announcement_1',
 				'status' => NetCommonsBlockComponent::STATUS_IN_DRAFT,
 				'content' => 'edit content',
 				'is_auto_translated' => true,
+				'is_first_auto_translation' => true,
 				'translation_engine' => 'edit translation_engine',
 			],
 			'Frame' => [
@@ -173,10 +179,12 @@ class AnnouncementTest extends AnnouncementAppModelTest {
 		$announcementMock->saveAnnouncement([
 			'Announcement' => [
 				'block_id' => null,
+				'language_id' => 2,
 				'key' => 'announcement_1',
 				'status' => NetCommonsBlockComponent::STATUS_IN_DRAFT,
 				'content' => 'edit content',
 				'is_auto_translated' => true,
+				'is_first_auto_translation' => true,
 				'translation_engine' => 'edit translation_engine',
 			],
 			'Frame' => [
