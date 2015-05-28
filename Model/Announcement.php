@@ -183,25 +183,25 @@ class Announcement extends AnnouncementsAppModel {
 				}
 			}
 
-			$plugin = strtolower($this->plugin);
-			if (!$this->Topic->validateTopic([
-				'status' => $announcement[$this->alias]['status'],
-				'is_active' => $announcement[$this->alias]['is_active'],
-				'is_latest' => $announcement[$this->alias]['is_latest'],
-				'is_auto_translated' => $announcement[$this->alias]['is_auto_translated'],
-				'is_first_auto_translation' => $announcement[$this->alias]['is_first_auto_translation'],
-				'translation_engine' => $announcement[$this->alias]['translation_engine'],
-				//'title' => Search::prepareTitle($announcement[$this->alias]['content']),
-				//'contents' => Search::prepareContents([$announcement[$this->alias]['content']]),
-				'plugin_key' => $plugin,
-				'path' => $plugin . '/' . $plugin . '/view/' . $data['Frame']['id'],
-			])) {
-				$this->validationErrors = Hash::merge($this->validationErrors, $this->Topic->validationErrors);
-				return false;
-			}
-			if (! $this->Topic->save(null, false)) {
-				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-			}
+			//$plugin = strtolower($this->plugin);
+			//if (!$this->Topic->validateTopic([
+			//	'status' => $announcement[$this->alias]['status'],
+			//	'is_active' => $announcement[$this->alias]['is_active'],
+			//	'is_latest' => $announcement[$this->alias]['is_latest'],
+			//	'is_auto_translated' => $announcement[$this->alias]['is_auto_translated'],
+			//	'is_first_auto_translation' => $announcement[$this->alias]['is_first_auto_translation'],
+			//	'translation_engine' => $announcement[$this->alias]['translation_engine'],
+			//	'title' => Search::prepareTitle($announcement[$this->alias]['content']),
+			//	'contents' => Search::prepareContents([$announcement[$this->alias]['content']]),
+			//	'plugin_key' => $plugin,
+			//	'path' => $plugin . '/' . $plugin . '/view/' . $data['Frame']['id'],
+			//])) {
+			//	$this->validationErrors = Hash::merge($this->validationErrors, $this->Topic->validationErrors);
+			//	return false;
+			//}
+			//if (! $this->Topic->save(null, false)) {
+			//	throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			//}
 
 			$dataSource->commit();
 		} catch (Exception $ex) {

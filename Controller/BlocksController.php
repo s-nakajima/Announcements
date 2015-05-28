@@ -131,6 +131,7 @@ class BlocksController extends AnnouncementsAppController {
 				'id' => null,
 				'key' => null,
 				'block_id' => null,
+				'status' => null,
 			)
 		);
 		$block = $this->Block->create(
@@ -258,6 +259,10 @@ class BlocksController extends AnnouncementsAppController {
 			return;
 		}
 		$data['Announcement']['status'] = $status;
+		$data['Announcement']['is_auto_translated'] = true;
+		$data['Announcement']['is_first_auto_translation'] = true;
+		$data['Announcement']['translation_engine'] = '';
+
 		if ($data['Block']['public_type'] === Block::TYPE_LIMITED) {
 			//$data['Block']['from'] = implode('-', $data['Block']['from']);
 			//$data['Block']['to'] = implode('-', $data['Block']['to']);
