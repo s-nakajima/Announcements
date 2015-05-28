@@ -51,6 +51,7 @@ class AnnouncementsAppTest extends YAControllerTestCase {
 		'plugin.rooms.roles_room',
 		'plugin.rooms.room',
 		'plugin.rooms.room_role_permission',
+		'plugin.topics.topic',
 		'plugin.users.user',
 		'plugin.users.user_attributes_user',
 	);
