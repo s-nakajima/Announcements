@@ -43,9 +43,9 @@ class AnnouncementsAppController extends AppController {
  *
  * @var array
  */
-	public $helpers = array(
-		'Pages.Layout'
-	);
+	//public $helpers = array(
+	//	'Pages.Layout'
+	//);
 
 /**
  * initTabs

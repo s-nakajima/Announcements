@@ -43,6 +43,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 				'contentEditable' => array('edit')
 			),
 		),
+		'Pages.Layout'
 	);
 
 /**
@@ -52,7 +53,6 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public $helpers = array(
 		'NetCommons.Token',
-		'Pages.Layout'
 	);
 
 /**
