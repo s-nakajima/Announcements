@@ -94,19 +94,10 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 			)
 		);
 
-		try {
-			$announcements = $this->Paginator->paginate('Announcement');
-		} catch (Exception $ex) {
-			if (isset($this->request['paging']) && $this->params['named']) {
-				$this->redirect('/announcements/announcement_blocks/index/' . $this->viewVars['frameId']);
-				return;
-			}
-			CakeLog::error($ex);
-			throw $ex;
-		}
+		$announcements = $this->Paginator->paginate('Announcement');
 
 		if (! $announcements) {
-			$this->view = 'AnnouncementBlocks/not_found';
+			$this->view = 'not_found';
 			return;
 		}
 
