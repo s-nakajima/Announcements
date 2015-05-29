@@ -106,7 +106,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 		}
 
 		if (! $announcements) {
-			$this->view = 'Blocks/not_found';
+			$this->view = 'AnnouncementBlocks/not_found';
 			return;
 		}
 
