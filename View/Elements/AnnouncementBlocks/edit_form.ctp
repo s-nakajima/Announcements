@@ -27,7 +27,7 @@
 
 		<div class="panel-footer text-center">
 			<?php echo $this->element('NetCommons.workflow_buttons', array(
-				'cancelUrl' => 'announcements/blocks/index/' . $frameId,
+				'cancelUrl' => 'announcements/announcement_blocks/index/' . $frameId,
 				'contentStatus' => $announcement['status']
 			)); ?>
 		</div>

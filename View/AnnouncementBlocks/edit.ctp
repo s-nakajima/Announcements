@@ -32,13 +32,13 @@
 	<div class="tab-content">
 		<?php echo $this->element('Blocks.setting_tabs', $blockSettingTabs); ?>
 
-		<?php echo $this->element('Announcements.Blocks/edit_form'); ?>
+		<?php echo $this->element('Announcements.AnnouncementBlocks/edit_form'); ?>
 
 		<?php if ($this->request->params['action'] === 'edit') : ?>
 			<?php echo $this->element('Blocks.delete_form', array(
-					'controller' => 'Blocks',
+					'controller' => 'AnnouncementBlocks',
 					'action' => 'delete/' . $frameId . '/' . (int)$announcement['blockId'],
-					'callback' => 'Announcements.Blocks/delete_form'
+					'callback' => 'Announcements.AnnouncementBlocks/delete_form'
 				)); ?>
 		<?php endif; ?>
 	</div>

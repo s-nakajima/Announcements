@@ -1,6 +1,6 @@
 <?php
 /**
- * Blocks Controller
+ * AnnouncementBlocks Controller
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -13,12 +13,12 @@ App::uses('AnnouncementsAppController', 'Announcements.Controller');
 App::uses('String', 'Utility');
 
 /**
- * Blocks Controller
+ * AnnouncementBlocks Controller
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Controller
  */
-class BlocksController extends AnnouncementsAppController {
+class AnnouncementBlocksController extends AnnouncementsAppController {
 
 /**
  * layout
@@ -98,7 +98,7 @@ class BlocksController extends AnnouncementsAppController {
 			$announcements = $this->Paginator->paginate('Announcement');
 		} catch (Exception $ex) {
 			if (isset($this->request['paging']) && $this->params['named']) {
-				$this->redirect('/announcements/blocks/index/' . $this->viewVars['frameId']);
+				$this->redirect('/announcements/announcement_blocks/index/' . $this->viewVars['frameId']);
 				return;
 			}
 			CakeLog::error($ex);
@@ -145,7 +145,7 @@ class BlocksController extends AnnouncementsAppController {
 			$this->Announcement->saveAnnouncement($data);
 			if ($this->handleValidationError($this->Announcement->validationErrors)) {
 				if (! $this->request->is('ajax')) {
-					$this->redirect('/announcements/blocks/index/' . $this->viewVars['frameId']);
+					$this->redirect('/announcements/announcement_blocks/index/' . $this->viewVars['frameId']);
 				}
 				return;
 			}
@@ -185,7 +185,7 @@ class BlocksController extends AnnouncementsAppController {
 			$this->Announcement->saveAnnouncement($data);
 			if ($this->handleValidationError($this->Announcement->validationErrors)) {
 				if (! $this->request->is('ajax')) {
-					$this->redirect('/announcements/blocks/index/' . $this->viewVars['frameId']);
+					$this->redirect('/announcements/announcement_blocks/index/' . $this->viewVars['frameId']);
 				}
 				return;
 			}
@@ -217,7 +217,7 @@ class BlocksController extends AnnouncementsAppController {
 		if ($this->request->isDelete()) {
 			if ($this->Announcement->deleteAnnouncement($this->data)) {
 				if (! $this->request->is('ajax')) {
-					$this->redirect('/announcements/blocks/index/' . $this->viewVars['frameId']);
+					$this->redirect('/announcements/announcement_blocks/index/' . $this->viewVars['frameId']);
 				}
 				return;
 			}

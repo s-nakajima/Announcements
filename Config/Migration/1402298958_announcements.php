@@ -91,7 +91,7 @@ class Announcements extends CakeMigration {
 				'name' => 'お知らせ',
 				'type' => 1,
 				'default_action' => 'announcements/view',
-				'default_setting_action' => 'blocks/index',
+				'default_setting_action' => 'announcement_blocks/index',
 			),
 		),
 
