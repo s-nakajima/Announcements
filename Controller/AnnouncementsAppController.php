@@ -26,7 +26,8 @@ class AnnouncementsAppController extends AppController {
  */
 	public $components = array(
 		'NetCommons.NetCommonsFrame',
-		'Security'
+		'Pages.PageLayout',
+		'Security',
 	);
 
 /**

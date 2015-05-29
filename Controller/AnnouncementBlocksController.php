@@ -25,7 +25,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
  *
  * @var array
  */
-	public $layout = 'Frames.setting';
+	public $layout = 'NetCommons.setting';
 
 /**
  * use models

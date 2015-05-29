@@ -42,8 +42,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 			'allowedActions' => array(
 				'contentEditable' => array('edit')
 			),
-		),
-		'Pages.Layout'
+		)
 	);
 
 /**
