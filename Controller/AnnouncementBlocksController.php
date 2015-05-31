@@ -79,7 +79,6 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
  * index
  *
  * @return void
- * @throws Exception
  */
 	public function index() {
 		$this->Paginator->settings = array(
@@ -95,7 +94,6 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 		);
 
 		$announcements = $this->Paginator->paginate('Announcement');
-
 		if (! $announcements) {
 			$this->view = 'not_found';
 			return;
