@@ -43,7 +43,7 @@ class AnnouncementsControllerTestBase extends YAControllerTestCase {
 		'plugin.containers.container',
 		'plugin.containers.containers_page',
 		'plugin.m17n.language',
-		'plugin.m17n.languages_page',
+		'plugin.pages.languages_page',
 		'plugin.pages.page',
 		'plugin.pages.space',
 		'plugin.roles.default_role_permission',
