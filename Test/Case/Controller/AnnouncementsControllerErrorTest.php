@@ -10,7 +10,7 @@
  */
 
 App::uses('AnnouncementsController', 'Announcements.Controller');
-App::uses('AnnouncementsAppTest', 'Announcements.Test/Case/Controller');
+App::uses('AnnouncementsControllerTestBase', 'Announcements.Test/Case/Controller');
 
 /**
  * AnnouncementsController Error Test Case w/o model based validation errors
@@ -18,7 +18,7 @@ App::uses('AnnouncementsAppTest', 'Announcements.Test/Case/Controller');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Controller
  */
-class AnnouncementsControllerErrorTest extends AnnouncementsAppTest {
+class AnnouncementsControllerErrorTest extends AnnouncementsControllerTestBase {
 
 /**
  * Expect unauthenticated user cannot view edit action

@@ -23,7 +23,7 @@ App::uses('AuthGeneralControllerTest', 'AuthGeneral.Test/Case/Controller');
  * @package NetCommons\Announcements\Test\Case\Controller
  * @SuppressWarnings(PHPMD.LongVariable)
  */
-class AnnouncementsAppTest extends YAControllerTestCase {
+class AnnouncementsControllerTestBase extends YAControllerTestCase {
 
 /**
  * Fixtures
@@ -47,10 +47,12 @@ class AnnouncementsAppTest extends YAControllerTestCase {
 		'plugin.pages.page',
 		'plugin.pages.space',
 		'plugin.roles.default_role_permission',
+		'plugin.rooms.plugins_room',
 		'plugin.rooms.roles_rooms_user',
 		'plugin.rooms.roles_room',
 		'plugin.rooms.room',
 		'plugin.rooms.room_role_permission',
+		'plugin.topics.topic',
 		'plugin.users.user',
 		'plugin.users.user_attributes_user',
 	);
@@ -62,6 +64,9 @@ class AnnouncementsAppTest extends YAControllerTestCase {
  */
 	public function setUp() {
 		parent::setUp();
+
+		YACakeTestCase::loadTestPlugin($this, 'NetCommons', 'TestPlugin');
+
 		Configure::write('Config.language', 'ja');
 		$this->generate(
 			'Announcements.Announcements',

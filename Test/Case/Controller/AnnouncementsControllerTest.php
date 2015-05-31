@@ -10,7 +10,7 @@
  */
 
 App::uses('AnnouncementsController', 'Announcements.Controller');
-App::uses('AnnouncementsAppTest', 'Announcements.Test/Case/Controller');
+App::uses('AnnouncementsControllerTestBase', 'Announcements.Test/Case/Controller');
 
 /**
  * AnnouncementsController Test Case
@@ -18,7 +18,7 @@ App::uses('AnnouncementsAppTest', 'Announcements.Test/Case/Controller');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Controller
  */
-class AnnouncementsControllerTest extends AnnouncementsAppTest {
+class AnnouncementsControllerTest extends AnnouncementsControllerTestBase {
 
 /**
  * Expect visitor can access view action

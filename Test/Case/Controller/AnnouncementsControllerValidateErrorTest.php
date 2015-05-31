@@ -10,7 +10,7 @@
  */
 
 App::uses('AnnouncementsController', 'Announcements.Controller');
-App::uses('AnnouncementsAppTest', 'Announcements.Test/Case/Controller');
+App::uses('AnnouncementsControllerTestBase', 'Announcements.Test/Case/Controller');
 
 /**
  * AnnouncementsController Validation Error Test Case based on models
@@ -18,7 +18,7 @@ App::uses('AnnouncementsAppTest', 'Announcements.Test/Case/Controller');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Controller
  */
-class AnnouncementsControllerValidateErrorTest extends AnnouncementsAppTest {
+class AnnouncementsControllerValidateErrorTest extends AnnouncementsControllerTestBase {
 
 /**
  * Expect user cannot edit w/o valid announcements.status

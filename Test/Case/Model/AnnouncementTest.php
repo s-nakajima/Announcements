@@ -11,7 +11,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('AnnouncementAppModelTest', 'Announcements.Test/Case/Model');
+App::uses('AnnouncementModelTestBase', 'Announcements.Test/Case/Model');
 
 /**
  * Announcement Model Test Case
@@ -19,7 +19,7 @@ App::uses('AnnouncementAppModelTest', 'Announcements.Test/Case/Model');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Model
  */
-class AnnouncementTest extends AnnouncementAppModelTest {
+class AnnouncementTest extends AnnouncementModelTestBase {
 
 /**
  * Expect user w/ content_editable privilege can read content yet published

@@ -11,7 +11,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('AnnouncementAppModelTest', 'Announcements.Test/Case/Model');
+App::uses('AnnouncementModelTestBase', 'Announcements.Test/Case/Model');
 
 /**
  * Announcement Model Test Case
@@ -19,7 +19,7 @@ App::uses('AnnouncementAppModelTest', 'Announcements.Test/Case/Model');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Model
  */
-class AnnouncementErrorTest extends AnnouncementAppModelTest {
+class AnnouncementErrorTest extends AnnouncementModelTestBase {
 
 /**
  * Expect Announcement->saveAnnouncement() to validate frames.id and throw exception on error

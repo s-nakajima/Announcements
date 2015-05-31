@@ -22,7 +22,7 @@ App::uses('YACakeTestCase', 'NetCommons.TestSuite');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Model
  */
-class AnnouncementAppModelTest extends YACakeTestCase {
+class AnnouncementModelTestBase extends YACakeTestCase {
 
 /**
  * Fixtures
