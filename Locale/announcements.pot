@@ -5,7 +5,6 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2014-11-14 01:33+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,16 +13,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: Announcements/Model/Announcement.php:105
-#: Announcements/View/Announcements/view.ctp:15;31
+#: Announcements/Model/Announcement.php:106
+#: Announcements/View/AnnouncementBlocks/index.ctp:37
+#: Announcements/View/Elements/Announcements/edit_form.ctp:33
 msgid "Content"
 msgstr ""
 
-#: Announcements/View/Announcements/setting.ctp:23
-msgid "plugin_name"
-msgstr "Announcements"
-
-#: Announcements/View/Announcements/setting.ctp:23
-msgid "Edit"
+#: Announcements/View/Elements/AnnouncementBlocks/delete_form.ctp:14;28
+msgid "Announcement"
 msgstr ""
 
