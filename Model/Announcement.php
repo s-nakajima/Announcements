@@ -152,7 +152,7 @@ class Announcement extends AnnouncementsAppModel {
 			'Announcement' => 'Announcements.Announcement',
 			'Block' => 'Blocks.Block',
 			'Comment' => 'Comments.Comment',
-			'Topic' => 'Topics.Topic',
+			//'Topic' => 'Topics.Topic',
 		]);
 
 		//トランザクションBegin
