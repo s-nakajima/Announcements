@@ -58,7 +58,9 @@
 											'label' => false,
 											'hiddenField' => false,
 											'checked' => (int)$announcement['block']['id'] === (int)$blockId,
-											'onclick' => 'submit()'
+											'onclick' => 'submit()',
+											'ng-click' => 'sending=true',
+											'ng-disabled' => 'sending'
 										)); ?>
 								</td>
 								<td>
