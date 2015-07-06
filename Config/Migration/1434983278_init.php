@@ -67,7 +67,7 @@ class Init extends CakeMigration {
  * @var array $migration
  */
 	public $records = array(
-		'announcements' => array(
+		'Announcement' => array(
 			array (
 				'id' => 1,
 				'language_id' => '2',
