@@ -31,12 +31,12 @@ class AnnouncementModelTestBase extends YACakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.announcements.announcement',
-		'plugin.announcements.plugin',
 		'plugin.blocks.block',
 		'plugin.boxes.box',
 		'plugin.comments.comment',
 		'plugin.frames.frame',
 		'plugin.m17n.language',
+		'plugin.plugin_manager.plugin',
 		'plugin.rooms.room',
 		'plugin.topics.topic',
 		'plugin.users.user',
