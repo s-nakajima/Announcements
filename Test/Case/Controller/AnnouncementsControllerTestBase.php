@@ -33,7 +33,6 @@ class AnnouncementsControllerTestBase extends YAControllerTestCase {
 	public $fixtures = array(
 		'plugin.net_commons.site_setting',
 		'plugin.announcements.announcement',
-		'plugin.announcements.plugin',
 		'plugin.blocks.block',
 		'plugin.blocks.block_role_permission',
 		'plugin.boxes.box',
@@ -45,7 +44,8 @@ class AnnouncementsControllerTestBase extends YAControllerTestCase {
 		'plugin.m17n.language',
 		'plugin.pages.languages_page',
 		'plugin.pages.page',
-		'plugin.pages.space',
+		'plugin.public_space.space',
+		'plugin.plugin_manager.plugin',
 		'plugin.plugin_manager.plugins_room',
 		'plugin.roles.default_role_permission',
 		'plugin.rooms.roles_rooms_user',
