@@ -38,7 +38,7 @@ class AnnouncementModelTestBase extends YACakeTestCase {
 		'plugin.m17n.language',
 		'plugin.plugin_manager.plugin',
 		'plugin.rooms.room',
-		'plugin.topics.topic',
+		/* 'plugin.topics.topic', */
 		'plugin.users.user',
 		'plugin.users.user_attributes_user',
 	);
