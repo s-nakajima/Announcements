@@ -36,7 +36,7 @@ class AnnouncementsControllerTestBase extends YAControllerTestCase {
 		//'plugin.blocks.block',
 		//'plugin.blocks.block_role_permission',
 		//'plugin.boxes.box',
-		//'plugin.comments.comment',
+		'plugin.comments.comment',
 		//'plugin.frames.frame',
 		//'plugin.boxes.boxes_page',
 		//'plugin.containers.container',
@@ -52,7 +52,7 @@ class AnnouncementsControllerTestBase extends YAControllerTestCase {
 		//'plugin.rooms.roles_room',
 		//'plugin.rooms.room',
 		//'plugin.rooms.room_role_permission',
-		///* 'plugin.topics.topic', */
+		/* 'plugin.topics.topic', */
 		//'plugin.users.user',
 		//'plugin.users.user_attributes_user',
 	);
