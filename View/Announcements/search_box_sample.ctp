@@ -16,6 +16,8 @@
 		'url' => '/topics/topics/search/' . $searchBox['Frame']['id'],
 		)) ?>
 	<?php echo $this->Form->hidden('block_id', ['value' => $blockId]) ?>
+	<?php echo $this->Form->hidden('hide_target_rooms', ['value' => '1']) ?>
+	<?php echo $this->Form->hidden('hide_target_plugins', ['value' => '1']) ?>
 	<div class="form-group general-search-keyword">
 		<div class="input-group">
 			<?php echo $this->Form->input('keyword',
@@ -28,6 +30,36 @@
 			<span class="input-group-btn">
 				<button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
 			</span>
+		</div>
+	</div>
+	<div class="form-group inline-block" >
+		<div class="input-group">
+			<?php echo $this->Form->label(__d('search_boxes', 'Target Datetime')); ?>
+		</div>
+		<div class="input-group">
+			<div class="inline-block input-range">
+				<?php echo $this->Form->input('Block.from', array(
+					'type' => 'text',
+					'datetimepicker',
+					'label' => false,
+					'class' => 'form-control',
+					'placeholder' => 'yyyy-mm-dd hh:mm',
+				)); ?>
+			</div>
+			<div class="inline-block input-range">
+				<div class="form-control form-text">
+					〜
+				</div>
+			</div>
+			<div class="inline-block input-range">
+				<?php echo $this->Form->input('Block.to', array(
+					'type' => 'text',
+					'datetimepicker',
+					'label' => false,
+					'class' => 'form-control',
+					'placeholder' => 'yyyy-mm-dd hh:mm',
+				)); ?>
+			</div>
 		</div>
 	</div>
 <?php echo $this->Form->end() ?>

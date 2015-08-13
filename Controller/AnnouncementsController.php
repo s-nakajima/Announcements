@@ -78,7 +78,8 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	public function search_box_sample() {
-		$this->set('searchBox', $this->SearchBox->find('first'));
+		$options = array('conditions' => array('language_id' => 2, 'is_advanced' => '1'));
+		$this->set('searchBox', $this->SearchBox->find('first', $options));
 		$this->__initAnnouncement();
 
 		if ($this->request->is('ajax')) {
