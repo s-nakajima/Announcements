@@ -34,7 +34,7 @@ class AnnouncementsControllerTestBase extends YAControllerTestCase {
 		'plugin.announcements.announcement',
 		'plugin.comments.comment',
 		'plugin.search_boxes.search_box',
-		'plugin.topics.topic',
+		//'plugin.topics.topic',
 	);
 
 /**

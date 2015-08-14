@@ -32,7 +32,7 @@ class AnnouncementModelTestBase extends YACakeTestCase {
 	public $fixtures = array(
 		'plugin.announcements.announcement',
 		'plugin.comments.comment',
-		'plugin.topics.topic',
+		//'plugin.topics.topic',
 	);
 
 /**
@@ -55,13 +55,5 @@ class AnnouncementModelTestBase extends YACakeTestCase {
 		unset($this->Announcement);
 		unset($this->Comment);
 		parent::tearDown();
-	}
-
-/**
- * testIndex method
- *
- * @return void
- */
-	public function testIndex() {
 	}
 }
