@@ -31,16 +31,8 @@ class AnnouncementModelTestBase extends YACakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.announcements.announcement',
-		'plugin.blocks.block',
-		'plugin.boxes.box',
 		'plugin.comments.comment',
-		'plugin.frames.frame',
-		'plugin.m17n.language',
-		'plugin.plugin_manager.plugin',
-		'plugin.rooms.room',
-		/* 'plugin.topics.topic', */
-		'plugin.users.user',
-		'plugin.users.user_attributes_user',
+		//'plugin.topics.topic',
 	);
 
 /**
@@ -63,13 +55,5 @@ class AnnouncementModelTestBase extends YACakeTestCase {
 		unset($this->Announcement);
 		unset($this->Comment);
 		parent::tearDown();
-	}
-
-/**
- * testIndex method
- *
- * @return void
- */
-	public function testIndex() {
 	}
 }
