@@ -27,6 +27,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public $uses = array(
 		'Blocks.Block',
 		'Comments.Comment',
+		'SearchBoxes.SearchBox',
 	);
 
 /**
@@ -40,7 +41,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		'NetCommons.NetCommonsRoomRole' => array(
 			//コンテンツの権限設定
 			'allowedActions' => array(
-				'contentEditable' => array('edit')
+				'contentEditable' => array('edit', 'search_box_sample')
 			),
 		)
 	);
@@ -60,6 +61,25 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	public function view() {
+		$this->__initAnnouncement();
+
+		if ($this->request->is('ajax')) {
+			$this->renderJson();
+		} else {
+			if (! $this->viewVars['announcement']['key'] && ! $this->viewVars['contentEditable']) {
+				$this->autoRender = false;
+			}
+		}
+	}
+
+/**
+ * search_box_sample method
+ *
+ * @return void
+ */
+	public function search_box_sample() {
+		$options = array('conditions' => array('language_id' => 2, 'is_advanced' => '1'));
+		$this->set('searchBox', $this->SearchBox->find('first', $options));
 		$this->__initAnnouncement();
 
 		if ($this->request->is('ajax')) {
