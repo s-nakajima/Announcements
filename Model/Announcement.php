@@ -36,7 +36,8 @@ class Announcement extends AnnouncementsAppModel {
  */
 	public $actsAs = array(
 		'NetCommons.OriginalKey',
-		'NetCommons.Publishable'
+		'NetCommons.Publishable',
+		'Comments.Comment'
 	);
 
 /**
@@ -118,9 +119,10 @@ class Announcement extends AnnouncementsAppModel {
  * @param int $blockId blocks.id
  * @param int $roomId rooms.id
  * @param bool $contentEditable true can edit the content, false not can edit the content.
+ * @param bool $created If True, the results of the Model::find() to create it if it was null
  * @return array
  */
-	public function getAnnouncement($blockId, $roomId, $contentEditable) {
+	public function getAnnouncement($blockId, $roomId, $contentEditable, $created = false) {
 		$conditions = array(
 			'Block.id' => $blockId,
 			'Block.room_id' => $roomId,
@@ -136,6 +138,16 @@ class Announcement extends AnnouncementsAppModel {
 			'conditions' => $conditions,
 			//'order' => 'Announcement.id DESC',
 		));
+
+		if ($created && ! $announcement) {
+			$announcement = $this->create(array(
+				'id' => null,
+				'key' => null,
+				'block_id' => null,
+				'status' => null,
+				'content' => null
+			));
+		}
 
 		return $announcement;
 	}

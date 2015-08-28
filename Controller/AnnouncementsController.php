@@ -27,7 +27,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public $uses = array(
 		'Blocks.Block',
 		'Comments.Comment',
-		'SearchBoxes.SearchBox',
+//		'SearchBoxes.SearchBox',
 	);
 
 /**
@@ -41,7 +41,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		'NetCommons.NetCommonsRoomRole' => array(
 			//コンテンツの権限設定
 			'allowedActions' => array(
-				'contentEditable' => array('edit', 'search_box_sample')
+				'contentEditable' => array('edit')
 			),
 		)
 	);
@@ -51,9 +51,9 @@ class AnnouncementsController extends AnnouncementsAppController {
  *
  * @var array
  */
-	public $helpers = array(
-		'NetCommons.Token',
-	);
+//	public $helpers = array(
+//		'NetCommons.Token',
+//	);
 
 /**
  * view method
@@ -61,15 +61,23 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	public function view() {
-		$this->__initAnnouncement();
+//		$this->__initAnnouncement();
 
-		if ($this->request->is('ajax')) {
-			$this->renderJson();
-		} else {
+		$announcement = $this->Announcement->getAnnouncement(
+			$this->viewVars['blockId'],
+			$this->viewVars['roomId'],
+			$this->viewVars['contentEditable'],
+			true
+		);
+		$this->set('announcement', $announcement['Announcement']);
+
+//		if ($this->request->is('ajax')) {
+//			$this->renderJson();
+//		} else {
 			if (! $this->viewVars['announcement']['key'] && ! $this->viewVars['contentEditable']) {
 				$this->autoRender = false;
 			}
-		}
+//		}
 	}
 
 /**
@@ -77,19 +85,19 @@ class AnnouncementsController extends AnnouncementsAppController {
  *
  * @return void
  */
-	public function search_box_sample() {
-		$options = array('conditions' => array('language_id' => 2, 'is_advanced' => '1'));
-		$this->set('searchBox', $this->SearchBox->find('first', $options));
-		$this->__initAnnouncement();
-
-		if ($this->request->is('ajax')) {
-			$this->renderJson();
-		} else {
-			if (! $this->viewVars['announcement']['key'] && ! $this->viewVars['contentEditable']) {
-				$this->autoRender = false;
-			}
-		}
-	}
+//	public function search_box_sample() {
+//		$options = array('conditions' => array('language_id' => 2, 'is_advanced' => '1'));
+//		$this->set('searchBox', $this->SearchBox->find('first', $options));
+//		$this->__initAnnouncement();
+//
+//		if ($this->request->is('ajax')) {
+//			$this->renderJson();
+//		} else {
+//			if (! $this->viewVars['announcement']['key'] && ! $this->viewVars['contentEditable']) {
+//				$this->autoRender = false;
+//			}
+//		}
+//	}
 
 /**
  * edit method
