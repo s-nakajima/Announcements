@@ -35,9 +35,10 @@ class Announcement extends AnnouncementsAppModel {
  * @var array
  */
 	public $actsAs = array(
+		'Blocks.Block',
+		'Comments.Comment',
 		'NetCommons.OriginalKey',
 		'NetCommons.Publishable',
-		'Comments.Comment'
 	);
 
 /**
@@ -114,6 +115,28 @@ class Announcement extends AnnouncementsAppModel {
 	}
 
 /**
+ * Create announcement data
+ *
+ * @param int $roomId rooms.id
+ * @return array
+ */
+	public function createAnnouncement($roomId) {
+		$announcement = $this->create(array(
+			'id' => null,
+			'key' => null,
+			'block_id' => null,
+			'language_id' => Configure::read('Config.languageId'),
+			'status' => null,
+			'content' => null,
+		));
+		$announcement = Hash::merge($announcement, $this->createBlock(array(
+			'room_id' => $roomId,
+		)));
+
+		return $announcement;
+	}
+
+/**
  * Get announcement data
  *
  * @param int $blockId blocks.id
@@ -122,7 +145,7 @@ class Announcement extends AnnouncementsAppModel {
  * @param bool $created If True, the results of the Model::find() to create it if it was null
  * @return array
  */
-	public function getAnnouncement($blockId, $roomId, $contentEditable, $created = false) {
+	public function getAnnouncement($blockId, $roomId, $contentEditable, $created) {
 		$conditions = array(
 			'Block.id' => $blockId,
 			'Block.room_id' => $roomId,
@@ -140,13 +163,7 @@ class Announcement extends AnnouncementsAppModel {
 		));
 
 		if ($created && ! $announcement) {
-			$announcement = $this->create(array(
-				'id' => null,
-				'key' => null,
-				'block_id' => null,
-				'status' => null,
-				'content' => null
-			));
+			$announcement = $this->createAnnouncement($roomId);
 		}
 
 		return $announcement;
@@ -162,9 +179,6 @@ class Announcement extends AnnouncementsAppModel {
 	public function saveAnnouncement($data) {
 		$this->loadModels([
 			'Announcement' => 'Announcements.Announcement',
-			'Block' => 'Blocks.Block',
-			'Comment' => 'Comments.Comment',
-			/* 'Topic' => 'Topics.Topic', */
 		]);
 
 		//トランザクションBegin
@@ -172,50 +186,18 @@ class Announcement extends AnnouncementsAppModel {
 		$dataSource = $this->getDataSource();
 		$dataSource->begin();
 
-		try {
-			if (!$this->validateAnnouncement($data, ['block', 'comment'])) {
-				return false;
-			}
+		if (! $this->validateAnnouncement($data)) {
+			return false;
+		}
 
-			//ブロックの登録
-			$block = $this->Block->saveByFrameId($data['Frame']['id']);
+		try {
+			$this->data['Block']['name'] = mb_strimwidth(strip_tags($this->data['Announcement']['content']), 0, self::LIST_TITLE_LENGTH);
 
 			//お知らせの登録
-			$this->data['Announcement']['block_id'] = (int)$block['Block']['id'];
 			$announcement = $this->save(null, false);
 			if (! $announcement) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
-			//コメントの登録
-			if ($this->Comment->data) {
-				$this->Comment->data[$this->Comment->name]['block_key'] = $block['Block']['key'];
-				$this->Comment->data[$this->Comment->name]['content_key'] = $announcement[$this->alias]['key'];
-				if (! $this->Comment->save(null, false)) {
-					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-				}
-			}
-
-			/* $plugin = strtolower($this->plugin); */
-			/* if (!$this->Topic->validateTopic([ */
-			/* 	'block_id' => $announcement[$this->alias]['block_id'], */
-			/* 	'status' => $announcement[$this->alias]['status'], */
-			/* 	'is_active' => $announcement[$this->alias]['is_active'], */
-			/* 	'is_latest' => $announcement[$this->alias]['is_latest'], */
-			/* 	'is_auto_translated' => $announcement[$this->alias]['is_auto_translated'], */
-			/* 	'is_first_auto_translation' => $announcement[$this->alias]['is_first_auto_translation'], */
-			/* 	'translation_engine' => $announcement[$this->alias]['translation_engine'], */
-			/* 	'title' => Search::prepareTitle($announcement[$this->alias]['content']), */
-			/* 	'contents' => Search::prepareContents([$announcement[$this->alias]['content']]), */
-			/* 	'plugin_key' => $plugin, */
-			/* 	'path' => '/' . $plugin . '/' . $plugin . '/view/' . $data['Frame']['id'], */
-			/* 	'from' => date('Y-m-d H:i:s'), */
-			/* ])) { */
-			/* 	$this->validationErrors = Hash::merge($this->validationErrors, $this->Topic->validationErrors); */
-			/* 	return false; */
-			/* } */
-			/* if (! $this->Topic->save(null, false)) { */
-			/* 	throw new InternalErrorException(__d('net_commons', 'Internal Server Error')); */
-			/* } */
 
 			$dataSource->commit();
 		} catch (Exception $ex) {
@@ -231,29 +213,13 @@ class Announcement extends AnnouncementsAppModel {
  * validate announcement
  *
  * @param array $data received post data
- * @param array $contains Optional validate sets
  * @return bool True on success, false on error
  */
-	public function validateAnnouncement($data, $contains = []) {
+	public function validateAnnouncement($data) {
 		$this->set($data);
 		$this->validates();
 		if ($this->validationErrors) {
 			return false;
-		}
-
-		if (in_array('comment', $contains, true) && isset($data['Comment'])) {
-			if (! $this->Comment->validateByStatus($data, array('plugin' => $this->plugin, 'caller' => $this->name))) {
-				$this->validationErrors = Hash::merge($this->validationErrors, $this->Comment->validationErrors);
-				return false;
-			}
-		}
-
-		if (in_array('block', $contains, true)) {
-			//ブロックのvalidate
-			if (! $this->Block->validateBlock($data)) {
-				$this->validationErrors = Hash::merge($this->validationErrors, $this->Block->validationErrors);
-				return false;
-			}
 		}
 
 		return true;
@@ -285,10 +251,10 @@ class Announcement extends AnnouncementsAppModel {
 			}
 
 			//コメントの削除
-			$this->Comment->deleteByBlockKey($data['Block']['key']);
+			$this->deleteCommentsByBlockKey($data['Block']['key']);
 
 			//Blockデータ削除
-			$this->Block->deleteBlock($data['Block']['key']);
+			$this->deleteBlock($data['Block']['key']);
 
 			//トランザクションCommit
 			$dataSource->commit();
@@ -302,5 +268,4 @@ class Announcement extends AnnouncementsAppModel {
 
 		return true;
 	}
-
 }

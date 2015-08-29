@@ -8,42 +8,32 @@
  * @license http://www.netcommons.org/license.txt NetCommons License
  * @copyright Copyright 2014, NetCommons Project
  */
+
+echo $this->NetCommonsHtml->script(array(
+	'/net_commons/js/wysiwyg.js',
+	'/announcements/js/announcements.js'
+));
+
+$announcement = NetCommonsAppController::camelizeKeyRecursive(array('announcement' => $this->data['Announcement']));
 ?>
 
-<?php
-	$this->Html->script(
-		array(
-			'/net_commons/js/wysiwyg.js',
-			'/announcements/js/announcements.js'
-		),
-		array(
-			'plugin' => false,
-			'inline' => false
-		)
-	);
-?>
-
-<div id="nc-announcements-<?php echo (int)$frameId; ?>"
-	ng-controller="Announcements"
-	ng-init="initialize(<?php echo h(json_encode(array('announcement' => $this->viewVars['announcement']))); ?>)">
+<div ng-controller="Announcements"
+	ng-init="initialize(<?php echo h(json_encode($announcement)); ?>)">
 
 	<div class="modal-body">
-		<?php echo $this->Form->create('Announcement', array(
-				'name' => 'form',
-				'novalidate' => true,
-			)); ?>
+		<?php echo $this->Form->create('Announcement', array('novalidate' => true)); ?>
 
 			<div class="panel panel-default" >
-				<div class="panel-body has-feedback">
+				<div class="panel-body">
 					<?php echo $this->element('Announcements/edit_form'); ?>
 
 					<hr />
 
-					<?php echo $this->element('Comments.form'); ?>
+					<?php echo $this->element('Comments.form', array('contentStatus' => $this->data['Announcement']['status'])); ?>
 				</div>
 
 				<div class="panel-footer text-center">
-					<?php echo $this->element('NetCommons.workflow_buttons'); ?>
+					<?php echo $this->element('NetCommons.workflow_buttons', array('contentStatus' => $this->data['Announcement']['status'])); ?>
 				</div>
 			</div>
 

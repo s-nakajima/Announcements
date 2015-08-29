@@ -42,19 +42,17 @@ class AnnouncementsControllerTest extends AnnouncementsControllerTestBase {
  * @return void
  */
 	public function testViewJson() {
-		$ret = $this->testAction(
+		$this->testAction(
 			'/announcements/announcements/view/1.json',
 			array(
 				'method' => 'get',
 				'type' => 'json',
-				'return' => 'contents',
+				//'return' => 'contents',
 			)
 		);
-		$result = json_decode($ret, true);
 
 		$this->assertTextEquals('view', $this->controller->view);
-		$this->assertArrayHasKey('code', $result, print_r($result, true));
-		$this->assertEquals(200, $result['code'], print_r($result, true));
+		$this->assertTextEquals('ajax', $this->controller->layout);
 	}
 
 /**
@@ -73,7 +71,7 @@ class AnnouncementsControllerTest extends AnnouncementsControllerTestBase {
 			)
 		);
 
-		$this->assertTextContains('nc-announcements-1', $view, print_r($view, true));
+		$this->assertTextContains('/announcements/announcements/edit/1', $view, print_r($view, true));
 
 		AuthGeneralControllerTest::logout($this);
 	}

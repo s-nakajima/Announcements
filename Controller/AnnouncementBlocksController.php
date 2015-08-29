@@ -28,15 +28,6 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 	public $layout = 'NetCommons.setting';
 
 /**
- * use models
- *
- * @var array
- */
-	public $uses = array(
-		'Blocks.Block',
-	);
-
-/**
  * use components
  *
  * @var array
@@ -98,12 +89,10 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 			$this->view = 'not_found';
 			return;
 		}
+		$this->set('announcements', $announcements);
 
-		$results = array(
-			'announcements' => $announcements
-		);
-		$results = $this->camelizeKeyRecursive($results);
-		$this->set($results);
+		$this->request->data['Frame']['block_id'] = $this->viewVars['blockId'];
+		$this->request->data['Frame']['id'] = $this->viewVars['frameId'];
 	}
 
 /**
@@ -115,38 +104,24 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 		$this->view = 'edit';
 
 		$this->set('blockId', null);
-		$announcement = $this->Announcement->create(
-			array(
-				'id' => null,
-				'key' => null,
-				'block_id' => null,
-				'status' => null,
-			)
-		);
-		$block = $this->Block->create(
-			array('id' => null, 'key' => null)
-		);
 
-		$data = array();
 		if ($this->request->isPost()) {
+			//登録(POST)処理
 			$data = $this->__parseRequestData();
 
-			$this->Announcement->saveAnnouncement($data);
-			if ($this->handleValidationError($this->Announcement->validationErrors)) {
-				if (! $this->request->is('ajax')) {
-					$this->redirect('/announcements/announcement_blocks/index/' . $this->viewVars['frameId']);
-				}
-				return;
+			if ($this->Announcement->saveAnnouncement($data)) {
+				$this->redirect('/announcements/announcement_blocks/index/' . $this->viewVars['frameId']);
 			}
+			$this->handleValidationError($this->Announcement->validationErrors);
 
-			$data['Block']['id'] = null;
-			$data['Block']['key'] = null;
-			$data['Announcement']['status'] = null;
-			unset($data['Frame']);
+		} else {
+			//初期データセット
+			$this->request->data = $this->Announcement->createAnnouncement($this->viewVars['roomId']);
+			$this->request->data['Frame'] = array(
+				'id' => $this->viewVars['frameId'],
+				'key' => $this->viewVars['frameKey']
+			);
 		}
-		$data = Hash::merge($announcement, $block, $data);
-		$results = $this->camelizeKeyRecursive($data);
-		$this->set($results);
 	}
 
 /**
@@ -155,35 +130,38 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
  * @return void
  */
 	public function edit() {
-		if (! $this->NetCommonsBlock->validateBlockId()) {
+		if (! isset($this->params['pass'][1])) {
 			$this->throwBadRequest();
 			return false;
 		}
-		$this->set('blockId', (int)$this->params['pass'][1]);
 
-		if (! $this->__initAnnouncement()) {
-			return;
-		}
-
-		if ($this->request->isPost()) {
+		if ($this->request->isPut()) {
 			$data = $this->__parseRequestData();
 
-			$data['Announcement']['key'] = $this->viewVars['announcement']['key'];
 			unset($data['Announcement']['id']);
 
-			$this->Announcement->saveAnnouncement($data);
-			if ($this->handleValidationError($this->Announcement->validationErrors)) {
-				if (! $this->request->is('ajax')) {
-					$this->redirect('/announcements/announcement_blocks/index/' . $this->viewVars['frameId']);
-				}
+			if ($this->Announcement->saveAnnouncement($data)) {
+				$this->redirect('/announcements/announcement_blocks/index/' . $this->viewVars['frameId']);
 				return;
 			}
+			$this->handleValidationError($this->Announcement->validationErrors);
 
-			$data['Announcement']['status'] = $this->viewVars['announcement']['status'];
-			unset($data['Frame']);
-			$results = $this->camelizeKeyRecursive($data);
-			$this->set($results);
+		} else {
+			//初期データセット
+			$this->request->data = $this->Announcement->getAnnouncement(
+				$this->params['pass'][1],
+				$this->viewVars['roomId'],
+				$this->viewVars['contentEditable'],
+				true
+			);
+			$this->request->data['Frame'] = array(
+				'id' => $this->viewVars['frameId'],
+				'key' => $this->viewVars['frameKey']
+			);
 		}
+
+		$comments = $this->Announcement->getCommentsByContentKey($this->request->data['Announcement']['key']);
+		$this->set('comments', $comments);
 	}
 
 /**
@@ -193,16 +171,6 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
  * @return void
  */
 	public function delete() {
-		if (! $this->NetCommonsBlock->validateBlockId()) {
-			$this->throwBadRequest();
-			return false;
-		}
-		$this->set('blockId', (int)$this->params['pass'][1]);
-
-		if (! $this->__initAnnouncement()) {
-			return;
-		}
-
 		if ($this->request->isDelete()) {
 			if ($this->Announcement->deleteAnnouncement($this->data)) {
 				if (! $this->request->is('ajax')) {
@@ -216,28 +184,6 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 	}
 
 /**
- * initAnnouncement
- *
- * @return bool True on success, False on failure
- */
-	private function __initAnnouncement() {
-		if ($this->viewVars['blockId']) {
-			if (! $announcement = $this->Announcement->getAnnouncement(
-					$this->viewVars['blockId'],
-					$this->viewVars['roomId'],
-					$this->viewVars['contentEditable']
-			)) {
-				$this->throwBadRequest();
-				return false;
-			}
-			$announcement = $this->camelizeKeyRecursive($announcement);
-			$this->set($announcement);
-		}
-
-		return true;
-	}
-
-/**
  * Parse data from request
  *
  * @return array
@@ -248,9 +194,6 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 			return;
 		}
 		$data['Announcement']['status'] = $status;
-		$data['Announcement']['is_auto_translated'] = true;
-		$data['Announcement']['is_first_auto_translation'] = true;
-		$data['Announcement']['translation_engine'] = '';
 
 		if ($data['Block']['public_type'] === Block::TYPE_LIMITED) {
 			//$data['Block']['from'] = implode('-', $data['Block']['from']);

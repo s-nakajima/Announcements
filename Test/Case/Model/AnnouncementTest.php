@@ -30,7 +30,7 @@ class AnnouncementTest extends AnnouncementModelTestBase {
 		$blockId = 1;
 		$roomId = 1;
 		$contentEditable = true;
-		$result = $this->Announcement->getAnnouncement($blockId, $roomId, $contentEditable);
+		$result = $this->Announcement->getAnnouncement($blockId, $roomId, $contentEditable, false);
 		$this->assertNotEmpty($result);
 	}
 
@@ -43,7 +43,7 @@ class AnnouncementTest extends AnnouncementModelTestBase {
 		$blockId = 4;
 		$roomId = 4;
 		$contentEditable = false;
-		$result = $this->Announcement->getAnnouncement($blockId, $roomId, $contentEditable);
+		$result = $this->Announcement->getAnnouncement($blockId, $roomId, $contentEditable, false);
 		$this->assertEmpty($result);
 	}
 
@@ -56,7 +56,7 @@ class AnnouncementTest extends AnnouncementModelTestBase {
 		$blockId = 1;
 		$roomId = 1;
 		$contentEditable = false;
-		$result = $this->Announcement->getAnnouncement($blockId, $roomId, $contentEditable);
+		$result = $this->Announcement->getAnnouncement($blockId, $roomId, $contentEditable, false);
 		$this->assertNotEmpty($result);
 	}
 
@@ -103,7 +103,7 @@ class AnnouncementTest extends AnnouncementModelTestBase {
 
 		$data = [
 			'Announcement' => [
-				'block_id' => $blockId,
+				//'block_id' => $blockId,
 				'language_id' => 2,
 				'status' => NetCommonsBlockComponent::STATUS_IN_DRAFT,
 				'content' => 'add content',
@@ -135,44 +135,6 @@ class AnnouncementTest extends AnnouncementModelTestBase {
 
 		$announcementMock = $this->getMockForModel('Announcements.Announcement', ['save']);
 		$announcementMock->expects($this->any())
-			->method('save')
-			->will($this->returnValue(false));
-
-		$announcementMock->saveAnnouncement([
-			'Announcement' => [
-				'block_id' => null,
-				'language_id' => 2,
-				'key' => 'announcement_1',
-				'status' => NetCommonsBlockComponent::STATUS_IN_DRAFT,
-				'content' => 'edit content',
-				'is_auto_translated' => true,
-				'is_first_auto_translation' => true,
-				'translation_engine' => 'edit translation_engine',
-			],
-			'Frame' => [
-				'id' => 4
-			],
-			'Comment' => [
-				'comment' => 'edit comment',
-			]
-		]);
-	}
-
-/**
- * Expect Announcement->saveAnnouncement() fail on comment save
- * e.g.) connection error
- *
- * @return void
- */
-	public function testSaveAnnouncementFailOnCommentSave() {
-		$this->setExpectedException('InternalErrorException');
-		$announcementMock = $this->getMockForModel('Announcements.Announcement', ['save']);
-		$announcementMock->expects($this->any())
-			->method('save')
-			->will($this->returnValue(true));
-
-		$commentMock = $this->getMockForModel('Comments.Comment', ['save']);
-		$commentMock->expects($this->any())
 			->method('save')
 			->will($this->returnValue(false));
 

@@ -27,7 +27,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public $uses = array(
 		'Blocks.Block',
 		'Comments.Comment',
-//		'SearchBoxes.SearchBox',
 	);
 
 /**
@@ -36,7 +35,6 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @var array
  */
 	public $components = array(
-		/* 'NetCommons.NetCommonsBlock', */
 		'NetCommons.NetCommonsWorkflow',
 		'NetCommons.NetCommonsRoomRole' => array(
 			//コンテンツの権限設定
@@ -47,57 +45,24 @@ class AnnouncementsController extends AnnouncementsAppController {
 	);
 
 /**
- * use helpers
- *
- * @var array
- */
-//	public $helpers = array(
-//		'NetCommons.Token',
-//	);
-
-/**
  * view method
  *
  * @return void
  */
 	public function view() {
-//		$this->__initAnnouncement();
-
 		$announcement = $this->Announcement->getAnnouncement(
 			$this->viewVars['blockId'],
 			$this->viewVars['roomId'],
 			$this->viewVars['contentEditable'],
-			true
+			$this->viewVars['contentEditable']
 		);
-		$this->set('announcement', $announcement['Announcement']);
-
-//		if ($this->request->is('ajax')) {
-//			$this->renderJson();
-//		} else {
-			if (! $this->viewVars['announcement']['key'] && ! $this->viewVars['contentEditable']) {
-				$this->autoRender = false;
-			}
-//		}
+		if (! $announcement && ! $this->viewVars['contentEditable']) {
+			$this->autoRender = false;
+		}
+		if ($announcement) {
+			$this->set('announcement', $announcement['Announcement']);
+		}
 	}
-
-/**
- * search_box_sample method
- *
- * @return void
- */
-//	public function search_box_sample() {
-//		$options = array('conditions' => array('language_id' => 2, 'is_advanced' => '1'));
-//		$this->set('searchBox', $this->SearchBox->find('first', $options));
-//		$this->__initAnnouncement();
-//
-//		if ($this->request->is('ajax')) {
-//			$this->renderJson();
-//		} else {
-//			if (! $this->viewVars['announcement']['key'] && ! $this->viewVars['contentEditable']) {
-//				$this->autoRender = false;
-//			}
-//		}
-//	}
 
 /**
  * edit method
@@ -105,85 +70,37 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	public function edit() {
-		$this->__initAnnouncement(['comments']);
-
-		if ($this->request->isPost()) {
+		if ($this->request->isPost() || $this->request->isPut()) {
 			if (! $status = $this->NetCommonsWorkflow->parseStatus()) {
 				return;
 			}
 
-			$data = Hash::merge(
-				$this->data, [
-					'Announcement' => [
-						'status' => $status,
-						'is_auto_translated' => true,
-						'is_first_auto_translation' => true,
-						'translation_engine' => ''
-					]
-				]
-			);
-			if (isset($this->viewVars['announcement']['key'])) {
-				$data['Announcement']['key'] = $this->viewVars['announcement']['key'];
-			}
+			$data = $this->data;
+			$data['Announcement']['status'] = $status;
 			unset($data['Announcement']['id']);
 
-			$announcement = $this->Announcement->saveAnnouncement($data);
-			if (! $this->handleValidationError($this->Announcement->validationErrors)) {
-				$results = $this->camelizeKeyRecursive($this->Announcement->data);
-				$this->set([
-					'announcement' => $results['announcement'],
-				]);
+			if ($announcement = $this->Announcement->saveAnnouncement($data)) {
+				$this->set('blockId', $announcement['Announcement']['block_id']);
+				$this->redirectByFrameId();
 				return;
 			}
-			$this->set('blockId', $announcement['Announcement']['block_id']);
-			$this->redirectByFrameId();
-			return;
-		}
-	}
+			$this->handleValidationError($this->Announcement->validationErrors);
 
-/**
- * Initialize announcement related data
- *
- * @param array $contains Optional result sets
- * @return void
- */
-	private function __initAnnouncement($contains = []) {
-		if (! $announcement = $this->Announcement->getAnnouncement(
-			$this->viewVars['blockId'],
-			$this->viewVars['roomId'],
-			$this->viewVars['contentEditable']
-		)) {
-			$announcement = $this->Announcement->create(
-				array(
-					'id' => null,
-					'key' => null,
-					'block_id' => null,
-					'status' => null
-				)
+		} else {
+			//初期データセット
+			$this->request->data = $this->Announcement->getAnnouncement(
+				$this->viewVars['blockId'],
+				$this->viewVars['roomId'],
+				$this->viewVars['contentEditable'],
+				true
 			);
-
-			$block = $this->Block->create([
-				'id' => $this->viewVars['blockId'],
-				'key' => $this->viewVars['blockKey'],
-			]);
-
-			$announcement['Block'] = $block['Block'];
-		}
-		$results = array(
-			'contentStatus' => $announcement['Announcement']['status'],
-		);
-
-		if (in_array('comments', $contains, true)) {
-			$results['comments'] = $this->Comment->getComments(
-				array(
-					'plugin_key' => $this->params['plugin'],
-					'content_key' => isset($announcement['Announcement']['key']) ? $announcement['Announcement']['key'] : null,
-				)
+			$this->request->data['Frame'] = array(
+				'id' => $this->viewVars['frameId'],
+				'key' => $this->viewVars['frameKey']
 			);
 		}
 
-		$results = Hash::merge($announcement, $results);
-		$results = $this->camelizeKeyRecursive($results);
-		$this->set($results);
+		$comments = $this->Announcement->getCommentsByContentKey($this->request->data['Announcement']['key']);
+		$this->set('comments', $comments);
 	}
 }
