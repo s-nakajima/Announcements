@@ -29,7 +29,10 @@ class Announcement extends AnnouncementsAppModel {
  */
 	public $actsAs = array(
 		'Blocks.Block' => array(
-			'name' => 'Announcement.content'
+			'name' => 'Announcement.content',
+			'loadModels' => array(
+				'Comment' => 'Comments.Comment',
+			)
 		),
 		'Comments.Comment',
 		'NetCommons.OriginalKey',
@@ -173,7 +176,7 @@ class Announcement extends AnnouncementsAppModel {
  */
 	public function saveAnnouncement($data) {
 		$this->loadModels([
-			'Announcement' => 'Announcements.Announcement',
+			'Announcement' => 'Announcements.Announcement'
 		]);
 
 		//トランザクションBegin
