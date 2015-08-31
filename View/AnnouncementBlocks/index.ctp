@@ -29,7 +29,7 @@
 					<tr>
 						<th></th>
 						<th>
-							<?php echo __d('announcements', 'Content'); ?>
+							<?php echo $this->Paginator->sort('Block.name', __d('announcements', 'Content')); ?>
 						</th>
 						<th>
 							<?php echo $this->Paginator->sort('Announcement.modified', __d('net_commons', 'Updated date')); ?>
