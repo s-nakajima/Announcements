@@ -231,8 +231,6 @@ class Announcement extends AnnouncementsAppModel {
 	public function deleteAnnouncement($data) {
 		$this->loadModels([
 			'Announcement' => 'Announcements.Announcement',
-			'Block' => 'Blocks.Block',
-			'Comment' => 'Comments.Comment',
 		]);
 
 		//トランザクションBegin
