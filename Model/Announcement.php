@@ -23,19 +23,14 @@ App::uses('Search', 'Search.Utility');
 class Announcement extends AnnouncementsAppModel {
 
 /**
- * Max length of content
- *
- * @var int
- */
-	const LIST_TITLE_LENGTH = 50;
-
-/**
  * use behaviors
  *
  * @var array
  */
 	public $actsAs = array(
-		'Blocks.Block',
+		'Blocks.Block' => array(
+			'name' => 'Announcement.content'
+		),
 		'Comments.Comment',
 		'NetCommons.OriginalKey',
 		'NetCommons.Publishable',
@@ -191,8 +186,6 @@ class Announcement extends AnnouncementsAppModel {
 		}
 
 		try {
-			$this->data['Block']['name'] = mb_strimwidth(strip_tags($this->data['Announcement']['content']), 0, self::LIST_TITLE_LENGTH);
-
 			//お知らせの登録
 			$announcement = $this->save(null, false);
 			if (! $announcement) {
