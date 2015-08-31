@@ -31,7 +31,7 @@ $announcement = NetCommonsAppController::camelizeKeyRecursive(array('announcemen
 
 		<?php if ($this->request->params['action'] === 'edit') : ?>
 			<?php echo $this->element('Blocks.delete_form', array(
-					'model' => 'Announcement',
+					'model' => 'AnnouncementBlocks',
 					'action' => 'delete/' . $frameId . '/' . $blockId,
 					'callback' => 'Announcements.AnnouncementBlocks/delete_form'
 				)); ?>
