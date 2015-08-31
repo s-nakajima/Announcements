@@ -99,7 +99,7 @@ class AnnouncementTest extends AnnouncementModelTestBase {
  */
 	public function testSaveAnnouncementByNoBlockId() {
 		$frameId = 3;
-		$blockId = null;
+		//$blockId = null;
 
 		$data = [
 			'Announcement' => [
