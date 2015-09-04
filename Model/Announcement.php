@@ -118,7 +118,7 @@ class Announcement extends AnnouncementsAppModel {
  * @param int $roomId rooms.id
  * @return array
  */
-	public function createAnnouncement($roomId) {
+	public function createAnnouncement() {
 		$announcement = $this->create(array(
 			'id' => null,
 			'key' => null,
@@ -128,7 +128,7 @@ class Announcement extends AnnouncementsAppModel {
 			'content' => null,
 		));
 		$announcement = Hash::merge($announcement, $this->createBlock(array(
-			'room_id' => $roomId,
+			'room_id' => CurrentUtility::current('Room.id'),
 		)));
 
 		return $announcement;
@@ -137,18 +137,14 @@ class Announcement extends AnnouncementsAppModel {
 /**
  * Get announcement data
  *
- * @param int $blockId blocks.id
- * @param int $roomId rooms.id
- * @param bool $contentEditable true can edit the content, false not can edit the content.
- * @param bool $created If True, the results of the Model::find() to create it if it was null
  * @return array
  */
-	public function getAnnouncement($blockId, $roomId, $contentEditable, $created) {
+	public function getAnnouncement() {
 		$conditions = array(
-			'Block.id' => $blockId,
-			'Block.room_id' => $roomId,
+			'Block.id' => CurrentUtility::current('Block.id'),
+			'Block.room_id' => CurrentUtility::current('Block.room_id'),
 		);
-		if ($contentEditable) {
+		if (CurrentUtility::permission('content_editable')) {
 			$conditions[$this->alias . '.is_latest'] = true;
 		} else {
 			$conditions[$this->alias . '.is_active'] = true;
@@ -159,10 +155,6 @@ class Announcement extends AnnouncementsAppModel {
 			'conditions' => $conditions,
 			//'order' => 'Announcement.id DESC',
 		));
-
-		if ($created && ! $announcement) {
-			$announcement = $this->createAnnouncement($roomId);
-		}
 
 		return $announcement;
 	}

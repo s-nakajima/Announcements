@@ -50,14 +50,13 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	public function view() {
-		$announcement = $this->Announcement->getAnnouncement(
-			$this->viewVars['blockId'],
-			$this->viewVars['roomId'],
-			$this->viewVars['contentEditable'],
-			$this->viewVars['contentEditable']
-		);
-		if (! $announcement && ! $this->viewVars['contentEditable']) {
-			$this->autoRender = false;
+		$announcement = $this->Announcement->getAnnouncement();
+		if (! $announcement) {
+			if (CurrentUtility::permission('content_editable')) {
+				$announcement = $this->Announcement->createAnnouncement();
+			} else {
+				$this->autoRender = false;
+			}
 		}
 		if ($announcement) {
 			$this->set('announcement', $announcement['Announcement']);
@@ -88,12 +87,9 @@ class AnnouncementsController extends AnnouncementsAppController {
 
 		} else {
 			//初期データセット
-			$this->request->data = $this->Announcement->getAnnouncement(
-				$this->viewVars['blockId'],
-				$this->viewVars['roomId'],
-				$this->viewVars['contentEditable'],
-				true
-			);
+			if (! $this->request->data = $this->Announcement->getAnnouncement()) {
+				$this->request->data = $this->Announcement->createAnnouncement();
+			}
 			$this->request->data['Frame'] = array(
 				'id' => $this->viewVars['frameId'],
 				'key' => $this->viewVars['frameKey']
