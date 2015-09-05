@@ -17,28 +17,24 @@ echo $this->NetCommonsHtml->script(array(
 $announcement = NetCommonsAppController::camelizeKeyRecursive(array('announcement' => $this->data['Announcement']));
 ?>
 
-<div ng-controller="Announcements"
+<article class="block-setting-body" ng-controller="Announcements"
 	ng-init="initialize(<?php echo h(json_encode($announcement)); ?>)">
 
-	<div class="modal-body">
-		<?php echo $this->Form->create('Announcement', array('novalidate' => true)); ?>
+	<?php echo $this->Form->create('Announcement', array('novalidate' => true)); ?>
 
-			<div class="panel panel-default" >
-				<div class="panel-body">
-					<?php echo $this->element('Announcements/edit_form'); ?>
+		<div class="panel panel-default" >
+			<div class="panel-body">
+				<?php echo $this->element('Announcements/edit_form'); ?>
 
-					<hr />
+				<hr />
 
-					<?php echo $this->element('Comments.form', array('contentStatus' => $this->data['Announcement']['status'])); ?>
-				</div>
-
-				<div class="panel-footer text-center">
-					<?php echo $this->element('NetCommons.workflow_buttons', array('contentStatus' => $this->data['Announcement']['status'])); ?>
-				</div>
+				<?php echo $this->Workflow->inputComment('Announcement.status'); ?>
 			</div>
 
-			<?php echo $this->element('Comments.index'); ?>
+			<?php echo $this->Workflow->buttons('Announcement.status'); ?>
+		</div>
 
-		<?php echo $this->Form->end(); ?>
-	</div>
-</div>
+		<?php echo $this->Workflow->comments(); ?>
+
+	<?php echo $this->Form->end(); ?>
+</article>

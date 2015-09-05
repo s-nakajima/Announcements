@@ -51,8 +51,7 @@
 									<?php echo h($announcement['Block']['name']); ?>
 								</a>
 
-								<?php echo $this->element('NetCommons.status_label',
-										array('status' => $announcement['Announcement']['status'])); ?>
+								<?php echo $this->Workflow->label($announcement['Announcement']['status']); ?>
 							</td>
 							<td>
 								<?php echo $this->Date->dateFormat($announcement['Announcement']['modified']); ?>

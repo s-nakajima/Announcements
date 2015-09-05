@@ -20,16 +20,9 @@
 
 			<hr />
 
-			<?php echo $this->element('Comments.form', array(
-				'contentStatus' => $this->data['Announcement']['status']
-			)); ?>
+			<?php echo $this->Workflow->inputComment('Announcement.status'); ?>
 		</div>
 
-		<div class="panel-footer text-center">
-			<?php echo $this->element('NetCommons.workflow_buttons', array(
-				'cancelUrl' => 'announcements/announcement_blocks/index/' . $frameId,
-				'contentStatus' => $this->data['Announcement']['status']
-			)); ?>
-		</div>
+		<?php echo $this->Workflow->buttons('Announcement.status', '/announcements/announcement_blocks/index/' . CurrentUtility::read('Frame.id')); ?>
 	</div>
 <?php echo $this->Form->end();

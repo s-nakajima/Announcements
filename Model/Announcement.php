@@ -36,7 +36,7 @@ class Announcement extends AnnouncementsAppModel {
 		),
 		'Comments.Comment',
 		'NetCommons.OriginalKey',
-		'NetCommons.Publishable',
+		'Workflow.Workflow',
 	);
 
 /**
@@ -86,7 +86,7 @@ class Announcement extends AnnouncementsAppModel {
 
 			//key to set in OriginalKeyBehavior.
 
-			//status to set in PublishableBehavior.
+			//status to set in WorkflowBehavior.
 
 			'is_auto_translated' => array(
 				'boolean' => array(
@@ -119,17 +119,17 @@ class Announcement extends AnnouncementsAppModel {
  * @return array
  */
 	public function createAnnouncement() {
-		$announcement = $this->create(array(
-			'id' => null,
-			'key' => null,
-			'block_id' => null,
-			'language_id' => Configure::read('Config.languageId'),
-			'status' => null,
-			'content' => null,
+		$announcement = $this->createAll(array(
+			$this->alias => array(
+				'id' => null,
+				'language_id' => CurrentUtility::read('Language.id'),
+			),
+			$this->Block->alias => array(
+				'room_id' => CurrentUtility::read('Room.id'),
+				'language_id' => CurrentUtility::read('Language.id'),
+				'plugin_key' => Inflector::underscore($this->plugin)
+			),
 		));
-		$announcement = Hash::merge($announcement, $this->createBlock(array(
-			'room_id' => CurrentUtility::current('Room.id'),
-		)));
 
 		return $announcement;
 	}
@@ -141,8 +141,8 @@ class Announcement extends AnnouncementsAppModel {
  */
 	public function getAnnouncement() {
 		$conditions = array(
-			'Block.id' => CurrentUtility::current('Block.id'),
-			'Block.room_id' => CurrentUtility::current('Block.room_id'),
+			'Block.id' => CurrentUtility::read('Block.id'),
+			'Block.room_id' => CurrentUtility::read('Block.room_id'),
 		);
 		if (CurrentUtility::permission('content_editable')) {
 			$conditions[$this->alias . '.is_latest'] = true;
@@ -172,11 +172,11 @@ class Announcement extends AnnouncementsAppModel {
 		]);
 
 		//トランザクションBegin
-		$this->setDataSource('master');
-		$dataSource = $this->getDataSource();
-		$dataSource->begin();
+		$this->begin();
 
-		if (! $this->validateAnnouncement($data)) {
+		//バリデーション
+		$this->set($data);
+		if (! $this->validates()) {
 			return false;
 		}
 
@@ -187,30 +187,15 @@ class Announcement extends AnnouncementsAppModel {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 
-			$dataSource->commit();
+			//トランザクションCommit
+			$this->commit();
+
 		} catch (Exception $ex) {
-			$dataSource->rollback();
-			CakeLog::error($ex);
-			throw $ex;
+			//トランザクションRollback
+			$this->rollback($ex);
 		}
 
 		return $announcement;
-	}
-
-/**
- * validate announcement
- *
- * @param array $data received post data
- * @return bool True on success, false on error
- */
-	public function validateAnnouncement($data) {
-		$this->set($data);
-		$this->validates();
-		if ($this->validationErrors) {
-			return false;
-		}
-
-		return true;
 	}
 
 /**
@@ -226,9 +211,7 @@ class Announcement extends AnnouncementsAppModel {
 		]);
 
 		//トランザクションBegin
-		$this->setDataSource('master');
-		$dataSource = $this->getDataSource();
-		$dataSource->begin();
+		$this->begin();
 
 		try {
 			//Announcementの削除
@@ -240,13 +223,11 @@ class Announcement extends AnnouncementsAppModel {
 			$this->deleteBlock($data['Block']['key']);
 
 			//トランザクションCommit
-			$dataSource->commit();
+			$this->commit();
 
 		} catch (Exception $ex) {
 			//トランザクションRollback
-			$dataSource->rollback();
-			CakeLog::error($ex);
-			throw $ex;
+			$this->rollback($ex);
 		}
 
 		return true;

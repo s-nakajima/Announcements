@@ -35,13 +35,21 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @var array
  */
 	public $components = array(
-		'NetCommons.NetCommonsWorkflow',
-		'NetCommons.NetCommonsRoomRole' => array(
-			//コンテンツの権限設定
-			'allowedActions' => array(
-				'contentEditable' => array('edit')
+		'NetCommons.Permission' => array(
+			//アクセスの権限
+			'allow' => array(
+				'edit' => 'content_editable',
 			),
 		)
+	);
+
+/**
+ * use helpers
+ *
+ * @var array
+ */
+	public $helpers = array(
+		'Workflow.Workflow',
 	);
 
 /**
@@ -70,7 +78,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public function edit() {
 		if ($this->request->isPost() || $this->request->isPut()) {
-			if (! $status = $this->NetCommonsWorkflow->parseStatus()) {
+			if (! $status = $this->Workflow->parseStatus()) {
 				return;
 			}
 
@@ -79,7 +87,6 @@ class AnnouncementsController extends AnnouncementsAppController {
 			unset($data['Announcement']['id']);
 
 			if ($announcement = $this->Announcement->saveAnnouncement($data)) {
-				$this->set('blockId', $announcement['Announcement']['block_id']);
 				$this->redirectByFrameId();
 				return;
 			}
@@ -90,10 +97,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 			if (! $this->request->data = $this->Announcement->getAnnouncement()) {
 				$this->request->data = $this->Announcement->createAnnouncement();
 			}
-			$this->request->data['Frame'] = array(
-				'id' => $this->viewVars['frameId'],
-				'key' => $this->viewVars['frameKey']
-			);
+			$this->request->data['Frame'] = CurrentUtility::read('Frame');
 		}
 
 		$comments = $this->Announcement->getCommentsByContentKey($this->request->data['Announcement']['key']);

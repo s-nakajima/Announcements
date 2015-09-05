@@ -25,7 +25,6 @@ class AnnouncementsAppController extends AppController {
  * @var array
  */
 	public $components = array(
-		'NetCommons.NetCommonsFrame',
 		'Pages.PageLayout',
 		'Security',
 	);
@@ -47,12 +46,6 @@ class AnnouncementsAppController extends AppController {
  * @return void
  */
 	public function initTabs($mainActiveTab, $blockActiveTab) {
-		if (isset($this->params['pass'][1])) {
-			$blockId = (int)$this->params['pass'][1];
-		} else {
-			$blockId = null;
-		}
-
 		//タブの設定
 		$settingTabs = array(
 			'tabs' => array(
@@ -61,7 +54,7 @@ class AnnouncementsAppController extends AppController {
 						'plugin' => $this->params['plugin'],
 						'controller' => 'announcement_blocks',
 						'action' => 'index',
-						$this->viewVars['frameId'],
+						CurrentUtility::read('Frame.id'),
 					)
 				),
 			),
@@ -76,8 +69,8 @@ class AnnouncementsAppController extends AppController {
 						'plugin' => $this->params['plugin'],
 						'controller' => 'announcement_blocks',
 						'action' => $this->params['action'],
-						$this->viewVars['frameId'],
-						$blockId
+						CurrentUtility::read('Frame.id'),
+						CurrentUtility::read('Block.id'),
 					)
 				),
 			),

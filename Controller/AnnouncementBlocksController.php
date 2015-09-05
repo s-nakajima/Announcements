@@ -33,12 +33,11 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
  * @var array
  */
 	public $components = array(
-		'NetCommons.NetCommonsBlock',
-		'NetCommons.NetCommonsWorkflow',
-		'NetCommons.NetCommonsRoomRole' => array(
-			//コンテンツの権限設定
-			'allowedActions' => array(
-				'blockEditable' => array('index', 'add', 'edit', 'delete')
+		'Workflow.Workflow',
+		'NetCommons.Permission' => array(
+			//アクセスの権限
+			'allow' => array(
+				'index,add,edit,delete' => 'block_editable',
 			),
 		),
 		'Paginator',
@@ -51,6 +50,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
  */
 	public $helpers = array(
 		'NetCommons.Date',
+		'Workflow.Workflow',
 	);
 
 /**
@@ -60,7 +60,6 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
  */
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->deny('index');
 
 		//タブの設定
 		$this->initTabs('block_index', 'block_settings');
@@ -75,24 +74,20 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 		$this->Paginator->settings = array(
 			'Announcement' => array(
 				'order' => array('Announcement.id' => 'desc'),
-				'conditions' => array(
-					'Block.language_id' => $this->viewVars['languageId'],
-					'Block.room_id' => $this->viewVars['roomId'],
-					'Block.plugin_key ' => $this->params['plugin'],
+				'conditions' => $this->Announcement->getBlockConditions(array(
 					'Announcement.is_latest' => true,
-				),
+				)),
 			)
 		);
 
 		$announcements = $this->Paginator->paginate('Announcement');
 		if (! $announcements) {
-			$this->view = 'not_found';
+			$this->view = 'Blocks.Blocks/not_found';
 			return;
 		}
 		$this->set('announcements', $announcements);
 
-		$this->request->data['Frame']['block_id'] = $this->viewVars['blockId'];
-		$this->request->data['Frame']['id'] = $this->viewVars['frameId'];
+		$this->request->data['Frame'] = CurrentUtility::read('Frame');
 	}
 
 /**
@@ -110,17 +105,14 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 			$data = $this->__parseRequestData();
 
 			if ($this->Announcement->saveAnnouncement($data)) {
-				$this->redirect('/announcements/announcement_blocks/index/' . $this->viewVars['frameId']);
+				$this->redirect('/announcements/announcement_blocks/index/' . CurrentUtility::read('Frame.id'));
 			}
 			$this->handleValidationError($this->Announcement->validationErrors);
 
 		} else {
 			//初期データセット
-			$this->request->data = $this->Announcement->createAnnouncement($this->viewVars['roomId']);
-			$this->request->data['Frame'] = array(
-				'id' => $this->viewVars['frameId'],
-				'key' => $this->viewVars['frameKey']
-			);
+			$this->request->data = $this->Announcement->createAnnouncement();
+			$this->request->data['Frame'] = CurrentUtility::read('Frame');
 		}
 	}
 
@@ -148,16 +140,8 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 
 		} else {
 			//初期データセット
-			$this->request->data = $this->Announcement->getAnnouncement(
-				$this->params['pass'][1],
-				$this->viewVars['roomId'],
-				$this->viewVars['contentEditable'],
-				true
-			);
-			$this->request->data['Frame'] = array(
-				'id' => $this->viewVars['frameId'],
-				'key' => $this->viewVars['frameKey']
-			);
+			$this->request->data = $this->Announcement->getAnnouncement();
+			$this->request->data['Frame'] = CurrentUtility::read('Frame');
 		}
 
 		$comments = $this->Announcement->getCommentsByContentKey($this->request->data['Announcement']['key']);
@@ -190,7 +174,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
  */
 	private function __parseRequestData() {
 		$data = $this->data;
-		if (! $status = $this->NetCommonsWorkflow->parseStatus()) {
+		if (! $status = $this->Workflow->parseStatus()) {
 			return;
 		}
 		$data['Announcement']['status'] = $status;
