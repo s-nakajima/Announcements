@@ -133,7 +133,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 			unset($data['Announcement']['id']);
 
 			if ($this->Announcement->saveAnnouncement($data)) {
-				$this->redirect('/announcements/announcement_blocks/index/' . $this->viewVars['frameId']);
+				$this->redirect('/announcements/announcement_blocks/index/' . CurrentUtility::read('Frame.id'));
 				return;
 			}
 			$this->handleValidationError($this->Announcement->validationErrors);
@@ -158,7 +158,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 		if ($this->request->isDelete()) {
 			if ($this->Announcement->deleteAnnouncement($this->data)) {
 				if (! $this->request->is('ajax')) {
-					$this->redirect('/announcements/announcement_blocks/index/' . $this->viewVars['frameId']);
+					$this->redirect('/announcements/announcement_blocks/index/' . CurrentUtility::read('Frame.id'));
 				}
 				return;
 			}

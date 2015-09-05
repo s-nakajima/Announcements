@@ -15,12 +15,12 @@
 
 	<div class="tab-content">
 		<div class="text-right">
-			<a class="btn btn-success" href="<?php echo $this->Html->url('/announcements/announcement_blocks/add/' . $frameId);?>">
+			<a class="btn btn-success" href="<?php echo $this->Html->url('/announcements/announcement_blocks/add/' . CurrentUtility::read('Frame.id'));?>">
 				<span class="glyphicon glyphicon-plus"> </span>
 			</a>
 		</div>
 
-		<?php echo $this->Form->create('', array('url' => '/frames/frames/edit/' . $frameId)); ?>
+		<?php echo $this->Form->create('', array('url' => '/frames/frames/edit/' . CurrentUtility::read('Frame.id'))); ?>
 
 			<?php echo $this->Form->hidden('Frame.id'); ?>
 
@@ -38,7 +38,7 @@
 				</thead>
 				<tbody>
 					<?php foreach ($announcements as $announcement) : ?>
-						<tr<?php echo ($blockId === $announcement['Block']['id'] ? ' class="active"' : ''); ?>>
+						<tr<?php echo (CurrentUtility::read('Frame.block_id') === $announcement['Block']['id'] ? ' class="active"' : ''); ?>>
 							<td>
 								<?php echo $this->NetCommonsForm->radio('Frame.block_id', array($announcement['Block']['id'] => ''), array(
 										'onclick' => 'submit()',
@@ -47,7 +47,8 @@
 									)); ?>
 							</td>
 							<td>
-								<a href="<?php echo $this->Html->url('/announcements/announcement_blocks/edit/' . $frameId . '/' . (int)$announcement['Block']['id']); ?>">
+								<a href="<?php echo $this->Html->url(
+										'/announcements/announcement_blocks/edit/' . CurrentUtility::read('Frame.id') . '/' . $announcement['Block']['id']); ?>">
 									<?php echo h($announcement['Block']['name']); ?>
 								</a>
 

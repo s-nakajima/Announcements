@@ -17,7 +17,8 @@ echo $this->NetCommonsHtml->script(array(
 $announcement = NetCommonsAppController::camelizeKeyRecursive(array('announcement' => $this->data['Announcement']));
 ?>
 
-<div ng-controller="Announcements"
+<div class="block-setting-body"
+	ng-controller="Announcements"
 	ng-init="initialize(<?php echo h(json_encode($announcement)); ?>)">
 
 	<?php echo $this->element('NetCommons.setting_tabs', $settingTabs); ?>
@@ -32,7 +33,7 @@ $announcement = NetCommonsAppController::camelizeKeyRecursive(array('announcemen
 		<?php if ($this->request->params['action'] === 'edit') : ?>
 			<?php echo $this->element('Blocks.delete_form', array(
 					'model' => 'AnnouncementBlocks',
-					'action' => 'delete/' . $frameId . '/' . $blockId,
+					'action' => 'delete/' . $this->data['Frame']['id'] . '/' . $this->data['Frame']['block_id'],
 					'callback' => 'Announcements.AnnouncementBlocks/delete_form'
 				)); ?>
 		<?php endif; ?>
