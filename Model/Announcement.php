@@ -122,11 +122,11 @@ class Announcement extends AnnouncementsAppModel {
 		$announcement = $this->createAll(array(
 			$this->alias => array(
 				'id' => null,
-				'language_id' => CurrentUtility::read('Language.id'),
+				'language_id' => Current::read('Language.id'),
 			),
 			$this->Block->alias => array(
-				'room_id' => CurrentUtility::read('Room.id'),
-				'language_id' => CurrentUtility::read('Language.id'),
+				'room_id' => Current::read('Room.id'),
+				'language_id' => Current::read('Language.id'),
 				'plugin_key' => Inflector::underscore($this->plugin)
 			),
 		));
@@ -141,10 +141,10 @@ class Announcement extends AnnouncementsAppModel {
  */
 	public function getAnnouncement() {
 		$conditions = array(
-			'Block.id' => CurrentUtility::read('Block.id'),
-			'Block.room_id' => CurrentUtility::read('Block.room_id'),
+			'Block.id' => Current::read('Block.id'),
+			'Block.room_id' => Current::read('Block.room_id'),
 		);
-		if (CurrentUtility::permission('content_editable')) {
+		if (Current::permission('content_editable')) {
 			$conditions[$this->alias . '.is_latest'] = true;
 		} else {
 			$conditions[$this->alias . '.is_active'] = true;

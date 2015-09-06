@@ -10,10 +10,10 @@
  */
 ?>
 
-<?php if (CurrentUtility::permission('content_editable')) : ?>
+<?php if (Current::permission('content_editable')) : ?>
 	<p class="text-right">
 		<span class="nc-tooltip" tooltip="<?php echo __d('net_commons', 'Edit'); ?>">
-			<a href="<?php echo $this->Html->url('/announcements/announcements/edit/' . CurrentUtility::read('Frame.id')) ?>" class="btn btn-primary">
+			<a href="<?php echo $this->Html->url('/announcements/announcements/edit/' . Current::read('Frame.id')) ?>" class="btn btn-primary">
 				<span class="glyphicon glyphicon-edit"> </span>
 			</a>
 		</span>
@@ -22,7 +22,7 @@
 
 <?php echo $announcement['content']; ?>
 
-<?php if (CurrentUtility::permission('content_editable')) : ?>
+<?php if (Current::permission('content_editable')) : ?>
 	<p class="text-left">
 		<?php echo $this->Workflow->label($announcement['status']); ?>
 	</p>

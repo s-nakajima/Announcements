@@ -54,7 +54,7 @@ class AnnouncementsAppController extends AppController {
 						'plugin' => $this->params['plugin'],
 						'controller' => 'announcement_blocks',
 						'action' => 'index',
-						CurrentUtility::read('Frame.id'),
+						Current::read('Frame.id'),
 					)
 				),
 			),
@@ -69,8 +69,8 @@ class AnnouncementsAppController extends AppController {
 						'plugin' => $this->params['plugin'],
 						'controller' => 'announcement_blocks',
 						'action' => $this->params['action'],
-						CurrentUtility::read('Frame.id'),
-						CurrentUtility::read('Block.id'),
+						Current::read('Frame.id'),
+						Current::read('Block.id'),
 					)
 				),
 			),

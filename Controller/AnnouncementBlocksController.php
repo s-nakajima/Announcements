@@ -87,7 +87,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 		}
 		$this->set('announcements', $announcements);
 
-		$this->request->data['Frame'] = CurrentUtility::read('Frame');
+		$this->request->data['Frame'] = Current::read('Frame');
 	}
 
 /**
@@ -105,14 +105,14 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 			$data = $this->__parseRequestData();
 
 			if ($this->Announcement->saveAnnouncement($data)) {
-				$this->redirect('/announcements/announcement_blocks/index/' . CurrentUtility::read('Frame.id'));
+				$this->redirect('/announcements/announcement_blocks/index/' . Current::read('Frame.id'));
 			}
 			$this->handleValidationError($this->Announcement->validationErrors);
 
 		} else {
 			//初期データセット
 			$this->request->data = $this->Announcement->createAnnouncement();
-			$this->request->data['Frame'] = CurrentUtility::read('Frame');
+			$this->request->data['Frame'] = Current::read('Frame');
 		}
 	}
 
@@ -133,7 +133,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 			unset($data['Announcement']['id']);
 
 			if ($this->Announcement->saveAnnouncement($data)) {
-				$this->redirect('/announcements/announcement_blocks/index/' . CurrentUtility::read('Frame.id'));
+				$this->redirect('/announcements/announcement_blocks/index/' . Current::read('Frame.id'));
 				return;
 			}
 			$this->handleValidationError($this->Announcement->validationErrors);
@@ -141,7 +141,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 		} else {
 			//初期データセット
 			$this->request->data = $this->Announcement->getAnnouncement();
-			$this->request->data['Frame'] = CurrentUtility::read('Frame');
+			$this->request->data['Frame'] = Current::read('Frame');
 		}
 
 		$comments = $this->Announcement->getCommentsByContentKey($this->request->data['Announcement']['key']);
@@ -158,7 +158,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 		if ($this->request->isDelete()) {
 			if ($this->Announcement->deleteAnnouncement($this->data)) {
 				if (! $this->request->is('ajax')) {
-					$this->redirect('/announcements/announcement_blocks/index/' . CurrentUtility::read('Frame.id'));
+					$this->redirect('/announcements/announcement_blocks/index/' . Current::read('Frame.id'));
 				}
 				return;
 			}

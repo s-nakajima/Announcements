@@ -23,6 +23,6 @@
 			<?php echo $this->Workflow->inputComment('Announcement.status'); ?>
 		</div>
 
-		<?php echo $this->Workflow->buttons('Announcement.status', '/announcements/announcement_blocks/index/' . CurrentUtility::read('Frame.id')); ?>
+		<?php echo $this->Workflow->buttons('Announcement.status', '/announcements/announcement_blocks/index/' . Current::read('Frame.id')); ?>
 	</div>
 <?php echo $this->Form->end();
