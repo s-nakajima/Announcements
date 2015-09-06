@@ -60,7 +60,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 	public function view() {
 		$announcement = $this->Announcement->getAnnouncement();
 		if (! $announcement) {
-			if (CurrentUtility::permission('content_editable')) {
+			if (Current::permission('content_editable')) {
 				$announcement = $this->Announcement->createAnnouncement();
 			} else {
 				$this->autoRender = false;
@@ -97,7 +97,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 			if (! $this->request->data = $this->Announcement->getAnnouncement()) {
 				$this->request->data = $this->Announcement->createAnnouncement();
 			}
-			$this->request->data['Frame'] = CurrentUtility::read('Frame');
+			$this->request->data['Frame'] = Current::read('Frame');
 		}
 
 		$comments = $this->Announcement->getCommentsByContentKey($this->request->data['Announcement']['key']);
