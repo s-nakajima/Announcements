@@ -87,7 +87,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 			unset($data['Announcement']['id']);
 
 			if ($announcement = $this->Announcement->saveAnnouncement($data)) {
-				$this->redirectByFrameId();
+				$this->redirect(Current::backToPageUrl());
 				return;
 			}
 			$this->handleValidationError($this->Announcement->validationErrors);
