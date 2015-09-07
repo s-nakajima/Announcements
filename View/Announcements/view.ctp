@@ -12,7 +12,7 @@
 
 <?php if (Current::permission('content_editable')) : ?>
 	<p class="text-right">
-		<?php echo $this->NetCommonsForm->editLinkButton(''); ?>
+		<?php echo $this->Button->editLink(''); ?>
 	</p>
 <?php endif; ?>
 
