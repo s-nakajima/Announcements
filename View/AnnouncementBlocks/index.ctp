@@ -15,12 +15,10 @@
 
 	<div class="tab-content">
 		<div class="text-right">
-			<a class="btn btn-success" href="<?php echo $this->Html->url('/announcements/announcement_blocks/add/' . Current::read('Frame.id'));?>">
-				<span class="glyphicon glyphicon-plus"> </span>
-			</a>
+			<?php echo $this->NetCommonsForm->addLink(); ?>
 		</div>
 
-		<?php echo $this->Form->create('', array('url' => '/frames/frames/edit/' . Current::read('Frame.id'))); ?>
+		<?php echo $this->Form->create('', array('url' => '/frames/frames/edit/' . $this->data['Frame']['id'])); ?>
 
 			<?php echo $this->Form->hidden('Frame.id'); ?>
 
@@ -38,7 +36,7 @@
 				</thead>
 				<tbody>
 					<?php foreach ($announcements as $announcement) : ?>
-						<tr<?php echo (Current::read('Frame.block_id') === $announcement['Block']['id'] ? ' class="active"' : ''); ?>>
+						<tr<?php echo ($this->data['Frame']['block_id'] === $announcement['Block']['id'] ? ' class="active"' : ''); ?>>
 							<td>
 								<?php echo $this->NetCommonsForm->radio('Frame.block_id', array($announcement['Block']['id'] => ''), array(
 										'onclick' => 'submit()',
@@ -47,10 +45,7 @@
 									)); ?>
 							</td>
 							<td>
-								<a href="<?php echo $this->Html->url(
-										'/announcements/announcement_blocks/edit/' . Current::read('Frame.id') . '/' . $announcement['Block']['id']); ?>">
-									<?php echo h($announcement['Block']['name']); ?>
-								</a>
+								<?php echo $this->NetCommonsForm->editLink($announcement['Block']['id'], $announcement['Block']['name']); ?>
 
 								<?php echo $this->Workflow->label($announcement['Announcement']['status']); ?>
 							</td>

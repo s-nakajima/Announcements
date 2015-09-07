@@ -49,7 +49,6 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
  * @var array
  */
 	public $helpers = array(
-		'NetCommons.Date',
 		'Workflow.Workflow',
 	);
 
@@ -105,7 +104,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 			$data = $this->__parseRequestData();
 
 			if ($this->Announcement->saveAnnouncement($data)) {
-				$this->redirect('/announcements/announcement_blocks/index/' . Current::read('Frame.id'));
+				$this->redirect(Current::backToIndexUrl('default_setting_action'));
 			}
 			$this->handleValidationError($this->Announcement->validationErrors);
 
@@ -133,7 +132,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 			unset($data['Announcement']['id']);
 
 			if ($this->Announcement->saveAnnouncement($data)) {
-				$this->redirect('/announcements/announcement_blocks/index/' . Current::read('Frame.id'));
+				$this->redirect(Current::backToIndexUrl('default_setting_action'));
 				return;
 			}
 			$this->handleValidationError($this->Announcement->validationErrors);
@@ -157,10 +156,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 	public function delete() {
 		if ($this->request->isDelete()) {
 			if ($this->Announcement->deleteAnnouncement($this->data)) {
-				if (! $this->request->is('ajax')) {
-					$this->redirect('/announcements/announcement_blocks/index/' . Current::read('Frame.id'));
-				}
-				return;
+				$this->redirect(Current::backToIndexUrl('default_setting_action'));
 			}
 		}
 
