@@ -121,14 +121,8 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
  * @return void
  */
 	public function edit() {
-		if (! isset($this->params['pass'][1])) {
-			$this->throwBadRequest();
-			return false;
-		}
-
 		if ($this->request->isPut()) {
 			$data = $this->__parseRequestData();
-
 			unset($data['Announcement']['id']);
 
 			if ($this->Announcement->saveAnnouncement($data)) {
@@ -139,6 +133,8 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 
 		} else {
 			//初期データセット
+			CurrentFrame::setBlock($this->request->params['pass'][1]);
+
 			$this->request->data = $this->Announcement->getAnnouncement();
 			$this->request->data['Frame'] = Current::read('Frame');
 		}
@@ -174,13 +170,6 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 			return;
 		}
 		$data['Announcement']['status'] = $status;
-
-		if ($data['Block']['public_type'] === Block::TYPE_LIMITED) {
-			//$data['Block']['from'] = implode('-', $data['Block']['from']);
-			//$data['Block']['to'] = implode('-', $data['Block']['to']);
-		} else {
-			unset($data['Block']['from'], $data['Block']['to']);
-		}
 
 		return $data;
 	}

@@ -22,11 +22,7 @@
 
 <?php echo $this->Form->hidden('Announcement.status'); ?>
 
-<?php echo $this->NetCommonsForm->input('Announcement.content', array(
-		'type' => 'textarea',
+<?php echo $this->NetCommonsForm->wysiwyg('Announcement.content', array(
 		'label' => __d('announcements', 'Content'),
 		'required' => true,
-		'ui-tinymce' => 'tinymce.options',
-		'ng-model' => 'announcement.content',
-		'rows' => 5,
 	));
