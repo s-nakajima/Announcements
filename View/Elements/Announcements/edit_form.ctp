@@ -13,13 +13,9 @@
 <?php echo $this->element('Blocks.form_hidden'); ?>
 
 <?php echo $this->Form->hidden('Announcement.id'); ?>
-
 <?php echo $this->Form->hidden('Announcement.key'); ?>
-
 <?php echo $this->Form->hidden('Announcement.block_id'); ?>
-
 <?php echo $this->Form->hidden('Announcement.language_id'); ?>
-
 <?php echo $this->Form->hidden('Announcement.status'); ?>
 
 <?php echo $this->NetCommonsForm->wysiwyg('Announcement.content', array(
