@@ -25,7 +25,6 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @var array
  */
 	public $uses = array(
-		'Blocks.Block',
 		'Comments.Comment',
 	);
 
