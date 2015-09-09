@@ -140,20 +140,14 @@ class Announcement extends AnnouncementsAppModel {
  * @return array
  */
 	public function getAnnouncement() {
-		$conditions = array(
-			'Block.id' => Current::read('Block.id'),
-			'Block.room_id' => Current::read('Block.room_id'),
-		);
 		if (Current::permission('content_editable')) {
 			$conditions[$this->alias . '.is_latest'] = true;
 		} else {
 			$conditions[$this->alias . '.is_active'] = true;
 		}
-
 		$announcement = $this->find('first', array(
 			'recursive' => 0,
-			'conditions' => $conditions,
-			//'order' => 'Announcement.id DESC',
+			'conditions' => $this->getBlockConditionById($conditions),
 		));
 
 		return $announcement;
