@@ -113,28 +113,6 @@ class Announcement extends AnnouncementsAppModel {
 	}
 
 /**
- * Create announcement data
- *
- * @param int $roomId rooms.id
- * @return array
- */
-	public function createAnnouncement() {
-		$announcement = $this->createAll(array(
-			$this->alias => array(
-				'id' => null,
-				'language_id' => Current::read('Language.id'),
-			),
-			$this->Block->alias => array(
-				'room_id' => Current::read('Room.id'),
-				'language_id' => Current::read('Language.id'),
-				'plugin_key' => Inflector::underscore($this->plugin)
-			),
-		));
-
-		return $announcement;
-	}
-
-/**
  * Get announcement data
  *
  * @return array
@@ -171,6 +149,7 @@ class Announcement extends AnnouncementsAppModel {
 		//バリデーション
 		$this->set($data);
 		if (! $this->validates()) {
+			$this->rollback();
 			return false;
 		}
 

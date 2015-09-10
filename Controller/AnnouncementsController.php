@@ -60,7 +60,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		$announcement = $this->Announcement->getAnnouncement();
 		if (! $announcement) {
 			if (Current::permission('content_editable')) {
-				$announcement = $this->Announcement->createAnnouncement();
+				$announcement = $this->Announcement->createAll();
 			} else {
 				$this->autoRender = false;
 			}
@@ -94,7 +94,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 		} else {
 			//初期データセット
 			if (! $this->request->data = $this->Announcement->getAnnouncement()) {
-				$this->request->data = $this->Announcement->createAnnouncement();
+				$this->request->data = $this->Announcement->createAll();
 			}
 			$this->request->data['Frame'] = Current::read('Frame');
 		}

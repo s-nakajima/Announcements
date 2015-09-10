@@ -38,11 +38,7 @@
 					<?php foreach ($announcements as $announcement) : ?>
 						<tr<?php echo ($this->data['Frame']['block_id'] === $announcement['Block']['id'] ? ' class="active"' : ''); ?>>
 							<td>
-								<?php echo $this->NetCommonsForm->radio('Frame.block_id', array($announcement['Block']['id'] => ''), array(
-										'onclick' => 'submit()',
-										'ng-click' => 'sending=true',
-										'ng-disabled' => 'sending'
-									)); ?>
+								<?php echo $this->BlockForm->displayFrame('Frame.block_id', $announcement['Block']['id']); ?>
 							</td>
 							<td>
 								<?php echo $this->NetCommonsForm->editLink($announcement['Block']['id'], $announcement['Block']['name']); ?>

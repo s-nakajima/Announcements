@@ -10,7 +10,6 @@
  */
 
 App::uses('AnnouncementsAppController', 'Announcements.Controller');
-App::uses('String', 'Utility');
 
 /**
  * AnnouncementBlocks Controller
@@ -49,6 +48,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
  * @var array
  */
 	public $helpers = array(
+		'Blocks.BlockForm',
 		'Workflow.Workflow',
 	);
 
@@ -110,7 +110,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 
 		} else {
 			//初期データセット
-			$this->request->data = $this->Announcement->createAnnouncement();
+			$this->request->data = $this->Announcement->createAll();
 			$this->request->data['Frame'] = Current::read('Frame');
 		}
 	}
