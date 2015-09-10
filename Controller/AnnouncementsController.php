@@ -89,7 +89,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 				$this->redirect(Current::backToPageUrl());
 				return;
 			}
-			$this->handleValidationError($this->Announcement->validationErrors);
+			$this->NetCommons->handleValidationError($this->Announcement->validationErrors);
 
 		} else {
 			//初期データセット

@@ -107,7 +107,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 				$this->redirect(Current::backToIndexUrl('default_setting_action'));
 				return;
 			}
-			$this->handleValidationError($this->Announcement->validationErrors);
+			$this->NetCommons->handleValidationError($this->Announcement->validationErrors);
 
 		} else {
 			//初期データセット
@@ -130,7 +130,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 				$this->redirect(Current::backToIndexUrl('default_setting_action'));
 				return;
 			}
-			$this->handleValidationError($this->Announcement->validationErrors);
+			$this->NetCommons->handleValidationError($this->Announcement->validationErrors);
 
 		} else {
 			//初期データセット
