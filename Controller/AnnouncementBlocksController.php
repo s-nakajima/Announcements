@@ -105,6 +105,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 
 			if ($this->Announcement->saveAnnouncement($data)) {
 				$this->redirect(Current::backToIndexUrl('default_setting_action'));
+				return;
 			}
 			$this->handleValidationError($this->Announcement->validationErrors);
 
@@ -153,6 +154,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 		if ($this->request->isDelete()) {
 			if ($this->Announcement->deleteAnnouncement($this->data)) {
 				$this->redirect(Current::backToIndexUrl('default_setting_action'));
+				return;
 			}
 		}
 
