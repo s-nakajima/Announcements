@@ -41,7 +41,7 @@
 								<?php echo $this->BlockForm->displayFrame('Frame.block_id', $announcement['Block']['id']); ?>
 							</td>
 							<td>
-								<?php echo $this->NetCommonsForm->editLink($announcement['Block']['id'], $announcement['Block']['name']); ?>
+								<?php echo $this->NetCommonsForm->editLink($announcement['Block']['name'], array('block_id' => $announcement['Block']['id'])); ?>
 
 								<?php echo $this->Workflow->label($announcement['Announcement']['status']); ?>
 							</td>

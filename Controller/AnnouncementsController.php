@@ -77,16 +77,12 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public function edit() {
 		if ($this->request->isPost() || $this->request->isPut()) {
-			if (! $status = $this->Workflow->parseStatus()) {
-				return;
-			}
-
 			$data = $this->data;
-			$data['Announcement']['status'] = $status;
+			$data['Announcement']['status'] = $this->Workflow->parseStatus();
 			unset($data['Announcement']['id']);
 
 			if ($announcement = $this->Announcement->saveAnnouncement($data)) {
-				$this->redirect(Current::backToPageUrl());
+				$this->redirect(NetCommonsUrl::backToPageUrl());
 				return;
 			}
 			$this->NetCommons->handleValidationError($this->Announcement->validationErrors);

@@ -57,11 +57,10 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
  *
  * @return void
  */
-	public function beforeFilter() {
-		parent::beforeFilter();
-
+	public function beforeRender() {
 		//タブの設定
 		$this->initTabs('block_index', 'block_settings');
+		parent::beforeRender();
 	}
 
 /**
@@ -97,14 +96,13 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 	public function add() {
 		$this->view = 'edit';
 
-		$this->set('blockId', null);
-
 		if ($this->request->isPost()) {
 			//登録(POST)処理
-			$data = $this->__parseRequestData();
+			$data = $this->data;
+			$data['Announcement']['status'] = $this->Workflow->parseStatus();
 
 			if ($this->Announcement->saveAnnouncement($data)) {
-				$this->redirect(Current::backToIndexUrl('default_setting_action'));
+				$this->redirect(NetCommonsUrl::backToIndexUrl('default_setting_action'));
 				return;
 			}
 			$this->NetCommons->handleValidationError($this->Announcement->validationErrors);
@@ -123,11 +121,12 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
  */
 	public function edit() {
 		if ($this->request->isPut()) {
-			$data = $this->__parseRequestData();
+			$data = $this->data;
+			$data['Announcement']['status'] = $this->Workflow->parseStatus();
 			unset($data['Announcement']['id']);
 
 			if ($this->Announcement->saveAnnouncement($data)) {
-				$this->redirect(Current::backToIndexUrl('default_setting_action'));
+				$this->redirect(NetCommonsUrl::backToIndexUrl('default_setting_action'));
 				return;
 			}
 			$this->NetCommons->handleValidationError($this->Announcement->validationErrors);
@@ -153,27 +152,12 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 	public function delete() {
 		if ($this->request->isDelete()) {
 			if ($this->Announcement->deleteAnnouncement($this->data)) {
-				$this->redirect(Current::backToIndexUrl('default_setting_action'));
+				$this->redirect(NetCommonsUrl::backToIndexUrl('default_setting_action'));
 				return;
 			}
 		}
 
 		$this->throwBadRequest();
-	}
-
-/**
- * Parse data from request
- *
- * @return array
- */
-	private function __parseRequestData() {
-		$data = $this->data;
-		if (! $status = $this->Workflow->parseStatus()) {
-			return;
-		}
-		$data['Announcement']['status'] = $status;
-
-		return $data;
 	}
 
 }
