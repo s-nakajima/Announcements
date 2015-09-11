@@ -18,7 +18,9 @@
 			<?php echo $this->Button->addLink(); ?>
 		</div>
 
-		<?php echo $this->Form->create('', array('url' => '/frames/frames/edit/' . $this->data['Frame']['id'])); ?>
+		<?php echo $this->Form->create('', array(
+				'url' => NetCommonsUrl::actionUrl(array('plugin' => 'frames', 'controller' => 'frames', 'action' => 'edit'))
+			)); ?>
 
 			<?php echo $this->Form->hidden('Frame.id'); ?>
 
