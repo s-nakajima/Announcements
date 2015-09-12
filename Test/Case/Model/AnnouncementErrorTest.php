@@ -33,7 +33,7 @@ class AnnouncementErrorTest extends AnnouncementModelTestBase {
 			'Announcement' => array(
 				'block_id' => '1',
 				'key' => 'announcement_1',
-				'status' => NetCommonsBlockComponent::STATUS_APPROVED,
+				'status' => WorkflowComponent::STATUS_APPROVED,
 				'content' => 'edit content',
 			),
 			'Frame' => array(

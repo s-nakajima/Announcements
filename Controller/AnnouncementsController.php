@@ -81,7 +81,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 			$data['Announcement']['status'] = $this->Workflow->parseStatus();
 			unset($data['Announcement']['id']);
 
-			if ($announcement = $this->Announcement->saveAnnouncement($data)) {
+			if ($this->Announcement->saveAnnouncement($data)) {
 				$this->redirect(NetCommonsUrl::backToPageUrl());
 				return;
 			}
