@@ -30,7 +30,9 @@ class AllAnnouncementsTest extends CakeTestSuite {
 		$Folder = new Folder($directory);
 		$exceptions = array(
 			'AnnouncementsControllerTestBase.php',
-			'AnnouncementModelTestBase.php'
+			'AnnouncementModelTestBase.php',
+			//後で削除
+			'AnnouncementValidateErrorTest.php',
 		);
 		$files = $Folder->tree(null, $exceptions, 'files');
 		foreach ($files as $file) {
