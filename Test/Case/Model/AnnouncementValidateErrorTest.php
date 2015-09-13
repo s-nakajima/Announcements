@@ -67,7 +67,7 @@ class AnnouncementValidateErrorTest extends AnnouncementModelTestBase {
 			'Announcement' => array(
 				'block_id' => 1,
 				'key' => 'announcement_1',
-				'status' => NetCommonsBlockComponent::STATUS_IN_DRAFT,
+				'status' => WorkflowComponent::STATUS_IN_DRAFT,
 				'is_auto_translated' => true,
 				'translation_engine' => 'edit translation_engine',
 			),
@@ -103,7 +103,7 @@ class AnnouncementValidateErrorTest extends AnnouncementModelTestBase {
 			'Announcement' => array(
 				'block_id' => 1,
 				'key' => 'announcement_1',
-				'status' => NetCommonsBlockComponent::STATUS_DISAPPROVED,
+				'status' => WorkflowComponent::STATUS_DISAPPROVED,
 				'content' => 'edit content',
 				'is_auto_translated' => true,
 				'translation_engine' => 'edit translation_engine',

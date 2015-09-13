@@ -10,7 +10,7 @@
  */
 ?>
 
-<?php echo $this->Form->create('Blocks', array('novalidate' => true)); ?>
+<?php echo $this->Form->create('Announcement', array('novalidate' => true)); ?>
 
 	<div class="panel panel-default" >
 		<div class="panel-body has-feedback">
@@ -20,16 +20,9 @@
 
 			<hr />
 
-			<?php echo $this->element('Comments.form', array(
-				'contentStatus' => $announcement['status']
-			)); ?>
+			<?php echo $this->Workflow->inputComment('Announcement.status'); ?>
 		</div>
 
-		<div class="panel-footer text-center">
-			<?php echo $this->element('NetCommons.workflow_buttons', array(
-				'cancelUrl' => 'announcements/announcement_blocks/index/' . $frameId,
-				'contentStatus' => $announcement['status']
-			)); ?>
-		</div>
+		<?php echo $this->Workflow->buttons('Announcement.status', NetCommonsUrl::backToIndexUrl('default_setting_action')); ?>
 	</div>
 <?php echo $this->Form->end();

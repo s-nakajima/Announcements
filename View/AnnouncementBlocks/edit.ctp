@@ -8,24 +8,18 @@
  * @license http://www.netcommons.org/license.txt NetCommons License
  * @copyright Copyright 2014, NetCommons Project
  */
+
+echo $this->NetCommonsHtml->script(array(
+	'/net_commons/js/wysiwyg.js',
+	'/announcements/js/announcements.js'
+));
+
+$announcement = NetCommonsAppController::camelizeKeyRecursive(array('announcement' => $this->data['Announcement']));
 ?>
 
-<?php
-	$this->Html->script(
-		array(
-			'/net_commons/js/wysiwyg.js',
-			'/announcements/js/announcements.js'
-		),
-		array(
-			'plugin' => false,
-			'inline' => false
-		)
-	);
-?>
-
-<div id="nc-announcements-<?php echo (int)$frameId; ?>" class="modal-body"
-		ng-controller="Announcements"
-		ng-init="initialize(<?php echo h(json_encode(array('announcement' => $this->viewVars['announcement']))); ?>)">
+<div class="block-setting-body"
+	ng-controller="Announcements"
+	ng-init="initialize(<?php echo h(json_encode($announcement)); ?>)">
 
 	<?php echo $this->element('NetCommons.setting_tabs', $settingTabs); ?>
 
@@ -34,10 +28,12 @@
 
 		<?php echo $this->element('Announcements.AnnouncementBlocks/edit_form'); ?>
 
+		<?php echo $this->Workflow->comments(); ?>
+
 		<?php if ($this->request->params['action'] === 'edit') : ?>
 			<?php echo $this->element('Blocks.delete_form', array(
-					'controller' => 'AnnouncementBlocks',
-					'action' => 'delete/' . $frameId . '/' . (int)$announcement['blockId'],
+					'model' => 'AnnouncementBlocks',
+					'action' => 'delete/' . $this->data['Frame']['id'] . '/' . $this->data['Frame']['block_id'],
 					'callback' => 'Announcements.AnnouncementBlocks/delete_form'
 				)); ?>
 		<?php endif; ?>

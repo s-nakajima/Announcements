@@ -23,20 +23,20 @@ App::uses('Search', 'Search.Utility');
 class Announcement extends AnnouncementsAppModel {
 
 /**
- * Max length of content
- *
- * @var int
- */
-	const LIST_TITLE_LENGTH = 50;
-
-/**
  * use behaviors
  *
  * @var array
  */
 	public $actsAs = array(
+		'Blocks.Block' => array(
+			'name' => 'Announcement.content',
+			'loadModels' => array(
+				'Comment' => 'Comments.Comment',
+			)
+		),
+		'Comments.Comment',
 		'NetCommons.OriginalKey',
-		'NetCommons.Publishable'
+		'Workflow.Workflow',
 	);
 
 /**
@@ -86,7 +86,7 @@ class Announcement extends AnnouncementsAppModel {
 
 			//key to set in OriginalKeyBehavior.
 
-			//status to set in PublishableBehavior.
+			//status to set in WorkflowBehavior.
 
 			'is_auto_translated' => array(
 				'boolean' => array(
@@ -101,8 +101,8 @@ class Announcement extends AnnouncementsAppModel {
 				)
 			),
 			'content' => array(
-				'notEmpty' => array(
-					'rule' => array('notEmpty'),
+				'notBlank' => array(
+					'rule' => array('notBlank'),
 					'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('announcements', 'Content')),
 					'required' => true
 				),
@@ -115,26 +115,17 @@ class Announcement extends AnnouncementsAppModel {
 /**
  * Get announcement data
  *
- * @param int $blockId blocks.id
- * @param int $roomId rooms.id
- * @param bool $contentEditable true can edit the content, false not can edit the content.
  * @return array
  */
-	public function getAnnouncement($blockId, $roomId, $contentEditable) {
-		$conditions = array(
-			'Block.id' => $blockId,
-			'Block.room_id' => $roomId,
-		);
-		if ($contentEditable) {
+	public function getAnnouncement() {
+		if (Current::permission('content_editable')) {
 			$conditions[$this->alias . '.is_latest'] = true;
 		} else {
 			$conditions[$this->alias . '.is_active'] = true;
 		}
-
 		$announcement = $this->find('first', array(
 			'recursive' => 0,
-			'conditions' => $conditions,
-			//'order' => 'Announcement.id DESC',
+			'conditions' => $this->getBlockConditionById($conditions),
 		));
 
 		return $announcement;
@@ -149,102 +140,35 @@ class Announcement extends AnnouncementsAppModel {
  */
 	public function saveAnnouncement($data) {
 		$this->loadModels([
-			'Announcement' => 'Announcements.Announcement',
-			'Block' => 'Blocks.Block',
-			'Comment' => 'Comments.Comment',
-			/* 'Topic' => 'Topics.Topic', */
+			'Announcement' => 'Announcements.Announcement'
 		]);
 
 		//トランザクションBegin
-		$this->setDataSource('master');
-		$dataSource = $this->getDataSource();
-		$dataSource->begin();
+		$this->begin();
+
+		//バリデーション
+		$this->set($data);
+		if (! $this->validates()) {
+			$this->rollback();
+			return false;
+		}
 
 		try {
-			if (!$this->validateAnnouncement($data, ['block', 'comment'])) {
-				return false;
-			}
-
-			//ブロックの登録
-			$block = $this->Block->saveByFrameId($data['Frame']['id']);
-
 			//お知らせの登録
-			$this->data['Announcement']['block_id'] = (int)$block['Block']['id'];
 			$announcement = $this->save(null, false);
 			if (! $announcement) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
-			//コメントの登録
-			if ($this->Comment->data) {
-				$this->Comment->data[$this->Comment->name]['block_key'] = $block['Block']['key'];
-				$this->Comment->data[$this->Comment->name]['content_key'] = $announcement[$this->alias]['key'];
-				if (! $this->Comment->save(null, false)) {
-					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-				}
-			}
 
-			/* $plugin = strtolower($this->plugin); */
-			/* if (!$this->Topic->validateTopic([ */
-			/* 	'block_id' => $announcement[$this->alias]['block_id'], */
-			/* 	'status' => $announcement[$this->alias]['status'], */
-			/* 	'is_active' => $announcement[$this->alias]['is_active'], */
-			/* 	'is_latest' => $announcement[$this->alias]['is_latest'], */
-			/* 	'is_auto_translated' => $announcement[$this->alias]['is_auto_translated'], */
-			/* 	'is_first_auto_translation' => $announcement[$this->alias]['is_first_auto_translation'], */
-			/* 	'translation_engine' => $announcement[$this->alias]['translation_engine'], */
-			/* 	'title' => Search::prepareTitle($announcement[$this->alias]['content']), */
-			/* 	'contents' => Search::prepareContents([$announcement[$this->alias]['content']]), */
-			/* 	'plugin_key' => $plugin, */
-			/* 	'path' => '/' . $plugin . '/' . $plugin . '/view/' . $data['Frame']['id'], */
-			/* 	'from' => date('Y-m-d H:i:s'), */
-			/* ])) { */
-			/* 	$this->validationErrors = Hash::merge($this->validationErrors, $this->Topic->validationErrors); */
-			/* 	return false; */
-			/* } */
-			/* if (! $this->Topic->save(null, false)) { */
-			/* 	throw new InternalErrorException(__d('net_commons', 'Internal Server Error')); */
-			/* } */
+			//トランザクションCommit
+			$this->commit();
 
-			$dataSource->commit();
 		} catch (Exception $ex) {
-			$dataSource->rollback();
-			CakeLog::error($ex);
-			throw $ex;
+			//トランザクションRollback
+			$this->rollback($ex);
 		}
 
 		return $announcement;
-	}
-
-/**
- * validate announcement
- *
- * @param array $data received post data
- * @param array $contains Optional validate sets
- * @return bool True on success, false on error
- */
-	public function validateAnnouncement($data, $contains = []) {
-		$this->set($data);
-		$this->validates();
-		if ($this->validationErrors) {
-			return false;
-		}
-
-		if (in_array('comment', $contains, true) && isset($data['Comment'])) {
-			if (! $this->Comment->validateByStatus($data, array('plugin' => $this->plugin, 'caller' => $this->name))) {
-				$this->validationErrors = Hash::merge($this->validationErrors, $this->Comment->validationErrors);
-				return false;
-			}
-		}
-
-		if (in_array('block', $contains, true)) {
-			//ブロックのvalidate
-			if (! $this->Block->validateBlock($data)) {
-				$this->validationErrors = Hash::merge($this->validationErrors, $this->Block->validationErrors);
-				return false;
-			}
-		}
-
-		return true;
 	}
 
 /**
@@ -257,14 +181,10 @@ class Announcement extends AnnouncementsAppModel {
 	public function deleteAnnouncement($data) {
 		$this->loadModels([
 			'Announcement' => 'Announcements.Announcement',
-			'Block' => 'Blocks.Block',
-			'Comment' => 'Comments.Comment',
 		]);
 
 		//トランザクションBegin
-		$this->setDataSource('master');
-		$dataSource = $this->getDataSource();
-		$dataSource->begin();
+		$this->begin();
 
 		try {
 			//Announcementの削除
@@ -272,23 +192,17 @@ class Announcement extends AnnouncementsAppModel {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 
-			//コメントの削除
-			$this->Comment->deleteByBlockKey($data['Block']['key']);
-
 			//Blockデータ削除
-			$this->Block->deleteBlock($data['Block']['key']);
+			$this->deleteBlock($data['Block']['key']);
 
 			//トランザクションCommit
-			$dataSource->commit();
+			$this->commit();
 
 		} catch (Exception $ex) {
 			//トランザクションRollback
-			$dataSource->rollback();
-			CakeLog::error($ex);
-			throw $ex;
+			$this->rollback($ex);
 		}
 
 		return true;
 	}
-
 }

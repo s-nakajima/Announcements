@@ -118,7 +118,7 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsControllerTe
 				'content_key' => 'announcement_1',
 				'comment' => 'edit comment',
 			),
-			sprintf('save_%s', NetCommonsBlockComponent::STATUS_PUBLISHED) => '',
+			sprintf('save_%s', WorkflowComponent::STATUS_PUBLISHED) => '',
 		);
 
 		$view = $this->testAction(
@@ -164,7 +164,7 @@ class AnnouncementsControllerValidateErrorTest extends AnnouncementsControllerTe
 				'content_key' => 'announcement_1',
 				'comment' => '',
 			),
-			sprintf('save_%s', NetCommonsBlockComponent::STATUS_DISAPPROVED) => '',
+			sprintf('save_%s', WorkflowComponent::STATUS_DISAPPROVED) => '',
 		);
 
 		$view = $this->testAction(
