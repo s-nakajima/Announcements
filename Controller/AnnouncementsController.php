@@ -62,12 +62,11 @@ class AnnouncementsController extends AnnouncementsAppController {
 			if (Current::permission('content_editable')) {
 				$announcement = $this->Announcement->createAll();
 			} else {
-				$this->autoRender = false;
+				$this->setAction('emptyRender');
+				return;
 			}
 		}
-		if ($announcement) {
-			$this->set('announcement', $announcement['Announcement']);
-		}
+		$this->set('announcement', $announcement['Announcement']);
 	}
 
 /**
