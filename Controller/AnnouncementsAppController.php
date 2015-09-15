@@ -38,45 +38,4 @@ class AnnouncementsAppController extends AppController {
 		'Announcements.Announcement',
 	);
 
-/**
- * initTabs
- *
- * @param string $mainActiveTab Main active tab
- * @param string $blockActiveTab Block active tab
- * @return void
- */
-	public function initTabs($mainActiveTab, $blockActiveTab) {
-		//タブの設定
-		$settingTabs = array(
-			'tabs' => array(
-				'block_index' => array(
-					'url' => array(
-						'plugin' => $this->params['plugin'],
-						'controller' => 'announcement_blocks',
-						'action' => 'index',
-						Current::read('Frame.id'),
-					)
-				),
-			),
-			'active' => $mainActiveTab
-		);
-		$this->set('settingTabs', $settingTabs);
-
-		$blockSettingTabs = array(
-			'tabs' => array(
-				'block_settings' => array(
-					'url' => array(
-						'plugin' => $this->params['plugin'],
-						'controller' => 'announcement_blocks',
-						'action' => $this->params['action'],
-						Current::read('Frame.id'),
-						Current::read('Block.id'),
-					)
-				),
-			),
-			'active' => $blockActiveTab
-		);
-		$this->set('blockSettingTabs', $blockSettingTabs);
-	}
-
 }
