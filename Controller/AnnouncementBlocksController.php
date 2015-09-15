@@ -32,6 +32,10 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
  * @var array
  */
 	public $components = array(
+		'Blocks.BlockTabs' => array(
+			'mainTabs' => array('block_index'),
+			'blockTabs' => array('block_settings'),
+		),
 		'Workflow.Workflow',
 		'NetCommons.Permission' => array(
 			//アクセスの権限
@@ -51,17 +55,6 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 		'Blocks.BlockForm',
 		'Workflow.Workflow',
 	);
-
-/**
- * beforeFilter
- *
- * @return void
- */
-	public function beforeRender() {
-		//タブの設定
-		$this->initTabs('block_index', 'block_settings');
-		parent::beforeRender();
-	}
 
 /**
  * index
