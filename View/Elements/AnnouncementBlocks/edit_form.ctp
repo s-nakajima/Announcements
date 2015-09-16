@@ -10,7 +10,7 @@
  */
 ?>
 
-<?php echo $this->NetCommonsForm->create('Announcement', array('novalidate' => true)); ?>
+<?php echo $this->NetCommonsForm->create('Announcement'); ?>
 
 	<div class="panel panel-default" >
 		<div class="panel-body has-feedback">
