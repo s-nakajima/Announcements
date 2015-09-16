@@ -12,9 +12,9 @@
  */
 
 App::uses('Announcement', 'Announcements.Model');
-App::uses('NetCommonsBlockComponent', 'NetCommons.Controller/Component');
-App::uses('NetCommonsRoomRoleComponent', 'NetCommons.Controller/Component');
-App::uses('YACakeTestCase', 'NetCommons.TestSuite');
+//App::uses('NetCommonsBlockComponent', 'NetCommons.Controller/Component');
+//App::uses('NetCommonsRoomRoleComponent', 'NetCommons.Controller/Component');
+App::uses('NetCommonsCakeTestCase', 'NetCommons.TestSuite');
 
 /**
  * Announcement Model Test Case
@@ -22,7 +22,7 @@ App::uses('YACakeTestCase', 'NetCommons.TestSuite');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Model
  */
-class AnnouncementModelTestBase extends YACakeTestCase {
+class AnnouncementModelTestBase extends NetCommonsCakeTestCase {
 
 /**
  * Fixtures
@@ -31,29 +31,7 @@ class AnnouncementModelTestBase extends YACakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.announcements.announcement',
-		'plugin.comments.comment',
-		//'plugin.topics.topic',
+		//'plugin.comments.comment',
 	);
 
-/**
- * setUp method
- *
- * @return void
- */
-	public function setUp() {
-		parent::setUp();
-		$this->Announcement = ClassRegistry::init('Announcements.Announcement');
-		$this->Comment = ClassRegistry::init('Comments.Comment');
-	}
-
-/**
- * tearDown method
- *
- * @return void
- */
-	public function tearDown() {
-		unset($this->Announcement);
-		unset($this->Comment);
-		parent::tearDown();
-	}
 }
