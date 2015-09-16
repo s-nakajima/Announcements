@@ -14,7 +14,7 @@
 App::uses('Announcement', 'Announcements.Model');
 //App::uses('NetCommonsBlockComponent', 'NetCommons.Controller/Component');
 //App::uses('NetCommonsRoomRoleComponent', 'NetCommons.Controller/Component');
-App::uses('NetCommonsCakeTestCase', 'NetCommons.TestSuite');
+App::uses('NetCommonsModelTestCase', 'NetCommons.TestSuite');
 
 /**
  * Announcement Model Test Case
@@ -22,7 +22,7 @@ App::uses('NetCommonsCakeTestCase', 'NetCommons.TestSuite');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Model
  */
-class AnnouncementModelTestBase extends NetCommonsCakeTestCase {
+class AnnouncementModelTestBase extends NetCommonsModelTestCase {
 
 /**
  * Fixtures
