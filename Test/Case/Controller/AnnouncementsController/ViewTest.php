@@ -43,13 +43,10 @@ class ViewTest extends AnnouncementsControllerTestBase {
  * @return void
  */
 	public function testView() {
-		//$this->testAction(
-		//	'/announcements/announcements/view/1',
-		//	array(
-		//		'method' => 'get',
-		//		'return' => 'view',
-		//	)
-		//);
+		$this->testAction('/announcements/announcements/view/6', array(
+			'method' => 'get',
+			'return' => 'view',
+		));
 		//$this->assertTextEquals('view', $this->controller->view);
 	}
 
