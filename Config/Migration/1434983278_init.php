@@ -73,8 +73,6 @@ class Init extends NetCommonsMigration {
 				'block_id' => '1',
 				'status' => '1',
 				'key' => 'announcments_1',
-				'is_auto_translated' => 0,
-				'is_first_auto_translation' => 0,
 				'is_latest' => '1',
 				'is_active' => '1',
 				'content' => '<div class="jumbotron">
