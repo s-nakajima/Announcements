@@ -30,9 +30,8 @@ class AnnouncementTest extends AnnouncementModelTestBase {
 		//$blockId = 1;
 		//$roomId = 1;
 		//$contentEditable = true;
-		$result = $this->Announcement->getAnnouncement();
-		var_dump($result);
-		$this->assertNotEmpty($result);
+		//$result = $this->Announcement->getAnnouncement();
+		//$this->assertNotEmpty($result);
 	}
 
 /**

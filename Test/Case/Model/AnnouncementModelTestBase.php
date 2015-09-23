@@ -31,7 +31,7 @@ class AnnouncementModelTestBase extends NetCommonsModelTestCase {
  */
 	public $fixtures = array(
 		'plugin.announcements.announcement',
-		//'plugin.comments.comment',
+		'plugin.comments.comment',
 	);
 
 }

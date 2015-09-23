@@ -1,6 +1,6 @@
 <?php
 /**
- * AnnouncementsController Test Case
+ * AnnouncementsControllerTestBase
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -12,18 +12,18 @@
 //App::uses('NetCommonsFrameComponent', 'NetCommons.Controller/Component');
 //App::uses('NetCommonsBlockComponent', 'NetCommons.Controller/Component');
 //App::uses('NetCommonsRoomRoleComponent', 'NetCommons.Controller/Component');
-App::uses('YAControllerTestCase', 'NetCommons.TestSuite');
-App::uses('RolesControllerTest', 'Roles.Test/Case/Controller');
-App::uses('AuthGeneralControllerTest', 'AuthGeneral.Test/Case/Controller');
+App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
+//App::uses('RolesControllerTest', 'Roles.Test/Case/Controller');
+//App::uses('AuthGeneralControllerTest', 'AuthGeneral.Test/Case/Controller');
 
 /**
- * AnnouncementsController Test Case
+ * AnnouncementsControllerTestBase
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Controller
  * @SuppressWarnings(PHPMD.LongVariable)
  */
-class AnnouncementsControllerTestBase extends YAControllerTestCase {
+class AnnouncementsControllerTestBase extends NetCommonsControllerTestCase {
 
 /**
  * Fixtures
@@ -33,39 +33,5 @@ class AnnouncementsControllerTestBase extends YAControllerTestCase {
 	public $fixtures = array(
 		'plugin.announcements.announcement',
 		'plugin.comments.comment',
-		'plugin.search_boxes.search_box',
-		//'plugin.topics.topic',
 	);
-
-/**
- * setUp method
- *
- * @return void
- */
-	public function setUp() {
-		parent::setUp();
-
-		YACakeTestCase::loadTestPlugin($this, 'NetCommons', 'TestPlugin');
-
-		$this->generate(
-			'Announcements.Announcements',
-			[
-				'components' => [
-					'Auth' => ['user'],
-					'Session',
-					'Security',
-				]
-			]
-		);
-	}
-
-/**
- * tearDown method
- *
- * @return void
- */
-	public function tearDown() {
-		CakeSession::write('Auth.User', null);
-		parent::tearDown();
-	}
 }
