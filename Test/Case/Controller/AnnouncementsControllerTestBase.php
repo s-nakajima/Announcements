@@ -34,4 +34,12 @@ class AnnouncementsControllerTestBase extends NetCommonsControllerTestCase {
 		'plugin.announcements.announcement',
 		'plugin.comments.comment',
 	);
+
+/**
+ * Set plugin name
+ *
+ * @var array
+ */
+	protected $_plugin = 'announcements';
+
 }

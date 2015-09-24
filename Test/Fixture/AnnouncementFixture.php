@@ -79,7 +79,7 @@ class AnnouncementFixture extends CakeTestFixture {
 			'key' => 'announcement_2',
 			'status' => '1',
 			'is_active' => '1',
-			'is_latest' => '0',
+			'is_latest' => '1',
 			'content' => 'Content 11',
 			'created_user' => '1',
 			'created' => '2014-10-09 16:07:57',

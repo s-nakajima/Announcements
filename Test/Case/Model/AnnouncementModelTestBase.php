@@ -34,4 +34,11 @@ class AnnouncementModelTestBase extends NetCommonsModelTestCase {
 		'plugin.comments.comment',
 	);
 
+/**
+ * Set plugin name
+ *
+ * @var array
+ */
+	protected $_plugin = 'announcements';
+
 }
