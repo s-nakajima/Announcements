@@ -12,7 +12,6 @@
  */
 
 App::uses('AnnouncementsAppModel', 'Announcements.Model');
-App::uses('Search', 'Search.Utility');
 
 /**
  * Announcement Model
