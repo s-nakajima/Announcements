@@ -46,14 +46,26 @@ class ViewTest extends AnnouncementsControllerTestBase implements WorkflowConten
 	public function testView() {
 		//アクション実行
 		$frameId = '6';
-		$result = $this->testAction('/announcements/announcements/view/' . $frameId, array(
+		$url = NetCommonsUrl::actionUrl(array(
+			'plugin' => 'announcements',
+			'controller' => 'announcements',
+			'action' => 'view',
+			'frame_id' => $frameId,
+		));
+		$result = $this->testAction($url, array(
 			'method' => 'get',
 			'return' => 'view',
 		));
 
 		//評価
 		$this->assertNotEmpty($result);
-		$this->assertTextNotContains('/announcements/announcements/edit/' . $frameId, $result);
+		$editUrl = NetCommonsUrl::actionUrl(array(
+			'plugin' => 'announcements',
+			'controller' => 'announcements',
+			'action' => 'edit',
+			'frame_id' => $frameId,
+		));
+		$this->assertTextNotContains($editUrl, $result);
 	}
 
 /**
@@ -79,14 +91,26 @@ class ViewTest extends AnnouncementsControllerTestBase implements WorkflowConten
 
 		//アクション実行
 		$frameId = '6';
-		$result = $this->testAction('/announcements/announcements/view/' . $frameId, array(
+		$url = NetCommonsUrl::actionUrl(array(
+			'plugin' => 'announcements',
+			'controller' => 'announcements',
+			'action' => 'view',
+			'frame_id' => $frameId,
+		));
+		$result = $this->testAction($url, array(
 			'method' => 'get',
 			'return' => 'view',
 		));
 
 		//評価
 		$this->assertNotEmpty($result);
-		$this->assertTextContains('/announcements/announcements/edit/' . $frameId, $result);
+		$editUrl = NetCommonsUrl::actionUrl(array(
+			'plugin' => 'announcements',
+			'controller' => 'announcements',
+			'action' => 'edit',
+			'frame_id' => $frameId,
+		));
+		$this->assertTextContains($editUrl, $result);
 
 		AuthGeneralTestSuite::logout($this);
 	}
@@ -99,7 +123,13 @@ class ViewTest extends AnnouncementsControllerTestBase implements WorkflowConten
 	public function testViewNoContent() {
 		//アクション実行
 		$frameId = '14';
-		$result = $this->testAction('/announcements/announcements/view/' . $frameId, array(
+		$url = NetCommonsUrl::actionUrl(array(
+			'plugin' => 'announcements',
+			'controller' => 'announcements',
+			'action' => 'view',
+			'frame_id' => $frameId,
+		));
+		$result = $this->testAction($url, array(
 			'method' => 'get',
 			'return' => 'view',
 		));
@@ -118,14 +148,26 @@ class ViewTest extends AnnouncementsControllerTestBase implements WorkflowConten
 
 		//アクション実行
 		$frameId = '14';
-		$result = $this->testAction('/announcements/announcements/view/' . $frameId, array(
+		$url = NetCommonsUrl::actionUrl(array(
+			'plugin' => 'announcements',
+			'controller' => 'announcements',
+			'action' => 'view',
+			'frame_id' => $frameId,
+		));
+		$result = $this->testAction($url, array(
 			'method' => 'get',
 			'return' => 'view',
 		));
 
 		//評価
 		$this->assertNotEmpty($result);
-		$this->assertTextContains('/announcements/announcements/edit/' . $frameId, $result);
+		$editUrl = NetCommonsUrl::actionUrl(array(
+			'plugin' => 'announcements',
+			'controller' => 'announcements',
+			'action' => 'edit',
+			'frame_id' => $frameId,
+		));
+		$this->assertTextContains($editUrl, $result);
 
 		AuthGeneralTestSuite::logout($this);
 	}
@@ -138,14 +180,26 @@ class ViewTest extends AnnouncementsControllerTestBase implements WorkflowConten
 	public function testViewOnDeleteFrame() {
 		//アクション実行
 		$frameId = '12';
-		$result = $this->testAction('/announcements/announcements/view/' . $frameId, array(
+		$url = NetCommonsUrl::actionUrl(array(
+			'plugin' => 'announcements',
+			'controller' => 'announcements',
+			'action' => 'view',
+			'frame_id' => $frameId,
+		));
+		$result = $this->testAction($url, array(
 			'method' => 'get',
 			'return' => 'view',
 		));
 
 		//評価
 		$this->assertNotEmpty($result);
-		$this->assertTextNotContains('/announcements/announcements/edit/' . $frameId, $result);
+		$editUrl = NetCommonsUrl::actionUrl(array(
+			'plugin' => 'announcements',
+			'controller' => 'announcements',
+			'action' => 'edit',
+			'frame_id' => $frameId,
+		));
+		$this->assertTextNotContains($editUrl, $result);
 	}
 
 

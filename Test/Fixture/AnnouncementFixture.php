@@ -100,5 +100,30 @@ class AnnouncementFixture extends CakeTestFixture {
 			'modified_user' => '1',
 			'modified' => '2014-10-09 16:07:57'
 		),
+
+		//101-200まで、ページ遷移のためのテスト
+
 	);
+
+/**
+ * Initialize the fixture.
+ *
+ * @return void
+ */
+	public function init() {
+		for ($i = 101; $i <= 200; $i++) {
+			$this->records[$i] = array(
+				'id' => $i,
+				'language_id' => '2',
+				'block_id' => $i,
+				'key' => 'announcement_' . $i,
+				'status' => '1',
+				'is_active' => '1',
+				'is_latest' => '1',
+				'content' => 'Announcements content ' . $i,
+			);
+		}
+		parent::init();
+	}
+
 }
