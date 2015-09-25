@@ -237,18 +237,8 @@ class EditTest extends BlocksControllerEditTest {
  */
 	public function testDeletePostError() {
 		//強制的にエラー
-		$Mock = $this->generate(Inflector::camelize($this->_plugin) . '.' . Inflector::camelize($this->_controller), array(
-			'components' => array(
-				'Auth' => array('user'),
-				'Session',
-				'Security',
-			),
-			'uses' => array(
-				'Announcements.Announcement' => array('deleteAnnouncement')
-			),
-		));
-
-		$Mock->Announcement->expects($this->once())
+		$Mock = $this->getMockForModel('Announcements.Announcement', ['deleteAnnouncement']);
+		$Mock->expects($this->once())
 			->method('deleteAnnouncement')
 			->will($this->returnValue(false));
 
