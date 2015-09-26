@@ -25,6 +25,8 @@ class AnnouncementSaveAnnouncementTest extends AnnouncementTestBase implements W
 /**
  * Announcement::saveAnnouncement()テストの共通処理
  *
+ * @param array $data Test data
+ * @param array $expected Expected data
  * @return void
  */
 	private function __testSave($data, $expected = array()) {

@@ -161,7 +161,7 @@ class AnnouncementsControllerEditPostTest extends AnnouncementsControllerTestBas
  *
  * @return void
  */
-	public function testEditPostByPublishable(){
+	public function testEditPostByPublishable() {
 		AuthGeneralTestSuite::login($this);
 
 		$frameId = '6';
