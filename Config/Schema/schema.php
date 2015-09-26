@@ -14,8 +14,6 @@
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Config\Schema
- * @SuppressWarnings(PHPMD.LongVariable)
- * @SuppressWarnings(PHPMD.TooManyFields)
  */
 class AppSchema extends CakeSchema {
 

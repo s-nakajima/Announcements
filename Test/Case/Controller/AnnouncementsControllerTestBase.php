@@ -16,7 +16,6 @@ App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Controller
- * @SuppressWarnings(PHPMD.LongVariable)
  */
 class AnnouncementsControllerTestBase extends NetCommonsControllerTestCase {
 
