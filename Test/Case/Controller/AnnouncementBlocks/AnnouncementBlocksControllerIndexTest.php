@@ -18,7 +18,7 @@ App::uses('BlocksControllerTest', 'Blocks.TestSuite');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Controller
  */
-class IndexTest extends BlocksControllerTest {
+class AnnouncementBlocksControllerIndexTest extends BlocksControllerTest {
 
 /**
  * Set plugin name

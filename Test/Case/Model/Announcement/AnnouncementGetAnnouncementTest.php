@@ -11,7 +11,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('AnnouncementModelTestBase', 'Announcements.Test/Case/Model');
+App::uses('AnnouncementTestBase', 'Announcements.Test/Case/Model/Announcement');
 
 /**
  * Announcement::getAnnouncement()のテスト
@@ -19,7 +19,7 @@ App::uses('AnnouncementModelTestBase', 'Announcements.Test/Case/Model');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Model\Announcement
  */
-class GetAnnouncementTest extends AnnouncementModelTestBase {
+class AnnouncementGetAnnouncementTest extends AnnouncementTestBase {
 
 /**
  * 正常テスト(ログインなし)

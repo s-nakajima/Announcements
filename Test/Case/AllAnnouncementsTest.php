@@ -31,10 +31,8 @@ class AllAnnouncementsTest extends CakeTestSuite {
 		$exceptions = array(
 			'AnnouncementsControllerTestBase.php',
 			'AnnouncementModelTestBase.php',
+			'AnnouncementTestBase.php',
 			//後で削除
-			'AnnouncementsControllerErrorTest.php',
-			'AnnouncementsControllerTest.php',
-			'AnnouncementsControllerValidateErrorTest.php',
 			'AnnouncementValidateErrorTest.php',
 			'AnnouncementErrorTest.php',
 		);

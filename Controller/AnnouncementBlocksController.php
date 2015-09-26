@@ -143,14 +143,13 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
  * @return void
  */
 	public function delete() {
-		if ($this->request->isDelete()) {
-			if ($this->Announcement->deleteAnnouncement($this->data)) {
-				$this->redirect(NetCommonsUrl::backToIndexUrl('default_setting_action'));
-				return;
-			}
+		if (! $this->request->isDelete()) {
+			$this->throwBadRequest();
+			return;
 		}
 
-		$this->throwBadRequest();
+		$this->Announcement->deleteAnnouncement($this->data);
+		$this->redirect(NetCommonsUrl::backToIndexUrl('default_setting_action'));
 	}
 
 }

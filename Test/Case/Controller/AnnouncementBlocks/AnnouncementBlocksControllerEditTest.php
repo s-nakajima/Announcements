@@ -18,10 +18,10 @@ App::uses('BlocksControllerEditTest', 'Blocks.TestSuite');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Controller
  */
-class EditTest extends BlocksControllerEditTest {
+class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 
 /**
- * Set plugin name
+ * Plugin name
  *
  * @var array
  */
@@ -163,6 +163,8 @@ class EditTest extends BlocksControllerEditTest {
 		);
 
 		parent::testEditPut();
+
+		$this->assertEmpty($this->contents);
 	}
 
 /**
@@ -214,34 +216,6 @@ class EditTest extends BlocksControllerEditTest {
  * @return void
  */
 	public function testDeletePost() {
-		//アクション実行
-		$blockId = '4';
-
-		$this->data = array(
-			'Block' => array(
-				'id' => $blockId,
-				'key' => 'block_3',
-			),
-			'Announcement' => array(
-				'key' => 'announcement_3',
-			),
-		);
-
-		parent::testDeletePost();
-	}
-
-/**
- * delete()のPOSTパラメータテスト(Error)
- *
- * @return void
- */
-	public function testDeletePostError() {
-		//強制的にエラー
-		$Mock = $this->getMockForModel('Announcements.Announcement', ['deleteAnnouncement']);
-		$Mock->expects($this->once())
-			->method('deleteAnnouncement')
-			->will($this->returnValue(false));
-
 		//アクション実行
 		$blockId = '4';
 

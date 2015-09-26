@@ -77,7 +77,7 @@ class Announcement extends AnnouncementsAppModel {
 				'numeric' => array(
 					'rule' => array('numeric'),
 					'message' => __d('net_commons', 'Invalid request.'),
-					'allowEmpty' => true,
+					//'allowEmpty' => true,
 					//'required' => true,
 					'on' => 'update', // Limit validation to 'create' or 'update' operations
 				)
@@ -87,18 +87,6 @@ class Announcement extends AnnouncementsAppModel {
 
 			//status to set in WorkflowBehavior.
 
-			'is_auto_translated' => array(
-				'boolean' => array(
-					'rule' => array('boolean'),
-					'message' => __d('net_commons', 'Invalid request.'),
-				)
-			),
-			'is_first_auto_translation' => array(
-				'boolean' => array(
-					'rule' => array('boolean'),
-					'message' => __d('net_commons', 'Invalid request.'),
-				)
-			),
 			'content' => array(
 				'notBlank' => array(
 					'rule' => array('notBlank'),

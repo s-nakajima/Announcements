@@ -32,7 +32,7 @@ class AnnouncementsControllerTestBase extends NetCommonsControllerTestCase {
  */
 	public $fixtures = array(
 		'plugin.announcements.announcement',
-		'plugin.comments.comment',
+		'plugin.announcements.comment4announcements',
 	);
 
 /**

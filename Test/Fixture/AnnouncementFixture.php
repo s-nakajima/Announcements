@@ -11,6 +11,10 @@
 
 /**
  * AnnouncementFixture
+ *
+ * @author Shohei Nakajima <nakajimashouhei@gmail.com>
+ * @package NetCommons\Announcement\Test\Fixture
+ * @codeCoverageIgnore
  */
 class AnnouncementFixture extends CakeTestFixture {
 
