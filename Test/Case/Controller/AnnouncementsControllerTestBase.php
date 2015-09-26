@@ -9,12 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-//App::uses('NetCommonsFrameComponent', 'NetCommons.Controller/Component');
-//App::uses('NetCommonsBlockComponent', 'NetCommons.Controller/Component');
-//App::uses('NetCommonsRoomRoleComponent', 'NetCommons.Controller/Component');
 App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
-//App::uses('RolesControllerTest', 'Roles.Test/Case/Controller');
-//App::uses('AuthGeneralControllerTest', 'AuthGeneral.Test/Case/Controller');
 
 /**
  * AnnouncementsControllerTestBase

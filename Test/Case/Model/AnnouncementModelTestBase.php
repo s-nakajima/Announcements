@@ -12,8 +12,6 @@
  */
 
 App::uses('Announcement', 'Announcements.Model');
-//App::uses('NetCommonsBlockComponent', 'NetCommons.Controller/Component');
-//App::uses('NetCommonsRoomRoleComponent', 'NetCommons.Controller/Component');
 App::uses('NetCommonsModelTestCase', 'NetCommons.TestSuite');
 
 /**
