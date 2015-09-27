@@ -33,7 +33,7 @@ class AnnouncementModelTestBase extends NetCommonsModelTestCase {
 	);
 
 /**
- * Set plugin name
+ * Plugin name
  *
  * @var array
  */

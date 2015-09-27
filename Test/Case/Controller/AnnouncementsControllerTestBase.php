@@ -30,7 +30,7 @@ class AnnouncementsControllerTestBase extends NetCommonsControllerTestCase {
 	);
 
 /**
- * Set plugin name
+ * Plugin name
  *
  * @var array
  */
