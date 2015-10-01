@@ -8,7 +8,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('CommentFixture', 'Comments.Test/Fixture');
+App::uses('CommentFixture', 'Workflow.Test/Fixture');
 
 /**
  * CommentFixture

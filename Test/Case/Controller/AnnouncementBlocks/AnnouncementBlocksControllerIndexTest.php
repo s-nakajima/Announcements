@@ -41,7 +41,7 @@ class AnnouncementBlocksControllerIndexTest extends BlocksControllerTest {
  */
 	public $fixtures = array(
 		'plugin.announcements.announcement',
-		'plugin.comments.comment',
+		'plugin.workflow.comment',
 	);
 
 }

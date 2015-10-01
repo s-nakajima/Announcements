@@ -30,11 +30,11 @@ class Announcement extends AnnouncementsAppModel {
 		'Blocks.Block' => array(
 			'name' => 'Announcement.content',
 			'loadModels' => array(
-				'Comment' => 'Comments.Comment',
+				'Comment' => 'Workflow.Comment',
 			)
 		),
-		'Comments.Comment',
 		'NetCommons.OriginalKey',
+		'Workflow.Comment',
 		'Workflow.Workflow',
 	);
 
