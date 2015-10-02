@@ -52,7 +52,7 @@ class AnnouncementSaveAnnouncementTest extends AnnouncementTestBase implements W
 				'to' => null
 			),
 		), $expected);
-		unset($expected['Frame'], $expected['Comment']);
+		unset($expected['Frame'], $expected['WorkflowComment']);
 
 		//評価
 		$this->_assertData($expected, $result);

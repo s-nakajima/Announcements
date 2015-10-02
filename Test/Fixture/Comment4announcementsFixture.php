@@ -1,6 +1,6 @@
 <?php
 /**
- * CommentFixture
+ * WorkflowCommentFixture
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @link http://www.netcommons.org NetCommons Project
@@ -8,23 +8,23 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('CommentFixture', 'Workflow.Test/Fixture');
+App::uses('WorkflowCommentFixture', 'Workflow.Test/Fixture');
 
 /**
- * CommentFixture
+ * WorkflowCommentFixture
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcement\Test\Fixture
  * @codeCoverageIgnore
  */
-class Comment4announcementsFixture extends CommentFixture {
+class WorkflowComment4announcementsFixture extends WorkflowCommentFixture {
 
 /**
  * Model name
  *
  * @var string
  */
-	public $name = 'Comment';
+	public $name = 'WorkflowComment';
 
 /**
  * Initialize the fixture.

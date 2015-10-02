@@ -68,8 +68,8 @@ class AnnouncementsControllerEditPostTest extends AnnouncementsControllerTestBas
 				'status' => null,
 				'content' => 'Announcement test'
 			),
-			'Comment' => array(
-				'comment' => 'Comment test'
+			'WorkflowComment' => array(
+				'comment' => 'WorkflowComment test'
 			),
 		);
 	}

@@ -75,8 +75,8 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 				'status' => null,
 				'content' => 'Announcement test'
 			),
-			'Comment' => array(
-				'comment' => 'Comment test'
+			'WorkflowComment' => array(
+				'comment' => 'WorkflowComment test'
 			),
 		);
 
@@ -114,8 +114,8 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 				'status' => null,
 				//'content' => 'Announcement test'
 			),
-			'Comment' => array(
-				'comment' => 'Comment test'
+			'WorkflowComment' => array(
+				'comment' => 'WorkflowComment test'
 			),
 		);
 
@@ -157,8 +157,8 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 				'status' => '2',
 				'content' => 'Announcement test'
 			),
-			'Comment' => array(
-				'comment' => 'Comment test'
+			'WorkflowComment' => array(
+				'comment' => 'WorkflowComment test'
 			),
 		);
 
@@ -200,8 +200,8 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 				'status' => '2',
 				//'content' => 'Announcement test'
 			),
-			'Comment' => array(
-				'comment' => 'Comment test'
+			'WorkflowComment' => array(
+				'comment' => 'WorkflowComment test'
 			),
 		);
 

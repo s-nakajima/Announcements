@@ -46,7 +46,7 @@ class AnnouncementDeleteAnnouncementTest extends AnnouncementTestBase {
 		));
 		$this->assertEquals(0, $count);
 
-		$count = $this->Announcement->Comment->find('count', array(
+		$count = $this->Announcement->WorkflowComment->find('count', array(
 			'recursive' => -1,
 			'conditions' => array('content_key' => $this->data['Announcement']['key']),
 		));

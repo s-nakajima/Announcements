@@ -46,8 +46,8 @@ class AnnouncementTestBase extends AnnouncementModelTestBase {
 			'status' => WorkflowComponent::STATUS_PUBLISHED,
 			'content' => 'Announcement test'
 		),
-		'Comment' => array(
-			'comment' => 'Comment test'
+		'WorkflowComment' => array(
+			'comment' => 'WorkflowComment test'
 		),
 	);
 

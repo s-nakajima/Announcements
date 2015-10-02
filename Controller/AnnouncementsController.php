@@ -25,7 +25,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @var array
  */
 	public $uses = array(
-		'Workflow.Comment',
+		'Workflow.WorkflowComment',
 	);
 
 /**
