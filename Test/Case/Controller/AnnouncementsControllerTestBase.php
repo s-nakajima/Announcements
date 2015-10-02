@@ -26,7 +26,7 @@ class AnnouncementsControllerTestBase extends NetCommonsControllerTestCase {
  */
 	public $fixtures = array(
 		'plugin.announcements.announcement',
-		'plugin.announcements.comment4announcements',
+		'plugin.announcements.workflow_comment4announcements',
 	);
 
 /**
