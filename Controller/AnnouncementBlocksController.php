@@ -126,8 +126,6 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 
 		} else {
 			//初期データセット
-			CurrentFrame::setBlock($this->request->params['pass'][1]);
-
 			$this->request->data = $this->Announcement->getAnnouncement();
 			$this->request->data['Frame'] = Current::read('Frame');
 		}

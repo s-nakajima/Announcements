@@ -50,13 +50,18 @@ class AnnouncementsControllerViewTest extends AnnouncementsControllerTestBase im
 	public function testView() {
 		//アクション実行
 		$frameId = '6';
+		$blockId = '2';
 		$this->_testNcAction(
-			array('frame_id' => $frameId)
+			array('frame_id' => $frameId, 'block_id' => $blockId)
 		);
 
 		//評価
 		$this->assertNotEmpty($this->contents);
-		$editUrl = $this->_getActionUrl(array('action' => 'edit', 'frame_id' => $frameId));
+		$editUrl = $this->_getActionUrl(array(
+			'action' => 'edit',
+			'frame_id' => $frameId,
+			'block_id' => $blockId
+		));
 		$this->assertTextNotContains($editUrl, $this->contents);
 	}
 
@@ -83,15 +88,17 @@ class AnnouncementsControllerViewTest extends AnnouncementsControllerTestBase im
 
 		//アクション実行
 		$frameId = '6';
+		$blockId = '2';
 		$this->_testNcAction(
-			array('frame_id' => $frameId)
+			array('frame_id' => $frameId, 'block_id' => $blockId)
 		);
 
 		//評価
 		$this->assertNotEmpty($this->contents);
 		$editUrl = $this->_getActionUrl(array(
 			'action' => 'edit',
-			'frame_id' => $frameId
+			'frame_id' => $frameId,
+			'block_id' => $blockId
 		));
 		$this->assertTextContains($editUrl, $this->contents);
 
@@ -132,7 +139,8 @@ class AnnouncementsControllerViewTest extends AnnouncementsControllerTestBase im
 		$this->assertNotEmpty($this->contents);
 		$editUrl = $this->_getActionUrl(array(
 			'action' => 'edit',
-			'frame_id' => $frameId
+			'frame_id' => $frameId,
+			'block_id' => $blockId
 		));
 		$this->assertTextContains($editUrl, $this->contents);
 
@@ -147,15 +155,17 @@ class AnnouncementsControllerViewTest extends AnnouncementsControllerTestBase im
 	public function testViewOnDeleteFrame() {
 		//アクション実行
 		$frameId = '12';
+		$blockId = '2';
 		$this->_testNcAction(
-			array('frame_id' => $frameId)
+			array('frame_id' => $frameId, 'block_id' => $blockId)
 		);
 
 		//評価
 		$this->assertNotEmpty($this->contents);
 		$editUrl = $this->_getActionUrl(array(
 			'action' => 'edit',
-			'frame_id' => $frameId
+			'frame_id' => $frameId,
+			'block_id' => $blockId
 		));
 		$this->assertTextNotContains($editUrl, $this->contents);
 	}
