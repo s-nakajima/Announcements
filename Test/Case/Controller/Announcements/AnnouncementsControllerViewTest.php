@@ -140,7 +140,6 @@ class AnnouncementsControllerViewTest extends AnnouncementsControllerTestBase im
 		$editUrl = $this->_getActionUrl(array(
 			'action' => 'edit',
 			'frame_id' => $frameId,
-			'block_id' => $blockId
 		));
 		$this->assertTextContains($editUrl, $this->contents);
 
