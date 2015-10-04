@@ -17,7 +17,7 @@ App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Controller
  */
-class AnnouncementsControllerTestBase extends NetCommonsControllerTestCase {
+class AnnouncementsControllerAllTestBase extends NetCommonsControllerTestCase {
 
 /**
  * Fixtures

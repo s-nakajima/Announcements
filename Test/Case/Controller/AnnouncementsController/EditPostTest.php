@@ -10,7 +10,7 @@
  */
 
 App::uses('AnnouncementsController', 'Announcements.Controller');
-App::uses('AnnouncementsControllerTestBase', 'Announcements.Test/Case/Controller');
+App::uses('AnnouncementsControllerAllTestBase', 'Announcements.Test/Case/Controller');
 App::uses('WorkflowContentEditPostTest', 'Workflow.TestSuite');
 
 /**
@@ -19,7 +19,7 @@ App::uses('WorkflowContentEditPostTest', 'Workflow.TestSuite');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Controller
  */
-class AnnouncementsControllerEditPostTest extends AnnouncementsControllerTestBase implements WorkflowContentEditPostTest {
+class AnnouncementsControllerEditPostTest extends AnnouncementsControllerAllTestBase implements WorkflowContentEditPostTest {
 
 /**
  * Plugin name

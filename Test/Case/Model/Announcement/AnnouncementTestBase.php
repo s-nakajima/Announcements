@@ -11,7 +11,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('AnnouncementModelTestBase', 'Announcements.Test/Case/Model');
+App::uses('AnnouncementsModelAllTestBase', 'Announcements.Test/Case/Model');
 App::uses('WorkflowComponent', 'Workflow.Controller/Component');
 
 /**
@@ -20,7 +20,7 @@ App::uses('WorkflowComponent', 'Workflow.Controller/Component');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Model\Announcement
  */
-class AnnouncementTestBase extends AnnouncementModelTestBase {
+class AnnouncementTestBase extends AnnouncementsModelAllTestBase {
 
 /**
  * data

@@ -10,7 +10,7 @@
  */
 
 App::uses('AnnouncementsController', 'Announcements.Controller');
-App::uses('AnnouncementsControllerTestBase', 'Announcements.Test/Case/Controller');
+App::uses('AnnouncementsControllerTestAllBase', 'Announcements.Test/Case/Controller');
 App::uses('WorkflowContentViewTest', 'Workflow.TestSuite');
 
 /**
@@ -19,7 +19,7 @@ App::uses('WorkflowContentViewTest', 'Workflow.TestSuite');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Controller
  */
-class AnnouncementsControllerViewTest extends AnnouncementsControllerTestBase implements WorkflowContentViewTest {
+class AnnouncementsControllerViewTest extends AnnouncementsControllerAllTestBase implements WorkflowContentViewTest {
 
 /**
  * Plugin name

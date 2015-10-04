@@ -20,7 +20,7 @@ App::uses('NetCommonsModelTestCase', 'NetCommons.TestSuite');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Model
  */
-class AnnouncementModelTestBase extends NetCommonsModelTestCase {
+class AnnouncementsModelAllTestBase extends NetCommonsModelTestCase {
 
 /**
  * Fixtures
