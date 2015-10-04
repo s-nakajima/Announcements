@@ -34,6 +34,6 @@ class AnnouncementsControllerAllTestBase extends NetCommonsControllerTestCase {
  *
  * @var array
  */
-	protected $_plugin = 'announcements';
+	public $plugin = 'announcements';
 
 }

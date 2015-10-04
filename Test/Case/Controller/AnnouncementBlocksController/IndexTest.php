@@ -21,11 +21,11 @@ App::uses('BlocksControllerTest', 'Blocks.TestSuite');
 class AnnouncementBlocksControllerIndexTest extends BlocksControllerTest {
 
 /**
- * Set plugin name
+ * Plugin name
  *
  * @var array
  */
-	protected $_plugin = 'announcements';
+	public $plugin = 'announcements';
 
 /**
  * Controller name

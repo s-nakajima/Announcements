@@ -37,6 +37,6 @@ class AnnouncementsModelAllTestBase extends NetCommonsModelTestCase {
  *
  * @var array
  */
-	protected $_plugin = 'announcements';
+	public $plugin = 'announcements';
 
 }

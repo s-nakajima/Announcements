@@ -25,7 +25,7 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
  *
  * @var array
  */
-	protected $_plugin = 'announcements';
+	public $plugin = 'announcements';
 
 /**
  * Controller name
@@ -62,7 +62,7 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 				'key' => null,
 				'language_id' => '2',
 				'room_id' => '2',
-				'plugin_key' => $this->_plugin,
+				'plugin_key' => $this->plugin,
 				'public_type' => '1',
 				'from' => null,
 				'to' => null,
@@ -101,7 +101,7 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 				'key' => null,
 				'language_id' => '2',
 				'room_id' => '2',
-				'plugin_key' => $this->_plugin,
+				'plugin_key' => $this->plugin,
 				'public_type' => '1',
 				'from' => null,
 				'to' => null,
@@ -144,7 +144,7 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 				'key' => 'block_3',
 				'language_id' => '2',
 				'room_id' => '2',
-				'plugin_key' => $this->_plugin,
+				'plugin_key' => $this->plugin,
 				'public_type' => '1',
 				'from' => null,
 				'to' => null,
@@ -187,7 +187,7 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 				'key' => 'block_3',
 				'language_id' => '2',
 				'room_id' => '2',
-				'plugin_key' => $this->_plugin,
+				'plugin_key' => $this->plugin,
 				'public_type' => '1',
 				'from' => null,
 				'to' => null,

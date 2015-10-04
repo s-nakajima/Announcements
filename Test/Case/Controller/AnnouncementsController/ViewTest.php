@@ -22,13 +22,6 @@ App::uses('WorkflowContentViewTest', 'Workflow.TestSuite');
 class AnnouncementsControllerViewTest extends AnnouncementsControllerAllTestBase implements WorkflowContentViewTest {
 
 /**
- * Plugin name
- *
- * @var array
- */
-	protected $_plugin = 'announcements';
-
-/**
  * Controller name
  *
  * @var string

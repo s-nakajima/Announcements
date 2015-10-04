@@ -22,13 +22,6 @@ App::uses('WorkflowContentEditPostTest', 'Workflow.TestSuite');
 class AnnouncementsControllerEditPostTest extends AnnouncementsControllerAllTestBase implements WorkflowContentEditPostTest {
 
 /**
- * Plugin name
- *
- * @var array
- */
-	protected $_plugin = 'announcements';
-
-/**
  * Controller name
  *
  * @var string
@@ -58,7 +51,7 @@ class AnnouncementsControllerEditPostTest extends AnnouncementsControllerAllTest
 				'key' => $params['blockKey'],
 				'language_id' => '2',
 				'room_id' => '1',
-				'plugin_key' => $this->_plugin,
+				'plugin_key' => $this->plugin,
 			),
 			'Announcement' => array(
 				'id' => $params['anouncementId'],

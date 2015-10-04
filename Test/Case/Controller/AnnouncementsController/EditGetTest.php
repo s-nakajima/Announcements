@@ -22,13 +22,6 @@ App::uses('WorkflowContentEditGetTest', 'Workflow.TestSuite');
 class AnnouncementsControllerEditGetTest extends AnnouncementsControllerAllTestBase implements WorkflowContentEditGetTest {
 
 /**
- * Plugin name
- *
- * @var array
- */
-	protected $_plugin = 'announcements';
-
-/**
  * Controller name
  *
  * @var string
