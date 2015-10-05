@@ -28,13 +28,6 @@ class AnnouncementBlocksControllerIndexTest extends BlocksControllerTest {
 	public $plugin = 'announcements';
 
 /**
- * Controller name
- *
- * @var string
- */
-	protected $_controller = 'announcement_blocks';
-
-/**
  * Fixtures
  *
  * @var array

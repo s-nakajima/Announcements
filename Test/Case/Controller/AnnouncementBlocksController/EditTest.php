@@ -28,13 +28,6 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 	public $plugin = 'announcements';
 
 /**
- * Controller name
- *
- * @var string
- */
-	protected $_controller = 'announcement_blocks';
-
-/**
  * Fixtures
  *
  * @var array
@@ -45,14 +38,14 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 	);
 
 /**
- * add()のPOSTパラメータテスト
+ * add()アクションDataProvider
  *
  * @return void
  */
-	public function testAddPost() {
+	public function dataProviderByAdd() {
 		$frameId = '6';
 
-		$this->data = array(
+		$default = array(
 			'save_1' => null,
 			'Frame' => array(
 				'id' => $frameId
@@ -61,7 +54,7 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 				'id' => null,
 				'key' => null,
 				'language_id' => '2',
-				'room_id' => '2',
+				'room_id' => '1',
 				'plugin_key' => $this->plugin,
 				'public_type' => '1',
 				'from' => null,
@@ -80,61 +73,26 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 			),
 		);
 
-		parent::testAddPost();
+		$data = array();
+		$data[0] = array('method' => 'get');
+		$data[1] = array('method' => 'put');
+		$data[2] = array('method' => 'post', 'data' => $default, 'validationError' => false);
+		$data[3] = array('method' => 'post', 'data' => $default, 'validationError' => true);
+		unset($data[3]['data']['Announcement']['content']);
+
+		return $data;
 	}
 
 /**
- * add()のPOSTパラメータテスト(ValidationError)
+ * edit()アクションDataProvider
  *
  * @return void
  */
-	public function testAddPostValidationError() {
-		$frameId = '6';
-
-		$this->data = array(
-			'save_1' => null,
-			'Frame' => array(
-				'id' => $frameId
-			),
-			'Block' => array(
-				'id' => null,
-				'key' => null,
-				'language_id' => '2',
-				'room_id' => '2',
-				'plugin_key' => $this->plugin,
-				'public_type' => '1',
-				'from' => null,
-				'to' => null,
-			),
-			'Announcement' => array(
-				'id' => null,
-				'key' => null,
-				'block_id' => null,
-				'language_id' => '2',
-				'status' => null,
-				//'content' => 'Announcement test'
-			),
-			'WorkflowComment' => array(
-				'comment' => 'WorkflowComment test'
-			),
-		);
-
-		parent::testAddPost();
-
-		$this->assertNotEmpty($this->contents);
-	}
-
-/**
- * edit()のPUTパラメータテスト
- *
- * @return void
- */
-	public function testEditPut() {
-		//アクション実行
+	public function dataProviderByEdit() {
 		$frameId = '6';
 		$blockId = '4';
 
-		$this->data = array(
+		$default = array(
 			'save_1' => null,
 			'Frame' => array(
 				'id' => $frameId
@@ -143,7 +101,7 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 				'id' => $blockId,
 				'key' => 'block_3',
 				'language_id' => '2',
-				'room_id' => '2',
+				'room_id' => '1',
 				'plugin_key' => $this->plugin,
 				'public_type' => '1',
 				'from' => null,
@@ -162,64 +120,25 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 			),
 		);
 
-		parent::testEditPut();
+		$data = array();
+		$data[0] = array('method' => 'get');
+		$data[1] = array('method' => 'post');
+		$data[2] = array('method' => 'put', 'data' => $default, 'validationError' => false);
+		$data[3] = array('method' => 'put', 'data' => $default, 'validationError' => true);
+		unset($data[3]['data']['Announcement']['content']);
 
-		$this->assertEmpty($this->contents);
+		return $data;
 	}
 
 /**
- * edit()のPUTパラメータテスト(ValidationError)
+ * delete()アクションDataProvider
  *
  * @return void
  */
-	public function testEditPutValidationError() {
-		//アクション実行
-		$frameId = '6';
+	public function dataProviderByDelete() {
 		$blockId = '4';
 
-		$this->data = array(
-			'save_1' => null,
-			'Frame' => array(
-				'id' => $frameId,
-			),
-			'Block' => array(
-				'id' => $blockId,
-				'key' => 'block_3',
-				'language_id' => '2',
-				'room_id' => '2',
-				'plugin_key' => $this->plugin,
-				'public_type' => '1',
-				'from' => null,
-				'to' => null,
-			),
-			'Announcement' => array(
-				'id' => '4',
-				'key' => 'announcement_3',
-				'block_id' => $blockId,
-				'language_id' => '2',
-				'status' => '2',
-				//'content' => 'Announcement test'
-			),
-			'WorkflowComment' => array(
-				'comment' => 'WorkflowComment test'
-			),
-		);
-
-		parent::testEditPut();
-
-		$this->assertNotEmpty($this->contents);
-	}
-
-/**
- * delete()のPOSTパラメータテスト
- *
- * @return void
- */
-	public function testDeletePost() {
-		//アクション実行
-		$blockId = '4';
-
-		$this->data = array(
+		$default = array(
 			'Block' => array(
 				'id' => $blockId,
 				'key' => 'block_3',
@@ -229,7 +148,10 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 			),
 		);
 
-		parent::testDeletePost();
+		$data = array(
+			array('data' => $default)
+		);
+		return $data;
 	}
 
 }
