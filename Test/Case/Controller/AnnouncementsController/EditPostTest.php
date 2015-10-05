@@ -104,11 +104,11 @@ class AnnouncementsControllerEditPostTest extends AnnouncementsControllerAllTest
  * @return void
  */
 	public function testEditPostByCreatable() {
-		AuthGeneralTestSuite::login($this, Role::ROOM_ROLE_KEY_GENERAL_USER);
+		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_GENERAL_USER);
 
 		$this->testEditPost();
 
-		AuthGeneralTestSuite::logout($this);
+		TestAuthGeneral::logout($this);
 	}
 
 /**
@@ -117,7 +117,7 @@ class AnnouncementsControllerEditPostTest extends AnnouncementsControllerAllTest
  * @return void
  */
 	public function testEditPostByEditable() {
-		AuthGeneralTestSuite::login($this, Role::ROOM_ROLE_KEY_EDITOR);
+		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_EDITOR);
 
 		$frameId = '6';
 		$blockId = '2';
@@ -146,7 +146,7 @@ class AnnouncementsControllerEditPostTest extends AnnouncementsControllerAllTest
 		$this->assertEmpty($this->contents); //redirectしているため、空になる
 		$this->assertTextEquals('edit', $this->controller->view);
 
-		AuthGeneralTestSuite::logout($this);
+		TestAuthGeneral::logout($this);
 	}
 
 /**
@@ -155,7 +155,7 @@ class AnnouncementsControllerEditPostTest extends AnnouncementsControllerAllTest
  * @return void
  */
 	public function testEditPostByPublishable() {
-		AuthGeneralTestSuite::login($this);
+		TestAuthGeneral::login($this);
 
 		$frameId = '6';
 		$blockId = '2';
@@ -184,7 +184,7 @@ class AnnouncementsControllerEditPostTest extends AnnouncementsControllerAllTest
 		$this->assertEmpty($this->contents); //redirectしているため、空になる
 		$this->assertTextEquals('edit', $this->controller->view);
 
-		AuthGeneralTestSuite::logout($this);
+		TestAuthGeneral::logout($this);
 	}
 
 /**
@@ -193,7 +193,7 @@ class AnnouncementsControllerEditPostTest extends AnnouncementsControllerAllTest
  * @return void
  */
 	public function testEditPostValidationError() {
-		AuthGeneralTestSuite::login($this);
+		TestAuthGeneral::login($this);
 
 		$frameId = '6';
 		$blockId = '2';
@@ -223,7 +223,7 @@ class AnnouncementsControllerEditPostTest extends AnnouncementsControllerAllTest
 		$this->assertNotEmpty($this->contents);
 		$this->assertTextEquals('edit', $this->controller->view);
 
-		AuthGeneralTestSuite::logout($this);
+		TestAuthGeneral::logout($this);
 	}
 
 }

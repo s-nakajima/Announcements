@@ -64,11 +64,11 @@ class AnnouncementsControllerViewTest extends AnnouncementsControllerAllTestBase
  * @return void
  */
 	public function testViewByCreatable() {
-		AuthGeneralTestSuite::login($this, Role::ROOM_ROLE_KEY_GENERAL_USER);
+		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_GENERAL_USER);
 
 		$this->testView();
 
-		AuthGeneralTestSuite::logout($this);
+		TestAuthGeneral::logout($this);
 	}
 
 /**
@@ -77,7 +77,7 @@ class AnnouncementsControllerViewTest extends AnnouncementsControllerAllTestBase
  * @return void
  */
 	public function testViewByEditable() {
-		AuthGeneralTestSuite::login($this);
+		TestAuthGeneral::login($this);
 
 		//アクション実行
 		$frameId = '6';
@@ -95,7 +95,7 @@ class AnnouncementsControllerViewTest extends AnnouncementsControllerAllTestBase
 		));
 		$this->assertTextContains($editUrl, $this->contents);
 
-		AuthGeneralTestSuite::logout($this);
+		TestAuthGeneral::logout($this);
 	}
 
 /**
@@ -120,7 +120,7 @@ class AnnouncementsControllerViewTest extends AnnouncementsControllerAllTestBase
  * @return void
  */
 	public function testViewNoContentByEditable() {
-		AuthGeneralTestSuite::login($this);
+		TestAuthGeneral::login($this);
 
 		//アクション実行
 		$frameId = '14';
@@ -136,7 +136,7 @@ class AnnouncementsControllerViewTest extends AnnouncementsControllerAllTestBase
 		));
 		$this->assertTextContains($editUrl, $this->contents);
 
-		AuthGeneralTestSuite::logout($this);
+		TestAuthGeneral::logout($this);
 	}
 
 /**

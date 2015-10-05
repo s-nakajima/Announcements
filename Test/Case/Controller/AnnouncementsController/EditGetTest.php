@@ -57,11 +57,11 @@ class AnnouncementsControllerEditGetTest extends AnnouncementsControllerAllTestB
  * @return void
  */
 	public function testEditGetByCreatable() {
-		AuthGeneralTestSuite::login($this, Role::ROOM_ROLE_KEY_GENERAL_USER);
+		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_GENERAL_USER);
 
 		$this->testEditGet();
 
-		AuthGeneralTestSuite::logout($this);
+		TestAuthGeneral::logout($this);
 	}
 
 /**
@@ -70,7 +70,7 @@ class AnnouncementsControllerEditGetTest extends AnnouncementsControllerAllTestB
  * @return void
  */
 	public function testEditGetByEditable() {
-		AuthGeneralTestSuite::login($this, Role::ROOM_ROLE_KEY_EDITOR);
+		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_EDITOR);
 
 		$frameId = '6';
 		$blockId = '2';
@@ -103,7 +103,7 @@ class AnnouncementsControllerEditGetTest extends AnnouncementsControllerAllTestB
 		$this->assertRegExp('/<button.*?name="save_' . WorkflowComponent::STATUS_IN_DRAFT . '".*?type="submit".*?>/', $this->contents);
 		$this->assertRegExp('/<button.*?name="save_' . WorkflowComponent::STATUS_APPROVED . '".*?type="submit".*?>/', $this->contents);
 
-		AuthGeneralTestSuite::logout($this);
+		TestAuthGeneral::logout($this);
 	}
 
 /**
@@ -112,7 +112,7 @@ class AnnouncementsControllerEditGetTest extends AnnouncementsControllerAllTestB
  * @return void
  */
 	public function testEditGetByPublishable() {
-		AuthGeneralTestSuite::login($this);
+		TestAuthGeneral::login($this);
 
 		$frameId = '6';
 		$blockId = '2';
@@ -145,7 +145,7 @@ class AnnouncementsControllerEditGetTest extends AnnouncementsControllerAllTestB
 		$this->assertRegExp('/<button.*?name="save_' . WorkflowComponent::STATUS_IN_DRAFT . '".*?type="submit".*?>/', $this->contents);
 		$this->assertRegExp('/<button.*?name="save_' . WorkflowComponent::STATUS_PUBLISHED . '".*?type="submit".*?>/', $this->contents);
 
-		AuthGeneralTestSuite::logout($this);
+		TestAuthGeneral::logout($this);
 	}
 
 /**
@@ -154,7 +154,7 @@ class AnnouncementsControllerEditGetTest extends AnnouncementsControllerAllTestB
  * @return void
  */
 	public function testEditGetFrameWOBlockId() {
-		AuthGeneralTestSuite::login($this);
+		TestAuthGeneral::login($this);
 
 		$frameId = '14';
 
@@ -184,7 +184,7 @@ class AnnouncementsControllerEditGetTest extends AnnouncementsControllerAllTestB
 		$this->assertRegExp('/<button.*?name="save_' . WorkflowComponent::STATUS_IN_DRAFT . '".*?type="submit".*?>/', $this->contents);
 		$this->assertRegExp('/<button.*?name="save_' . WorkflowComponent::STATUS_PUBLISHED . '".*?type="submit".*?>/', $this->contents);
 
-		AuthGeneralTestSuite::logout($this);
+		TestAuthGeneral::logout($this);
 	}
 
 }
