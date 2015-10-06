@@ -37,7 +37,6 @@ class AnnouncementsControllerViewTest extends WorkflowControllerViewTest {
  */
 	public $plugin = 'announcements';
 
-
 /**
  * Controller name
  *
