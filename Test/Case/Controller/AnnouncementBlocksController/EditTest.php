@@ -40,6 +40,11 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 /**
  * add()アクションDataProvider
  *
+ * ### 戻り値
+ *  - method: リクエストメソッド（get or post or put）
+ *  - data: 登録データ
+ *  - validationError: バリデーションエラー
+ *
  * @return void
  */
 	public function dataProviderAdd() {
@@ -90,6 +95,11 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 
 /**
  * edit()アクションDataProvider
+ *
+ * ### 戻り値
+ *  - method: リクエストメソッド（get or post or put）
+ *  - data: 登録データ
+ *  - validationError: バリデーションエラー
  *
  * @return void
  */
@@ -142,6 +152,9 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 
 /**
  * delete()アクションDataProvider
+ *
+ * ### 戻り値
+ *  - data 削除データ
  *
  * @return void
  */

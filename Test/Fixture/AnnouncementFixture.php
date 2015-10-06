@@ -67,7 +67,7 @@ class AnnouncementFixture extends CakeTestFixture {
 			'language_id' => '2',
 			'block_id' => '2',
 			'key' => 'announcement_1',
-			'status' => '3',
+			'status' => '4',
 			'is_active' => '0',
 			'is_latest' => '1',
 			'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
