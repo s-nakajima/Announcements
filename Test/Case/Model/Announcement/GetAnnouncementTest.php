@@ -11,7 +11,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('AnnouncementTestBase', 'Announcements.Test/Case/Model/Announcement');
+App::uses('WorkflowGetTest', 'Workflow.TestSuite');
 
 /**
  * Announcement::getAnnouncement()のテスト
@@ -19,18 +19,32 @@ App::uses('AnnouncementTestBase', 'Announcements.Test/Case/Model/Announcement');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Model\Announcement
  */
-class AnnouncementGetAnnouncementTest extends AnnouncementTestBase {
+class AnnouncementGetAnnouncementTest extends WorkflowGetTest {
 
 /**
- * 正常テスト(ログインなし)
+ * Plugin name
+ *
+ * @var array
+ */
+	public $plugin = 'announcements';
+
+/**
+ * Fixtures
+ *
+ * @var array
+ */
+	public $fixtures = array(
+		'plugin.announcements.announcement',
+		'plugin.announcements.workflow_comment4announcements',
+	);
+
+/**
+ * 編集権限なしのテスト
  *
  * @return void
  */
-	public function testGetAnnouncement() {
+	public function testGetAnnouncementWOContentEditable() {
 		//事前データセット
-		Current::$current['Block']['id'] = '2';
-		Current::$current['Room']['id'] = '1';
-		Current::$current['Language']['id'] = '2';
 		Current::$current['Permission']['content_editable']['value'] = false;
 		$announcementId = '1';
 
@@ -40,21 +54,17 @@ class AnnouncementGetAnnouncementTest extends AnnouncementTestBase {
 		//テスト実施
 		$result = $this->Announcement->getAnnouncement();
 
-		//評価
-		$this->_assertData($expected, $result);
+		//チェック
+		$this->assertEquals($result, $expected);
 	}
 
 /**
- * 正常テスト(編集権限あり)
+ * 編集権限ありのテスト
  *
  * @return void
  */
-	public function testGetAnnouncementByContentEditable() {
+	public function testGetAnnouncementContentEditable() {
 		//事前データセット
-		Current::$current['Block']['id'] = '2';
-		Current::$current['Room']['id'] = '1';
-		Current::$current['Language']['id'] = '2';
-		Current::$current['Permission']['content_editable']['value'] = true;
 		$announcementId = '2';
 
 		//期待値
@@ -63,11 +73,8 @@ class AnnouncementGetAnnouncementTest extends AnnouncementTestBase {
 		//テスト実施
 		$result = $this->Announcement->getAnnouncement();
 
-		//評価
-		$this->_assertData($expected, $result);
-
-		//後処理
-		Current::$current['Permission']['content_editable']['value'] = false;
+		//チェック
+		$this->assertEquals($result, $expected);
 	}
 
 }

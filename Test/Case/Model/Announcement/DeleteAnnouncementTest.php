@@ -11,7 +11,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('AnnouncementTestBase', 'Announcements.Test/Case/Model/Announcement');
+App::uses('WorkflowDeleteTest', 'Workflow.TestSuite');
 
 /**
  * Announcement::deleteAnnouncement()のテスト
@@ -19,71 +19,73 @@ App::uses('AnnouncementTestBase', 'Announcements.Test/Case/Model/Announcement');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Model\Announcement
  */
-class AnnouncementDeleteAnnouncementTest extends AnnouncementTestBase {
+class AnnouncementDeleteAnnouncementTest extends WorkflowDeleteTest {
 
 /**
- * Announcement::deleteAnnouncement()のテスト
+ * Plugin name
+ *
+ * @var array
+ */
+	public $plugin = 'announcements';
+
+/**
+ * Fixtures
+ *
+ * @var array
+ */
+	public $fixtures = array(
+		'plugin.announcements.announcement',
+		'plugin.announcements.workflow_comment4announcements',
+	);
+
+/**
+ * data
+ *
+ * @var array
+ */
+	public $data = array(
+		'Block' => array(
+			'id' => '2',
+			'key' => 'block_1',
+		),
+		'Announcement' => array(
+			'key' => 'announcement_1',
+		),
+	);
+
+/**
+ * DeleteのDataProvider
  *
  * @return void
  */
-	public function testDeleteAnnouncement() {
-		//事前データセット
-		Current::$current['Block']['id'] = '2';
-		Current::$current['Room']['id'] = '1';
-		Current::$current['Language']['id'] = '2';
-		Current::$current['Permission']['content_editable']['value'] = true;
-		Current::$current['Permission']['content_publishable']['value'] = true;
-		$data = $this->data;
-
-		//テスト実行
-		$result = $this->Announcement->deleteAnnouncement($data);
-		$this->assertTrue($result);
-
-		//評価
-		$count = $this->Announcement->find('count', array(
-			'recursive' => -1,
-			'conditions' => array('key' => $this->data['Announcement']['key']),
-		));
-		$this->assertEquals(0, $count);
-
-		$count = $this->Announcement->WorkflowComment->find('count', array(
-			'recursive' => -1,
-			'conditions' => array('content_key' => $this->data['Announcement']['key']),
-		));
-		$this->assertEquals(0, $count);
-
-		$count = $this->Block->find('count', array(
-			'recursive' => -1,
-			'conditions' => array('key' => $this->data['Block']['key']),
-		));
-		$this->assertEquals(0, $count);
-
-		$count = $this->Frame->find('count', array(
-			'recursive' => -1,
-			'conditions' => array('block_id' => $this->data['Block']['id']),
-		));
-		$this->assertEquals(0, $count);
+	public function dataProviderDelete() {
+		return array(
+			array($this->data, 'Announcement', 'deleteAnnouncement'),
+		);
 	}
 
 /**
- * Announcement::deleteAnnouncement()のExceptionErrorテスト
+ * ExceptionErrorのDataProvider
  *
  * @return void
  */
-	public function testDeleteExceptionError() {
-		//事前データセット
-		Current::$current['Block']['id'] = '2';
-		Current::$current['Room']['id'] = '1';
-		Current::$current['Language']['id'] = '2';
-		$data = $this->data;
-
-		$Mock = $this->getMockForModel('Announcements.Announcement', ['deleteAll']);
-		$Mock->expects($this->once())
-			->method('deleteAll')
-			->will($this->returnValue(false));
-
-		$this->setExpectedException('InternalErrorException');
-		$Mock->deleteAnnouncement($data);
+	public function dataProviderDeleteOnExceptionError() {
+		return array(
+			array($this->data, 'Announcement', 'deleteAnnouncement', 'Announcements.Announcement', 'deleteAll'),
+		);
 	}
+
+/**
+ * Deleteのテスト
+ *
+ * @param array $data 削除データ
+ * @param string $model モデル名
+ * @param string $method メソッド
+ * @dataProvider dataProviderDelete
+ * @return void
+ */
+	//public function testDelete($data, $model, $method) {
+	//	parent::testDelete($data, $model, $method);
+	//}
 
 }

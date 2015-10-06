@@ -10,8 +10,7 @@
  */
 
 App::uses('AnnouncementsController', 'Announcements.Controller');
-App::uses('AnnouncementsControllerTestAllBase', 'Announcements.Test/Case/Controller');
-App::uses('WorkflowContentViewTest', 'Workflow.TestSuite');
+App::uses('WorkflowControllerViewTest', 'Workflow.TestSuite');
 
 /**
  * AnnouncementsController Test Case
@@ -19,7 +18,25 @@ App::uses('WorkflowContentViewTest', 'Workflow.TestSuite');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Controller
  */
-class AnnouncementsControllerViewTest extends AnnouncementsControllerAllTestBase implements WorkflowContentViewTest {
+class AnnouncementsControllerViewTest extends WorkflowControllerViewTest {
+
+/**
+ * Fixtures
+ *
+ * @var array
+ */
+	public $fixtures = array(
+		'plugin.announcements.announcement',
+		'plugin.announcements.workflow_comment4announcements',
+	);
+
+/**
+ * Plugin name
+ *
+ * @var array
+ */
+	public $plugin = 'announcements';
+
 
 /**
  * Controller name
@@ -29,137 +46,97 @@ class AnnouncementsControllerViewTest extends AnnouncementsControllerAllTestBase
 	protected $_controller = 'announcements';
 
 /**
- * Action name
+ * viewアクションのテスト用DataProvider
  *
- * @var string
+ * @return array
  */
-	protected $_action = 'view';
-
-/**
- * view()のテスト(ログインなし)
- *
- * @return void
- */
-	public function testView() {
-		//アクション実行
-		$frameId = '6';
-		$blockId = '2';
-		$this->_testNcAction(
-			array('frame_id' => $frameId, 'block_id' => $blockId)
+	public function dataProviderView() {
+		//$role, $urlOptions, $asserts, $hasEdit, $return, $exception
+		return array(
+			//ログインなし
+			//--コンテンツあり
+			array(
+				'role' => null,
+				'urlOptions' => array('frame_id' => '6', 'block_id' => '2', 'key' => null),
+				'asserts' => array(
+					array('method' => 'assertNotEmpty')
+				),
+				'hasEdit' => false
+			),
+			//--コンテンツなし
+			array(
+				'role' => null,
+				'urlOptions' => array('frame_id' => '14', 'block_id' => null, 'key' => null),
+				'asserts' => array(
+					array('method' => 'assertEquals', 'expected' => 'emptyRender')
+				),
+				'hasEdit' => null, 'return' => 'view'
+			),
+			//作成権限のみ
+			array(
+				'role' => Role::ROOM_ROLE_KEY_GENERAL_USER,
+				'urlOptions' => array('frame_id' => '6', 'block_id' => '2', 'key' => null),
+				'asserts' => array(
+					array('method' => 'assertNotEmpty')
+				),
+				'hasEdit' => false
+			),
+			//--コンテンツなし
+			array(
+				'role' => Role::ROOM_ROLE_KEY_GENERAL_USER,
+				'urlOptions' => array('frame_id' => '14', 'block_id' => null, 'key' => null),
+				'asserts' => array(
+					array('method' => 'assertEquals', 'expected' => 'emptyRender')
+				),
+				'hasEdit' => null, 'return' => 'view'
+			),
+			//編集権限あり
+			//--コンテンツあり
+			array(
+				'role' => Role::ROOM_ROLE_KEY_EDITOR,
+				'urlOptions' => array('frame_id' => '6', 'block_id' => '2', 'key' => null),
+				'asserts' => array(
+					array('method' => 'assertNotEmpty')
+				),
+				'hasEdit' => true
+			),
+			//--コンテンツなし
+			array(
+				'role' => Role::ROOM_ROLE_KEY_EDITOR,
+				'urlOptions' => array('frame_id' => '14', 'block_id' => null, 'key' => null),
+				'asserts' => array(
+					array('method' => 'assertNotEmpty')
+				),
+				'hasEdit' => true
+			),
+			//フレーム削除テスト
+			array(
+				'role' => Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR,
+				'urlOptions' => array('frame_id' => '12', 'block_id' => '2', 'key' => null),
+				'asserts' => array(
+					array('method' => 'assertNotEmpty')
+				),
+				'hasEdit' => true
+			),
+			//フレームなしテスト
+			array(
+				'role' => Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR,
+				'urlOptions' => array('frame_id' => '999999', 'block_id' => '2', 'key' => null),
+				'asserts' => array(
+					array('method' => 'assertNotEmpty')
+				),
+				'hasEdit' => true
+			),
+			//フレームID指定なしテスト
+			array(
+				'role' => Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR,
+				'urlOptions' => array('frame_id' => null, 'block_id' => '2', 'key' => null),
+				'asserts' => array(
+					array('method' => 'assertNotEmpty')
+				),
+				'hasEdit' => true
+			),
 		);
-
-		//評価
-		$this->assertNotEmpty($this->contents);
-		$editUrl = $this->_getActionUrl(array(
-			'action' => 'edit',
-			'frame_id' => $frameId,
-			'block_id' => $blockId
-		));
-		$this->assertTextNotContains($editUrl, $this->contents);
-	}
-
-/**
- * view()のテスト(作成権限あり)
- *
- * @return void
- */
-	public function testViewByCreatable() {
-		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_GENERAL_USER);
-
-		$this->testView();
-
-		TestAuthGeneral::logout($this);
-	}
-
-/**
- * view()のテスト(編集権限あり)
- *
- * @return void
- */
-	public function testViewByEditable() {
-		TestAuthGeneral::login($this);
-
-		//アクション実行
-		$frameId = '6';
-		$blockId = '2';
-		$this->_testNcAction(
-			array('frame_id' => $frameId, 'block_id' => $blockId)
-		);
-
-		//評価
-		$this->assertNotEmpty($this->contents);
-		$editUrl = $this->_getActionUrl(array(
-			'action' => 'edit',
-			'frame_id' => $frameId,
-			'block_id' => $blockId
-		));
-		$this->assertTextContains($editUrl, $this->contents);
-
-		TestAuthGeneral::logout($this);
-	}
-
-/**
- * view()のコンテンツなしテスト
- *
- * @return void
- */
-	public function testViewNoContent() {
-		//アクション実行
-		$frameId = '14';
-		$this->_testNcAction(
-			array('frame_id' => $frameId)
-		);
-
-		//評価
-		$this->assertEmpty($this->contents);
-	}
-
-/**
- * view()のコンテンツなしテスト(編集権限あり)
- *
- * @return void
- */
-	public function testViewNoContentByEditable() {
-		TestAuthGeneral::login($this);
-
-		//アクション実行
-		$frameId = '14';
-		$this->_testNcAction(
-			array('frame_id' => $frameId)
-		);
-
-		//評価
-		$this->assertNotEmpty($this->contents);
-		$editUrl = $this->_getActionUrl(array(
-			'action' => 'edit',
-			'frame_id' => $frameId,
-		));
-		$this->assertTextContains($editUrl, $this->contents);
-
-		TestAuthGeneral::logout($this);
-	}
-
-/**
- * view()のフレーム削除テスト
- *
- * @return void
- */
-	public function testViewOnDeleteFrame() {
-		//アクション実行
-		$frameId = '12';
-		$blockId = '2';
-		$this->_testNcAction(
-			array('frame_id' => $frameId, 'block_id' => $blockId)
-		);
-
-		//評価
-		$this->assertNotEmpty($this->contents);
-		$editUrl = $this->_getActionUrl(array(
-			'action' => 'edit',
-			'frame_id' => $frameId,
-			'block_id' => $blockId
-		));
-		$this->assertTextNotContains($editUrl, $this->contents);
 	}
 
 }

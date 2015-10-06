@@ -11,7 +11,6 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('AnnouncementTestBase', 'Announcements.Test/Case/Model/Announcement');
 App::uses('WorkflowSaveTest', 'Workflow.TestSuite');
 
 /**
@@ -20,180 +19,112 @@ App::uses('WorkflowSaveTest', 'Workflow.TestSuite');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Model\Announcement
  */
-class AnnouncementSaveAnnouncementTest extends AnnouncementTestBase implements WorkflowSaveTest {
+class AnnouncementSaveAnnouncementTest extends WorkflowSaveTest {
 
 /**
- * Announcement::saveAnnouncement()テストの共通処理
+ * Plugin name
  *
- * @param array $data Test data
- * @param array $expected Expected data
- * @return void
+ * @var array
  */
-	private function __testSave($data, $expected = array()) {
-		//処理実行
-		$result = $this->Announcement->saveAnnouncement($data);
-		$this->assertNotEmpty($result);
-		$announcementId = $this->Announcement->getLastInsertID();
-
-		$result = $this->Announcement->getAnnouncement();
-		$this->assertEquals($result['Block']['name'], $result['Announcement']['content']);
-		unset($result['Block']['name']);
-
-		//期待値
-		$expected = Hash::merge($data, array(
-			'Announcement' => array(
-				'id' => $announcementId,
-				'is_active' => true,
-				'is_latest' => true,
-			),
-			'Block' => array(
-				'public_type' => '1',
-				'from' => null,
-				'to' => null
-			),
-		), $expected);
-		unset($expected['Frame'], $expected['WorkflowComment']);
-
-		//評価
-		$this->_assertData($expected, $result);
-	}
+	public $plugin = 'announcements';
 
 /**
- * Announcement::saveAnnouncement()のテスト(WorkflowComponent::STATUS_PUBLISHED)
+ * Fixtures
+ *
+ * @var array
+ */
+	public $fixtures = array(
+		'plugin.announcements.announcement',
+		'plugin.announcements.workflow_comment4announcements',
+	);
+
+/**
+ * data
+ *
+ * @var array
+ */
+	public $data = array(
+		'Frame' => array(
+			'id' => '6'
+		),
+		'Block' => array(
+			'id' => '2',
+			'language_id' => '2',
+			'room_id' => '1',
+			'key' => 'block_1',
+			'plugin_key' => 'announcements',
+		),
+		'Announcement' => array(
+			'id' => '2',
+			'language_id' => '2',
+			'block_id' => '2',
+			'key' => 'announcement_1',
+			'status' => WorkflowComponent::STATUS_PUBLISHED,
+			'content' => 'Announcement save test'
+		),
+		'WorkflowComment' => array(
+			'comment' => 'WorkflowComment save test'
+		),
+	);
+
+/**
+ * SaveのDataProvider
  *
  * @return void
  */
-	public function testSaveByStatusPublished() {
-		//事前データセット
-		Current::$current['Block']['id'] = '2';
-		Current::$current['Room']['id'] = '1';
-		Current::$current['Language']['id'] = '2';
-		Current::$current['Permission']['content_editable']['value'] = true;
-		Current::$current['Permission']['content_publishable']['value'] = true;
-		$data = $this->data;
-		$data['Announcement']['status'] = WorkflowComponent::STATUS_PUBLISHED;
-
-		//テスト実行
-		$this->__testSave($data, array(
-			'Announcement' => array(
-				'is_active' => true,
-			))
+	public function dataProviderSave() {
+		return array(
+			array($this->data, 'Announcement', 'saveAnnouncement'),
 		);
 	}
 
 /**
- * Announcement::saveAnnouncement()のテスト(WorkflowComponent::STATUS_APPROVED)
+ * SaveのExceptionErrorのDataProvider
  *
  * @return void
  */
-	public function testSaveByStatusApproved() {
-		//事前データセット
-		Current::$current['Block']['id'] = '2';
-		Current::$current['Room']['id'] = '1';
-		Current::$current['Language']['id'] = '2';
-		Current::$current['Permission']['content_editable']['value'] = true;
-		Current::$current['Permission']['content_publishable']['value'] = false;
-		$data = $this->data;
-		$data['Announcement']['status'] = WorkflowComponent::STATUS_APPROVED;
-
-		//テスト実行
-		$this->__testSave($data, array(
-			'Announcement' => array(
-				'is_active' => false,
-			))
+	public function dataProviderSaveOnExceptionError() {
+		return array(
+			array($this->data, 'Announcement', 'saveAnnouncement', 'Announcements.Announcement', 'save'),
 		);
 	}
 
 /**
- * Announcement::saveAnnouncement()のテスト(WorkflowComponent::STATUS_IN_DRAFT)
+ * SaveのValidationErrorのDataProvider
  *
  * @return void
  */
-	public function testSaveByStatusInDraft() {
-		//事前データセット
-		Current::$current['Block']['id'] = '2';
-		Current::$current['Room']['id'] = '1';
-		Current::$current['Language']['id'] = '2';
-		Current::$current['Permission']['content_editable']['value'] = true;
-		Current::$current['Permission']['content_publishable']['value'] = false;
-		$data = $this->data;
-		$data['Announcement']['status'] = WorkflowComponent::STATUS_IN_DRAFT;
-
-		//テスト実行
-		$this->__testSave($data, array(
-			'Announcement' => array(
-				'is_active' => false,
-			))
+	public function dataProviderSaveOnValidationError() {
+		return array(
+			array($this->data, 'Announcement', 'saveAnnouncement', 'Announcements.Announcement'),
 		);
 	}
 
 /**
- * Announcement::saveAnnouncement()のテスト(WorkflowComponent::STATUS_DISAPPROVED)
+ * ValidationErrorのDataProvider
  *
  * @return void
  */
-	public function testSaveByStatusDisapproved() {
-		//事前データセット
-		Current::$current['Block']['id'] = '2';
-		Current::$current['Room']['id'] = '1';
-		Current::$current['Language']['id'] = '2';
-		Current::$current['Permission']['content_editable']['value'] = true;
-		Current::$current['Permission']['content_publishable']['value'] = true;
-		$data = $this->data;
-		$data['Announcement']['status'] = WorkflowComponent::STATUS_DISAPPROVED;
-
-		//テスト実行
-		$this->__testSave($data, array(
-			'Announcement' => array(
-				'is_active' => false,
-			))
+	public function dataProviderValidationError() {
+		return array(
+			array($this->data, 'Announcement', 'content', '',
+				sprintf(__d('net_commons', 'Please input %s.'), __d('announcements', 'Content'))),
+			array($this->data, 'Announcement', 'block_id', 'aaa',
+				__d('net_commons', 'Invalid request.')),
 		);
 	}
 
 /**
- * Announcement::saveAnnouncement()のExceptionErrorテスト
+ * Saveのテスト
  *
+ * @param array $data 登録データ
+ * @param string $model モデル名
+ * @param string $method メソッド
+ * @dataProvider dataProviderSave
  * @return void
  */
-	public function testSaveExceptionError() {
-		//事前データセット
-		Current::$current['Block']['id'] = '2';
-		Current::$current['Room']['id'] = '1';
-		Current::$current['Language']['id'] = '2';
-		Current::$current['Permission']['content_editable']['value'] = true;
-		Current::$current['Permission']['content_publishable']['value'] = true;
-		$data = $this->data;
-
-		$Mock = $this->getMockForModel('Announcements.Announcement', ['save']);
-		$Mock->expects($this->once())
-			->method('save')
-			->will($this->returnValue(false));
-
-		$this->setExpectedException('InternalErrorException');
-		$Mock->saveAnnouncement($data);
-	}
-
-/**
- * Announcement::saveAnnouncement()のValidationErrorテスト
- *
- * @return void
- */
-	public function testSaveValidationError() {
-		//事前データセット
-		Current::$current['Block']['id'] = '2';
-		Current::$current['Room']['id'] = '1';
-		Current::$current['Language']['id'] = '2';
-		Current::$current['Permission']['content_editable']['value'] = true;
-		Current::$current['Permission']['content_publishable']['value'] = true;
-		$data = $this->data;
-
-		$Mock = $this->getMockForModel('Announcements.Announcement', ['validates']);
-		$Mock->expects($this->once())
-			->method('validates')
-			->will($this->returnValue(false));
-
-		$result = $Mock->saveAnnouncement($data);
-		$this->assertFalse($result);
-	}
+	//public function testSave($data, $model, $method) {
+	//	parent::testSave($data, $model, $method);
+	//}
 
 }

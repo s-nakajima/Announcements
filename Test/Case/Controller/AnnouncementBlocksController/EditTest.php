@@ -42,10 +42,10 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
  *
  * @return void
  */
-	public function dataProviderByAdd() {
+	public function dataProviderAdd() {
 		$frameId = '6';
 
-		$default = array(
+		$post = array(
 			'save_1' => null,
 			'Frame' => array(
 				'id' => $frameId
@@ -76,9 +76,14 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 		$data = array();
 		$data[0] = array('method' => 'get');
 		$data[1] = array('method' => 'put');
-		$data[2] = array('method' => 'post', 'data' => $default, 'validationError' => false);
-		$data[3] = array('method' => 'post', 'data' => $default, 'validationError' => true);
-		unset($data[3]['data']['Announcement']['content']);
+		$data[2] = array('method' => 'post', 'data' => $post, 'validationError' => false);
+
+		$validationError = array(
+			'field' => 'Announcement.content',
+			'value' => '',
+			'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('announcements', 'Content'))
+		);
+		$data[3] = array('method' => 'post', 'data' => $post, 'validationError' => $validationError);
 
 		return $data;
 	}
@@ -88,11 +93,11 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
  *
  * @return void
  */
-	public function dataProviderByEdit() {
+	public function dataProviderEdit() {
 		$frameId = '6';
 		$blockId = '4';
 
-		$default = array(
+		$post = array(
 			'save_1' => null,
 			'Frame' => array(
 				'id' => $frameId
@@ -123,8 +128,13 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 		$data = array();
 		$data[0] = array('method' => 'get');
 		$data[1] = array('method' => 'post');
-		$data[2] = array('method' => 'put', 'data' => $default, 'validationError' => false);
-		$data[3] = array('method' => 'put', 'data' => $default, 'validationError' => true);
+		$data[2] = array('method' => 'put', 'data' => $post, 'validationError' => false);
+		$validationError = array(
+			'field' => 'Announcement.content',
+			'value' => '',
+			'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('announcements', 'Content'))
+		);
+		$data[3] = array('method' => 'put', 'data' => $post, 'validationError' => $validationError);
 		unset($data[3]['data']['Announcement']['content']);
 
 		return $data;
@@ -135,10 +145,10 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
  *
  * @return void
  */
-	public function dataProviderByDelete() {
+	public function dataProviderDelete() {
 		$blockId = '4';
 
-		$default = array(
+		$post = array(
 			'Block' => array(
 				'id' => $blockId,
 				'key' => 'block_3',
@@ -149,7 +159,7 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 		);
 
 		$data = array(
-			array('data' => $default)
+			array('data' => $post)
 		);
 		return $data;
 	}
