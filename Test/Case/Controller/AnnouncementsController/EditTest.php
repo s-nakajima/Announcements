@@ -90,7 +90,6 @@ class AnnouncementsControllerEditTest extends WorkflowControllerEditTest {
  * ### 戻り値
  *  - urlOptions: URLオプション
  *  - assert: テストの期待値
- *  - hasDelete: 削除ボタン(リンク)の有無
  *  - exception: Exception
  *  - return: testActionの実行後の結果
  *
@@ -101,7 +100,7 @@ class AnnouncementsControllerEditTest extends WorkflowControllerEditTest {
 		$results = array();
 
 		//ログインなし
-		$results[0] = array('hasDelete' => null,
+		$results[0] = array(
 			'urlOptions' => array('frame_id' => $data['Frame']['id'], 'block_id' => $data['Block']['id'], 'key' => $data['Announcement']['key']),
 			'assert' => null, 'exception' => 'ForbiddenException'
 		);
@@ -114,7 +113,6 @@ class AnnouncementsControllerEditTest extends WorkflowControllerEditTest {
  * ### 戻り値
  *  - urlOptions: URLオプション
  *  - assert: テストの期待値
- *  - hasDelete: 削除ボタン(リンク)の有無
  *  - exception: Exception
  *  - return: testActionの実行後の結果
  *
@@ -125,7 +123,7 @@ class AnnouncementsControllerEditTest extends WorkflowControllerEditTest {
 		$results = array();
 
 		//作成権限のみ
-		$results[0] = array('hasDelete' => null,
+		$results[0] = array(
 			'urlOptions' => array('frame_id' => $data['Frame']['id'], 'block_id' => $data['Block']['id'], 'key' => $data['Announcement']['key']),
 			'assert' => null,
 			'exception' => 'ForbiddenException'
@@ -140,7 +138,6 @@ class AnnouncementsControllerEditTest extends WorkflowControllerEditTest {
  * ### 戻り値
  *  - urlOptions: URLオプション
  *  - assert: テストの期待値
- *  - hasDelete: 削除ボタン(リンク)の有無
  *  - exception: Exception
  *  - return: testActionの実行後の結果
  *
@@ -153,7 +150,7 @@ class AnnouncementsControllerEditTest extends WorkflowControllerEditTest {
 		//編集権限あり
 		//--コンテンツあり
 		$base = 0;
-		$results[0] = array('hasDelete' => null,
+		$results[0] = array(
 			'urlOptions' => array('frame_id' => $data['Frame']['id'], 'block_id' => $data['Block']['id'], 'key' => $data['Announcement']['key']),
 			'assert' => array('method' => 'assertNotEmpty'),
 		);
@@ -180,7 +177,7 @@ class AnnouncementsControllerEditTest extends WorkflowControllerEditTest {
 		)));
 		//--コンテンツなし
 		$base = 7;
-		$results[7] = array('hasDelete' => null,
+		$results[7] = array(
 			'urlOptions' => array('frame_id' => '14', 'block_id' => null, 'key' => null),
 			'assert' => array('method' => 'assertNotEmpty'),
 		);
@@ -217,7 +214,7 @@ class AnnouncementsControllerEditTest extends WorkflowControllerEditTest {
 		$results = array();
 
 		//フレーム削除テスト
-		$results[0] = array('hasDelete' => null,
+		$results[0] = array(
 			'urlOptions' => array('frame_id' => '12', 'block_id' => $data['Block']['id'], 'key' => $data['Announcement']['key']),
 			'assert' => array('method' => 'assertNotEmpty'),
 		);
