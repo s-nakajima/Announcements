@@ -60,6 +60,7 @@ class AnnouncementDeleteAnnouncementTest extends WorkflowDeleteTest {
  *  - data: 削除データ
  *  - model: モデル名
  *  - method: メソッド
+ *  - associationModels: 削除確認の関連モデル array(model => conditions)
  *
  * @return void
  */
@@ -73,11 +74,11 @@ class AnnouncementDeleteAnnouncementTest extends WorkflowDeleteTest {
  * ExceptionErrorのDataProvider
  *
  * ### 戻り値
- *  - data 登録データ
- *  - model モデル名
- *  - method メソッド
- *  - mockModel Mockのモデル
- *  - mockMethod Mockのメソッド
+ *  - data: 登録データ
+ *  - model: モデル名
+ *  - method: メソッド
+ *  - mockModel: Mockのモデル
+ *  - mockMethod: Mockのメソッド
  *
  * @return void
  */
@@ -86,18 +87,5 @@ class AnnouncementDeleteAnnouncementTest extends WorkflowDeleteTest {
 			array($this->data, 'Announcement', 'deleteAnnouncement', 'Announcements.Announcement', 'deleteAll'),
 		);
 	}
-
-/**
- * Deleteのテスト
- *
- * @param array $data 削除データ
- * @param string $model モデル名
- * @param string $method メソッド
- * @dataProvider dataProviderDelete
- * @return void
- */
-	//public function testDelete($data, $model, $method) {
-	//	parent::testDelete($data, $model, $method);
-	//}
 
 }
