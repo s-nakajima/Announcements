@@ -21,10 +21,10 @@ $announcement = NetCommonsAppController::camelizeKeyRecursive(array('announcemen
 	ng-controller="Announcements"
 	ng-init="initialize(<?php echo h(json_encode($announcement)); ?>)">
 
-	<?php echo $this->Block->mainTabs(BlockTabsComponent::MAIN_TAB_BLOCK_INDEX); ?>
+	<?php echo $this->BlockTabs->main(BlockTabsComponent::MAIN_TAB_BLOCK_INDEX); ?>
 
 	<div class="tab-content">
-		<?php echo $this->Block->blockTabs(BlockTabsComponent::BLOCK_TAB_SETTING); ?>
+		<?php echo $this->BlockTabs->block(BlockTabsComponent::BLOCK_TAB_SETTING); ?>
 
 		<?php echo $this->element('Announcements.AnnouncementBlocks/edit_form'); ?>
 
