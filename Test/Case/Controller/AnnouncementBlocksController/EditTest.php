@@ -38,6 +38,58 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 	);
 
 /**
+ * テストDataの取得
+ *
+ * @param bool $isEdit 編集かどうか
+ * @return array
+ */
+	private function __getData($isEdit) {
+		$frameId = '6';
+
+		if ($isEdit) {
+			$blockId = '4';
+			$blockKey = 'block_3';
+			$anouncementId = '4';
+			$anouncementKey = 'announcement_3';
+		} else {
+			$blockId = null;
+			$blockKey = null;
+			$anouncementId = null;
+			$anouncementKey = null;
+		}
+
+		$data = array(
+			'save_' . WorkflowComponent::STATUS_PUBLISHED => null,
+			'Frame' => array(
+				'id' => $frameId
+			),
+			'Block' => array(
+				'id' => $blockId,
+				'key' => $blockKey,
+				'language_id' => '2',
+				'room_id' => '1',
+				'plugin_key' => $this->plugin,
+				'public_type' => '1',
+				'from' => null,
+				'to' => null,
+			),
+			'Announcement' => array(
+				'id' => $anouncementId,
+				'key' => $anouncementKey,
+				'block_id' => $blockId,
+				'language_id' => '2',
+				'status' => null,
+				'content' => 'Announcement save test'
+			),
+			'WorkflowComment' => array(
+				'comment' => 'WorkflowComment save test'
+			),
+		);
+
+		return $data;
+	}
+
+/**
  * add()アクションDataProvider
  *
  * ### 戻り値
@@ -48,49 +100,21 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
  * @return void
  */
 	public function dataProviderAdd() {
-		$frameId = '6';
+		$data = $this->__getData(false);
 
-		$post = array(
-			'save_1' => null,
-			'Frame' => array(
-				'id' => $frameId
-			),
-			'Block' => array(
-				'id' => null,
-				'key' => null,
-				'language_id' => '2',
-				'room_id' => '1',
-				'plugin_key' => $this->plugin,
-				'public_type' => '1',
-				'from' => null,
-				'to' => null,
-			),
-			'Announcement' => array(
-				'id' => null,
-				'key' => null,
-				'block_id' => null,
-				'language_id' => '2',
-				'status' => null,
-				'content' => 'Announcement test'
-			),
-			'WorkflowComment' => array(
-				'comment' => 'WorkflowComment test'
-			),
+		$results = array();
+		$results[0] = array('method' => 'get');
+		$results[1] = array('method' => 'put');
+		$results[2] = array('method' => 'post', 'data' => $data, 'validationError' => false);
+		$results[3] = array('method' => 'post', 'data' => $data,
+			'validationError' => array(
+				'field' => 'Announcement.content',
+				'value' => '',
+				'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('announcements', 'Content'))
+			)
 		);
 
-		$data = array();
-		$data[0] = array('method' => 'get');
-		$data[1] = array('method' => 'put');
-		$data[2] = array('method' => 'post', 'data' => $post, 'validationError' => false);
-
-		$validationError = array(
-			'field' => 'Announcement.content',
-			'value' => '',
-			'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('announcements', 'Content'))
-		);
-		$data[3] = array('method' => 'post', 'data' => $post, 'validationError' => $validationError);
-
-		return $data;
+		return $results;
 	}
 
 /**
@@ -104,50 +128,21 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
  * @return void
  */
 	public function dataProviderEdit() {
-		$frameId = '6';
-		$blockId = '4';
+		$data = $this->__getData(true);
 
-		$post = array(
-			'save_1' => null,
-			'Frame' => array(
-				'id' => $frameId
-			),
-			'Block' => array(
-				'id' => $blockId,
-				'key' => 'block_3',
-				'language_id' => '2',
-				'room_id' => '1',
-				'plugin_key' => $this->plugin,
-				'public_type' => '1',
-				'from' => null,
-				'to' => null,
-			),
-			'Announcement' => array(
-				'id' => '4',
-				'key' => 'announcement_3',
-				'block_id' => $blockId,
-				'language_id' => '2',
-				'status' => '2',
-				'content' => 'Announcement test'
-			),
-			'WorkflowComment' => array(
-				'comment' => 'WorkflowComment test'
-			),
+		$results = array();
+		$results[0] = array('method' => 'get');
+		$results[1] = array('method' => 'post');
+		$results[2] = array('method' => 'put', 'data' => $data, 'validationError' => false);
+		$results[3] = array('method' => 'put', 'data' => $data,
+			'validationError' => array(
+				'field' => 'Announcement.content',
+				'value' => '',
+				'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('announcements', 'Content'))
+			)
 		);
 
-		$data = array();
-		$data[0] = array('method' => 'get');
-		$data[1] = array('method' => 'post');
-		$data[2] = array('method' => 'put', 'data' => $post, 'validationError' => false);
-		$validationError = array(
-			'field' => 'Announcement.content',
-			'value' => '',
-			'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('announcements', 'Content'))
-		);
-		$data[3] = array('method' => 'put', 'data' => $post, 'validationError' => $validationError);
-		unset($data[3]['data']['Announcement']['content']);
-
-		return $data;
+		return $results;
 	}
 
 /**
@@ -161,7 +156,7 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 	public function dataProviderDelete() {
 		$blockId = '4';
 
-		$post = array(
+		$data = array(
 			'Block' => array(
 				'id' => $blockId,
 				'key' => 'block_3',
@@ -171,10 +166,9 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 			),
 		);
 
-		$data = array(
-			array('data' => $post)
+		return array(
+			array('data' => $data)
 		);
-		return $data;
 	}
 
 }
