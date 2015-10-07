@@ -56,6 +56,11 @@ class AnnouncementDeleteAnnouncementTest extends WorkflowDeleteTest {
 /**
  * DeleteのDataProvider
  *
+ * ### 戻り値
+ *  - data: 削除データ
+ *  - model: モデル名
+ *  - method: メソッド
+ *
  * @return void
  */
 	public function dataProviderDelete() {
@@ -66,6 +71,13 @@ class AnnouncementDeleteAnnouncementTest extends WorkflowDeleteTest {
 
 /**
  * ExceptionErrorのDataProvider
+ *
+ * ### 戻り値
+ *  - data 登録データ
+ *  - model モデル名
+ *  - method メソッド
+ *  - mockModel Mockのモデル
+ *  - mockMethod Mockのメソッド
  *
  * @return void
  */
