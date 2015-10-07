@@ -51,8 +51,8 @@ class AnnouncementsControllerViewTest extends WorkflowControllerViewTest {
  *  - urlOptions: URLオプション
  *  - assert: テストの期待値
  *  - hasEdit: 編集ボタン(リンク)の有無
- *  - return: testActionの実行後の結果
  *  - exception: Exception
+ *  - return: testActionの実行後の結果
  *
  * @return array
  */
@@ -70,7 +70,7 @@ class AnnouncementsControllerViewTest extends WorkflowControllerViewTest {
 		$results[1] = array(
 			'urlOptions' => array('frame_id' => '14', 'block_id' => null, 'key' => null),
 			'assert' => array('method' => 'assertEquals', 'expected' => 'emptyRender'),
-			'hasEdit' => null, 'return' => 'view'
+			'hasEdit' => null, 'exception' => null, 'return' => 'view'
 		);
 
 		return $results;
@@ -83,8 +83,8 @@ class AnnouncementsControllerViewTest extends WorkflowControllerViewTest {
  *  - urlOptions: URLオプション
  *  - assert: テストの期待値
  *  - hasEdit: 編集ボタン(リンク)の有無
- *  - return: testActionの実行後の結果
  *  - exception: Exception
+ *  - return: testActionの実行後の結果
  *
  * @return array
  */
@@ -101,7 +101,7 @@ class AnnouncementsControllerViewTest extends WorkflowControllerViewTest {
 		$results[1] = array(
 			'urlOptions' => array('frame_id' => '14', 'block_id' => null, 'key' => null),
 			'assert' => array('method' => 'assertEquals', 'expected' => 'emptyRender'),
-			'hasEdit' => null, 'return' => 'view'
+			'hasEdit' => null, 'exception' => null, 'return' => 'view'
 		);
 
 		return $results;
@@ -114,8 +114,8 @@ class AnnouncementsControllerViewTest extends WorkflowControllerViewTest {
  *  - urlOptions: URLオプション
  *  - assert: テストの期待値
  *  - hasEdit: 編集ボタン(リンク)の有無
- *  - return: testActionの実行後の結果
  *  - exception: Exception
+ *  - return: testActionの実行後の結果
  *
  * @return array
  */

@@ -92,6 +92,7 @@ class AnnouncementsControllerEditTest extends WorkflowControllerEditTest {
  *  - assert: テストの期待値
  *  - hasDelete: 削除ボタン(リンク)の有無
  *  - exception: Exception
+ *  - return: testActionの実行後の結果
  *
  * @return array
  */
@@ -115,6 +116,7 @@ class AnnouncementsControllerEditTest extends WorkflowControllerEditTest {
  *  - assert: テストの期待値
  *  - hasDelete: 削除ボタン(リンク)の有無
  *  - exception: Exception
+ *  - return: testActionの実行後の結果
  *
  * @return array
  */
@@ -140,6 +142,7 @@ class AnnouncementsControllerEditTest extends WorkflowControllerEditTest {
  *  - assert: テストの期待値
  *  - hasDelete: 削除ボタン(リンク)の有無
  *  - exception: Exception
+ *  - return: testActionの実行後の結果
  *
  * @return array
  */
@@ -207,6 +210,7 @@ class AnnouncementsControllerEditTest extends WorkflowControllerEditTest {
  *  - assert: テストの期待値
  *  - hasDelete: 削除ボタン(リンク)の有無
  *  - exception: Exception
+ *  - return: testActionの実行後の結果
  *
  * @return array
  */
