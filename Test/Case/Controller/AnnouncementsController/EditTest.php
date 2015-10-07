@@ -101,9 +101,9 @@ class AnnouncementsControllerEditTest extends WorkflowControllerEditTest {
 		$results = array();
 
 		//ログインなし
-		$results[0] = array(
+		$results[0] = array('hasDelete' => null,
 			'urlOptions' => array('frame_id' => $data['Frame']['id'], 'block_id' => $data['Block']['id'], 'key' => $data['Announcement']['key']),
-			'assert' => null, 'hasDelete' => null, 'exception' => 'ForbiddenException'
+			'assert' => null, 'exception' => 'ForbiddenException'
 		);
 		return $results;
 	}
@@ -125,10 +125,10 @@ class AnnouncementsControllerEditTest extends WorkflowControllerEditTest {
 		$results = array();
 
 		//作成権限のみ
-		$results[0] = array(
+		$results[0] = array('hasDelete' => null,
 			'urlOptions' => array('frame_id' => $data['Frame']['id'], 'block_id' => $data['Block']['id'], 'key' => $data['Announcement']['key']),
 			'assert' => null,
-			'hasDelete' => null, 'exception' => 'ForbiddenException'
+			'exception' => 'ForbiddenException'
 		);
 
 		return $results;
@@ -153,10 +153,9 @@ class AnnouncementsControllerEditTest extends WorkflowControllerEditTest {
 		//編集権限あり
 		//--コンテンツあり
 		$base = 0;
-		$results[0] = array(
+		$results[0] = array('hasDelete' => null,
 			'urlOptions' => array('frame_id' => $data['Frame']['id'], 'block_id' => $data['Block']['id'], 'key' => $data['Announcement']['key']),
 			'assert' => array('method' => 'assertNotEmpty'),
-			'hasDelete' => null
 		);
 		array_push($results, Hash::merge($results[$base], array(
 			'assert' => array('method' => 'assertInput', 'type' => 'input', 'name' => 'data[Frame][id]', 'value' => $data['Frame']['id']),
@@ -181,10 +180,9 @@ class AnnouncementsControllerEditTest extends WorkflowControllerEditTest {
 		)));
 		//--コンテンツなし
 		$base = 7;
-		$results[7] = array(
+		$results[7] = array('hasDelete' => null,
 			'urlOptions' => array('frame_id' => '14', 'block_id' => null, 'key' => null),
 			'assert' => array('method' => 'assertNotEmpty'),
-			'hasDelete' => null
 		);
 		array_push($results, Hash::merge($results[$base], array(
 			'assert' => array('method' => 'assertInput', 'type' => 'input', 'name' => 'data[Frame][id]', 'value' => null),
@@ -219,10 +217,9 @@ class AnnouncementsControllerEditTest extends WorkflowControllerEditTest {
 		$results = array();
 
 		//フレーム削除テスト
-		$results[0] = array(
+		$results[0] = array('hasDelete' => null,
 			'urlOptions' => array('frame_id' => '12', 'block_id' => $data['Block']['id'], 'key' => $data['Announcement']['key']),
 			'assert' => array('method' => 'assertNotEmpty'),
-			'hasDelete' => null
 		);
 		array_push($results, Hash::merge($results[0], array(
 			'assert' => array('method' => 'assertInput', 'type' => 'input', 'name' => 'data[Frame][id]', 'value' => '12'),

@@ -48,9 +48,9 @@ class AnnouncementsControllerViewTest extends WorkflowControllerViewTest {
  * viewアクションのテスト用DataProvider
  *
  * ### 戻り値
+ *  - hasEdit: 編集ボタン(リンク)の有無
  *  - urlOptions: URLオプション
  *  - assert: テストの期待値
- *  - hasEdit: 編集ボタン(リンク)の有無
  *  - exception: Exception
  *  - return: testActionの実行後の結果
  *
@@ -62,15 +62,16 @@ class AnnouncementsControllerViewTest extends WorkflowControllerViewTest {
 		//ログインなし
 		//--コンテンツあり
 		$results[0] = array(
+			'hasEdit' => false,
 			'urlOptions' => array('frame_id' => '6', 'block_id' => '2', 'key' => null),
 			'assert' => array('method' => 'assertNotEmpty'),
-			'hasEdit' => false
 		);
 		//--コンテンツなし
 		$results[1] = array(
+			'hasEdit' => null,
 			'urlOptions' => array('frame_id' => '14', 'block_id' => null, 'key' => null),
 			'assert' => array('method' => 'assertEquals', 'expected' => 'emptyRender'),
-			'hasEdit' => null, 'exception' => null, 'return' => 'view'
+			'exception' => null, 'return' => 'viewFile'
 		);
 
 		return $results;
@@ -80,9 +81,9 @@ class AnnouncementsControllerViewTest extends WorkflowControllerViewTest {
  * viewアクションのテスト(作成権限のみ)用DataProvider
  *
  * ### 戻り値
+ *  - hasEdit: 編集ボタン(リンク)の有無
  *  - urlOptions: URLオプション
  *  - assert: テストの期待値
- *  - hasEdit: 編集ボタン(リンク)の有無
  *  - exception: Exception
  *  - return: testActionの実行後の結果
  *
@@ -93,15 +94,16 @@ class AnnouncementsControllerViewTest extends WorkflowControllerViewTest {
 
 		//作成権限のみ
 		$results[0] = array(
+			'hasEdit' => false,
 			'urlOptions' => array('frame_id' => '6', 'block_id' => '2', 'key' => null),
 			'assert' => array('method' => 'assertNotEmpty'),
-			'hasEdit' => false
 		);
 		//--コンテンツなし
 		$results[1] = array(
+			'hasEdit' => null,
 			'urlOptions' => array('frame_id' => '14', 'block_id' => null, 'key' => null),
 			'assert' => array('method' => 'assertEquals', 'expected' => 'emptyRender'),
-			'hasEdit' => null, 'exception' => null, 'return' => 'view'
+			'exception' => null, 'return' => 'viewFile'
 		);
 
 		return $results;
@@ -111,9 +113,9 @@ class AnnouncementsControllerViewTest extends WorkflowControllerViewTest {
  * viewアクションのテスト用DataProvider
  *
  * ### 戻り値
+ *  - hasEdit: 編集ボタン(リンク)の有無
  *  - urlOptions: URLオプション
  *  - assert: テストの期待値
- *  - hasEdit: 編集ボタン(リンク)の有無
  *  - exception: Exception
  *  - return: testActionの実行後の結果
  *
@@ -125,33 +127,33 @@ class AnnouncementsControllerViewTest extends WorkflowControllerViewTest {
 		//編集権限あり
 		//--コンテンツあり
 		$results[0] = array(
+			'hasEdit' => true,
 			'urlOptions' => array('frame_id' => '6', 'block_id' => '2', 'key' => null),
 			'assert' => array('method' => 'assertNotEmpty'),
-			'hasEdit' => true
 		);
 		//--コンテンツなし
 		$results[1] = array(
+			'hasEdit' => true,
 			'urlOptions' => array('frame_id' => '14', 'block_id' => null, 'key' => null),
 			'assert' => array('method' => 'assertNotEmpty'),
-			'hasEdit' => true
 		);
 		//フレーム削除テスト
 		$results[2] = array(
+			'hasEdit' => true,
 			'urlOptions' => array('frame_id' => '12', 'block_id' => '2', 'key' => null),
 			'assert' => array('method' => 'assertNotEmpty'),
-			'hasEdit' => true
 		);
 		//フレームなしテスト
 		$results[3] = array(
+			'hasEdit' => true,
 			'urlOptions' => array('frame_id' => '999999', 'block_id' => '2', 'key' => null),
 			'assert' => array('method' => 'assertNotEmpty'),
-			'hasEdit' => true
 		);
 		//フレームID指定なしテスト
 		$results[4] = array(
+			'hasEdit' => true,
 			'urlOptions' => array('frame_id' => null, 'block_id' => '2', 'key' => null),
 			'assert' => array('method' => 'assertNotEmpty'),
-			'hasEdit' => true
 		);
 
 		return $results;
