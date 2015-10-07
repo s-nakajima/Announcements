@@ -49,7 +49,7 @@ class AnnouncementsControllerEditTest extends WorkflowControllerEditTest {
  *
  * @return array
  */
-	public function __getData() {
+	private function __getData() {
 		$frameId = '6';
 		$blockId = '2';
 		$blockKey = 'block_1';
@@ -257,6 +257,7 @@ class AnnouncementsControllerEditTest extends WorkflowControllerEditTest {
  *  - role: ロール
  *  - urlOptions: URLオプション
  *  - exception: Exception
+ *  - return: testActionの実行後の結果
  *
  * @return array
  */
