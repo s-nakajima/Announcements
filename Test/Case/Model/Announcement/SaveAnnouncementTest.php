@@ -39,11 +39,25 @@ class AnnouncementSaveAnnouncementTest extends WorkflowSaveTest {
 	);
 
 /**
+ * Model name
+ *
+ * @var array
+ */
+	public $_modelName = 'Announcement';
+
+/**
+ * Method name
+ *
+ * @var array
+ */
+	public $_methodName = 'saveAnnouncement';
+
+/**
  * data
  *
  * @var array
  */
-	public $data = array(
+	private $__data = array(
 		'Frame' => array(
 			'id' => '6'
 		),
@@ -70,61 +84,66 @@ class AnnouncementSaveAnnouncementTest extends WorkflowSaveTest {
 /**
  * SaveのDataProvider
  *
+ * ### 戻り値
+ *  - data 登録データ
+ *
  * @return void
  */
 	public function dataProviderSave() {
 		return array(
-			array($this->data, 'Announcement', 'saveAnnouncement'),
+			array($this->__data, 'Announcement', 'saveAnnouncement'),
 		);
 	}
 
 /**
  * SaveのExceptionErrorのDataProvider
  *
+ * ### 戻り値
+ *  - data 登録データ
+ *  - mockModel Mockのモデル
+ *  - mockMethod Mockのメソッド
+ *
  * @return void
  */
 	public function dataProviderSaveOnExceptionError() {
 		return array(
-			array($this->data, 'Announcement', 'saveAnnouncement', 'Announcements.Announcement', 'save'),
+			array($this->__data, 'Announcements.Announcement', 'save'),
 		);
 	}
 
 /**
  * SaveのValidationErrorのDataProvider
  *
+ * ### 戻り値
+ *  - data 登録データ
+ *  - mockModel Mockのモデル
+ *
  * @return void
  */
 	public function dataProviderSaveOnValidationError() {
 		return array(
-			array($this->data, 'Announcement', 'saveAnnouncement', 'Announcements.Announcement'),
+			array($this->__data, 'Announcements.Announcement'),
 		);
 	}
 
 /**
  * ValidationErrorのDataProvider
  *
+ * ### 戻り値
+ *  - field フィールド名
+ *  - value セットする値
+ *  - message エラーメッセージ
+ *  - overwrite 上書きするデータ
+ *
  * @return void
  */
 	public function dataProviderValidationError() {
 		return array(
-			array($this->data, 'Announcement', 'content', '',
+			array($this->__data, 'content', '',
 				sprintf(__d('net_commons', 'Please input %s.'), __d('announcements', 'Content'))),
-			array($this->data, 'Announcement', 'block_id', 'aaa',
+			array($this->__data, 'block_id', 'aaa',
 				__d('net_commons', 'Invalid request.')),
 		);
 	}
-
-/**
- * Saveのテスト
- *
- * @param array $data 登録データ
- * @param string $model モデル名
- * @param string $method メソッド
- * @dataProvider dataProviderSave
- * @return void
- */
-	//public function testSave($data, $model, $method) {
-	//	parent::testSave($data, $model, $method);
-	//}
 
 }

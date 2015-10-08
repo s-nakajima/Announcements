@@ -140,28 +140,12 @@ class AnnouncementsControllerViewTest extends WorkflowControllerViewTest {
 		$results[3] = Hash::merge($results[2], array(
 			'assert' => array('method' => 'assertActionLink', 'action' => 'edit', 'linkExist' => true, 'url' => array()),
 		));
-		//フレーム削除テスト
-		$results[4] = array(
-			'urlOptions' => array('frame_id' => '12', 'block_id' => '2', 'key' => null),
-			'assert' => array('method' => 'assertNotEmpty'),
-		);
-		$results[5] = Hash::merge($results[4], array(
-			'assert' => array('method' => 'assertActionLink', 'action' => 'edit', 'linkExist' => true, 'url' => array()),
-		));
-		//フレームなしテスト
-		$results[6] = array(
-			'urlOptions' => array('frame_id' => '999999', 'block_id' => '2', 'key' => null),
-			'assert' => array('method' => 'assertNotEmpty'),
-		);
-		$results[7] = Hash::merge($results[6], array(
-			'assert' => array('method' => 'assertActionLink', 'action' => 'edit', 'linkExist' => true, 'url' => array()),
-		));
 		//フレームID指定なしテスト
-		$results[8] = array(
+		$results[4] = array(
 			'urlOptions' => array('frame_id' => null, 'block_id' => '2', 'key' => null),
 			'assert' => array('method' => 'assertNotEmpty'),
 		);
-		$results[9] = Hash::merge($results[8], array(
+		$results[5] = Hash::merge($results[4], array(
 			'assert' => array('method' => 'assertActionLink', 'action' => 'edit', 'linkExist' => true, 'url' => array()),
 		));
 

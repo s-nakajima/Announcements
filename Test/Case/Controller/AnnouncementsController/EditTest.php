@@ -282,16 +282,6 @@ class AnnouncementsControllerEditTest extends WorkflowControllerEditTest {
 				'data' => $data, 'role' => Role::ROOM_ROLE_KEY_EDITOR,
 				'urlOptions' => array('frame_id' => '14', 'block_id' => null, 'key' => null),
 			),
-			//フレーム削除テスト
-			array(
-				'data' => $data, 'role' => Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR,
-				'urlOptions' => array('frame_id' => '12', 'block_id' => $data['Block']['id'], 'key' => $data['Announcement']['key']),
-			),
-			//フレームなしテスト
-			array(
-				'data' => $data, 'role' => Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR,
-				'urlOptions' => array('frame_id' => '999999', 'block_id' => $data['Block']['id'], 'key' => $data['Announcement']['key']),
-			),
 			//フレームID指定なしテスト
 			array(
 				'data' => $data, 'role' => Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR,
@@ -305,7 +295,6 @@ class AnnouncementsControllerEditTest extends WorkflowControllerEditTest {
  *
  * ### 戻り値
  *  - data: 登録データ
- *  - role: ロール
  *  - urlOptions: URLオプション
  *  - validationError: バリデーションエラー
  *
@@ -315,7 +304,7 @@ class AnnouncementsControllerEditTest extends WorkflowControllerEditTest {
 		$data = $this->__getData();
 
 		$result = array(
-			'data' => $data, 'role' => Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR,
+			'data' => $data,
 			'urlOptions' => array('frame_id' => $data['Frame']['id'], 'block_id' => $data['Block']['id'], 'key' => $data['Announcement']['key']),
 		);
 
