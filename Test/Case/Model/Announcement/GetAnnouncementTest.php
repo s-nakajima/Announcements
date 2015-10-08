@@ -35,7 +35,7 @@ class AnnouncementGetAnnouncementTest extends WorkflowGetTest {
  */
 	public $fixtures = array(
 		'plugin.announcements.announcement',
-		'plugin.announcements.workflow_comment4announcements',
+		'plugin.workflow.workflow_comment',
 	);
 
 /**
