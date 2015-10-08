@@ -91,7 +91,7 @@ class AnnouncementSaveAnnouncementTest extends WorkflowSaveTest {
  */
 	public function dataProviderSave() {
 		return array(
-			array($this->__data, 'Announcement', 'saveAnnouncement'),
+			array($this->__data),
 		);
 	}
 
