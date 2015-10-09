@@ -43,14 +43,14 @@ class AnnouncementDeleteAnnouncementTest extends WorkflowDeleteTest {
  *
  * @var array
  */
-	public $_modelName = 'Announcement';
+	protected $_modelName = 'Announcement';
 
 /**
  * Method name
  *
  * @var array
  */
-	public $_methodName = 'deleteAnnouncement';
+	protected $_methodName = 'deleteAnnouncement';
 
 /**
  * data

@@ -43,14 +43,14 @@ class AnnouncementSaveAnnouncementTest extends WorkflowSaveTest {
  *
  * @var array
  */
-	public $_modelName = 'Announcement';
+	protected $_modelName = 'Announcement';
 
 /**
  * Method name
  *
  * @var array
  */
-	public $_methodName = 'saveAnnouncement';
+	protected $_methodName = 'saveAnnouncement';
 
 /**
  * data
