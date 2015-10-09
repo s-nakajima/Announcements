@@ -42,9 +42,6 @@ class Init extends NetCommonsMigration {
 					'is_active' => array('type' => 'boolean', 'null' => false, 'default' => '0', 'comment' => 'Is active, 0:deactive 1:acive | アクティブなコンテンツかどうか 0:アクティブでない 1:アクティブ | | '),
 					'is_latest' => array('type' => 'boolean', 'null' => false, 'default' => '0', 'comment' => 'Is latest, 0:not latest 1:latest | 最新コンテンツかどうか 0:最新でない 1:最新 | |'),
 					'content' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'content | コンテンツ |  | ', 'charset' => 'utf8'),
-					'is_first_auto_translation' => array('type' => 'boolean', 'null' => false, 'default' => null),
-					'is_auto_translated' => array('type' => 'boolean', 'null' => false, 'default' => null, 'comment' => 'translation type. 0:original , 1:auto translation | 翻訳タイプ  0:オリジナル、1:自動翻訳 |  | '),
-					'translation_engine' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'translation engine | 翻訳エンジン |  | ', 'charset' => 'utf8'),
 					'created_user' => array('type' => 'integer', 'null' => true, 'default' => '0', 'unsigned' => false, 'comment' => 'created user | 作成者 | users.id | '),
 					'created' => array('type' => 'datetime', 'null' => true, 'default' => null, 'comment' => 'created datetime | 作成日時 |  | '),
 					'modified_user' => array('type' => 'integer', 'null' => true, 'default' => '0', 'unsigned' => false, 'comment' => 'modified user | 更新者 | users.id | '),
@@ -76,8 +73,6 @@ class Init extends NetCommonsMigration {
 				'block_id' => '1',
 				'status' => '1',
 				'key' => 'announcments_1',
-				'is_auto_translated' => 0,
-				'is_first_auto_translation' => 0,
 				'is_latest' => '1',
 				'is_active' => '1',
 				'content' => '<div class="jumbotron">

@@ -25,4 +25,4 @@
 
 		<?php echo $this->Workflow->buttons('Announcement.status', NetCommonsUrl::backToIndexUrl('default_setting_action')); ?>
 	</div>
-<?php echo $this->Form->end();
+<?php echo $this->NetCommonsForm->end();

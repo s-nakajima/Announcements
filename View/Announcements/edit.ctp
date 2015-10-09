@@ -36,5 +36,5 @@ $announcement = NetCommonsAppController::camelizeKeyRecursive(array('announcemen
 
 		<?php echo $this->Workflow->comments(); ?>
 
-	<?php echo $this->Form->end(); ?>
+	<?php echo $this->NetCommonsForm->end(); ?>
 </article>

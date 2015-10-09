@@ -21,10 +21,10 @@ $announcement = NetCommonsAppController::camelizeKeyRecursive(array('announcemen
 	ng-controller="Announcements"
 	ng-init="initialize(<?php echo h(json_encode($announcement)); ?>)">
 
-	<?php echo $this->Block->mainTabs(BlockTabsComponent::MAIN_TAB_BLOCK_INDEX); ?>
+	<?php echo $this->BlockTabs->main(BlockTabsComponent::MAIN_TAB_BLOCK_INDEX); ?>
 
 	<div class="tab-content">
-		<?php echo $this->Block->blockTabs(BlockTabsComponent::BLOCK_TAB_SETTING); ?>
+		<?php echo $this->BlockTabs->block(BlockTabsComponent::BLOCK_TAB_SETTING); ?>
 
 		<?php echo $this->element('Announcements.AnnouncementBlocks/edit_form'); ?>
 
@@ -33,7 +33,12 @@ $announcement = NetCommonsAppController::camelizeKeyRecursive(array('announcemen
 		<?php if ($this->request->params['action'] === 'edit') : ?>
 			<?php echo $this->element('Blocks.delete_form', array(
 					'model' => 'AnnouncementBlocks',
-					'action' => 'delete/' . $this->data['Frame']['id'] . '/' . $this->data['Frame']['block_id'],
+					'action' => NetCommonsUrl::actionUrl(array(
+						'controller' => $this->params['controller'],
+						'action' => 'delete',
+						'block_id' => Current::read('Block.id'),
+						'frame_id' => Current::read('Frame.id')
+					)),
 					'callback' => 'Announcements.AnnouncementBlocks/delete_form'
 				)); ?>
 		<?php endif; ?>
