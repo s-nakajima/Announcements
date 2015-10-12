@@ -33,7 +33,8 @@ class Announcement extends AnnouncementsAppModel {
 				'WorkflowComment' => 'Workflow.WorkflowComment',
 			)
 		),
-		'NetCommons.OriginalKey',
+		//'NetCommons.OriginalKey',
+		'M17n.M17n',
 		'Workflow.WorkflowComment',
 		'Workflow.Workflow',
 	);
@@ -129,7 +130,6 @@ class Announcement extends AnnouncementsAppModel {
 		$this->loadModels([
 			'Announcement' => 'Announcements.Announcement'
 		]);
-
 		//トランザクションBegin
 		$this->begin();
 
