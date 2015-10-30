@@ -15,7 +15,7 @@
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Config\Schema
  */
-class AppSchema extends CakeSchema {
+class AnnouncementsSchema extends CakeSchema {
 
 /**
  * Database connection
