@@ -5,8 +5,10 @@
             <directory suffix=".ctp">app/Plugin/Announcements</directory>
             <directory suffix=".php">app/Plugin/Announcements</directory>
 			<exclude>
-				<directory suffix=".php">app/Plugin/Announcements/Config</directory>
-				<directory suffix="Test.php">app/Plugin/Announcements</directory>
+				<directory suffix=".php">app/Plugin/Announcements/Config/Migration</directory>
+				<directory suffix=".php">app/Plugin/Announcements/Config/Schema</directory>
+				<directory suffix=".php">app/Plugin/Announcements/Test/Case</directory>
+				<directory suffix=".php">app/Plugin/Announcements/Test/Fixture</directory>
 			</exclude>
         </whitelist>
     </filter>
