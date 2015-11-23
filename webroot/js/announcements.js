@@ -29,3 +29,28 @@ NetCommonsApp.controller('Announcements',
         $scope.announcement = angular.copy(data.announcement);
       };
     });
+
+/**
+ * Announcements Javascript
+ *
+ * @param {string} Controller name
+ * @param {function($scope, NetCommonsWysiwyg)} Controller
+ */
+NetCommonsApp.controller('AnnouncementsDummy',
+    function($scope, UserSearchByUserSelected) {
+
+      /**
+       * Show user search method(e.g)
+       *
+       * @param {number} users.id
+       * @return {void}
+       */
+      $scope.showUserSearch = function(id) {
+        return UserSearchByUserSelected($scope, id).result.then(
+            function(result) {
+              console.log(result);
+            },
+            function(reason) {}
+        );
+      };
+    });
