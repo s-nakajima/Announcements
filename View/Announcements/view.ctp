@@ -10,6 +10,8 @@
  */
 ?>
 
+<a href="" ng-controller="Users.controller" ng-click="showUserSearch('<?php echo Current::read('User.id'); ?>')">会員選択</a>
+
 <?php if (Current::permission('content_editable')) : ?>
 	<p class="text-right">
 		<?php echo $this->Button->editLink(); ?>
