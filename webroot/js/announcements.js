@@ -31,24 +31,32 @@ NetCommonsApp.controller('Announcements',
     });
 
 /**
- * Announcements Javascript
+ * Sample Javascript
  *
  * @param {string} Controller name
- * @param {function($scope, NetCommonsWysiwyg)} Controller
+ * @param {function($scope, SelectUser)} Controller
  */
-NetCommonsApp.controller('AnnouncementsDummy',
-    function($scope, UserSearchByUserSelected) {
+NetCommonsApp.controller('Sample',
+    function($scope, SelectUser) {
 
       /**
-       * Show user search method(e.g)
+       * 会員選択の結果を保持する配列
+       *
+       * @return {array}
+       */
+      $scope.users = [];
+
+      /**
+       * 会員選択ダイアログを表示する
        *
        * @param {number} users.id
        * @return {void}
        */
-      $scope.showUserSearch = function(id) {
-        return UserSearchByUserSelected($scope, id).result.then(
+      $scope.showUserSelectionDialog = function(id) {
+        SelectUser($scope, id).result.then(
             function(result) {
               console.log(result);
+              $scope.users.push(result);
             },
             function(reason) {}
         );
