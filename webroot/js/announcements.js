@@ -55,6 +55,12 @@ NetCommonsApp.controller('Sample',
       $scope.showUserSelectionDialog = function(id) {
         SelectUser($scope, id).result.then(
             function(result) {
+              /**
+               * ここに処理を記述
+               *
+               * とりあえず、サンプルコードとしてconsole.logと
+               * 結果表示サンプルコード用の配列にセット
+               */
               console.log(result);
               $scope.users.push(result);
             },

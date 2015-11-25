@@ -15,10 +15,12 @@ echo $this->NetCommonsHtml->script(array(
 ?>
 
 <div ng-controller="Sample">
-	<a href="" ng-click="showUserSelectionDialog('<?php echo Current::read('User.id'); ?>')">会員選択</a>
+	<a href="" ng-click="showUserSelectionDialog('<?php echo Current::read('User.id'); ?>')">
+		会員選択
+	</a>
 
 	<div class="form-inline" ng-if="users.length">
-		<span class="form-control" ng-repeat="user in users" style="margin: 5px; height: auto; padding: 3px 10px;">
+		<span class="form-control" ng-repeat="user in users" style="margin: 5px; height: auto; padding: 5px;">
 			<a href="" ng-controller="Users.controller" ng-click="showUser(user.id)">
 				<img class="user-avatar-xs" ng-src="{{user.avatar}}">
 				{{user.handlename}}
