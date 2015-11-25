@@ -56,15 +56,18 @@ NetCommonsApp.controller('Sample',
         SelectUser($scope, id).result.then(
             function(result) {
               /**
-               * ここに処理を記述
-               *
+               * ここに選択後の処理を記述
                * とりあえず、サンプルコードとしてconsole.logと
                * 結果表示サンプルコード用の配列にセット
                */
-              console.log(result);
+              console.debug(result);
               $scope.users.push(result);
             },
-            function(reason) {}
+            function() {
+              /**
+               * ここにキャンセル処理
+               */
+            }
         );
       };
     });
