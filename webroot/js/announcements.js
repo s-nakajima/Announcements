@@ -60,7 +60,7 @@ NetCommonsApp.controller('Sample',
                * とりあえず、サンプルコードとしてconsole.logと
                * 結果表示サンプルコード用の配列にセット
                */
-              console.debug(result);
+              console.log(result);
               $scope.users.push(result);
             },
             function() {
