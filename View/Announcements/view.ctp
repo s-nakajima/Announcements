@@ -21,10 +21,7 @@ echo $this->NetCommonsHtml->script(array(
 
 	<div class="form-inline" ng-if="users.length">
 		<span class="form-control" ng-repeat="user in users" style="margin: 5px; height: auto; padding: 5px;">
-			<a href="" ng-controller="Users.controller" ng-click="showUser(user.id)">
-				<img class="user-avatar-xs" ng-src="{{user.avatar}}">
-				{{user.handlename}}
-			</a>
+			<?php echo $this->DisplayUser->handleLink(array('ngModel' => 'user'), array('avatar' => true)); ?>
 		</span>
 	</div>
 </div>

@@ -49,6 +49,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  */
 	public $helpers = array(
 		'Workflow.Workflow',
+		'Users.DisplayUser',
 	);
 
 /**
