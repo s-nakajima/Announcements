@@ -52,8 +52,8 @@ NetCommonsApp.controller('Sample',
        * @param {number} users.id
        * @return {void}
        */
-      $scope.showUserSelectionDialog = function(id) {
-        SelectUser($scope, id).result.then(
+      $scope.showUserSelectionDialog = function(userId, roomId) {
+        SelectUser($scope, userId, roomId).result.then(
             function(result) {
               /**
                * ここに選択後の処理を記述
@@ -61,7 +61,7 @@ NetCommonsApp.controller('Sample',
                * 結果表示サンプルコード用の配列にセット
                */
               console.log(result);
-              $scope.users.push(result);
+              $scope.users = result;
             },
             function() {
               /**

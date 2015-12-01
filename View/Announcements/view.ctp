@@ -15,7 +15,7 @@ echo $this->NetCommonsHtml->script(array(
 ?>
 
 <div ng-controller="Sample">
-	<a href="" ng-click="showUserSelectionDialog('<?php echo Current::read('User.id'); ?>')">
+	<a href="" ng-click="showUserSelectionDialog('<?php echo Current::read('User.id'); ?>', '<?php echo Current::read('Room.id'); ?>')">
 		会員選択
 	</a>
 
