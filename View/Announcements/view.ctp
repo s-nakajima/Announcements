@@ -10,7 +10,8 @@
  */
 
 echo $this->NetCommonsHtml->script(array(
-	'/announcements/js/announcements.js'
+	'/announcements/js/announcements.js',
+	'/users/js/user_select.js',
 ));
 ?>
 
