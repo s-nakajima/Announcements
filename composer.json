@@ -16,7 +16,6 @@
     },
     "require-dev": {
         "mustangostang/spyc":           "dev-master",
-        "netcommons/comments":          "dev-master",
         "netcommons/net-commons":       "dev-master",
         "netcommons/search":            "dev-master",
         "netcommons/search-boxes":      "dev-master",
