@@ -89,7 +89,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 	public function add() {
 		$this->view = 'edit';
 
-		if ($this->request->isPost()) {
+		if ($this->request->is('post')) {
 			//登録(POST)処理
 			$data = $this->data;
 			$data['Announcement']['status'] = $this->Workflow->parseStatus();
@@ -113,7 +113,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
  * @return void
  */
 	public function edit() {
-		if ($this->request->isPut()) {
+		if ($this->request->is('put')) {
 			$data = $this->data;
 			$data['Announcement']['status'] = $this->Workflow->parseStatus();
 			unset($data['Announcement']['id']);
@@ -141,7 +141,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
  * @return void
  */
 	public function delete() {
-		if (! $this->request->isDelete()) {
+		if (! $this->request->is('delete')) {
 			$this->throwBadRequest();
 			return;
 		}
