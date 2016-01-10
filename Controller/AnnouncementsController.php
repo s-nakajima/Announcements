@@ -75,7 +75,7 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	public function edit() {
-		if ($this->request->isPost() || $this->request->isPut()) {
+		if ($this->request->is('post') || $this->request->is('put')) {
 			$data = $this->data;
 			$data['Announcement']['status'] = $this->Workflow->parseStatus();
 			unset($data['Announcement']['id']);

@@ -9,7 +9,6 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('AnnouncementsController', 'Announcements.Controller');
 App::uses('WorkflowControllerViewTest', 'Workflow.TestSuite');
 
 /**

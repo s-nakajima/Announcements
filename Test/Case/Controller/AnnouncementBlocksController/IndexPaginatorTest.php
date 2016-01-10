@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('BlocksControllerTest', 'Blocks.TestSuite');
+App::uses('BlocksControllerPaginatorTest', 'Blocks.TestSuite');
 
 /**
  * AnnouncementBlocksController Test Case
@@ -17,7 +17,7 @@ App::uses('BlocksControllerTest', 'Blocks.TestSuite');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Controller
  */
-class AnnouncementBlocksControllerIndexTest extends BlocksControllerTest {
+class AnnouncementBlocksControllerIndexPaginatorTest extends BlocksControllerPaginatorTest {
 
 /**
  * Plugin name
@@ -32,7 +32,7 @@ class AnnouncementBlocksControllerIndexTest extends BlocksControllerTest {
  * @var array
  */
 	public $fixtures = array(
-		'plugin.announcements.announcement',
+		'plugin.announcements.announcement4paginator',
 		'plugin.workflow.workflow_comment',
 	);
 
