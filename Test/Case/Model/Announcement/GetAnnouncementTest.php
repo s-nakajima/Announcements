@@ -39,6 +39,20 @@ class AnnouncementGetAnnouncementTest extends WorkflowGetTest {
 	);
 
 /**
+ * Model name
+ *
+ * @var array
+ */
+	protected $_modelName = 'Announcement';
+
+/**
+ * Method name
+ *
+ * @var array
+ */
+	protected $_methodName = 'getAnnouncement';
+
+/**
  * 編集権限なしのテスト
  *
  * @return void

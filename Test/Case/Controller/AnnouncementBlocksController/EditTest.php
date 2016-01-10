@@ -9,7 +9,6 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('AnnouncementBlocksController', 'Announcements.Controller');
 App::uses('BlocksControllerEditTest', 'Blocks.TestSuite');
 
 /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * Announcement::saveAnnouncement()のテスト
+ * Announcement::validates()のテスト
  *
  * @property Announcement $Announcement
  *
@@ -11,15 +11,15 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('WorkflowSaveTest', 'Workflow.TestSuite');
+App::uses('NetCommonsValidateTest', 'NetCommons.TestSuite');
 
 /**
- * Announcement::saveAnnouncement()のテスト
+ * Announcement::validates()のテスト
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Test\Case\Model\Announcement
  */
-class AnnouncementSaveAnnouncementTest extends WorkflowSaveTest {
+class AnnouncementValidateTest extends NetCommonsValidateTest {
 
 /**
  * Plugin name
@@ -50,7 +50,7 @@ class AnnouncementSaveAnnouncementTest extends WorkflowSaveTest {
  *
  * @var array
  */
-	protected $_methodName = 'saveAnnouncement';
+	protected $_methodName = 'validates';
 
 /**
  * data
@@ -82,47 +82,22 @@ class AnnouncementSaveAnnouncementTest extends WorkflowSaveTest {
 	);
 
 /**
- * SaveのDataProvider
+ * ValidationErrorのDataProvider
  *
  * ### 戻り値
- *  - data 登録データ
+ *  - field フィールド名
+ *  - value セットする値
+ *  - message エラーメッセージ
+ *  - overwrite 上書きするデータ
  *
  * @return void
  */
-	public function dataProviderSave() {
+	public function dataProviderValidationError() {
 		return array(
-			array($this->__data),
-		);
-	}
-
-/**
- * SaveのExceptionErrorのDataProvider
- *
- * ### 戻り値
- *  - data 登録データ
- *  - mockModel Mockのモデル
- *  - mockMethod Mockのメソッド
- *
- * @return void
- */
-	public function dataProviderSaveOnExceptionError() {
-		return array(
-			array($this->__data, 'Announcements.Announcement', 'save'),
-		);
-	}
-
-/**
- * SaveのValidationErrorのDataProvider
- *
- * ### 戻り値
- *  - data 登録データ
- *  - mockModel Mockのモデル
- *
- * @return void
- */
-	public function dataProviderSaveOnValidationError() {
-		return array(
-			array($this->__data, 'Announcements.Announcement'),
+			array($this->__data, 'content', '',
+				sprintf(__d('net_commons', 'Please input %s.'), __d('announcements', 'Content'))),
+			array($this->__data, 'block_id', 'aaa',
+				__d('net_commons', 'Invalid request.')),
 		);
 	}
 
