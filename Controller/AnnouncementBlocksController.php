@@ -32,13 +32,8 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
  * @var array
  */
 	public $components = array(
-		'Blocks.BlockTabs' => array(
-			'mainTabs' => array('block_index'),
-			'blockTabs' => array('block_settings'),
-		),
 		'Workflow.Workflow',
 		'NetCommons.Permission' => array(
-			//アクセスの権限
 			'allow' => array(
 				'index,add,edit,delete' => 'block_editable',
 			),
@@ -53,6 +48,10 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
  */
 	public $helpers = array(
 		'Blocks.BlockForm',
+		'Blocks.BlockTabs' => array(
+			'mainTabs' => array('block_index'),
+			'blockTabs' => array('block_settings'),
+		),
 		'Workflow.Workflow',
 	);
 
