@@ -62,8 +62,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 			if (Current::permission('content_editable')) {
 				$announcement = $this->Announcement->createAll();
 			} else {
-				$this->setAction('emptyRender');
-				return;
+				return $this->setAction('emptyRender');
 			}
 		}
 		$this->set('announcement', $announcement['Announcement']);
@@ -81,8 +80,7 @@ class AnnouncementsController extends AnnouncementsAppController {
 			unset($data['Announcement']['id']);
 
 			if ($this->Announcement->saveAnnouncement($data)) {
-				$this->redirect(NetCommonsUrl::backToPageUrl());
-				return;
+				return $this->redirect(NetCommonsUrl::backToPageUrl());
 			}
 			$this->NetCommons->handleValidationError($this->Announcement->validationErrors);
 
