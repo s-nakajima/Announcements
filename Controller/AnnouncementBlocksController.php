@@ -94,8 +94,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 			$data['Announcement']['status'] = $this->Workflow->parseStatus();
 
 			if ($this->Announcement->saveAnnouncement($data)) {
-				$this->redirect(NetCommonsUrl::backToIndexUrl('default_setting_action'));
-				return;
+				return $this->redirect(NetCommonsUrl::backToIndexUrl('default_setting_action'));
 			}
 			$this->NetCommons->handleValidationError($this->Announcement->validationErrors);
 
@@ -118,8 +117,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
 			unset($data['Announcement']['id']);
 
 			if ($this->Announcement->saveAnnouncement($data)) {
-				$this->redirect(NetCommonsUrl::backToIndexUrl('default_setting_action'));
-				return;
+				return $this->redirect(NetCommonsUrl::backToIndexUrl('default_setting_action'));
 			}
 			$this->NetCommons->handleValidationError($this->Announcement->validationErrors);
 
@@ -141,8 +139,7 @@ class AnnouncementBlocksController extends AnnouncementsAppController {
  */
 	public function delete() {
 		if (! $this->request->is('delete')) {
-			$this->throwBadRequest();
-			return;
+			return $this->throwBadRequest();
 		}
 
 		$this->Announcement->deleteAnnouncement($this->data);

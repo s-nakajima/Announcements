@@ -77,6 +77,16 @@ class AnnouncementsControllerViewTest extends WorkflowControllerViewTest {
 	}
 
 /**
+ * viewアクションのテスト
+ *
+ * @return void
+ */
+	public function testViewJson() {
+		$result = $this->dataProviderView()[0];
+		$this->_testGetAction('/announcements/announcements/view/2.json?frame_id=6', Hash::get($result, 'assert'), null, 'json');
+	}
+
+/**
  * viewアクションのテスト(作成権限のみ)用DataProvider
  *
  * ### 戻り値
