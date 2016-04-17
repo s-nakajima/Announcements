@@ -92,7 +92,9 @@ class AnnouncementsController extends AnnouncementsAppController {
 			$this->request->data['Frame'] = Current::read('Frame');
 		}
 
-		$comments = $this->Announcement->getCommentsByContentKey($this->request->data['Announcement']['key']);
+		$comments = $this->Announcement->getCommentsByContentKey(
+			$this->request->data['Announcement']['key']
+		);
 		$this->set('comments', $comments);
 	}
 }
