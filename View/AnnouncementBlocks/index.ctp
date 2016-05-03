@@ -13,53 +13,66 @@
 <article class="block-setting-body">
 	<?php echo $this->BlockTabs->main(BlockTabsHelper::MAIN_TAB_BLOCK_INDEX); ?>
 
+	<?php echo $this->BlockIndex->description(); ?>
+
 	<div class="tab-content">
-		<div class="text-right">
-			<?php echo $this->Button->addLink(); ?>
-		</div>
+		<?php echo $this->BlockIndex->create(); ?>
+			<?php echo $this->BlockIndex->addLink(); ?>
 
-		<?php echo $this->NetCommonsForm->create('', array(
-				'url' => NetCommonsUrl::actionUrl(array('plugin' => 'frames', 'controller' => 'frames', 'action' => 'edit'))
-			)); ?>
-
-			<?php echo $this->NetCommonsForm->hidden('Frame.id'); ?>
-
-			<table class="table table-hover">
+			<?php echo $this->BlockIndex->startTable(); ?>
 				<thead>
 					<tr>
-						<th></th>
-						<th>
-							<?php echo $this->Paginator->sort('Block.name', __d('announcements', 'Content')); ?>
-						</th>
-						<th>
-							<?php echo $this->Paginator->sort('Announcement.modified', __d('net_commons', 'Updated date')); ?>
-						</th>
+						<?php echo $this->BlockIndex->tableHeader(
+								'Frame.block_id'
+							); ?>
+						<?php echo $this->BlockIndex->tableHeader(
+								'Block.name', __d('announcements', 'Content'),
+								array('sort' => true)
+							); ?>
+						<?php echo $this->BlockIndex->tableHeader(
+								'TrackableCreator.handlename', __d('net_commons', 'Created user'),
+								array('sort' => true, 'type' => 'handle')
+							); ?>
+						<?php echo $this->BlockIndex->tableHeader(
+								'Announcement.created', __d('net_commons', 'Created datetime'),
+								array('sort' => true, 'type' => 'datetime')
+							); ?>
+						<?php echo $this->BlockIndex->tableHeader(
+								'Announcement.modified', __d('net_commons', 'Modified datetime'),
+								array('sort' => true, 'type' => 'datetime')
+							); ?>
 					</tr>
 				</thead>
 				<tbody>
 					<?php foreach ($announcements as $announcement) : ?>
-						<tr<?php echo ($this->data['Frame']['block_id'] === $announcement['Block']['id'] ? ' class="active"' : ''); ?>>
-							<td>
-								<?php echo $this->BlockForm->displayFrame('Frame.block_id', $announcement['Block']['id']); ?>
-							</td>
-							<td>
-								<?php echo $this->NetCommonsHtml->editLink($announcement['Block']['name'], array('block_id' => $announcement['Block']['id'])); ?>
-
-								<?php echo $this->Workflow->label($announcement['Announcement']['status']); ?>
-							</td>
-							<td>
-								<?php echo $this->Date->dateFormat($announcement['Announcement']['modified']); ?>
-							</td>
-						</tr>
+						<?php echo $this->BlockIndex->startTableRow($announcement['Block']['id']); ?>
+							<?php echo $this->BlockIndex->tableData(
+									'Frame.block_id', $announcement['Block']['id']
+								); ?>
+							<?php echo $this->BlockIndex->tableData(
+									'Block.name',
+									$this->Workflow->label($announcement['Announcement']['status']) . ' ' . $announcement['Block']['name'],
+									array('editUrl' => array('block_id' => $announcement['Block']['id']), 'escape' => false)
+								); ?>
+							<?php echo $this->BlockIndex->tableData(
+									'TrackableCreator', $announcement,
+									array('type' => 'handle')
+								); ?>
+							<?php echo $this->BlockIndex->tableData(
+									'Announcement.created', $announcement['Announcement']['created'],
+									array('type' => 'datetime')
+								); ?>
+							<?php echo $this->BlockIndex->tableData(
+									'Announcement.modified', $announcement['Announcement']['modified'],
+									array('type' => 'datetime')
+								); ?>
+						<?php echo $this->BlockIndex->endTableRow(); ?>
 					<?php endforeach; ?>
 				</tbody>
-			</table>
-		<?php echo $this->NetCommonsForm->end(); ?>
+			<?php echo $this->BlockIndex->endTable(); ?>
+
+		<?php echo $this->BlockIndex->end(); ?>
 
 		<?php echo $this->element('NetCommons.paginator'); ?>
 	</div>
 </article>
-
-
-
-
