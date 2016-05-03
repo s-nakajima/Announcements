@@ -34,11 +34,7 @@
 								array('sort' => true, 'type' => 'handle')
 							); ?>
 						<?php echo $this->BlockIndex->tableHeader(
-								'Announcement.created', __d('net_commons', 'Created datetime'),
-								array('sort' => true, 'type' => 'datetime')
-							); ?>
-						<?php echo $this->BlockIndex->tableHeader(
-								'Announcement.modified', __d('net_commons', 'Modified datetime'),
+								'Block.modified', __d('net_commons', 'Modified datetime'),
 								array('sort' => true, 'type' => 'datetime')
 							); ?>
 					</tr>
@@ -59,11 +55,7 @@
 									array('type' => 'handle')
 								); ?>
 							<?php echo $this->BlockIndex->tableData(
-									'Announcement.created', $announcement['Announcement']['created'],
-									array('type' => 'datetime')
-								); ?>
-							<?php echo $this->BlockIndex->tableData(
-									'Announcement.modified', $announcement['Announcement']['modified'],
+									'Block.modified', $announcement['Block']['modified'],
 									array('type' => 'datetime')
 								); ?>
 						<?php echo $this->BlockIndex->endTableRow(); ?>

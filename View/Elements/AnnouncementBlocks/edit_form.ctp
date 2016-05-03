@@ -18,6 +18,8 @@
 
 			<?php echo $this->element('Blocks.public_type'); ?>
 
+			<?php echo $this->element('Blocks.modifed_info'); ?>
+
 			<hr />
 
 			<?php echo $this->Workflow->inputComment('Announcement.status', false); ?>
