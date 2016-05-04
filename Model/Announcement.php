@@ -40,7 +40,7 @@ class Announcement extends AnnouncementsAppModel {
 		'Topics.Topics' => array(
 			'fields' => array(
 				'title' => 'Announcement.content',
-				'contents' => 'Announcement.content',
+				'summary' => 'Announcement.content',
 			),
 		),
 	);
