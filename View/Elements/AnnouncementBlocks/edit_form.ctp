@@ -15,8 +15,8 @@
 	<div class="panel panel-default" >
 		<div class="panel-body has-feedback">
 			<?php echo $this->element('Announcements/edit_form'); ?>
-
 			<?php echo $this->element('Blocks.public_type'); ?>
+			<?php echo $this->element('Blocks.modifed_info', array('displayModified' => true)); ?>
 
 			<hr />
 
