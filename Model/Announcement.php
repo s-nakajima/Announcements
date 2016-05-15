@@ -171,7 +171,8 @@ class Announcement extends AnnouncementsAppModel {
 		try {
 			//Announcementの削除
 			$this->contentKey = $data[$this->alias]['key'];
-			if (! $this->deleteAll(array($this->alias . '.key' => $data[$this->alias]['key']), false, true)) {
+			$conditions = array($this->alias . '.key' => $data[$this->alias]['key']);
+			if (! $this->deleteAll($conditions, false, true)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 
