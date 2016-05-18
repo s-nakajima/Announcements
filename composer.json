@@ -2,25 +2,21 @@
     "name": "netcommons/announcements",
     "description": "Announcements for NetCommons Plugin",
     "homepage": "http://www.netcommons.org/",
+    "type": "cakephp-plugin",
     "extra": {
         "installer-paths": {
             "app/Plugin/{$name}": ["type:cakephp-plugin"]
         }
     },
     "require": {
-        "cakephp/cakephp":              "~2.6",
-        "cakephp/debug_kit":            "~2.2",
         "cakedc/migrations":            "~2.2",
-        "phpunit/phpunit":              "~3.7.38",
-        "sebastian/phpcpd":             "~2.0"
-    },
-    "require-dev": {
-        "mustangostang/spyc":           "dev-master",
+        "netcommons/blocks":            "dev-master",
+        "netcommons/mails":             "dev-master",
         "netcommons/net-commons":       "dev-master",
-        "netcommons/search":            "dev-master",
-        "netcommons/search-boxes":      "dev-master",
+        "netcommons/plugin-manager":    "dev-master",
         "netcommons/topics":            "dev-master",
-        "satooshi/php-coveralls":       "dev-master"
+        "netcommons/workflow":          "dev-master",
+        "netcommons/wysiwyg":           "dev-master"
     },
     "license": "NetCommons License",
     "authors": [
@@ -29,7 +25,6 @@
             "homepage": "https://github.com/NetCommons3/Announcements/graphs/contributors"
         }
     ],
-    "type":        "cakephp-plugin",
     "keywords":    ["cakephp", "announcements"],
     "config": {
         "vendor-dir": "vendors"
