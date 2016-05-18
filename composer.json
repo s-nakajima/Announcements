@@ -13,6 +13,7 @@
         "netcommons/blocks":            "dev-master",
         "netcommons/mails":             "dev-master",
         "netcommons/net-commons":       "dev-master",
+        "netcommons/pages":             "dev-master",
         "netcommons/plugin-manager":    "dev-master",
         "netcommons/topics":            "dev-master",
         "netcommons/workflow":          "dev-master",
