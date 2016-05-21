@@ -47,7 +47,8 @@
 								); ?>
 							<?php echo $this->BlockIndex->tableData(
 									'Block.name',
-									$this->Workflow->label($announcement['Announcement']['status']) . ' ' . $announcement['Block']['name'],
+									'<small>' . $this->Workflow->label($announcement['Announcement']['status']) . '</small>' . ' ' .
+									$announcement['Block']['name'],
 									array('editUrl' => array('block_id' => $announcement['Block']['id']), 'escape' => false)
 								); ?>
 							<?php echo $this->BlockIndex->tableData(
