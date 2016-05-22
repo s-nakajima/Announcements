@@ -11,15 +11,15 @@
 ?>
 
 <?php if (Current::permission('content_editable')) : ?>
-	<p class="text-right">
-		<?php echo $this->Button->editLink(); ?>
-	</p>
+	<header class="clearfix">
+		<div class="pull-left">
+			<?php echo $this->Workflow->label($announcement['status']); ?>
+		</div>
+
+		<div class="pull-right">
+			<?php echo $this->Button->editLink(); ?>
+		</div>
+	</header>
 <?php endif; ?>
 
 <?php echo $announcement['content']; ?>
-
-<?php if (Current::permission('content_editable')) : ?>
-	<p class="text-left">
-		<?php echo $this->Workflow->label($announcement['status']); ?>
-	</p>
-<?php endif;
