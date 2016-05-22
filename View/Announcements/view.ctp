@@ -22,4 +22,4 @@
 	</header>
 <?php endif; ?>
 
-<?php echo $announcement['content']; ?>
+<?php echo $announcement['content'];
