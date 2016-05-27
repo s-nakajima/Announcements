@@ -8,6 +8,8 @@
  * @license http://www.netcommons.org/license.txt NetCommons License
  * @copyright Copyright 2014, NetCommons Project
  */
+
+App::uses('Topic', 'Topics.Model');
 ?>
 
 <article class="block-setting-body">
@@ -48,7 +50,7 @@
 							<?php echo $this->BlockIndex->tableData(
 									'Block.name',
 									'<small>' . $this->Workflow->label($announcement['Announcement']['status']) . '</small>' . ' ' .
-									$announcement['Block']['name'],
+									h(mb_strimwidth($announcement['Block']['name'], 0, Topic::DISPLAY_SUMMARY_LENGTH, '...')),
 									array('editUrl' => array('block_id' => $announcement['Block']['id']), 'escape' => false)
 								); ?>
 							<?php echo $this->BlockIndex->tableData(
