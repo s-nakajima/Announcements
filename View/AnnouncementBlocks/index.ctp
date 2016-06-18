@@ -29,10 +29,14 @@ App::uses('Topic', 'Topics.Model');
 							); ?>
 						<?php echo $this->BlockIndex->tableHeader(
 								'Block.name', __d('announcements', 'Content'),
-								array('sort' => true)
+								array('sort' => true, 'editUrl' => true)
 							); ?>
 						<?php echo $this->BlockIndex->tableHeader(
-								'TrackableCreator.handlename', __d('net_commons', 'Created user'),
+									'Block.public_type', __d('blocks', 'Publishing setting'),
+									array('sort' => true)
+								); ?>
+						<?php echo $this->BlockIndex->tableHeader(
+								'TrackableUpdater.handlename', __d('net_commons', 'Modified user'),
 								array('sort' => true, 'type' => 'handle')
 							); ?>
 						<?php echo $this->BlockIndex->tableHeader(
@@ -54,7 +58,10 @@ App::uses('Topic', 'Topics.Model');
 									array('editUrl' => array('block_id' => $announcement['Block']['id']), 'escape' => false)
 								); ?>
 							<?php echo $this->BlockIndex->tableData(
-									'TrackableCreator', $announcement,
+									'Block.public_type', $announcement
+								); ?>
+							<?php echo $this->BlockIndex->tableData(
+									'TrackableUpdater', $announcement,
 									array('type' => 'handle')
 								); ?>
 							<?php echo $this->BlockIndex->tableData(
