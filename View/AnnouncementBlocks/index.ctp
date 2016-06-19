@@ -32,9 +32,9 @@ App::uses('Topic', 'Topics.Model');
 								array('sort' => true, 'editUrl' => true)
 							); ?>
 						<?php echo $this->BlockIndex->tableHeader(
-									'Block.public_type', __d('blocks', 'Publishing setting'),
-									array('sort' => true)
-								); ?>
+								'Block.public_type', __d('blocks', 'Publishing setting'),
+								array('sort' => true)
+							); ?>
 						<?php echo $this->BlockIndex->tableHeader(
 								'TrackableUpdater.handlename', __d('net_commons', 'Modified user'),
 								array('sort' => true, 'type' => 'handle')
