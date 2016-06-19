@@ -10,13 +10,10 @@
  */
 ?>
 
-<?php echo $this->NetCommonsForm->create('Announcement'); ?>
-
-	<div class="panel panel-default" >
-		<div class="panel-body has-feedback">
+<div class="panel panel-default" >
+	<div class="panel-body">
+		<?php echo $this->NetCommonsForm->create('Announcement'); ?>
 			<?php echo $this->element('Announcements/edit_form'); ?>
-			<?php echo $this->element('Blocks.public_type'); ?>
-			<?php echo $this->element('Blocks.modifed_info', array('displayModified' => true)); ?>
 
 			<hr />
 
@@ -24,5 +21,18 @@
 		</div>
 
 		<?php echo $this->Workflow->buttons('Announcement.status', NetCommonsUrl::backToIndexUrl('default_setting_action')); ?>
-	</div>
-<?php echo $this->NetCommonsForm->end();
+	<?php echo $this->NetCommonsForm->end(); ?>
+
+	<?php if (Hash::get($this->request->data, 'Announcement.id')) : ?>
+		<div class="panel-footer text-right">
+			<?php echo $this->element('Announcements.Announcements/delete_form', array(
+				'url' => NetCommonsUrl::actionUrl(array(
+					'controller' => $this->params['controller'],
+					'action' => 'delete',
+					'block_id' => Current::read('Block.id'),
+					'frame_id' => Current::read('Frame.id')
+				))
+			)); ?>
+		</div>
+	<?php endif; ?>
+</div>

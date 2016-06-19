@@ -19,10 +19,9 @@ $announcement = NetCommonsAppController::camelizeKeyRecursive(array('announcemen
 <article class="block-setting-body" ng-controller="Announcements"
 	ng-init="initialize(<?php echo h(json_encode($announcement)); ?>)">
 
-	<?php echo $this->NetCommonsForm->create('Announcement'); ?>
-
-		<div class="panel panel-default" >
-			<div class="panel-body">
+	<div class="panel panel-default" >
+		<div class="panel-body">
+			<?php echo $this->NetCommonsForm->create('Announcement'); ?>
 				<?php echo $this->element('Announcements/edit_form'); ?>
 
 				<hr />
@@ -30,10 +29,19 @@ $announcement = NetCommonsAppController::camelizeKeyRecursive(array('announcemen
 				<?php echo $this->Workflow->inputComment('Announcement.status'); ?>
 			</div>
 
-			<?php echo $this->Workflow->buttons('Announcement.status'); ?>
-		</div>
+			<?php echo $this->Workflow->buttons('Announcement.status', NetCommonsUrl::backToPageUrl()); ?>
+		<?php echo $this->NetCommonsForm->end(); ?>
 
-		<?php echo $this->Workflow->comments(); ?>
+		<?php if ($this->Workflow->canDelete('Announcements.Announcement', $this->request->data) &&
+						Hash::get($this->request->data, 'Announcement.id')) : ?>
+			<div class="panel-footer text-right">
+				<?php echo $this->element('Announcements.Announcements/delete_form', array(
+					'url' => $this->NetCommonsHtml->url(array('action' => 'delete', 'key' => $this->data['Announcement']['key']))
+				)); ?>
+			</div>
+		<?php endif; ?>
+	</div>
 
-	<?php echo $this->NetCommonsForm->end(); ?>
+	<?php echo $this->Workflow->comments(); ?>
+
 </article>

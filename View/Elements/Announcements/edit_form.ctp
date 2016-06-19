@@ -21,4 +21,12 @@
 <?php echo $this->NetCommonsForm->wysiwyg('Announcement.content', array(
 		'label' => __d('announcements', 'Content'),
 		'required' => true,
-	));
+	)); ?>
+
+<?php if (Current::permission('block_editable')) : ?>
+	<?php echo $this->element('Blocks.public_type'); ?>
+	<?php echo $this->element(
+			'Blocks.modifed_info',
+			array('displayModified' => (bool)Hash::get($this->request->data, 'Announcement.id'))
+		); ?>
+<?php endif;
