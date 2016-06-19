@@ -28,18 +28,5 @@ $announcement = NetCommonsAppController::camelizeKeyRecursive(array('announcemen
 		<?php echo $this->element('Announcements.AnnouncementBlocks/edit_form'); ?>
 
 		<?php echo $this->Workflow->comments(); ?>
-
-		<?php if ($this->request->params['action'] === 'edit') : ?>
-			<?php echo $this->element('Blocks.delete_form', array(
-					'model' => 'AnnouncementBlocks',
-					'action' => NetCommonsUrl::actionUrl(array(
-						'controller' => $this->params['controller'],
-						'action' => 'delete',
-						'block_id' => Current::read('Block.id'),
-						'frame_id' => Current::read('Frame.id')
-					)),
-					'callback' => 'Announcements.AnnouncementBlocks/delete_form'
-				)); ?>
-		<?php endif; ?>
 	</div>
 </div>
