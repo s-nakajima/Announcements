@@ -11,7 +11,7 @@
  * @param {function($scope, NetCommonsWysiwyg)} Controller
  */
 NetCommonsApp.controller('Announcements',
-    function($scope, NetCommonsWysiwyg) {
+    ['$scope', 'NetCommonsWysiwyg', function($scope, NetCommonsWysiwyg) {
 
       /**
        * tinymce
@@ -28,4 +28,4 @@ NetCommonsApp.controller('Announcements',
       $scope.initialize = function(data) {
         $scope.announcement = angular.copy(data.announcement);
       };
-    });
+    }]);
