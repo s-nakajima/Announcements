@@ -33,6 +33,7 @@ class AnnouncementBlocksControllerIndexPaginatorTest extends BlocksControllerPag
  */
 	public $fixtures = array(
 		'plugin.announcements.announcement4paginator',
+		'plugin.announcements.announcement_setting',
 		'plugin.workflow.workflow_comment',
 	);
 
