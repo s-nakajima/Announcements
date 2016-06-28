@@ -18,6 +18,9 @@
 <?php echo $this->NetCommonsForm->hidden('Announcement.language_id'); ?>
 <?php echo $this->NetCommonsForm->hidden('Announcement.status'); ?>
 
+<?php echo $this->NetCommonsForm->hidden('AnnouncementSetting.id'); ?>
+<?php echo $this->NetCommonsForm->hidden('AnnouncementSetting.block_key'); ?>
+
 <?php echo $this->NetCommonsForm->wysiwyg('Announcement.content', array(
 		'label' => __d('announcements', 'Content'),
 		'required' => true,
