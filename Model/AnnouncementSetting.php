@@ -10,6 +10,7 @@
  */
 
 App::uses('AnnouncementsAppModel', 'Announcements.Model');
+App::uses('BlockSettingBehavior', 'Blocks.Model/Behavior');
 
 /**
  * AnnouncementSetting Model
@@ -18,6 +19,13 @@ App::uses('AnnouncementsAppModel', 'Announcements.Model');
  * @package NetCommons\Announcements\Model
  */
 class AnnouncementSetting extends AnnouncementsAppModel {
+
+/**
+ * Custom database table name
+ *
+ * @var string
+ */
+	public $useTable = 'blocks';
 
 /**
  * Validation rules
@@ -33,6 +41,9 @@ class AnnouncementSetting extends AnnouncementsAppModel {
  */
 	public $actsAs = array(
 		'Blocks.BlockRolePermission',
+		'Blocks.BlockSetting' => array(
+			BlockSettingBehavior::FIELD_USE_WORKFLOW,
+		),
 	);
 
 /**
@@ -46,21 +57,35 @@ class AnnouncementSetting extends AnnouncementsAppModel {
  */
 	public function beforeValidate($options = array()) {
 		$this->validate = Hash::merge($this->validate, array(
-			'block_key' => array(
-				'notBlank' => array(
-					'rule' => array('notBlank'),
+			'language_id' => array(
+				'numeric' => array(
+					'rule' => array('numeric'),
 					'message' => __d('net_commons', 'Invalid request.'),
+					'required' => false,
 				),
 			),
-			'use_workflow' => array(
-				'boolean' => array(
-					'rule' => array('boolean'),
+			'room_id' => array(
+				'numeric' => array(
+					'rule' => array('numeric'),
 					'message' => __d('net_commons', 'Invalid request.'),
+					'required' => false,
 				),
 			),
 		));
 
 		return parent::beforeValidate($options);
+	}
+
+/**
+ * AnnouncementSettingデータ新規作成
+ *
+ * @return array
+ */
+	public function createAnnouncementSetting() {
+		$announcementSetting = $this->createAll();
+		/** @see BlockSettingBehavior::getBlockSetting() */
+		/** @see BlockSettingBehavior::_createBlockSetting() */
+		return Hash::merge($announcementSetting, $this->getBlockSetting());
 	}
 
 /**
@@ -71,7 +96,10 @@ class AnnouncementSetting extends AnnouncementsAppModel {
 	public function getAnnouncementSetting() {
 		$announcementSetting = $this->find('first', array(
 			'recursive' => -1,
-			'conditions' => array('block_key' => Current::read('Block.key')),
+			'conditions' => array(
+				$this->alias . '.key' => Current::read('Block.key'),
+				$this->alias . '.language_id' => Current::read('Language.id'),
+			),
 		));
 
 		return $announcementSetting;

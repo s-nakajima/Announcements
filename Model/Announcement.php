@@ -12,6 +12,7 @@
  */
 
 App::uses('AnnouncementsAppModel', 'Announcements.Model');
+App::uses('BlockSettingBehavior', 'Blocks.Model/Behavior');
 
 /**
  * Announcement Model
@@ -124,8 +125,8 @@ class Announcement extends AnnouncementsAppModel {
 
 		//AnnouncementSetting登録
 		if (isset($this->data['AnnouncementSetting'])) {
-			if (! $this->data['AnnouncementSetting']['block_key']) {
-				$this->data['AnnouncementSetting']['block_key'] = $this->data['Block']['key'];
+			if (! $this->data['AnnouncementSetting']['id']) {
+				$this->data['AnnouncementSetting']['id'] = $this->data['Block']['id'];
 			}
 			$this->AnnouncementSetting->set($this->data['AnnouncementSetting']);
 			if (! $this->AnnouncementSetting->save(null, false)) {
