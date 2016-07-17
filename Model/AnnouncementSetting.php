@@ -47,36 +47,6 @@ class AnnouncementSetting extends AnnouncementsAppModel {
 	);
 
 /**
- * Called during validation operations, before validation. Please note that custom
- * validation rules can be defined in $validate.
- *
- * @param array $options Options passed from Model::save().
- * @return bool True if validate operation should continue, false to abort
- * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#beforevalidate
- * @see Model::save()
- */
-	public function beforeValidate($options = array()) {
-		$this->validate = Hash::merge($this->validate, array(
-			'language_id' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					'message' => __d('net_commons', 'Invalid request.'),
-					'required' => false,
-				),
-			),
-			'room_id' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					'message' => __d('net_commons', 'Invalid request.'),
-					'required' => false,
-				),
-			),
-		));
-
-		return parent::beforeValidate($options);
-	}
-
-/**
  * AnnouncementSettingデータ新規作成
  *
  * @return array
