@@ -1,6 +1,6 @@
 <?php
 /**
- * BlockSettingForVideoFixture
+ * BlockSettingForAnnouncementFixture
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Mitsuru Mutaguchi <mutaguchi@opensource-workshop.jp>
@@ -12,7 +12,7 @@
 App::uses('BlockSettingFixture', 'Blocks.Test/Fixture');
 
 /**
- * Summary for BlockSettingForVideoFixture
+ * Summary for BlockSettingForAnnouncementFixture
  */
 class BlockSettingForAnnouncementFixture extends BlockSettingFixture {
 
