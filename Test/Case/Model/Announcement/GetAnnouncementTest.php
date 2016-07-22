@@ -35,7 +35,7 @@ class AnnouncementGetAnnouncementTest extends WorkflowGetTest {
  */
 	public $fixtures = array(
 		'plugin.announcements.announcement',
-		'plugin.announcements.announcement_setting',
+		'plugin.announcements.block_setting_for_announcement',
 		'plugin.workflow.workflow_comment',
 	);
 
@@ -68,6 +68,7 @@ class AnnouncementGetAnnouncementTest extends WorkflowGetTest {
 
 		//テスト実施
 		$result = $this->Announcement->getAnnouncement();
+		$result = Hash::remove($result, 'AnnouncementSetting');
 
 		//チェック
 		$this->assertEquals($result, $expected);
@@ -87,6 +88,7 @@ class AnnouncementGetAnnouncementTest extends WorkflowGetTest {
 
 		//テスト実施
 		$result = $this->Announcement->getAnnouncement();
+		$result = Hash::remove($result, 'AnnouncementSetting');
 
 		//チェック
 		$this->assertEquals($result, $expected);

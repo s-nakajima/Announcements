@@ -10,10 +10,8 @@
  */
 ?>
 
-<?php echo $this->NetCommonsForm->hidden('Block.id'); ?>
-<?php echo $this->NetCommonsForm->hidden('Block.key'); ?>
-<?php echo $this->NetCommonsForm->hidden('AnnouncementSetting.block_key'); ?>
 <?php echo $this->NetCommonsForm->hidden('AnnouncementSetting.id'); ?>
+<?php echo $this->NetCommonsForm->hidden('AnnouncementSetting.use_workflow'); ?>
 
 <?php echo $this->BlockRolePermissionForm->contentPublishablePermission(); ?>
 
