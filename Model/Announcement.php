@@ -30,6 +30,9 @@ class Announcement extends AnnouncementsAppModel {
 	public $actsAs = array(
 		'Blocks.Block' => array(
 			'name' => 'Announcement.content',
+			'loadModels' => array(
+				'BlockSetting' => 'Blocks.BlockSetting',
+			)
 		),
 		'NetCommons.OriginalKey',
 		'Workflow.WorkflowComment',
