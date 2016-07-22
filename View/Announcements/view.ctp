@@ -22,4 +22,10 @@
 	</header>
 <?php endif; ?>
 
-<?php echo $announcement['content'];
+<?php if ($announcement['content']) : ?>
+	<?php echo $announcement['content']; ?>
+<?php else : ?>
+		<article>
+			<?php echo __d('net_commons', 'Not found %s.', __d('announcements', 'Content')); ?>
+		</article>
+<?php endif;
