@@ -128,13 +128,8 @@ class Announcement extends AnnouncementsAppModel {
 
 		//AnnouncementSetting登録
 		if (isset($this->data['AnnouncementSetting'])) {
-			if (! $this->data['AnnouncementSetting']['id']) {
-				$this->data['AnnouncementSetting']['id'] = $this->data['Block']['id'];
-			}
 			$this->AnnouncementSetting->set($this->data['AnnouncementSetting']);
-			if (! $this->AnnouncementSetting->save(null, false)) {
-				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-			}
+			$this->AnnouncementSetting->save(null, false);
 		}
 
 		parent::afterSave($created, $options);
