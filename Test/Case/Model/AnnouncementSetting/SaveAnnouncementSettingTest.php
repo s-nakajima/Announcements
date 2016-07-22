@@ -10,7 +10,6 @@
  */
 
 App::uses('NetCommonsSaveTest', 'NetCommons.TestSuite');
-App::uses('BlockFixture', 'Blocks.Test/Fixture');
 
 /**
  * AnnouncementSetting::saveAnnouncementSetting()のテスト
@@ -78,21 +77,38 @@ class AnnouncementSettingSaveAnnouncementSettingTest extends NetCommonsSaveTest 
  * @return array テストデータ
  */
 	public function dataProviderSave() {
-		$data['AnnouncementSetting'] = (new BlockFixture())->records[0];
-		$data['AnnouncementSetting']['content_count'] = '0';
 		$data['AnnouncementSetting']['use_workflow'] = '0';
-		$data['AnnouncementSetting']['key'] = $this->blockKey;
 
 		$results = array();
 		// * 編集の登録処理
 		$results[0] = array($data);
 		// * 新規の登録処理
 		$results[1] = array($data);
-		$results[1] = Hash::insert($results[1], '0.AnnouncementSetting.id', null);
-		//$results[1] = Hash::insert($results[1], '0.AnnouncementSetting.key', null);
-		$results[1] = Hash::remove($results[1], '0.AnnouncementSetting.created_user');
+		$results[1] = Hash::insert($results[1], '0.AnnouncementSetting.use_workflow', '1');
 
 		return $results;
+	}
+
+/**
+ * Saveのテスト
+ *
+ * @param array $data 登録データ
+ * @dataProvider dataProviderSave
+ * @return void
+ */
+	public function testSave($data) {
+		$model = $this->_modelName;
+		$method = $this->_methodName;
+
+		//テスト実行
+		$result = $this->$model->$method($data);
+		$this->assertNotEmpty($result);
+
+		//登録データ取得
+		$actual = $this->$model->getAnnouncementSetting();
+		$expected = $data;
+
+		$this->assertEquals($expected, $actual);
 	}
 
 /**
@@ -109,7 +125,7 @@ class AnnouncementSettingSaveAnnouncementSettingTest extends NetCommonsSaveTest 
 		$data = $this->dataProviderSave()[0][0];
 
 		return array(
-			array($data, 'Announcements.AnnouncementSetting', 'save'),
+			array($data[$this->_modelName], 'Blocks.BlockSetting', 'saveMany'),
 		);
 	}
 

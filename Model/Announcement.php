@@ -156,7 +156,9 @@ class Announcement extends AnnouncementsAppModel {
 			'recursive' => 0,
 			'conditions' => $this->getBlockConditionById($conditions),
 		));
-
+		if (!$announcement) {
+			return $announcement;
+		}
 		return Hash::merge($announcement, $this->AnnouncementSetting->getAnnouncementSetting());
 	}
 
