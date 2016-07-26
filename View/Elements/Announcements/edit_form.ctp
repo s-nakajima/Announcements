@@ -18,7 +18,6 @@
 <?php echo $this->NetCommonsForm->hidden('Announcement.language_id'); ?>
 <?php echo $this->NetCommonsForm->hidden('Announcement.status'); ?>
 
-<?php echo $this->NetCommonsForm->hidden('AnnouncementSetting.id'); ?>
 <?php echo $this->NetCommonsForm->hidden('AnnouncementSetting.use_workflow'); ?>
 
 <?php echo $this->NetCommonsForm->wysiwyg('Announcement.content', array(
