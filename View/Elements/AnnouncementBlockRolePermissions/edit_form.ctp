@@ -10,7 +10,6 @@
  */
 ?>
 
-<?php echo $this->NetCommonsForm->hidden('AnnouncementSetting.id'); ?>
 <?php echo $this->NetCommonsForm->hidden('AnnouncementSetting.use_workflow'); ?>
 
 <?php echo $this->BlockRolePermissionForm->contentPublishablePermission(); ?>
