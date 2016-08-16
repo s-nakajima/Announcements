@@ -23,6 +23,7 @@
 <?php echo $this->NetCommonsForm->wysiwyg('Announcement.content', array(
 		'label' => __d('announcements', 'Content'),
 		'required' => true,
+		'rows' => 12
 	)); ?>
 
 <?php if (Current::permission('block_editable')) : ?>
