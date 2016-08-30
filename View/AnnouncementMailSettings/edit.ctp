@@ -17,7 +17,7 @@
 	<div class="tab-content">
 		<?php echo $this->BlockTabs->block(BlockTabsHelper::MAIN_TAB_MAIL_SETTING); ?>
 
-		<?php /** @see MailFormHelper::editFrom() */ ?>
-		<?php echo $this->MailForm->editFrom(array(), NetCommonsUrl::backToIndexUrl('default_setting_action')); ?>
+		<?php /** @see MailFormHelper::editFrom() 承認メール通知機能を使う のみ表示 */ ?>
+		<?php echo $this->MailForm->editFrom(array(), NetCommonsUrl::backToIndexUrl('default_setting_action'), 0, 0, 1, 0); ?>
 	</div>
 </div>
