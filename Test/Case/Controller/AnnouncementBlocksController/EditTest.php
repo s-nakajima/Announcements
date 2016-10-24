@@ -67,7 +67,7 @@ class AnnouncementBlocksControllerEditTest extends BlocksControllerEditTest {
 				'id' => $blockId,
 				'key' => $blockKey,
 				'language_id' => '2',
-				'room_id' => '1',
+				'room_id' => '2',
 				'plugin_key' => $this->plugin,
 				'public_type' => '1',
 				'from' => null,
