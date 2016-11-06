@@ -65,7 +65,7 @@ class AnnouncementValidateTest extends NetCommonsValidateTest {
 		'Block' => array(
 			'id' => '2',
 			'language_id' => '2',
-			'room_id' => '1',
+			'room_id' => '2',
 			'key' => 'block_1',
 			'plugin_key' => 'announcements',
 		),
