@@ -69,6 +69,7 @@ class AnnouncementGetAnnouncementTest extends WorkflowGetTest {
 		//テスト実施
 		$result = $this->Announcement->getAnnouncement();
 		$result = Hash::remove($result, 'AnnouncementSetting');
+		$result = Hash::remove($result, 'BlocksLanguage');
 
 		//チェック
 		$this->assertEquals($result, $expected);
@@ -89,6 +90,7 @@ class AnnouncementGetAnnouncementTest extends WorkflowGetTest {
 		//テスト実施
 		$result = $this->Announcement->getAnnouncement();
 		$result = Hash::remove($result, 'AnnouncementSetting');
+		$result = Hash::remove($result, 'BlocksLanguage');
 
 		//チェック
 		$this->assertEquals($result, $expected);
