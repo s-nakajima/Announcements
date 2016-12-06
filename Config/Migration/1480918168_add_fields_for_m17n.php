@@ -16,14 +16,14 @@ App::uses('NetCommonsMigration', 'NetCommons.Config/Migration');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Announcements\Config\Migration
  */
-class M17n extends NetCommonsMigration {
+class AddFieldsForM17n extends NetCommonsMigration {
 
 /**
  * Migration description
  *
  * @var string
  */
-	public $description = 'm17n';
+	public $description = 'add_fields_for_m17n';
 
 /**
  * Actions to be performed
