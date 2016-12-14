@@ -15,12 +15,17 @@ msgstr ""
 "Language: ja\n"
 "X-Generator: Poedit 1.8.1\n"
 
-#: Announcements/Model/Announcement.php:106
-#: Announcements/View/AnnouncementBlocks/index.ctp:37
-#: Announcements/View/Elements/Announcements/edit_form.ctp:33
+#: Announcements/Model/Announcement.php:114
+#: Announcements/Test/Case/Controller/AnnouncementBlocksController/EditTest.php:113;141
+#: Announcements/Test/Case/Controller/AnnouncementsController/EditTest.php:317
+#: Announcements/Test/Case/Model/Announcement/ValidateTest.php:99
+#: Announcements/View/AnnouncementBlocks/index.ctp:31
+#: Announcements/View/Announcements/view.ctp:29
+#: Announcements/View/Elements/Announcements/edit_form.ctp:24
 msgid "Content"
 msgstr "本文"
 
-#: Announcements/View/Elements/AnnouncementBlocks/delete_form.ctp:14;28
+#: Announcements/View/Elements/Announcements/delete_form.ctp:21
 msgid "Announcement"
 msgstr "お知らせ"
+
