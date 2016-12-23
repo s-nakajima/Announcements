@@ -28,7 +28,7 @@ App::uses('Topic', 'Topics.Model');
 								'Frame.block_id'
 							); ?>
 						<?php echo $this->BlockIndex->tableHeader(
-								'Block.name', __d('announcements', 'Content'),
+								'BlocksLanguage.name', __d('announcements', 'Content'),
 								array('sort' => true, 'editUrl' => true)
 							); ?>
 						<?php echo $this->BlockIndex->tableHeader(
@@ -52,9 +52,9 @@ App::uses('Topic', 'Topics.Model');
 									'Frame.block_id', $announcement['Block']['id']
 								); ?>
 							<?php echo $this->BlockIndex->tableData(
-									'Block.name',
+									'BlocksLanguage.name',
 									'<small>' . $this->Workflow->label($announcement['Announcement']['status']) . '</small>' . ' ' .
-									h(mb_strimwidth($announcement['Block']['name'], 0, Topic::DISPLAY_SUMMARY_LENGTH, '...')),
+									h(mb_strimwidth($announcement['BlocksLanguage']['name'], 0, Topic::DISPLAY_SUMMARY_LENGTH, '...')),
 									array('editUrl' => array('block_id' => $announcement['Block']['id']), 'escape' => false)
 								); ?>
 							<?php echo $this->BlockIndex->tableData(
