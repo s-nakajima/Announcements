@@ -58,6 +58,8 @@ class AnnouncementsController extends AnnouncementsAppController {
  * @return void
  */
 	public function view() {
+CakeLog::debug("\t" . '-- -- -- -- AnnouncementsController::' . __FUNCTION__ . "\t" . 'start1 ' . microtime() . '');
+$stime = microtime(true);
 		$announcement = $this->Announcement->getAnnouncement();
 		if (! $announcement) {
 			if (Current::permission('content_editable')) {
@@ -67,9 +69,13 @@ class AnnouncementsController extends AnnouncementsAppController {
 			}
 		}
 		$this->set('announcement', $announcement['Announcement']);
+CakeLog::debug("\t" . '-- -- -- -- AnnouncementsController::' . __FUNCTION__ . "\t" . 'end1 ' . microtime() . "\t" . (microtime(true) - $stime) . '');
+CakeLog::debug("\t" . '-- -- -- -- AnnouncementsController::' . __FUNCTION__ . "\t" . 'start2 ' . microtime() . '');
+$stime = microtime(true);
 
 		//新着データを既読にする
 		$this->Announcement->saveTopicUserStatus($announcement);
+CakeLog::debug("\t" . '-- -- -- -- AnnouncementsController::' . __FUNCTION__ . "\t" . 'end2 ' . microtime() . "\t" . (microtime(true) - $stime) . '');
 	}
 
 /**
